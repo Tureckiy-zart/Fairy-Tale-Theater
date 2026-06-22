@@ -52,6 +52,7 @@ export const BOOK_CTA = { label: "Book Miss Lana", href: "/booking" } as const;
 
 /** Footer mini-sitemap (SITE_STRUCTURE_AND_BLOCKS.md §2). */
 export const FOOTER_LINKS = [
+  { label: "Services", href: "/services" },
   { label: "Shows", href: "/shows" },
   { label: "School Shows", href: "/school-shows" },
   { label: "Birthdays", href: "/birthdays" },
@@ -115,6 +116,40 @@ export const SERVICE_LINES: {
  * Featured shows. The old PLACEHOLDER_SHOWS array was retired once the real titles
  * landed (BUILD_MISS_LANA_SHOWS_AND_LANDINGS_001).
  */
+
+/**
+ * The professional troupe (01_CONTENT_INVENTORY.md §"Команда"). Names + roles are
+ * CANONICAL facts (do not invent/alter). NOTE: Svitlana is listed as Director; the
+ * "Svitlana = owner" link is NOT yet confirmed (🔴 owner-gated) — so we present her
+ * role only, never assert ownership. The "Ukrainian theatrical school" is the quiet
+ * warm backstory (canon §4.6) — kept gentle on /about, never as Slavic/Russian/
+ * Ukrainian visual or copy coding, and the explicit heritage wording stays owner-gated.
+ */
+export const TROUPE: { name: string; role: string }[] = [
+  { name: "Svitlana Grygoryshyna", role: "Director" },
+  { name: "Armen Tadevosyan", role: "Actor, showman, host & writer" },
+  { name: "Victoria Stolyarenko", role: "Actress, writer & creative director" },
+  { name: "Roman Listopad", role: "Actor, director & teacher" },
+];
+
+/**
+ * The values that run through every show (01_CONTENT_INVENTORY.md / 02_POSITIONING):
+ * kindness, friendship, helping one another. Used on /about. Placeholder framing copy.
+ */
+export const VALUES: { title: string; body: string }[] = [
+  {
+    title: "Kindness first",
+    body: "Every tale we tell is built around a kind heart — gentleness, generosity and doing the right thing. Placeholder copy.",
+  },
+  {
+    title: "Friendship & helping",
+    body: "Our stories celebrate showing up for one another — friendship, teamwork and lending a hand. Placeholder copy.",
+  },
+  {
+    title: "Wonder for every child",
+    body: "Theater as magic that delights, inspires and brings a story to life — for ages 2–10. Placeholder copy.",
+  },
+];
 
 /**
  * Pricing logic by number of children (PROJECT_BRIEF.md). Real, approximate, owner

@@ -177,3 +177,72 @@ test.describe("Phase 2 — shows + landings", () => {
     }
   });
 });
+
+// Phase 3 — Services overview + Characters + Gallery + About
+// (BUILD_MISS_LANA_SHOWCASE_AND_ABOUT_001). Completes the MVP page set.
+test.describe("Phase 3 — services + characters + gallery + about", () => {
+  const PAGES: { path: string; h1: RegExp }[] = [
+    { path: "/services", h1: /the same theater, shaped to your day/i },
+    { path: "/characters", h1: /costumed characters who come to visit/i },
+    { path: "/gallery", h1: /from our shows/i },
+    { path: "/about", h1: /theater as a little bit of magic/i },
+  ];
+  for (const { path, h1 } of PAGES) {
+    test(`${path} responds 200 with its H1`, async ({ page }) => {
+      const res = await page.goto(path);
+      expect(res?.status()).toBe(200);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(h1);
+    });
+  }
+
+  test("the four Phase-3 routes are noindex pre-launch", async ({ page }) => {
+    for (const path of ["/services", "/characters", "/gallery", "/about"]) {
+      await page.goto(path);
+      await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+    }
+  });
+
+  test("each Phase-3 page emits a BreadcrumbList", async ({ page }) => {
+    for (const path of ["/services", "/characters", "/gallery", "/about"]) {
+      await page.goto(path);
+      const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).join(" ");
+      expect(ld, `BreadcrumbList on ${path}`).toContain('"@type":"BreadcrumbList"');
+    }
+  });
+
+  test("/services links through to all four service lines", async ({ page }) => {
+    await page.goto("/services");
+    for (const href of ["/shows", "/school-shows", "/birthdays", "/characters"]) {
+      await expect(page.locator(`a[href="${href}"]`).first()).toBeVisible();
+    }
+  });
+
+  test("the gallery scaffold renders its category headings + pending placeholders", async ({ page }) => {
+    await page.goto("/gallery");
+    for (const cat of ["Shows", "Troupe", "Children", "Backstage"]) {
+      await expect(page.getByRole("heading", { name: new RegExp(`${cat} — pending assets`, "i") })).toBeVisible();
+    }
+    // Assets are gated — tiles render the marked placeholder treatment, not real media.
+    await expect(page.getByText("Photo — pending").first()).toBeVisible();
+    await expect(page.getByText("Video — pending").first()).toBeVisible();
+  });
+
+  test("/about shows the 30+ years line and the full troupe", async ({ page }) => {
+    await page.goto("/about");
+    await expect(page.getByText("30+ years").first()).toBeVisible();
+    for (const name of [
+      "Svitlana Grygoryshyna",
+      "Armen Tadevosyan",
+      "Victoria Stolyarenko",
+      "Roman Listopad",
+    ]) {
+      await expect(page.getByRole("heading", { name })).toBeVisible();
+    }
+  });
+
+  test("under reduced motion, the gallery reveals are shown immediately", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/gallery");
+    await expect(page.locator(".ll-reveal").first()).toHaveCSS("opacity", "1");
+  });
+});

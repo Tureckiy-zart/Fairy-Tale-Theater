@@ -219,6 +219,45 @@ photo/video placeholder → related → areas/«from $350») · `app/school-show
 
 ---
 
+## Закрытие BUILD_MISS_LANA_SHOWCASE_AND_ABOUT_001 (2026-06-22)
+
+**Сделано:** Phase 3 — четыре оставшиеся MVP-страницы на примитивах, mobile-first (заменили stub'ы).
+**MVP-набор страниц завершён.** `app/services/` (зонтик §4.3: hero + 4 service-line `Card` из
+`SERVICE_LINES` с посекционным акцентом §12 + CTA на свою линию → TrustStrip → BookingCTABand;
+достижима через новую footer-ссылку «Services») · `app/characters/` («& Friends», **berry** §12: hero
+placeholder → отстройка от генерик-аниматоров → how-it-works → BookingCTABand) · `app/gallery/` +
+`components/blocks/GalleryGrid.tsx` + `lib/gallery.ts` (§4.5: masonry на CSS-columns, 4 канон-категории
+Shows/Troupe/Children/Backstage, встроенное **muted+captioned видео**; медиа-вайринг как в `lib/shows.ts`,
+до ассетов — помеченный «Photo/Video — pending», без скрейпа, reserved aspect = без CLS) · `app/about/`
+(§4.6: миссия → 30+ лет → труппа 4 артиста+роли **канон** из `01_CONTENT` → **тихий flagged бэкстори** →
+`PersonaIntro` → ценности → TrustStrip + BookingCTABand). `lib/site.ts`: + `TROUPE` (канон-имена/роли),
+`VALUES`, footer-ссылка «Services». Каждая страница — один `h1`, уникальная `buildMetadata`, `Breadcrumb`
+(+ BreadcrumbList JSON-LD). e2e +Phase-3 (200+H1 ×4, noindex ×4, BreadcrumbList ×4, /services→4 линии,
+gallery scaffold, about troupe/30+, reduced-motion).
+
+**Верификация:** `pnpm run ci:exact` — **зелёный** (lint+typecheck+governance+build; 22 маршрута, +4 новых).
+`pnpm test:e2e` — **не выполнить в контейнере**: egress заблокирован (403 на все хосты, вкл. `cdn.playwright.dev`),
+браузер Playwright не скачать и в кэше нет. Тесты написаны, гоняются в CI. Замещающая проверка: `pnpm dev` +
+`curl` по 4 маршрутам — 200, верный H1, `noindex`, `BreadcrumbList`; /services линкует 4 линии; /gallery — 4
+category-заголовка «… — pending assets» + плейсхолдеры; /about — 4 имени труппы.
+
+**Находки (severity):** нет BLOCKER/HIGH/MEDIUM.
+- **LOW** — captions в `lib/gallery.ts` — временный generic alt; финал в Phase 4 [ASSET].
+- **NOTE (контент)** — указанный файл `docs/reports/2026-06-22-phase3-content-...md` **отсутствовал**
+  (как в Phase 2); вся проза — временный плейсхолдер из канона; имена/роли труппы — канон `01_CONTENT`.
+- **NOTE (e2e env)** — браузер не скачать (403); CI выполняет.
+- **NOTE (медиа)** — только placeholder-трит; без скрейпа; CSP не трогали; поля под ассеты готовы.
+
+**🔴 Открытые гейты:** реальные graded фото/видео (галерея — скелет) · подтвердить Svitlana = владелец →
+финал /about (сейчас только роль Director) · heritage-формулировка /about (soft default, страна не названа) ·
+финал портрета Miss Lana/персонажей · суммы доплаты + соцссылки + формат-сплит (из Phase 2) · финальный EN-copy.
+
+**Дальше:** MVP-набор страниц закрыт → Phase 4 (реальный copy + ассеты + правило доплаты + финал бренда —
+owner/TM), затем Phase 5 (a11y/CWV/тех-SEO, снять `/design`, запуск). Сайт остаётся **noindex** до Phase 5.
+Полная заметка — `docs/reports/2026-06-22-showcase-and-about-build-findings.md`.
+
+---
+
 ## Конвенция STATUS (из кита — copy into every new project)
 
 Every repo gets a top-level `STATUS.md` declaring exactly one state, so duplicate
