@@ -1,20 +1,53 @@
-// Placeholder home — neutral holding page until the real marketing pages are
-// built (a separate TUNG task, once copy/IA are ready). The component library
-// it will be assembled from lives in components/ui/ and is previewed at /design.
-// Intentionally minimal: no final wordmark/illustration (trademark gate, §15).
-export default function Home() {
+// Home (/) — the full §4.1 block stack (SITE_STRUCTURE_AND_BLOCKS.md), assembled from
+// the shell + Home blocks, all on placeholders. Order is verbatim from §4.1:
+// Hero → TrustStrip → FormatExplainer → ServiceLineCards → Featured shows → B2B teaser
+// → B2C teaser → PersonaIntro → Gallery teaser → How it works + areas → BookingCTABand
+// + LeadForm → SiteFooter (the last via SiteShell). Server component; metadata via
+// lib/seo (noindex pre-launch).
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
+import { SiteShell } from "@/components/shell/SiteShell";
+import { BookingCTABand } from "@/components/shell/BookingCTABand";
+import { LeadForm } from "@/components/shell/LeadForm";
+import { Hero } from "@/components/blocks/Hero";
+import { TrustStrip } from "@/components/blocks/TrustStrip";
+import { FormatExplainer } from "@/components/blocks/FormatExplainer";
+import { ServiceLineCards } from "@/components/blocks/ServiceLineCards";
+import { FeaturedShows } from "@/components/blocks/FeaturedShows";
+import { B2BTeaser } from "@/components/blocks/B2BTeaser";
+import { B2CTeaser } from "@/components/blocks/B2CTeaser";
+import { PersonaIntro } from "@/components/blocks/PersonaIntro";
+import { GalleryTeaser } from "@/components/blocks/GalleryTeaser";
+import { HowItWorksAreas } from "@/components/blocks/HowItWorksAreas";
+
+export const metadata: Metadata = buildMetadata({
+  title: "Live children's theater that comes to you",
+  description:
+    "Professional live-costumed children's fairy-tale theater for LA preschools, schools and parties — 30+ years, ages 2–10. Book Miss Lana.",
+  path: "/",
+  noindex: true,
+});
+
+export default function HomePage() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
-      <p className="font-body text-sm font-semibold uppercase tracking-[0.06em] text-forest-600">
-        Coming soon
-      </p>
-      <h1 className="max-w-2xl font-display text-4xl text-forest-800 sm:text-5xl">
-        Miss Lana&rsquo;s Fairy-Tale Theater
-      </h1>
-      <p className="max-w-md text-lg text-ink-soft">
-        A touring children&rsquo;s live-costumed fairy-tale theater. The website is
-        being built — stories on their way.
-      </p>
-    </main>
+    <SiteShell>
+      <Hero />
+      <TrustStrip />
+      <FormatExplainer />
+      <ServiceLineCards />
+      <FeaturedShows />
+      <B2BTeaser />
+      <B2CTeaser />
+      <PersonaIntro />
+      <GalleryTeaser />
+      <HowItWorksAreas />
+      <BookingCTABand />
+      <LeadForm
+        id="book"
+        eyebrow="Get started"
+        heading="Book Miss Lana"
+        sub="Tell us about your event and we'll get back to you. Demo form — no message is sent yet."
+      />
+    </SiteShell>
   );
 }

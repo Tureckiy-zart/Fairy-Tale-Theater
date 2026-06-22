@@ -90,6 +90,37 @@ repoint `/design` (components-section → реальные примитивы; `
 примитивах; страницы шоу/линий (Phase 2) и SEO-разметка (organization/event/breadcrumb/faq) —
 подключать через `lib/seo` + `<JsonLd>` по мере сборки.
 
+## Закрытие BUILD_MISS_LANA_HOME_AND_SHELL_001 (2026-06-22)
+
+**Сделано:** Phase 1 реального сайта на плейсхолдерах. Глобальный каркас `components/shell/`
+(`SiteShell`/`SiteHeader`/`SiteFooter`/`BookingCTABand`/`LeadForm` — клиентская валидация +
+on-screen confirmation, без бэкенда/`StubPage`); блоки Home `components/blocks/` (Hero=LCP без
+анимации, TrustStrip, FormatExplainer, ServiceLineCards, FeaturedShows, B2B/B2C-тизеры,
+PersonaIntro, GalleryTeaser, HowItWorksAreas); helpers `motion/Reveal` + `brand/Glyphs`; факты
+`lib/site.ts`. Маршруты: **Home** (`app/page.tsx`, полный стек §4.1) · **Booking** (`app/booking`,
+§4.7) · **Pricing** (`app/pricing`, §4.4) + 6 stub'ов (nav без 404). Композиция целиком из
+**`@/components/ui`** (без форков/дублей) + `lib/seo buildMetadata`. Site-wide **noindex**
+(`app/layout.tsx` + per-page). e2e `tests/e2e/site.spec.ts` (12). `pnpm run ci:exact` +
+`pnpm test:e2e` зелёные (**19/19**). Полная заметка (placeholder→финал + находки) —
+`docs/2026-06-22-home-and-shell-build-findings.md`.
+
+**Находки (severity):** нет BLOCKER/HIGH/MEDIUM.
+
+- **NOTE** — координация с параллельной примитивной сессией: единый источник сведён к
+  `@/components/ui`, удалены мои дубли `shell/SectionHeader`/`Breadcrumb`/`PlaceholderTag`,
+  `ServiceLineCards` переведён на расширенный `Card` (accent/tag), `lib/site` выровнен по `Accent`.
+- **NOTE** — вордмарк `Nav` ведёт на `#` (не Home); фикс — `homeHref`-проп примитива (отдельно, не форкал).
+- **NOTE** — два fact-модуля: `lib/site` (UI/контент) и `lib/seo` (SEO); пересечение по назначению.
+- **LOW (пред-сущ., не чинил — вне scope)** — CSP в `next.config.ts` без `'unsafe-eval'` → dev-only
+  React `eval() is not supported` в консоли; на прод не влияет, гейт/тесты зелёные.
+- **NOTE (gated)** — вся копия/образы — плейсхолдеры (помечены); финал лого/вордмарка/персонажа/
+  иллюстраций — за trademark-clearance.
+
+**Дальше:** Phase 2 `BUILD_MISS_LANA_SHOWS_AND_LANDINGS_001` (/shows hub + show-detail ×8 +
+/school-shows + /birthdays), затем Phase 3 (`SHOWCASE_AND_ABOUT`). Сайт остаётся **noindex** до
+Phase 5; `/design` env-guard'ить/удалить перед продом. Owner-входы: формат-сплит + 2 переименования
+шоу, суммы доплаты, соцссылки, фото/видео; TM-гейт — финальные ассеты.
+
 ---
 
 ## Конвенция STATUS (из кита — copy into every new project)
