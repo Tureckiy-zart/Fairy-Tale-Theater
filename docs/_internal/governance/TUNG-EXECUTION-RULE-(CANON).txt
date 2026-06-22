@@ -1,0 +1,92 @@
+# TUNG EXECUTION RULE (CANON)
+
+# CONSOLIDATION 001 (TUNG_FACTORY_CANON_CONSOLIDATION_001, applied per
+# HERMES_TUNG_AUDIT_003 §8). Two live formats only — Hermes TUNG Lite
+# Universal (everyday research/audit/meta) and v2-full (this rule + the v2
+# spec; high-risk / contract / multi-file / implementation). v1 and the
+# Tenerife-coupled Hermes Lite are DEPRECATED (archived specs on them stay
+# valid). Format selection, task_mode policy and the automated linter are in
+# sections 6–8 below. Backward-compat is unchanged and reaffirmed.
+
+Before creating ANY TUNG:
+
+1. MUST read:
+   tung_system_specification.md (from project Sources)
+
+2. MUST use FULL canonical structure:
+   - authority_scope
+   - verification
+   - deliverables
+   - mandatory_closure
+
+3. MUST include the execution-safety sections (additive v2 extension):
+   - non_goals
+   - forbidden_execution_patterns
+   - execution_guardrails
+   See tung_system_specification.md sections 3.4.1, 3.5.1, 3.5.2,
+   and 8.6 for semantics and per-class examples.
+   New TUNGs MUST NOT omit these sections once this rule is adopted.
+   (Pre-existing v2 TUNGs without them remain valid — backward compatible.)
+
+4. mandatory_closure MUST confirm execution-safety compliance:
+   no non_goals fixed, no forbidden_execution_patterns violated,
+   execution_guardrails respected. This is ADDITIONAL to the
+   reviewer-grade review — it does not replace it.
+
+5. MUST NOT:
+   - invent fields outside specification
+   - skip required modules
+   - simplify structure
+   - create partial TUNGs
+
+VALIDATION RULE:
+If TUNG structure is incomplete → INVALID
+If TUNG structure is modified → INVALID
+If a new TUNG omits non_goals / forbidden_execution_patterns /
+execution_guardrails → INVALID
+
+ENFORCEMENT MODEL (how the INVALID verdict above is applied — consolidation 001):
+The "new TUNG MUST carry the 3 execution-safety sections" rule is an
+AUTHORING policy, satisfied BY CONSTRUCTION: the canonical drop-in
+templates (umarun/web/docs/tasks/TASK_TEMPLATE.json for v2-full, and the
+Hermes Lite Universal §7 blank) already emit all three sections, so anything
+authored from them is compliant without extra effort. This resolves the old
+contradiction (rule said MUST; templates emitted nothing → unenforceable).
+The automated linter (section 8) reports MISSING execution-safety sections
+as a WARNING, never a hard failure — because it cannot tell a brand-new
+TUNG from a pre-existing v2-core one, and pre-existing v2-core specs without
+these sections REMAIN VALID (backward compatible). The INVALID verdict for a
+*new* TUNG that omits them is an authoring/review judgment, not a batch-lint
+rejection of the corpus.
+
+6. FORMAT SELECTION (two live formats — consolidation 001):
+   - Hermes TUNG Lite Universal (HERMES_TUNG_LITE_UNIVERSAL_SPECIFICATION.md)
+     — everyday research / audit / market-analysis / source-verification /
+     meta work whose output is a report or spec set. task_mode audit | meta.
+   - v2-full (this rule + tung_system_specification.md) — high-risk,
+     contract-changing, multi-file, or any implementation work (code,
+     runtime, schema, UI, locks, production config, canonical-doc edits).
+   Pick Lite Universal by default for non-implementing work; escalate to
+   v2-full the moment the task changes code/behavior/contracts/canon (see
+   Lite Universal §8). DEPRECATED, do not author new tasks on them:
+   tung_system_specification_v1.md (v1) and HERMES_TUNG_LITE_SPECIFICATION.md
+   (Tenerife/Domainify-coupled §19) — use Lite Universal instead. Tasks
+   already authored on v1/Tenerife-Lite stay valid (backward compatible).
+
+7. TASK_MODE POLICY (blessed extension list — consolidation 001):
+   Canonical primary: audit / fix / cleanup / lock. Auxiliary:
+   stabilization / canon-sync / unlock / meta (spec §3.3, §8.5.4). Author
+   chooses; executors MUST NOT switch mid-execution (spec §8.5.1).
+   Blessed extensions (tolerated, each maps to a closure profile — spec
+   §8.5.7): review → audit, bundle → meta, master → meta, feature → fix.
+   Any task_mode outside the canonical + blessed set is a linter WARNING
+   (not a hard reject) — map it to a canonical mode or reclassify. Existing
+   specs' modes are NEVER reclassified retroactively.
+
+8. AUTOMATED LINTER (the long-promised "TUNG Validator", spec §10):
+   tung_lint.py (factory canon, stdlib-only) validates v2-full structure,
+   resolves the task_mode closure profile, and emits the execution-safety
+   and task_mode warnings described above. Run:  python3 tung_lint.py
+   <TASK.json>. Exit 0 = schema-valid (warnings allowed); exit 1 = errors.
+   It is a generalized lift of Research_AI's validate_tung_v2 + Q1–Q6 mode
+   classifier (schema + validator only; no compiler/REST/dashboard).

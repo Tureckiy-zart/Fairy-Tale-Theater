@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "EXAMPLE_stdio_server": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "<MCP_SERVER_PACKAGE>"],
+      "env": {
+        "SERVICE_CONNECTION_STRING": "${SERVICE_CONNECTION_STRING}",
+        "SERVICE_READ_ONLY": "true"
+      }
+    },
+    "EXAMPLE_http_connector": {
+      "type": "http",
+      "url": "https://<connector-host>/mcp",
+      "headers": {
+        "Authorization": "Bearer ${SERVICE_API_KEY}"
+      }
+    }
+  }
+}

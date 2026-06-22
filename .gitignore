@@ -1,0 +1,36 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.der
+*.key
+*.p12
+*.pfx
+
+# Node / JS
+node_modules/
+.next/
+dist/
+out/
+*.tsbuildinfo
+.turbo/
+coverage/
+playwright-report/
+test-results/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+build/
+*.egg-info/
+
+# Machine noise — never vendor
+.claude/settings.local.json
+
+# OS
+.DS_Store

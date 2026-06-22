@@ -1,0 +1,29 @@
+# PROJECT PROGRESS — Miss Lana's Fairy-Tale Theater
+
+> **Назначение.** Append-only **полный лог всех содержательных изменений** проекта.
+> **Правило (`CLAUDE.md` §7):** в конце КАЖДОЙ задачи добавляется краткая запись — дата + 1–3 строки «что сделано» (затронутые файлы/артефакты + суть).
+> **НЕ логируется:** прогоны CI/тестов, отладка/работа с ошибками.
+> **Роли:** `STATUS.md` — текущее состояние (snapshot); **этот файл — хронология** (только дополнять, не переписывать задним числом).
+> **Формат:** `## YYYY-MM-DD` → буллеты. Новые записи добавляются ВНИЗ соответствующей даты.
+
+---
+
+## Baseline (по артефактам репозитория и git-истории — до введения этого лога)
+
+- **Лончеры и README.** Добавлены Windows/Linux-лончеры; README переписан под Variant A; `launch.bat` отклоняет WSL/System32-bash в PATH-fallback. *(git: PR #1/#2, commits `6b2df90`, `e2e6b36`, `5a100e4`, `4fd3bc4`.)*
+- **Intake.** Двухуровневый discovery-опрос, клиентский язык, site-vision, деградация при отсутствии онлайн-следа. *(git: `0600fbe`.)*
+- **Ребрендинг-рамка зафиксирована (2026-06-22, core-доки).** `docs/core/BRAND.md` (LOCK): бренд **Miss Lana's Fairy-Tale Theater**, зонтик **Miss Lana**, домен `misslanatheater.com`, 4 линии-секции. Переписаны под актуальную рамку: `PROJECT_BRIEF.md`, `00_PROJECT_INSTRUCTIONS.md`, `01_CONTENT_INVENTORY.md`, `02_POSITIONING_AND_TONE.md` (v5), `03_SITEMAP_AND_SCOPE.md`, `04_SEO.md` — англо-первичный рынок, живой костюмированный театр (не «puppet»), украинская труппа как тихий бэкстори, без славянского кодирования.
+- **Research-артефакты (Hermes, 2026-06-21).** `HermesResearch/reports/2026-06-21-la-kids-puppet-theater-competitor-research.md` (карта конкурентов и нормы цен) · `2026-06-21-google-maps-platform-scoping.md` (Трек B — Google Maps Platform).
+- **Trademark pre-screen.** `docs/2026-06-22-trademark-pre-screen-miss-lanas-fairy-tale-theater.md`.
+
+---
+
+## 2026-06-22
+
+- **Дизайн-система установлена.** `docs/core/DESIGN_SYSTEM.md` (DS v1.0, идея «Lantern Light»: лесные зелёные + золотисто-янтарное свечение на кремовом) — источник истины по визуалу; обоснование/ресёрч — `docs/core/2026-06-22-design-system-research-v2.md`.
+- **Design System Research (TUNG `HERMES_DESIGN_SYSTEM_RESEARCH_001`).** Создан decision-ready отчёт `HermesResearch/reports/2026-06-22-design-system-research.md`: рекомендованное направление «Storybook Grove» + 2 альтернативы; токены color/type/spacing/radius/elevation/motion с детерминированно проверенным WCAG AA контрастом; направление иллюстрации/иконок (Phosphor) + персонажа Miss Lana; шрифты Fraunces + Nunito (web-verified). Спека, не реализация; лого — только направление (TM pending).
+- **Переименование.** `docs/core/design-system-research.md` → `docs/core/2026-06-22-design-system-research-v2.md` (каноническое date-prefixed имя; починены ссылки из `DESIGN_SYSTEM.md`).
+- **Интеграция дизайн-системы.** `docs/core/DESIGN_SYSTEM.md` прописан как always-on источник истины по визуалу в `CLAUDE.md` (§3 указатель + новая §8) и `docs/core/00_PROJECT_INSTRUCTIONS.md` (список «Источники истины» + директива «Как работаешь»).
+- **Правило лога прогресса.** В `CLAUDE.md` §7 добавлено правило вести `docs/PROJECT_PROGRESS.md`; создан этот файл и заполнен текущим состоянием.
+- **Дизайн-превью построено (TUNG `BUILD_MISS_LANA_DESIGN_PREVIEW_001`).** Первый срез сборки в `baselines/js-next/` (единственное Next.js-приложение репо — подтверждено владельцем как app сайта). Внутренний noindex-маршрут `/design` рендерит 9 секций дизайн-системы (color/type/spacing/icons/motif/motion/components/accents/a11y) строго по `docs/core/DESIGN_SYSTEM.md`. Заведена токен-основа: `app/globals.css` (Tailwind v4 `@theme static` — все токены §3/§4/§5/§10/§14 + base-layer + motion-keyframes + reduced-motion бэкстоп), `app/layout.tsx` (`next/font`: Fraunces+Nunito), `phosphor-react` в `package.json`. Добавлен e2e-smoke `tests/e2e/design.spec.ts`. Гейт `pnpm run ci:exact` + `pnpm test:e2e` — зелёные. How-to-view — в `baselines/js-next/README.md`; ревью/находки — `docs/2026-06-22-design-preview-build-findings.md`. Перед продом маршрут `/design` env-guard'ить/удалить.
+- **Продакшн-примитивы реализованы (TUNG `IMPLEMENT_MISS_LANA_DESIGN_TOKENS_001`).** Добавлена переиспользуемая, типизированная, доступная UI-библиотека `baselines/js-next/components/ui/`: `Button` (primary/secondary/tertiary, sm/md/lg, leading/trailing icon, polymorphic button/`<a>`), `Field` (label+helper/error/success, `(required)`, textarea — presentational), `Card` (show-card 3:2 + meta + CTA), `Nav` (sticky, scroll-state via IO-sentinel, mobile drawer с focus-trap+ESC+scroll-lock, skip-link); + `cx` helper, `index` barrel, `README.md` (usage/props). Все стили — из единой токен-основы (§14), без дублирования/ad-hoc значений; иконки только Phosphor (Regular UI + Duotone-brand), ≤2 начертания; motion-safe-first. **Repoint `/design`:** `components-section.tsx` теперь рендерит реальные примитивы (живая галерея), `page.tsx` использует реальный `Nav` как шапку (удалён hand-rolled header), маршрут остаётся внутренним noindex. **Hardening основы:** убран `border-radius:2px` из `:focus-visible` в `globals.css` (пилюли/карточки сохраняют форму при фокусе). e2e `design.spec.ts` расширен (рендер примитивов + клавиатурный фокус/skip-link + drawer open/close/ESC/focus-restore). Гейт `pnpm run ci:exact` + `pnpm test:e2e` — зелёные (6/6). Остаётся за trademark-гейтом: финальные лого/вордмарк/персонаж/иллюстрации (примитивы работают на плейсхолдерах).

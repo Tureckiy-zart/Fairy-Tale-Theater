@@ -1,0 +1,87 @@
+{
+  "task": "TUNG_<PROJECT>_<FEATURE>_001",
+  "version": "2.0",
+  "task_mode": "fix",
+  "task_type": "feature",
+  "priority": "P1",
+  "layer": "<project> / <route or module>",
+  "description": "What this task delivers. One paragraph. State the goal and the user-visible outcome.",
+  "non_goals": [
+    "Do not refactor unrelated modules encountered along the way",
+    "Do not change <adjacent surface> outside the declared change surface",
+    "Do not introduce claims/behavior that are not real yet"
+  ],
+  "decision_basis": {
+    "origin": "How this task was created (user request / review finding / planning).",
+    "investigation_findings": [
+      "Concrete fact discovered before writing the spec (file, current behavior, constraint)."
+    ]
+  },
+  "authority_scope": {
+    "must_read": [
+      "CLAUDE.md",
+      "<engineering standards doc>",
+      "<review checklist doc>"
+    ],
+    "must_not_violate": [
+      "<architectural constraint 1>",
+      "<architectural constraint 2>",
+      "Do not invent facts the project does not yet have"
+    ],
+    "requires_unlock": false,
+    "allowed_change_classes": [
+      "implementation",
+      "verification",
+      "docs-sync"
+    ]
+  },
+  "forbidden_execution_patterns": [
+    "No opportunistic refactor of files outside the declared change surface",
+    "No repo-wide verification beyond the listed required_commands unless a regression risk is documented",
+    "Do not treat the progress-log entry as a substitute for the reviewer-grade closure review"
+  ],
+  "execution_guardrails": [
+    "If the task classification appears wrong mid-execution, stop and escalate to the author — do not switch task_mode yourself",
+    "If an out-of-scope issue is found, record it as a follow-up in the report; do not fix it here",
+    "When a constraint is ambiguous, defer to the project canon rather than guessing"
+  ],
+  "scope": {
+    "in_scope": ["Concrete change 1", "Concrete change 2"],
+    "out_of_scope": ["Explicitly deferred work"]
+  },
+  "steps": [
+    {
+      "title": "<First implementation step>",
+      "actions": ["<Concrete action 1>", "<Concrete action 2>"],
+      "expectation": "<Observable outcome of this step>"
+    }
+  ],
+  "success_criteria": [
+    "Observable criterion 1",
+    "Observable criterion 2"
+  ],
+  "verification": {
+    "required_commands": ["<targeted lint>", "<targeted typecheck>", "<targeted test>"],
+    "manual_checks": ["What to look at, and the expected result"],
+    "regression_targets": ["<files/routes/behaviors this task must not regress>"]
+  },
+  "deliverables": {
+    "reports": ["docs/reports/TUNG_<PROJECT>_<FEATURE>_001.md"],
+    "progress_updates": ["docs/PROJECT_PROGRESS.md"],
+    "artifacts": []
+  },
+  "mandatory_closure": {
+    "required": true,
+    "blocks_completion_until_passed": true,
+    "closure_sequence": [
+      "Step 1: Scope verification — confirm all steps, success_criteria, and deliverables are complete; confirm execution-safety compliance (no non_goals fixed, no forbidden_execution_patterns violated, execution_guardrails respected)",
+      "Step 2: Automated verification — run only the required_commands explicitly listed for the scoped task, confirm all pass",
+      "Step 3: Reviewer-grade pre-closure code review — analyze all changes against the review dimensions, record explicit findings",
+      "Step 4: Closure resolution — resolve or defer findings with severity, write final verification summary, update task reports",
+      "Step 5: PROJECT_PROGRESS update — final administrative step, only after all above are complete"
+    ]
+  },
+  "post_actions": [
+    "Continue to the next task only if mandatory_closure passes"
+  ]
+}

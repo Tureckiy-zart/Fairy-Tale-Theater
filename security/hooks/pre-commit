@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Pre-commit hook: block commits that introduce secrets.
+# Install:  cp security/hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+#   (or point core.hooksPath at security/hooks: git config core.hooksPath security/hooks)
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+exec "$ROOT/security/secret-scan.sh" --staged
