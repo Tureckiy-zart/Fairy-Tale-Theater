@@ -21,7 +21,7 @@
   источник) и **продакшн-библиотека примитивов** `components/ui/` (`Button`/`Field`/`Card`/`Nav` —
   типизированные, WCAG-AA, motion-safe, token-driven; usage-док `components/ui/README.md`). Внутренний
   **noindex**-маршрут `/design` = живая галерея: рендерит реальные примитивы (+ 9 секций DS v1.0).
-  Гейт `ci:exact` + e2e зелёные (6/6). Превью-находки — `docs/2026-06-22-design-preview-build-findings.md`;
+  Гейт `ci:exact` + e2e зелёные (6/6). Превью-находки — `docs/reports/2026-06-22-design-preview-build-findings.md`;
   закрытие/находки примитивов — ниже (раздел «Закрытие IMPLEMENT_MISS_LANA_DESIGN_TOKENS_001»).
   Перед продом `/design` env-guard'ить. Дальше: **реальные страницы** (home + 4 линии-секции) из этих
   примитивов, когда готовы copy/IA; за trademark-гейтом — финальные лого/вордмарк/персонаж/иллюстрации.
@@ -102,7 +102,7 @@ PersonaIntro, GalleryTeaser, HowItWorksAreas); helpers `motion/Reveal` + `brand/
 **`@/components/ui`** (без форков/дублей) + `lib/seo buildMetadata`. Site-wide **noindex**
 (`app/layout.tsx` + per-page). e2e `tests/e2e/site.spec.ts` (12). `pnpm run ci:exact` +
 `pnpm test:e2e` зелёные (**19/19**). Полная заметка (placeholder→финал + находки) —
-`docs/2026-06-22-home-and-shell-build-findings.md`.
+`docs/reports/2026-06-22-home-and-shell-build-findings.md`.
 
 **Находки (severity):** нет BLOCKER/HIGH/MEDIUM.
 

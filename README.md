@@ -18,7 +18,7 @@
 | [CLAUDE.md](CLAUDE.md) | Операционный слой для агентов: стек, команды, границы, закрытие задач. |
 | [CLIENT_QUESTIONS.md](CLIENT_QUESTIONS.md) | Готовый список вопросов владельцу (RU). |
 | [docs/core/](docs/core/) | **Канон проекта**: BRAND · 00–05 (instructions/content/positioning/sitemap/SEO/build) · DESIGN_SYSTEM · SITE_STRUCTURE · PROJECT_BRIEF. |
-| [docs/reports/](docs/reports/) | Ресёрч: конкуренты LA, Google Maps scoping, дизайн-система. |
+| [docs/reports/](docs/reports/) | **Все отчёты** — ресёрч (конкуренты LA, Google Maps, дизайн-система) и build-репорты/findings по задачам. |
 | [docs/PROJECT_PROGRESS.md](docs/PROJECT_PROGRESS.md) | Append-only хронология изменений. |
 | [docs/discovery/](docs/discovery/) | Метод Phase −1 (анкеты/плейбуки). |
 | [docs/assets/](docs/assets/) | Референс-материалы владельца. |
