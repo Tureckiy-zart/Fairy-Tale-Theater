@@ -4,8 +4,16 @@
 // primitives from components/ui/* (no hand-rolled forks): change a primitive and
 // this section changes with it. The booking layout is presentational only — the
 // Field primitive carries no submit/backend logic (that is a page concern).
-import { Lightbulb, UsersThree, CalendarBlank } from "phosphor-react";
-import { Button, Field, Card } from "@/components/ui";
+import { Lightbulb, UsersThree, CalendarBlank, Sparkle } from "phosphor-react";
+import {
+  Button,
+  Field,
+  Card,
+  Tag,
+  Accordion,
+  Breadcrumb,
+  SectionHeader as UISectionHeader,
+} from "@/components/ui";
 import { Section, SubHead, Note } from "./primitives";
 
 /* ------------------------------------------------------------------- CTAs -- */
@@ -99,10 +107,17 @@ const SHOWS: { title: string; blurb: string }[] = [
   },
 ];
 
+const SERVICE_LINES = [
+  { accent: "forest", tag: "Fairy-Tale Theater", title: "The flagship live show", blurb: "A real costumed performance — story, characters, a touch of magic.", cta: "See the shows" },
+  { accent: "coral", tag: "Birthday Parties", title: "Parties that feel like a show", blurb: "The theater comes to your celebration, not a single animator.", cta: "Birthday shows" },
+  { accent: "sage", tag: "School Shows", title: "Assembly-ready, values-first", blurb: "SEL-friendly, age-appropriate, turnkey for daycares and schools.", cta: "For schools" },
+  { accent: "berry", tag: "& Friends", title: "Costumed characters visit", blurb: "Beloved friends drop by — theatrical quality, not generic.", cta: "Meet the friends" },
+] as const;
+
 function CardsShowcase() {
   return (
     <>
-      <SubHead>Card — show cards</SubHead>
+      <SubHead>Card — show cards (text link)</SubHead>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {SHOWS.map((show) => (
           <Card
@@ -117,10 +132,95 @@ function CardsShowcase() {
           />
         ))}
       </div>
+
+      <SubHead>Card — service lines (Button CTA + accent + tag)</SubHead>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {SERVICE_LINES.map((line) => (
+          <Card
+            key={line.tag}
+            accent={line.accent}
+            tag={line.tag}
+            title={line.title}
+            blurb={line.blurb}
+            cta={{ label: line.cta, href: "#components", variant: line.accent === "forest" ? "primary" : "secondary" }}
+          />
+        ))}
+      </div>
       <Note>
         Media is a placeholder — real photography is gated on the asset/trademark step (§9, §15). Cards
-        equalise height via the grid and lift to shadow-md on hover.
+        equalise height via the grid and lift to shadow-md on hover. The service-line row shows the
+        optional Button CTA, the §12 line accent (top border + tag tint), and the tag.
       </Note>
+    </>
+  );
+}
+
+/* ------------------------------------------------------------- tags / FAQ -- */
+
+function TagsShowcase() {
+  return (
+    <>
+      <SubHead>Tag — format / line chips</SubHead>
+      <div className="flex flex-wrap items-center gap-3">
+        <Tag>New show</Tag>
+        <Tag accent="coral" tone="accent">Birthday Parties</Tag>
+        <Tag accent="sage" tone="accent">School Shows</Tag>
+        <Tag accent="berry" tone="solid">&amp; Friends</Tag>
+        <Tag icon={<Sparkle size={14} weight="duotone" />}>Featured</Tag>
+      </div>
+      <Note>One pill, three tones (neutral · accent text · solid fill). White text sits only on the line fill, never on gold (§3.2).</Note>
+    </>
+  );
+}
+
+const FAQ = [
+  { question: "Do you travel to our venue?", answer: <p>Yes — we&rsquo;re a touring theater across Los Angeles, with trips to San Diego, Sacramento, and San Jose.</p> },
+  { question: "How long is a show?", answer: <p>A costumed performance runs ~30 minutes, plus interactive play — about 35–50 minutes total.</p> },
+  { question: "What ages is it for?", answer: <p>Designed for children roughly 2–10, and tuned for the room (daycare, preschool, school assembly, or a birthday).</p> },
+];
+
+function AccordionShowcase() {
+  return (
+    <>
+      <SubHead>Accordion — FAQ</SubHead>
+      <div className="max-w-2xl">
+        <Accordion items={FAQ} defaultOpen={0} />
+      </div>
+      <Note>
+        Each row is a real button toggling an aria-controlled region; the panel shows/hides instantly
+        (no layout animation, §10.4) — only the chevron rotates (motion-safe). Pair with faqSchema() for FAQPage.
+      </Note>
+    </>
+  );
+}
+
+/* ------------------------------------------------ breadcrumb / sectionhead -- */
+
+function NavigationShowcase() {
+  return (
+    <>
+      <SubHead>Breadcrumb</SubHead>
+      <Breadcrumb
+        noSchema
+        items={[
+          { name: "Home", href: "#components" },
+          { name: "Shows", href: "#components" },
+          { name: "The Gingerbread Man", href: "#components" },
+        ]}
+      />
+      <Note>
+        Trail + BreadcrumbList JSON-LD in one primitive (here JSON-LD is suppressed for the preview).
+        The last crumb is the current page (aria-current, not a link).
+      </Note>
+
+      <SubHead>SectionHeader</SubHead>
+      <UISectionHeader
+        eyebrow="Repertoire"
+        title="Eight shows to choose from"
+        subtitle="Each a real costumed performance — pick the tale, we bring the theater."
+        marker={<span data-icon="duotone-brand"><Sparkle size={16} weight="duotone" /></span>}
+      />
+      <Note>Eyebrow (amber glow-700, the only amber-text token) + Fraunces clamp heading + subtitle. Pair with Container/Section for page bands.</Note>
     </>
   );
 }
@@ -156,6 +256,9 @@ export function ComponentsSection() {
       <ButtonsShowcase />
       <FieldsShowcase />
       <CardsShowcase />
+      <TagsShowcase />
+      <AccordionShowcase />
+      <NavigationShowcase />
       <NavNote />
     </Section>
   );

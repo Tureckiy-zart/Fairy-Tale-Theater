@@ -52,6 +52,30 @@ test("skip-to-content link is the first focusable and targets main", async ({ pa
   await expect(skip).toHaveAttribute("href", "#content");
 });
 
+test("new primitives render: card Button CTA, tag, breadcrumb, section header", async ({ page }) => {
+  await page.goto("/design");
+  // Card with a Button CTA → polymorphic <a> with the button's accessible name.
+  await expect(page.getByRole("link", { name: "Birthday shows" })).toBeVisible();
+  // Breadcrumb → labelled nav with the current page marked aria-current.
+  const crumbs = page.getByRole("navigation", { name: "Breadcrumb" });
+  await expect(crumbs).toBeVisible();
+  await expect(crumbs.locator('[aria-current="page"]')).toHaveText("The Gingerbread Man");
+  // SectionHeader demo heading is present.
+  await expect(
+    page.getByRole("heading", { name: "Eight shows to choose from" }),
+  ).toBeVisible();
+});
+
+test("accordion toggles an aria-controlled panel", async ({ page }) => {
+  await page.goto("/design");
+  const trigger = page.getByRole("button", { name: "How long is a show?" });
+  await expect(trigger).toHaveAttribute("aria-expanded", "false");
+  await trigger.click();
+  await expect(trigger).toHaveAttribute("aria-expanded", "true");
+  // The controlled region becomes visible with its answer.
+  await expect(page.getByText(/costumed performance runs ~30 minutes/)).toBeVisible();
+});
+
 test("nav mobile drawer opens and closes by keyboard, restoring focus", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/design");

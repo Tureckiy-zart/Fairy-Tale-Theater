@@ -19,12 +19,17 @@ hard-code colours/spacing/shadows, and do not fork the token definitions.
   `.focus-halo`), ≥44–48px touch targets, semantic HTML, colour never the sole signal.
 
 ```ts
-import { Button, Field, Card, Nav } from "@/components/ui";
+import {
+  Button, Field, Card, Nav, Breadcrumb,        // actions / forms / content / navigation
+  Tag, Accordion, Container, Section, SectionHeader, // content + layout
+  JsonLd,                                        // SEO
+} from "@/components/ui";
+import { buildMetadata, organizationSchema, theaterEventSchema, faqSchema } from "@/lib/seo";
 ```
 
-`Button` is server-safe. `Field`, `Card`, and `Nav` are Client Components (`"use client"`)
-because Phosphor icons use context and `Nav`/`Field` need hooks; they still server-render
-their markup on first load.
+**Server-safe** (no `"use client"`): `Button`, `Tag`, `Container`, `Section`, `SectionHeader`,
+`JsonLd`. **Client Components** (hooks / Phosphor context): `Field`, `Card`, `Nav`, `Accordion`,
+`Breadcrumb` — they still server-render their markup (and JSON-LD) on first load.
 
 ---
 
@@ -79,24 +84,33 @@ Phosphor icon with the text (colour is never the only signal). Linked via `aria-
 
 ## Card
 
-"Show card": media (3:2) on top, Fraunces title, meta row with small Phosphor icons, blurb,
-and a "See this show →" CTA. Fills its grid cell (`h-full`) for equal heights.
+"Show card": media (3:2) on top, optional tag, Fraunces title, meta row, blurb, and **one**
+call to action — a text link (`href`) **or** a Button (`cta`). Fills its grid cell (`h-full`)
+for equal heights. An `accent` adds a top line-colour border + tints the tag (§12).
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `title` | `string` | — | Fraunces, forest-800 |
-| `href` | `string` | — | CTA destination |
 | `blurb` | `string` | — | body copy |
+| `href` | `string` | — | text-link CTA destination (omit when using `cta`) |
+| `cta` | `{ label; href; variant? }` | — | renders a **Button** instead of the text link |
+| `tag` | `string` | — | small label above the title (tinted by `accent`) |
+| `accent` | `"forest"\|"coral"\|"sage"\|"berry"` | — | service line (§12): top border + tag tint |
 | `meta` | `{ icon?: Icon; label: string }[]` | — | `icon` is a Phosphor component |
-| `mediaSrc` | `string` | — | omit → "Photo — pending" placeholder (assets gated) |
-| `mediaAlt` | `string` | `""` | scene + emotion; empty only if decorative |
-| `ctaLabel` | `string` | `"See this show"` | arrow rendered as a Phosphor icon |
+| `mediaSrc` / `mediaAlt` | `string` | — / `""` | omit src → "Photo — pending" placeholder (gated) |
+| `ctaLabel` | `string` | `"See this show"` | text-link label; arrow is a Phosphor icon |
 | `mediaSizes` | `string` | `"(min-width:768px) 33vw, 100vw"` | `next/image` sizes |
 
 ```tsx
+// Show card — text link
 <Card title="The Lantern & the Lost Star" href="/shows/lantern"
   blurb="A gentle bedtime tale about courage…"
   meta={[{ icon: Users, label: "Ages 2–10" }, { icon: Clock, label: "~40 min" }]} />
+
+// Service-line card — Button CTA + accent + tag
+<Card accent="coral" tag="Birthday Parties" title="Parties that feel like a show"
+  blurb="A real costumed performance comes to your celebration."
+  cta={{ label: "See birthday shows", href: "/birthdays" }} />
 ```
 
 ## Nav
@@ -123,6 +137,84 @@ transparent → cream + shadow on scroll, mobile drawer (focus-trap + ESC), and 
 
 The drawer traps focus while open, closes on `Esc` (returning focus to the burger), and
 locks body scroll. Scroll state uses an `IntersectionObserver` sentinel (no scroll listener).
+
+## Breadcrumb
+
+Page trail **and** `BreadcrumbList` JSON-LD in one primitive (§3 / 04_SEO). Ordered
+root → current; the last crumb is the current page (`aria-current`, not a link).
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `items` | `{ name: string; href: string }[]` | — | `Crumb[]` from `@/lib/seo` |
+| `noSchema` | `boolean` | `false` | skip the JSON-LD (if the page emits its own) |
+
+```tsx
+<Breadcrumb items={[
+  { name: "Home", href: "/" },
+  { name: "Shows", href: "/shows" },
+  { name: "The Gingerbread Man", href: "/shows/the-gingerbread-man" },
+]} />
+```
+
+## Tag
+
+Small pill label — format tags, line eyebrows, status chips. Server-safe.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `accent` | `Accent` | `"forest"` | service line (§12) |
+| `tone` | `"neutral"\|"accent"\|"solid"` | `"neutral"` | solid = white text on the line fill |
+| `icon` | `ReactNode` | — | Phosphor element, `aria-hidden` |
+
+## Accordion
+
+FAQ disclosure list (§11). Each row is a `<button>` toggling an `aria`-controlled region.
+**No layout animation** (§10.4) — the panel shows/hides instantly; only the chevron rotates
+(motion-safe). Pair the same items with `faqSchema()` for a `FAQPage`.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `items` | `{ question: string; answer: ReactNode }[]` | — | |
+| `allowMultiple` | `boolean` | `false` | keep several panels open |
+| `defaultOpen` | `number` | — | index open on mount (single mode) |
+
+## Layout — Container · Section · SectionHeader
+
+- **`Container`** — centred `max-w-7xl` (1280px) with the standard gutter (`px-4 md:px-6`).
+  `prose` narrows to a reading measure; `as` keeps it semantic.
+- **`Section`** — full-width band, `py-clamp(4rem,8vw,8rem)`, optional `tone="surface"` for
+  the tinted alternation; wraps content in a `Container` unless `bleed`.
+- **`SectionHeader`** — `eyebrow` (amber glow-700, or line `accent`) + heading (`as` h1/h2/h3,
+  Fraunces clamp) + `subtitle` + optional lantern `marker`; `align="center"` for heroes.
+
+```tsx
+<Section id="shows" tone="surface">
+  <SectionHeader as="h2" eyebrow="Repertoire" title="Eight shows to choose from"
+    subtitle="Each a real costumed performance — pick the tale, we bring the theater." />
+  {/* …Card grid… */}
+</Section>
+```
+
+## SEO — `JsonLd` + `lib/seo`
+
+`<JsonLd data={…} />` emits `<script type="application/ld+json">` safely (escapes `<`; **no**
+`dangerouslySetInnerHTML`, per governance). `lib/seo` provides the data:
+
+- `buildMetadata({ title, description, path, image?, noindex? })` → Next `Metadata`
+  (canonical, Open Graph, Twitter, robots). Use in a route's `export const metadata`.
+- `organizationSchema()` — PerformingGroup + LocalBusiness (areaServed = touring cities).
+- `theaterEventSchema({ name, description, path, image? })` — a show page.
+- `breadcrumbSchema(items)` — used by `Breadcrumb`; call directly for a custom trail.
+- `faqSchema(items)` — `FAQPage`, pair with `Accordion`.
+
+```tsx
+// app/shows/[slug]/page.tsx
+export const metadata = buildMetadata({ title: "The Gingerbread Man",
+  description: "A lively chase tale…", path: "/shows/the-gingerbread-man" });
+
+<JsonLd data={theaterEventSchema({ name: "The Gingerbread Man",
+  description: "A lively chase tale…", path: "/shows/the-gingerbread-man" })} />
+```
 
 ---
 

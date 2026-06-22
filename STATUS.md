@@ -57,6 +57,39 @@ repoint `/design` (components-section → реальные примитивы; `
 **Дальше:** реальные страницы (home + 4 линии-секции) из этих примитивов, когда готовы copy/IA;
 отдельной задачей за TM-гейтом — финальные ассеты вместо плейсхолдеров. `/design` env-guard'ить перед продом.
 
+## Закрытие EXTEND_MISS_LANA_PRIMITIVES_001 (2026-06-22)
+
+**Сделано:** расширена UI-библиотека `components/ui/` под сборку страниц + SEO. **Card** —
+опциональная Button-CTA (`cta`), service-line `accent` (§12: верхний бордер + тинт тега), `tag`
+(show-card текст-ссылка сохранена). Новые примитивы: **Breadcrumb** (+ BreadcrumbList JSON-LD),
+**Tag**, **Accordion** (FAQ, без layout-анимации §10.4), **Container/Section/SectionHeader**
+(layout §5.1/§11), **JsonLd** (без `dangerouslySetInnerHTML` — экранирование `<`), `accent.ts`
+(§12 карты). **lib/seo.ts** — `buildMetadata` + схемы `PerformingGroup`/`LocalBusiness`,
+`TheaterEvent`, `BreadcrumbList`, `FAQPage`. Барелл/README/`/design`-галерея/e2e обновлены.
+`pnpm run ci:exact` + `pnpm test:e2e` зелёные (e2e 19/19 на интегрированном дереве).
+
+**Находки (severity):**
+
+- **NOTE** — параллельная сессия (Phase 1: `components/shell/`, `components/blocks/`, `brand/`,
+  `motion/`, `lib/site.ts`, реальная `app/page.tsx` Home) шла **одновременно в одном дереве**.
+  Был рассинхрон расположения примитивов (она ждала `SectionHeader`/`Breadcrumb` в `shell/`,
+  тип акцента в `lib/site`). По решению владельца сведено к **`components/ui/`** как единому
+  источнику: все потребители импортируют из `@/components/ui`, `lib/site` использует мой
+  `Accent` из `@/components/ui/accent`. На будущее: параллельные сессии — в изолированных
+  worktree (CLAUDE.md §7).
+- **LOW (исправлено)** — `Breadcrumb` рендерил Phosphor-иконку в server-компоненте →
+  `createContext only works in Client Components` (падал e2e). Добавлен `"use client"`.
+- **LOW (исправлено)** — `scripts/governance.mjs` ловит подстроку `dangerouslySetInnerHTML`;
+  она была в комментарии `JsonLd.tsx` (описание «не используем») → ложное срабатывание.
+  Комментарий перефразирован; реальный `dangerouslySetInnerHTML` не используется.
+- **NOTE (scope)** — этот коммит содержит **только** примитивы (`components/ui/*`, `lib/seo.ts`,
+  `/design`-галерею, `tests/e2e/design.spec.ts`). Phase-1 файлы параллельной сессии в коммит
+  **не** включены — их фиксирует её сессия.
+
+**Дальше:** Phase 1 (Home + shell + booking/pricing) собирается параллельной сессией на этих
+примитивах; страницы шоу/линий (Phase 2) и SEO-разметка (organization/event/breadcrumb/faq) —
+подключать через `lib/seo` + `<JsonLd>` по мере сборки.
+
 ---
 
 ## Конвенция STATUS (из кита — copy into every new project)
