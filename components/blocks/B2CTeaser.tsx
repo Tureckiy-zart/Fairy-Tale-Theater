@@ -3,7 +3,7 @@
 // (a magical party without the hassle) → /birthdays. Birthday Parties line accent =
 // coral (§12). Copy is placeholder; "a real theater show, not just an entertainer" is
 // real positioning (02_POSITIONING §5). On desktop the media sits left (alternation).
-import { Sparkle } from "phosphor-react";
+import { Sparkle } from "@phosphor-icons/react";
 import { Button, Section, SectionHeader, Tag } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 

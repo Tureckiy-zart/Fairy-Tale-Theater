@@ -4,7 +4,7 @@
 // legal). Phosphor icons (single library, §6). Social links are owner-pending, so
 // they render as non-interactive placeholders (no dead "#" links). The whole site is
 // noindex pre-launch — stated here too.
-import { Phone, MapPin, Sparkle } from "phosphor-react";
+import { Phone, MapPin, Sparkle } from "@phosphor-icons/react";
 import { Tag } from "@/components/ui";
 import { AREAS, BRAND, FACTS, FOOTER_LINKS, PHONES } from "@/lib/site";
 

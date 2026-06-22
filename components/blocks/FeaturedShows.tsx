@@ -1,14 +1,13 @@
 "use client";
-// FeaturedShows — Home block #5 (SITE_STRUCTURE §4.1): a few cards from the
-// 8-show repertoire → /shows. Built from the Card primitive (media 3:2 + meta +
-// text link). Titles & photos are PLACEHOLDERS (real titles are owner-pending —
-// 01_CONTENT_INVENTORY; assets gated — §15), marked with a Tag. Facts (ages, length)
-// are real (lib/site). Scroll-reveal below the fold (§10).
-import { UsersThree, Clock } from "phosphor-react";
-import { Button, Card, Section, SectionHeader, Tag } from "@/components/ui";
-import { Reveal } from "@/components/motion/Reveal";
+// FeaturedShows — Home block #5 (SITE_STRUCTURE §4.1): a few cards from the 8-show
+// repertoire → /shows and each → /shows/{slug}. Built from the shared ShowCardGrid
+// over the real, canonical titles (lib/shows — FEATURED_SHOWS). Synopses are temporary
+// copy; photos render the marked placeholder treatment (assets gated — §15 / Phase 4).
+// Scroll-reveal below the fold (§10).
+import { Button, Section, SectionHeader, Tag } from "@/components/ui";
 import { SparkStar } from "@/components/brand/Glyphs";
-import { FACTS, PLACEHOLDER_SHOWS } from "@/lib/site";
+import { ShowCardGrid } from "@/components/blocks/ShowCardGrid";
+import { FEATURED_SHOWS } from "@/lib/shows";
 
 export function FeaturedShows() {
   return (
@@ -18,25 +17,12 @@ export function FeaturedShows() {
           eyebrow="From the repertoire"
           marker={<SparkStar size={16} />}
           title="Featured shows"
-          subtitle="Eight kind fairy tales in the repertoire — a few favourites below. Placeholder titles & photos."
+          subtitle="Eight kind fairy tales in the repertoire — a few favourites below. Photos coming soon."
         />
-        <Tag>Placeholder titles</Tag>
+        <Tag>Photos coming soon</Tag>
       </div>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {PLACEHOLDER_SHOWS.map((show, i) => (
-          <Reveal key={show.title} delayMs={i * 75}>
-            <Card
-              title={show.title}
-              blurb={show.blurb}
-              href="/shows"
-              ctaLabel="See this show"
-              meta={[
-                { icon: UsersThree, label: FACTS.ages },
-                { icon: Clock, label: FACTS.showLength },
-              ]}
-            />
-          </Reveal>
-        ))}
+      <div className="mt-10">
+        <ShowCardGrid shows={FEATURED_SHOWS} columnsClassName="sm:grid-cols-2 lg:grid-cols-4" />
       </div>
       <div className="mt-8">
         <Button href="/shows" variant="secondary">

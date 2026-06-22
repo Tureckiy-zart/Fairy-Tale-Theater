@@ -5,7 +5,7 @@
 // + shadow on scroll, and a mobile drawer with focus-trap, ESC, and a skip link.
 import { useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { List, X, Sparkle } from "phosphor-react";
+import { List, X, Sparkle } from "@phosphor-icons/react";
 import { Button } from "./Button";
 import { cx } from "./cx";
 
@@ -22,6 +22,9 @@ export interface NavProps {
   cta?: { label: string; href: string };
   /** Wordmark/persona slot. Defaults to a text wordmark + placeholder light glyph. */
   wordmark?: ReactNode;
+  /** Where the wordmark links — Home by default (not "#", which only scrolls to
+   *  the top and leaves inner pages stranded). */
+  homeHref?: string;
   /** id of the page <main> the skip link targets. */
   mainContentId?: string;
   className?: string;
@@ -54,6 +57,7 @@ export function Nav({
   activeHref,
   cta = { label: "Book Miss Lana", href: "#book" },
   wordmark,
+  homeHref = "/",
   mainContentId = "main-content",
   className,
 }: NavProps) {
@@ -70,7 +74,7 @@ export function Nav({
     const el = sentinelRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
     const io = new IntersectionObserver(
-      ([entry]) => setScrolled(!entry.isIntersecting),
+      ([entry]) => setScrolled(!!entry && !entry.isIntersecting),
       { threshold: 0 },
     );
     io.observe(el);
@@ -99,6 +103,7 @@ export function Nav({
       if (focusable.length === 0) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
@@ -137,7 +142,7 @@ export function Nav({
         )}
       >
         <nav aria-label="Primary" className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
-          <a href="#" className="flex items-center gap-2 rounded-sm">
+          <a href={homeHref} aria-label="Miss Lana — home" className="flex items-center gap-2 rounded-sm">
             {wordmark ?? <DefaultWordmark />}
           </a>
 

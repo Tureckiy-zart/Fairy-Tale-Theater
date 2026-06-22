@@ -3,7 +3,7 @@
 // areas served + the "from $350" price face → /pricing. Real facts: areas (LA +
 // San Diego/Sacramento/San Jose) and "from $350" (lib/site); distance is quoted ON
 // REQUEST — never a guessed surcharge amount (PROJECT_BRIEF / non-goals). Phosphor (§6).
-import { NumberCircleOne, NumberCircleTwo, NumberCircleThree, MapPin } from "phosphor-react";
+import { NumberCircleOne, NumberCircleTwo, NumberCircleThree, MapPin } from "@phosphor-icons/react";
 import { Button, Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { SparkStar } from "@/components/brand/Glyphs";

@@ -4,7 +4,7 @@
 // `motion-safe:` variants (= prefers-reduced-motion: no-preference). Under reduce
 // everything stills (globals backstop) and the reveal falls back to visible.
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play } from "phosphor-react";
+import { Pause, Play } from "@phosphor-icons/react";
 import { Section, SubHead, Note, LanternGlyph, StarGlyph } from "./primitives";
 
 export function MotionSection() {

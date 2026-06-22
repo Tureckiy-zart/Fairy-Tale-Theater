@@ -5,7 +5,7 @@
 // are driven by props; colour is never the sole signal (icon + text + colour).
 import { useId } from "react";
 import type { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
-import { WarningCircle, CheckCircle } from "phosphor-react";
+import { WarningCircle, CheckCircle } from "@phosphor-icons/react";
 import { cx } from "./cx";
 
 // Native input props passthrough (id/required/className are owned below).

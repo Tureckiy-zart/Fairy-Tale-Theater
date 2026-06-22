@@ -6,7 +6,7 @@
 // first load. Renders a nav>ol with the last crumb
 // as the current page (aria-current, not a link) and emits the matching schema
 // unless `noSchema`. Crumb shape + schema come from lib/seo (single source).
-import { CaretRight } from "phosphor-react";
+import { CaretRight } from "@phosphor-icons/react";
 import { breadcrumbSchema, type Crumb } from "@/lib/seo";
 import { JsonLd } from "./JsonLd";
 import { cx } from "./cx";

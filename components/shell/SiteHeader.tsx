@@ -12,6 +12,7 @@ export function SiteHeader({ activeHref }: { activeHref?: string }) {
       links={NAV_LINKS.map((l) => ({ label: l.label, href: l.href }))}
       activeHref={activeHref}
       cta={{ label: BOOK_CTA.label, href: BOOK_CTA.href }}
+      homeHref="/"
       mainContentId="main-content"
     />
   );

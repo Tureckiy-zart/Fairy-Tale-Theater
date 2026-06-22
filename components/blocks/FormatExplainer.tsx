@@ -4,7 +4,7 @@
 // real fact (~30-min costumed play + interactive play e.g. bubbles, 35–50 min total,
 // ages 2–10 — PROJECT_BRIEF). Copy around it is placeholder. Phosphor Duotone (§6),
 // scroll-reveal below the fold (§10).
-import { MaskHappy, Drop, Clock, UsersThree } from "phosphor-react";
+import { MaskHappy, Drop, Clock, UsersThree } from "@phosphor-icons/react";
 import { Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { SparkStar } from "@/components/brand/Glyphs";

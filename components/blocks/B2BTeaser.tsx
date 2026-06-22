@@ -3,7 +3,7 @@
 // (values/SEL, professionalism, turnkey) → /school-shows. School Shows line accent =
 // sage (§12). Copy is placeholder; the differentiators (turnkey, troupe, ages 2–10,
 // transparent pricing) are real positioning (02_POSITIONING §5). Phosphor Duotone (§6).
-import { CheckCircle } from "phosphor-react";
+import { CheckCircle } from "@phosphor-icons/react";
 import { Button, Section, SectionHeader, Tag } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 

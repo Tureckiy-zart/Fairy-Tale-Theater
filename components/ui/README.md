@@ -9,7 +9,7 @@ hard-code colours/spacing/shadows, and do not fork the token definitions.
   `bg-forest-600`, `rounded-pill`, `shadow-glow`, `ease-gentle-spring` map to those tokens.
   Durations (`--dur-*`) are referenced via `duration-[var(--dur-fast)]`.
 - **Type:** Fraunces (display) + Nunito (body) via `next/font` (`app/layout.tsx`).
-- **Icons:** Phosphor (`phosphor-react`) only — Regular for UI, Duotone for the brand
+- **Icons:** Phosphor (`@phosphor-icons/react`) only — Regular for UI, Duotone for the brand
   "light" accent. Wrap a Duotone icon in `data-icon="duotone-brand"` to tint its accent
   path glow-400 (§6). Max two weights per screen.
 - **Motion:** motion-safe-first (`motion-safe:` variants). Under `prefers-reduced-motion`

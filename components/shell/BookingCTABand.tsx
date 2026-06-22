@@ -1,11 +1,11 @@
 "use client";
 // BookingCTABand — the repeating "Book Miss Lana" band near the bottom of pages
 // (conversion architecture: lead capture everywhere — SITE_STRUCTURE §3/§5). Forest
-// panel, white text (≥9:1), a static glow accent + lantern (§6 duotone), the primary
-// CTA → /booking, and click-to-call. The glow is decorative and NOT animated (band
-// can sit over the fold on short pages — §10.4).
-import { Lightbulb } from "phosphor-react";
+// panel, white text (≥9:1), a static glow accent + the brand Lantern glyph (the "light"
+// signature — §2/§7.2), the primary CTA → /booking, and click-to-call. The glow is
+// decorative and NOT animated (band can sit over the fold on short pages — §10.4).
 import { Button } from "@/components/ui";
+import { Lantern } from "@/components/brand/Glyphs";
 import { BOOK_CTA, PHONES } from "@/lib/site";
 
 export function BookingCTABand({
@@ -23,9 +23,7 @@ export function BookingCTABand({
           className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-pill"
           style={{ background: "radial-gradient(closest-side, rgba(234,174,53,0.30), transparent)" }}
         />
-        <span data-icon="duotone-brand" className="inline-flex text-glow-200">
-          <Lightbulb size={40} weight="duotone" aria-hidden />
-        </span>
+        <Lantern size={44} className="inline-block text-glow-200" />
         <h2 id="cta-band-heading" className="mt-3 font-display text-3xl text-white sm:text-4xl">
           {heading}
         </h2>
@@ -35,11 +33,7 @@ export function BookingCTABand({
           <Button
             href={BOOK_CTA.href}
             size="lg"
-            leadingIcon={
-              <span data-icon="duotone-brand">
-                <Lightbulb size={20} weight="duotone" />
-              </span>
-            }
+            leadingIcon={<Lantern size={20} className="text-glow-200" />}
           >
             {BOOK_CTA.label}
           </Button>

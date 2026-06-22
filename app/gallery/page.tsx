@@ -15,8 +15,6 @@ export default function GalleryPage() {
     <StubPage
       title="Gallery"
       path="/gallery"
-      blurb="Warm photos and video from real performances."
-      phaseNote="Phase 3 fills the gallery once the owner's photos and video arrive. For now, see the teaser on the home page."
-    />
+      blurb="Warm photos and video from real performances."    />
   );
 }

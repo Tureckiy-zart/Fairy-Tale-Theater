@@ -6,7 +6,7 @@
 // layout/height (§10.4). Pair the same items with seo.faqSchema() for FAQPage.
 import { useId, useState } from "react";
 import type { ReactNode } from "react";
-import { CaretDown } from "phosphor-react";
+import { CaretDown } from "@phosphor-icons/react";
 import { cx } from "./cx";
 
 export interface AccordionItem {

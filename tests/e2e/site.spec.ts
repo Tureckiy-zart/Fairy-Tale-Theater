@@ -42,7 +42,26 @@ test("header nav link navigates to its route", async ({ page }) => {
   // Desktop nav link (the header is the live Nav primitive).
   await page.getByRole("link", { name: "School Shows" }).first().click();
   await expect(page).toHaveURL(/\/school-shows$/);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(/school shows/i);
+  // Assert navigation only (a page with an H1 rendered) — not specific H1 text, so the
+  // test survives the stub → real-page swap as Phase 2 lands.
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+});
+
+test("the header wordmark routes Home from an inner page (homeHref, not #)", async ({ page }) => {
+  await page.goto("/pricing");
+  await page.getByRole("link", { name: "Miss Lana — home" }).first().click();
+  await expect(page).toHaveURL(/\/$/); // origin root, not a "#" scroll-to-top
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(/live theater that comes to you/i);
+});
+
+test("Phosphor Duotone brand-thread renders after the icon-library swap", async ({ page }) => {
+  await page.goto("/");
+  // The duotone secondary path carries the [opacity] attr the brand CSS targets;
+  // globals.css §6 recolors it to glow at full opacity. Proves the swapped library's
+  // markup still matches the brand-thread selector.
+  const accent = page.locator('[data-icon="duotone-brand"] svg path[opacity]').first();
+  await expect(accent).toBeAttached();
+  await expect(accent).toHaveCSS("opacity", "1");
 });
 
 test.describe("LeadForm (client validation + on-screen confirmation)", () => {
@@ -59,7 +78,7 @@ test.describe("LeadForm (client validation + on-screen confirmation)", () => {
     await page.getByLabel(/full name/i).fill("Alex Rivera");
     await page.getByLabel(/phone/i).fill("(213) 555-0142");
     await page.getByLabel(/event type/i).selectOption("Birthday party");
-    await page.getByLabel(/event date/i).fill("2026-12-01");
+    await page.getByLabel(/event date/i).fill("12/01/2026");
     await page.getByLabel(/city \/ area/i).fill("Pasadena");
     await page.getByRole("button", { name: /request a booking/i }).click();
     await expect(page.getByRole("heading", { name: /request received/i })).toBeVisible();
@@ -99,4 +118,62 @@ test("under reduced motion, scroll-reveals are shown immediately (no motion trap
 test("the site is noindex pre-launch", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+});
+
+// Phase 2 — Shows hub + 8 show pages + School Shows / Birthdays landings
+// (BUILD_MISS_LANA_SHOWS_AND_LANDINGS_001).
+test.describe("Phase 2 — shows + landings", () => {
+  const PAGES: { path: string; h1: RegExp }[] = [
+    { path: "/shows", h1: /eight kind fairy tales to choose from/i },
+    { path: "/shows/the-gingerbread-man", h1: /the gingerbread man/i },
+    { path: "/shows/the-winters-gift", h1: /the winter's gift/i },
+    { path: "/shows/little-red-riding-hood", h1: /little red riding hood/i },
+    { path: "/school-shows", h1: /theater your school can say yes to/i },
+    { path: "/birthdays", h1: /a magical party/i },
+  ];
+  for (const { path, h1 } of PAGES) {
+    test(`${path} responds 200 with its H1`, async ({ page }) => {
+      const res = await page.goto(path);
+      expect(res?.status()).toBe(200);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(h1);
+    });
+  }
+
+  test("a show page carries TheaterEvent + BreadcrumbList JSON-LD", async ({ page }) => {
+    await page.goto("/shows/cinderella");
+    // <script> content isn't "visible text", so read the raw text content and assert.
+    const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).join(" ");
+    expect(ld).toContain('"@type":"TheaterEvent"');
+    expect(ld).toContain('"@type":"BreadcrumbList"');
+  });
+
+  test("an unknown show slug 404s (closed slug set)", async ({ page }) => {
+    const res = await page.goto("/shows/not-a-real-show");
+    expect(res?.status()).toBe(404);
+  });
+
+  test("a show card links through to its own detail page", async ({ page }) => {
+    await page.goto("/shows");
+    await page.getByRole("link", { name: /see this show/i }).first().click();
+    await expect(page).toHaveURL(/\/shows\/[a-z-]+$/);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  });
+
+  test("the landings emit FAQPage schema and the FAQ opens by keyboard", async ({ page }) => {
+    await page.goto("/school-shows");
+    const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).join(" ");
+    expect(ld).toContain('"@type":"FAQPage"');
+    const q = page.getByRole("button", { name: /where do you perform/i });
+    await q.focus();
+    await page.keyboard.press("Enter");
+    await expect(q).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByText(/we bring everything to you/i)).toBeVisible();
+  });
+
+  test("new Phase-2 routes are noindex pre-launch", async ({ page }) => {
+    for (const path of ["/shows", "/shows/suzy-bee", "/school-shows", "/birthdays"]) {
+      await page.goto(path);
+      await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+    }
+  });
 });

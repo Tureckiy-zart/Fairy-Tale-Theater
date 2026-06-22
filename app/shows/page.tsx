@@ -1,23 +1,58 @@
+// Shows hub (/shows) — SITE_STRUCTURE_AND_BLOCKS.md §4.2. The SEO hub for the
+// repertoire: SectionHeader + intro → ShowCardGrid (all 8 shows, each linking to its
+// own indexable /shows/{slug} page) → BookingCTABand. Titles/slugs/themes are canonical
+// (lib/shows); synopses are temporary copy; photos render the marked placeholder
+// treatment (assets gated — Phase 4 [ASSET]). NO format filter (owner-gated — non-goal).
+// Server component; metadata via lib/seo (noindex pre-launch).
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
-import { StubPage } from "@/components/shell/StubPage";
+import { Breadcrumb, Container, Section, SectionHeader, Tag } from "@/components/ui";
+import { SparkStar } from "@/components/brand/Glyphs";
+import { SiteShell } from "@/components/shell/SiteShell";
+import { BookingCTABand } from "@/components/shell/BookingCTABand";
+import { ShowCardGrid } from "@/components/blocks/ShowCardGrid";
+import { SHOWS } from "@/lib/shows";
 
 export const metadata: Metadata = buildMetadata({
   title: "Shows",
   description:
-    "The repertoire of Miss Lana's Fairy-Tale Theater — kind, timeless fairy tales for ages 2–10. Full shows hub coming in a later build.",
+    "The repertoire of Miss Lana's Fairy-Tale Theater — eight kind, timeless fairy tales for ages 2–10. A real costumed show plus interactive play, brought to your venue across LA and beyond.",
   path: "/shows",
   noindex: true,
 });
 
 export default function ShowsPage() {
   return (
-    <StubPage
-      title="Shows"
-      path="/shows"
-      activeHref="/shows"
-      blurb="Our repertoire of eight kind fairy tales — a hub linking to a page for each show."
-      phaseNote="Phase 2 builds the shows hub and an indexable page for each of the 8 shows. For now, browse the featured shows on the home page, or send a booking request and we'll recommend one."
-    />
+    <SiteShell activeHref="/shows">
+      <Container className="pt-10 md:pt-14">
+        <Breadcrumb
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Shows", href: "/shows" },
+          ]}
+          className="mb-6"
+        />
+        <SectionHeader
+          as="h1"
+          eyebrow="The repertoire"
+          marker={<SparkStar size={16} />}
+          title="Eight kind fairy tales to choose from"
+          subtitle="Each show is a real costumed performance plus interactive play with the kids — 35–50 minutes, for ages 2–10. Pick the tale; we bring the whole theater to you."
+        />
+      </Container>
+
+      <Section>
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <p className="text-ink-soft">Tap a show to read the story, its theme, and how to book it.</p>
+          <Tag>Photos coming soon</Tag>
+        </div>
+        <ShowCardGrid shows={SHOWS} />
+      </Section>
+
+      <BookingCTABand
+        heading="Found one they'll love?"
+        sub="Tell us the show and your date — we'll confirm availability and pricing from $350."
+      />
+    </SiteShell>
   );
 }

@@ -16,8 +16,6 @@ export default function CharactersPage() {
       title="Miss Lana & Friends"
       path="/characters"
       activeHref="/characters"
-      blurb="Costumed characters who come to visit the kids — the quality of a real theater troupe."
-      phaseNote="Phase 3 builds the Characters line (how the characters visit, and how they differ from generic animators). For now, ask us which characters can come to your event."
-    />
+      blurb="Costumed characters who come to visit the kids — the quality of a real theater troupe."    />
   );
 }

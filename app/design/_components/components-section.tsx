@@ -4,7 +4,7 @@
 // primitives from components/ui/* (no hand-rolled forks): change a primitive and
 // this section changes with it. The booking layout is presentational only — the
 // Field primitive carries no submit/backend logic (that is a page concern).
-import { Lightbulb, UsersThree, CalendarBlank, Sparkle } from "phosphor-react";
+import { Lightbulb, UsersThree, CalendarBlank, Sparkle } from "@phosphor-icons/react";
 import {
   Button,
   Field,

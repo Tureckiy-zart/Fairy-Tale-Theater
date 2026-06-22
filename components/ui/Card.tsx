@@ -7,8 +7,8 @@
 //   • a Button CTA  (pass `cta` — used for service-line / conversion cards).
 // Equal heights: the card fills its grid cell (h-full); actions sit at the bottom.
 import Image from "next/image";
-import { ArrowRight } from "phosphor-react";
-import type { Icon } from "phosphor-react";
+import { ArrowRight } from "@phosphor-icons/react";
+import type { Icon } from "@phosphor-icons/react";
 import { Button, type ButtonVariant } from "./Button";
 import { Tag } from "./Tag";
 import { cx } from "./cx";

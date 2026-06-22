@@ -110,16 +110,11 @@ export const SERVICE_LINES: {
 ];
 
 /**
- * PLACEHOLDER show titles for the featured grid — invented, neutral, kind-tale
- * names for LAYOUT REVIEW ONLY (real titles are owner-pending, 01_CONTENT_INVENTORY).
- * Marked visibly in the UI as placeholders; swapped in a later phase.
+ * The 8-show repertoire (titles/slugs/themes/synopses) now lives in `lib/shows.ts`
+ * — the single source for the /shows hub, every /shows/{slug} page, and Home's
+ * Featured shows. The old PLACEHOLDER_SHOWS array was retired once the real titles
+ * landed (BUILD_MISS_LANA_SHOWS_AND_LANDINGS_001).
  */
-export const PLACEHOLDER_SHOWS: { title: string; blurb: string }[] = [
-  { title: "The Lantern & the Little Fox", blurb: "A gentle tale about sharing your light. Placeholder blurb." },
-  { title: "The Bunny's Little House", blurb: "Friends help a bunny find a home again. Placeholder blurb." },
-  { title: "The Winter's Gift", blurb: "Kindness and hard work are quietly rewarded. Placeholder blurb." },
-  { title: "The Gingerbread Friend", blurb: "A runaway treat learns to slow down and listen. Placeholder blurb." },
-];
 
 /**
  * Pricing logic by number of children (PROJECT_BRIEF.md). Real, approximate, owner

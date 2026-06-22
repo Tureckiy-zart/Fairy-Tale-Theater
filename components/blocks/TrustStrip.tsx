@@ -2,7 +2,7 @@
 // TrustStrip — Home block #2 (SITE_STRUCTURE §4.1). Five quick trust markers that
 // speak to BOTH audiences (schools + families) at once. Small Phosphor Duotone icons
 // (§6), real facts from lib/site. Rendered statically (sits near the fold — no reveal).
-import { Medal, UsersThree, MapPin, Smiley, Heart } from "phosphor-react";
+import { Medal, UsersThree, MapPin, Smiley, Heart } from "@phosphor-icons/react";
 
 const ITEMS = [
   { icon: Medal, label: "30+ years of experience" },

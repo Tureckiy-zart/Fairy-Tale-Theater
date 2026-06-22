@@ -1,7 +1,7 @@
 "use client";
 
 // Iconography (§6) + service-line accents (§12). Client component because
-// phosphor-react reads defaults from React context. ONE icon library only.
+// @phosphor-icons/react reads defaults from React context. ONE icon library only.
 import {
   House,
   MapPin,
@@ -20,7 +20,7 @@ import {
   GraduationCap,
   UsersThree,
   type IconProps,
-} from "phosphor-react";
+} from "@phosphor-icons/react";
 import type { ComponentType } from "react";
 import { Section, SubHead, Note } from "./primitives";
 
@@ -50,7 +50,7 @@ export function IconographySection() {
       id="iconography"
       index={4}
       title="Iconography — Phosphor"
-      lead="One library (phosphor-react). Regular for UI (ink / forest-700) on a 24px base; Duotone for delight (the light thread: forest body + glow accent). Max two weights per screen."
+      lead="One library (@phosphor-icons/react). Regular for UI (ink / forest-700) on a 24px base; Duotone for delight (the light thread: forest body + glow accent). Max two weights per screen."
     >
       <SubHead>Regular — UI (24px)</SubHead>
       <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-8">

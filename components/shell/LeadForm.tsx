@@ -6,10 +6,10 @@
 // (email/CRM is a later phase; the success panel says so). Spec: DESIGN_SYSTEM §11
 // (form states: helper/error/success; colour never the sole signal) + §13 (a11y).
 import { useRef, useState } from "react";
-import { CheckCircle, Lightbulb, WarningCircle } from "phosphor-react";
+import { CheckCircle, WarningCircle } from "@phosphor-icons/react";
 import { Button, Field, SectionHeader } from "@/components/ui";
 import { cx } from "@/components/ui/cx";
-import { SparkStar } from "@/components/brand/Glyphs";
+import { Lantern, SparkStar } from "@/components/brand/Glyphs";
 import { PHONES } from "@/lib/site";
 
 type Errors = Partial<Record<string, string>>;
@@ -24,7 +24,10 @@ function validate(data: FormData): Errors {
   const email = get("email");
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = "Please check the email address.";
   if (!get("type")) errors.type = "Pick the kind of event.";
-  if (!get("date")) errors.date = "Please add a date so we can check availability.";
+  const date = get("date");
+  if (!date) errors.date = "Please add a date so we can check availability.";
+  else if (!/^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$/.test(date))
+    errors.date = "Use the mm/dd/yyyy format (e.g. 12/01/2026).";
   if (!get("city")) errors.city = "Which city or area are you in?";
   const count = get("count");
   if (count && (!/^\d+$/.test(count) || Number(count) < 1)) errors.count = "Enter the number of children.";
@@ -126,7 +129,21 @@ export function LeadForm({
   const formRef = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [dateValue, setDateValue] = useState("");
   const headingId = `${id}-heading`;
+
+  // US-format masked date (mm/dd/yyyy) — deterministic regardless of browser locale,
+  // no date library. Digits only, slashes auto-inserted.
+  function onDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const d = e.target.value.replace(/\D/g, "").slice(0, 8);
+    setDateValue(
+      d.length > 4
+        ? `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}`
+        : d.length > 2
+          ? `${d.slice(0, 2)}/${d.slice(2)}`
+          : d,
+    );
+  }
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -164,7 +181,19 @@ export function LeadForm({
               <Field label="Phone" name="phone" type="tel" required error={errors.phone} autoComplete="tel" placeholder="(213) 555-0142" />
               <Field label="Email" name="email" type="email" error={errors.email} autoComplete="email" helper="Optional — we'll mostly call." placeholder="you@example.com" />
               <SelectField label="Event type" name="type" required error={errors.type} options={EVENT_TYPES} />
-              <Field label="Event date" name="date" type="date" required error={errors.date} />
+              <Field
+                label="Event date"
+                name="date"
+                type="text"
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="mm/dd/yyyy"
+                value={dateValue}
+                onChange={onDateChange}
+                required
+                error={errors.date}
+                helper="mm/dd/yyyy"
+              />
               <Field label="Start time" name="time" type="time" helper="Optional." />
               <Field label="City / area" name="city" required error={errors.city} autoComplete="address-level2" placeholder="e.g. Pasadena" />
               <Field label="Number of children" name="count" type="number" min={1} inputMode="numeric" error={errors.count} helper="Optional — it helps us price the show." />
@@ -183,11 +212,7 @@ export function LeadForm({
                   size="lg"
                   fullWidth
                   className="sm:w-auto"
-                  leadingIcon={
-                    <span data-icon="duotone-brand">
-                      <Lightbulb size={20} weight="duotone" />
-                    </span>
-                  }
+                  leadingIcon={<Lantern size={20} className="text-glow-200" />}
                 >
                   Request a booking
                 </Button>

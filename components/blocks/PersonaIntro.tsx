@@ -4,7 +4,7 @@
 // (final Miss Lana character is gated on trademark-clearance — §8/§15), marked with a
 // Tag; the first-person voice is the canon direction (DESIGN_SYSTEM §8). The quiet
 // Ukrainian theatrical backstory lives on /about, never as a slogan (no Slavic coding).
-import { UserCircle } from "phosphor-react";
+import { UserCircle } from "@phosphor-icons/react";
 import { Button, Section, SectionHeader, Tag } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { SparkStar } from "@/components/brand/Glyphs";
