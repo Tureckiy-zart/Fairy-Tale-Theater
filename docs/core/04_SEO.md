@@ -74,7 +74,7 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
 - Маг-аниматорский слой (Giggle Factory, Rich Freeman) — тянет к клубу Magic Castle.
 - **Наш дифференциатор:** профессиональный живой **театрализованный** показ сказок (не куклы),
   ценности, труппа, 30 лет.
-- Полная карта — отчёт Трека A ([../../HermesResearch/reports/2026-06-21-la-kids-puppet-theater-competitor-research.md](../../HermesResearch/reports/2026-06-21-la-kids-puppet-theater-competitor-research.md), архивный — старая рамка, но карта конкурентов и цены в силе).
+- Полная карта — отчёт Трека A ([../reports/2026-06-21-la-kids-puppet-theater-competitor-research.md](../reports/2026-06-21-la-kids-puppet-theater-competitor-research.md), архивный — старая рамка, но карта конкурентов и цены в силе).
 
 ## Следующие шаги по SEO
 

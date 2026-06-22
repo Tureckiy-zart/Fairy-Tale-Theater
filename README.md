@@ -1,14 +1,36 @@
-# JS baseline — Next + React 19 + TS + Tailwind 4 + pnpm
+# Miss Lana's Fairy-Tale Theater — website
 
-Scaffolded with `create-next-app` (App Router, no `src/`), then wired with the
-kit's governance gate, security headers, and Playwright.
+Сайт выездного детского **живого костюмированного театра сказок** (Лос-Анджелес,
+30+ лет опыта), зонтик-бренд **Miss Lana**, домен `misslanatheater.com`. Цель сайта —
+заявки + витрина + локальное SEO. Это **индекс проекта**: ориентирует и связывает;
+при конфликте побеждает более строгий канон (`docs/core/`, `CLAUDE.md`).
 
-## Stack (pinned, verified green)
+> Идентичность — профессиональный **живой театр сказок** (НЕ «кукольный»). Команда
+> украинская — тихий бэкстори, **ноль** славянского/русского визуального кодирования.
+> Бренд не ассоциируем с Россией. Канон бренда — [docs/core/BRAND.md](docs/core/BRAND.md) (LOCK).
 
-Next 16.2.9 · React 19.2.4 · TypeScript 5 · Tailwind 4 (`@tailwindcss/postcss`) ·
-ESLint 9 (`eslint-config-next` flat config) · Playwright 1.6 · pnpm.
+## Где что лежит
 
-## Commands
+| Путь | Что это |
+| --- | --- |
+| [PROJECT_BRIEF.md](PROJECT_BRIEF.md) | Указатель на канонический бриф (факты — в `docs/core/`). |
+| [STATUS.md](STATUS.md) | Текущее состояние проекта (snapshot, конвенция STATUS/ARCHIVE). |
+| [CLAUDE.md](CLAUDE.md) | Операционный слой для агентов: стек, команды, границы, закрытие задач. |
+| [CLIENT_QUESTIONS.md](CLIENT_QUESTIONS.md) | Готовый список вопросов владельцу (RU). |
+| [docs/core/](docs/core/) | **Канон проекта**: BRAND · 00–05 (instructions/content/positioning/sitemap/SEO/build) · DESIGN_SYSTEM · SITE_STRUCTURE · PROJECT_BRIEF. |
+| [docs/reports/](docs/reports/) | Ресёрч: конкуренты LA, Google Maps scoping, дизайн-система. |
+| [docs/PROJECT_PROGRESS.md](docs/PROJECT_PROGRESS.md) | Append-only хронология изменений. |
+| [docs/discovery/](docs/discovery/) | Метод Phase −1 (анкеты/плейбуки). |
+| [docs/assets/](docs/assets/) | Референс-материалы владельца. |
+| `app/` · `components/ui/` · `lib/` | Код: маршруты App Router · UI-примитивы · доступ к env. |
+| `security/` | `.env.example`, secret-scan, pre-commit hook, SECURITY.md. |
+
+## Стек
+
+Next 16 (App Router) · React 19 · TypeScript 5 (strict) · Tailwind 4 (`@theme`) ·
+ESLint 9 · Playwright · **pnpm** (один пакетный менеджер — не смешивать lockfiles).
+
+## Команды
 
 ```bash
 pnpm install
@@ -16,41 +38,39 @@ pnpm dev          # http://localhost:3000
 pnpm build
 pnpm lint
 pnpm typecheck    # tsc --noEmit
-pnpm governance   # scripts/governance.mjs — invariant gate (extend per project)
-pnpm ci:exact     # lint -> typecheck -> governance -> build  (the merge gate)
-pnpm test:e2e     # Playwright — run `npx playwright install` once first
+pnpm governance   # scripts/governance.mjs — инвариант-гейт
+pnpm run ci:exact # VERIFY-ГЕЙТ: lint → typecheck → governance → build
+pnpm test:e2e     # Playwright (один раз: npx playwright install)
 ```
 
-`pnpm ci:exact` is verified green on this baseline.
+`pnpm run ci:exact` — гейт слияния, проверен зелёным.
 
-## Design preview — `/design` (internal, noindex)
+## Дизайн-система
 
-An internal visual-QA page that renders the locked Miss Lana design system
-(color, type, spacing/radius/elevation, icons, motif direction, motion, and
-component instances) straight from `docs/core/DESIGN_SYSTEM.md`.
+Источник истины по визуалу — [docs/core/DESIGN_SYSTEM.md](docs/core/DESIGN_SYSTEM.md)
+(DS v1.0, **«Lantern Light»**: лесные зелёные + золотое свечение на кремовом). Токены
+зашиты в [app/globals.css](app/globals.css) (Tailwind v4 `@theme`), шрифты Fraunces +
+Nunito через `next/font`, иконки Phosphor. Продакшн-примитивы — в
+[components/ui/](components/ui/) (`Button` / `Field` / `Card` / `Nav`,
+[usage-док](components/ui/README.md)).
 
-```bash
-pnpm dev   # then open http://localhost:3000/design
-```
+### `/design` — внутренняя галерея (noindex)
 
-It is **internal only** (`robots: noindex, nofollow`) and is **not** a real page.
-To check motion: enable your OS "reduce motion" setting and reload — all loops /
-reveals should still and the page stay usable. **Env-guard or remove this route
-before the production launch.** Placeholders (lantern glyph, "Miss Lana" wordmark,
-show photos) are direction only, pending trademark-clearance.
+`pnpm dev` → `http://localhost:3000/design` — живая галерея дизайн-системы и примитивов.
+Только внутренняя (`robots: noindex, nofollow`), **не реальная страница**.
+**Env-guard'ить или удалить перед продакшеном.**
 
-## What's wired beyond create-next-app
+## Состояние и что дальше
 
-- `scripts/governance.mjs` — invariant gate (no `dangerouslySetInnerHTML`, no
-  hardcoded keys, no direct `process.env` outside `lib/env`, no committed key
-  files). Exits non-zero on any finding. Extend with brand/a11y/perf rules.
-- `next.config.ts` — security headers (CSP, HSTS, nosniff, referrer-policy,
-  frame-options). See `../../security/SECURITY.md`.
-- Playwright config + a smoke test under `tests/e2e/`. `test:e2e` is separate
-  from `ci:exact` so the merge gate stays install-light (no browser download).
+- ✅ Discovery, канон (`docs/core/`), ребрендинг, ресёрч.
+- ✅ Токен-основа + библиотека примитивов + `/design`-галерея (`ci:exact` + e2e зелёные).
+- ⏭ **Дальше:** реальные страницы (home + 4 линии услуг) из этих примитивов, когда готовы
+  copy/IA. Детали и открытые вопросы — в [STATUS.md](STATUS.md) и [docs/core/PROJECT_BRIEF.md](docs/core/PROJECT_BRIEF.md).
+- 🔒 **За trademark-гейтом:** финальные лого/вордмарк/персонаж/иллюстрации — пока плейсхолдеры.
 
-## Env
+## Секреты / env
 
-Copy `../../security/.env.example` to `.env`, fill real values, and read them via
-the lazy reader pattern in `../../security/lazy-env-reader.md` (`lib/env.ts`).
-Never commit `.env`.
+`cp .env.example .env`, вписать реальные значения. Читать env **только** через
+[lib/env.ts](lib/env.ts) (ленивый типобезопасный ридер; governance запрещает прямой
+`process.env` в другом месте). `.env` git-ignored — в репозиторий едет лишь `.env.example`.
+Подробности — [security/SECURITY.md](security/SECURITY.md).

@@ -14,8 +14,8 @@
   Lana**, домен `misslanatheater.com` (свободен). Старый `magic-castle-puppet-theater.com` → 301.
   Канон бренда — `docs/core/BRAND.md` (LOCK).
 - ✅ **Кор-документация** — `docs/core/` (BRAND + 00–05 + PROJECT_BRIEF); индекс — корневой `README.md`.
-- ✅ **Ресёрч** — карта конкурентов (`HermesResearch/reports/2026-06-21-la-kids-puppet-theater-competitor-research.md`,
-  архивная рамка) + Google Maps Platform scoping (`HermesResearch/reports/2026-06-21-google-maps-platform-scoping.md`).
+- ✅ **Ресёрч** — карта конкурентов (`docs/reports/2026-06-21-la-kids-puppet-theater-competitor-research.md`,
+  архивная рамка) + Google Maps Platform scoping (`docs/reports/2026-06-21-google-maps-platform-scoping.md`).
 - 🟡 **Сборка сайта** — идёт в `baselines/js-next/` (единственное Next.js-приложение репо).
   Готова **токен-основа** (Tailwind v4 `@theme`, `next/font` Fraunces+Nunito, `phosphor-react` — единый
   источник) и **продакшн-библиотека примитивов** `components/ui/` (`Button`/`Field`/`Card`/`Nav` —

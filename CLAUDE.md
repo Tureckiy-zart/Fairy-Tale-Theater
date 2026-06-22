@@ -26,7 +26,7 @@ Code, identifiers, comments, commit messages, filenames — **English**.
    `00_PROJECT_INSTRUCTIONS.md`. On brand conflict, `BRAND.md` + tone win.
 2. This `CLAUDE.md` — operational layer.
 3. `docs/_internal/governance/` — TUNG task system + execution rule (the canon).
-4. `HermesResearch/reports/` — market/competitor/design research backing the canon.
+4. `docs/reports/` — market/competitor/design research backing the canon.
 
 ## 3. Stack & project reality (slot 4)
 
