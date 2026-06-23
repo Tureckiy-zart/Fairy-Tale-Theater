@@ -6,7 +6,7 @@ import { Medal, UsersThree, MapPin, Smiley, Heart } from "@phosphor-icons/react"
 
 const ITEMS = [
   { icon: Medal, label: "30+ years of experience" },
-  { icon: UsersThree, label: "Professional troupe of 4" },
+  { icon: UsersThree, label: "Professional troupe" },
   { icon: MapPin, label: "We come to you" },
   { icon: Smiley, label: "Ages 2–10" },
   { icon: Heart, label: "Kind, timeless values" },

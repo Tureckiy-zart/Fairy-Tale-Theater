@@ -7,12 +7,11 @@
 // `little-red-riding-hood`). Universal presentation only — NO Slavic/Russian/Ukrainian
 // coding, NO "puppet" framing; tales are not attributed to any country.
 //
-// COPY STATUS — TEMPORARY: the synopses/teasers below are placeholder English copy
-// written for layout (the referenced phase-2 content file was not present in the repo).
-// They are refinable, NOT owner-blocked; final copy review is a later phase. Titles and
-// slugs are canonical and must not change. Photos are PENDING (Card/hero render the
-// marked "Photo — pending" placeholder; assets land in Phase 4) — the optional `image`
-// field is wired so a real asset path drops in without touching pages.
+// COPY STATUS — FINAL: the synopses/teasers below are the owner-approved final copy
+// (BUILD_MISS_LANA_COPY_FIXES_001). Titles and slugs are canonical and must not change.
+// Photos are PENDING (Card/hero render the marked "Photo — pending" placeholder; assets
+// land in Phase 4) — the optional `image` field is wired so a real asset path drops in
+// without touching pages.
 
 export interface Show {
   /** Clean English slug — the indexable URL (/shows/{slug}). Canonical; do not change. */
@@ -21,9 +20,9 @@ export interface Show {
   title: string;
   /** Optional secondary line shown under the title (e.g. "Father Frost"). */
   altTitle?: string;
-  /** One-line teaser for cards/hero. TEMPORARY copy. */
+  /** One-line teaser for cards/hero. Final copy. */
   teaser: string;
-  /** Full synopsis for the detail page. TEMPORARY copy. */
+  /** Full synopsis for the detail page. Final copy. */
   synopsis: string;
   /** Theme / value carried by the tale (01_CONTENT_INVENTORY). */
   theme: string;
@@ -43,9 +42,9 @@ export const SHOWS: Show[] = [
   {
     slug: "donkeys-birthday",
     title: "Donkey's Birthday",
-    teaser: "A warm story about friendship — and the gift of simply showing up.",
+    teaser: "A warm, funny tale about friendship and the small ways we show people we care.",
     synopsis:
-      "It's Donkey's birthday, and his friends each set out to bring the perfect present. Along the way they discover that the kindest gift of all is being there for one another. A gentle, funny tale that ends with the whole audience joining the celebration.",
+      "It's Donkey's birthday, and all he really wants is for his friends to remember. A warm, funny tale about friendship and the small ways we show people we care.",
     theme: "Friendship and mutual respect",
     ages: "Ages 2–10",
     length: LENGTH,
@@ -53,9 +52,9 @@ export const SHOWS: Show[] = [
   {
     slug: "little-red-riding-hood",
     title: "Little Red Riding Hood",
-    teaser: "The timeless tale of a brave girl, a clever plan and a happy ending.",
+    teaser: "A classic tale of courage, care, and looking out for the people we love.",
     synopsis:
-      "Little Red Riding Hood sets off through the woods to visit her grandmother, and learns to keep her wits about her along the way. A classic European fairy tale told with warmth and plenty of giggles — courage and care win the day, and everyone is safe by the final bow.",
+      "A brave little girl sets off through the woods to visit her grandmother — and meets a sly wolf along the way. A classic tale of courage, care, and looking out for the people we love.",
     theme: "Courage, care and being safe",
     ages: "Ages 2–10",
     length: LENGTH,
@@ -64,9 +63,9 @@ export const SHOWS: Show[] = [
   {
     slug: "the-bunnys-little-house",
     title: "The Bunny's Little House",
-    teaser: "When Bunny loses her home, her friends show up to help put things right.",
+    teaser: "A heart-warming story where kindness and teamwork win the day.",
     synopsis:
-      "Bunny's cozy little house is taken over, and she doesn't know what to do. One by one her friends arrive to help — and together they find that nothing is too big to fix when friends stand side by side. A reassuring story about kindness and helping each other.",
+      "When a clever fox slips into Bunny's little house and won't leave, Bunny doesn't give up — and neither do his friends. A heart-warming story where kindness and teamwork win the day.",
     theme: "Friendship and helping each other",
     ages: "Ages 2–10",
     length: LENGTH,
@@ -75,9 +74,9 @@ export const SHOWS: Show[] = [
     slug: "cinderella",
     title: "Cinderella",
     altTitle: "The Magic Slipper",
-    teaser: "A kind heart, a touch of magic and a glass slipper that changes everything.",
+    teaser: "The beloved fairy tale about kindness, hope, and good hearts rewarded.",
     synopsis:
-      "Gentle, hard-working Cinderella dreams of one magical night at the ball. With a little help from her fairy godmother, kindness is rewarded and a single glass slipper sets everything right. The beloved classic, told with sparkle and song.",
+      "Kind-hearted Cinderella dreams of the ball, and a little magic helps her get there. The beloved fairy tale about kindness, hope, and good hearts rewarded.",
     theme: "Kindness is rewarded",
     ages: "Ages 2–10",
     length: LENGTH,
@@ -86,9 +85,9 @@ export const SHOWS: Show[] = [
   {
     slug: "the-magic-castle",
     title: "The Magic Castle",
-    teaser: "An original adventure where friendship and a little magic save the day.",
+    teaser: "Our signature show — full of wonder, and a reminder that helping a friend is the greatest magic of all.",
     synopsis:
-      "Behind the gates of the Magic Castle, an unlikely band of friends sets out on an adventure full of surprises. With teamwork, courage and a sprinkle of magic, they learn that helping one another is the greatest magic of all. A signature Miss Lana story.",
+      "Behind the gates of a magic castle, a big adventure and true friendship await. Our signature show — full of wonder, and a reminder that helping a friend is the greatest magic of all.",
     theme: "Friendship, helping and a little magic",
     ages: "Ages 2–8",
     length: LENGTH,
@@ -97,9 +96,9 @@ export const SHOWS: Show[] = [
     slug: "the-winters-gift",
     title: "The Winter's Gift",
     altTitle: "Father Frost",
-    teaser: "A kind winter spirit quietly rewards a warm heart and willing hands.",
+    teaser: "A classic winter tale where kindness is rewarded.",
     synopsis:
-      "On the coldest day of the year, a kind and hard-working child meets a gentle winter spirit who sees the goodness others overlook. Warmth, patience and a willing heart are quietly rewarded in this wintry tale of generosity — a close cousin of the Mother Holle stories.",
+      "On a snowy night, a kind and hard-working girl meets the gentle spirit of winter and learns that real warmth comes from a good heart. A classic winter tale where kindness is rewarded.",
     theme: "Kindness and hard work win out",
     ages: "Ages 2–10",
     length: LENGTH,
@@ -108,9 +107,9 @@ export const SHOWS: Show[] = [
   {
     slug: "the-gingerbread-man",
     title: "The Gingerbread Man",
-    teaser: "A lively chase tale — \"Run, run, as fast as you can!\"",
+    teaser: "A lively favourite about cleverness, caution, and listening to those who care about us.",
     synopsis:
-      "Fresh from the oven, the Gingerbread Man dashes off on a merry chase that the whole audience can join. Full of rhythm, repetition and laughter, it's a playful story about slowing down, listening and looking before you leap.",
+      "Freshly baked and full of mischief, the Gingerbread Man runs as fast as he can — \"Catch me if you can!\" A lively favourite about cleverness, caution, and listening to those who care about us.",
     theme: "Listening and looking before you leap",
     ages: "Ages 2–10",
     length: LENGTH,
@@ -119,9 +118,9 @@ export const SHOWS: Show[] = [
   {
     slug: "suzy-bee",
     title: "Suzy Bee",
-    teaser: "A little bee with a big heart learns that helping friends is sweetest of all.",
+    teaser: "A sweet, gentle story about kindness and how even the smallest of us can make the whole garden better.",
     synopsis:
-      "Suzy Bee buzzes from flower to flower, always ready to lend a hand. When the meadow needs her most, her small kindnesses add up to something wonderful. A bright, gentle story about generosity and helping the friends around you.",
+      "Little Suzy Bee buzzes through the meadow, helping every friend she meets. A sweet, gentle story about kindness and how even the smallest of us can make the whole garden better.",
     theme: "Kindness and helping friends",
     ages: "Ages 2–10",
     length: LENGTH,

@@ -37,7 +37,7 @@ export default function GalleryPage() {
             eyebrow="Real moments"
             marker={<SparkStar size={18} />}
             title="From our shows"
-            subtitle="Warm photos and video from real performances — our shows, the troupe, delighted children and a peek behind the scenes. We're gathering the gallery now; placeholders below show where each will live. Temporary copy."
+            subtitle="Warm photos and video from real performances — our shows, the troupe, delighted children and a peek behind the scenes. We're gathering the gallery now; placeholders below show where each will live."
           />
           <Tag>Photos &amp; video — pending</Tag>
         </div>

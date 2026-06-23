@@ -1,7 +1,7 @@
 "use client";
 // FeaturedShows — Home block #5 (SITE_STRUCTURE §4.1): a few cards from the 8-show
 // repertoire → /shows and each → /shows/{slug}. Built from the shared ShowCardGrid
-// over the real, canonical titles (lib/shows — FEATURED_SHOWS). Synopses are temporary
+// over the real, canonical titles (lib/shows — FEATURED_SHOWS). Synopses are final
 // copy; photos render the marked placeholder treatment (assets gated — §15 / Phase 4).
 // Scroll-reveal below the fold (§10).
 import { Button, Section, SectionHeader, Tag } from "@/components/ui";

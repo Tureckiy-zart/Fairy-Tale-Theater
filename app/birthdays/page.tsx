@@ -2,10 +2,11 @@
 // order: hero ("a magical party without the hassle") → what's included → popular party
 // shows (→ /shows) → "from $350" → how to book → FAQ (Accordion + FAQPage) → LeadForm
 // + BookingCTABand. Birthday Parties line accent = coral (§12). "A real theater show,
-// not just an entertainer" is real positioning (02_POSITIONING); copy is temporary.
-// Photos render the marked placeholder treatment (Phase 4 [ASSET]). NO surcharge
-// amounts (distance "on request"). Server component; metadata via lib/seo (noindex).
+// not just an entertainer" is real positioning (02_POSITIONING); copy is final.
+// Photos render the marked placeholder treatment (Phase 4 [ASSET]). Distance rule:
+// free within 30 miles of LA, quoted by distance beyond — NO dollar amounts. metadata via lib/seo (noindex).
 import type { Metadata } from "next";
+import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import type { QA } from "@/lib/seo";
 import {
@@ -41,7 +42,7 @@ const INCLUDED = [
 ];
 
 const STEPS: { n: string; title: string; body: string }[] = [
-  { n: "1", title: "Pick a show & date", body: "Choose a fairy tale and tell us when the party is. Temporary copy." },
+  { n: "1", title: "Pick a show & date", body: "Choose a fairy tale and tell us when the party is." },
   { n: "2", title: "Send a request", body: "Share your details — we'll confirm availability and a quote." },
   { n: "3", title: "We bring the magic", body: "We arrive, set up, and put on the whole show. You enjoy the party." },
 ];
@@ -69,7 +70,7 @@ const FAQ: QA[] = [
   {
     question: "How much does it cost, and how do we book?",
     answer:
-      "From $350, by number of children; distance beyond our base area is quoted on request. Send a request with your date, or give us a call, and we'll confirm availability.",
+      "From $350, by number of children; travel is free within 30 miles of Los Angeles and quoted by distance beyond that. Send a request with your date, or give us a call, and we'll confirm availability.",
   },
 ];
 
@@ -77,7 +78,7 @@ export default function BirthdaysPage() {
   return (
     <SiteShell activeHref="/birthdays">
       {/* Hero — a magical party without the hassle */}
-      <Container className="pb-12 pt-10 md:pb-16 md:pt-14">
+      <Container className="pb-12 pt-10 md:flex md:min-h-[calc(100svh-4rem)] md:flex-col md:pb-16 md:pt-14">
         <Breadcrumb
           items={[
             { name: "Home", href: "/" },
@@ -85,7 +86,7 @@ export default function BirthdaysPage() {
           ]}
           className="mb-6"
         />
-        <div className="grid items-center gap-10 lg:grid-cols-2">
+        <div className="grid items-center gap-10 md:my-auto lg:grid-cols-2">
           <div>
             <Tag accent="coral" tone="accent" className="mb-3">
               For families &amp; birthdays
@@ -94,7 +95,7 @@ export default function BirthdaysPage() {
               as="h1"
               accent="coral"
               title="A magical party — without the hassle"
-              subtitle="A real costumed theater show for the birthday child, brought to your home or venue. Not just an entertainer — a whole performance the kids join in on. Temporary copy."
+              subtitle="A real costumed theater show for the birthday child, brought to your home or venue. Not just an entertainer — a whole performance the kids join in on."
             />
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Button href="/booking">Book a birthday show</Button>
@@ -103,13 +104,16 @@ export default function BirthdaysPage() {
               </Button>
             </div>
           </div>
-          <div className="flex aspect-4/3 items-center justify-center rounded-2xl border border-border-soft bg-coral/10 p-6 text-center">
-            <div className="flex flex-col items-center gap-3">
-              <p className="font-display text-2xl text-coral-text">Birthday party photo</p>
-              <Tag accent="coral" tone="accent">
-                Photo — pending
-              </Tag>
-            </div>
+          {/* Birthday party photo — operator-supplied. */}
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft shadow-md">
+            <Image
+              src="/images/birthday-party.jpg"
+              alt="A princess-costumed performer playing with a little girl at an outdoor birthday party."
+              fill
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
       </Container>
@@ -167,7 +171,7 @@ export default function BirthdaysPage() {
           eyebrow="How to book"
           marker={<SparkStar size={16} />}
           title="Three steps to the party"
-          subtitle="From first message to curtain. From $350; distance quoted on request."
+          subtitle="From first message to curtain. From $350; free within 30 miles, beyond quoted by distance."
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {STEPS.map((s) => (

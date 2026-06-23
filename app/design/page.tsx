@@ -35,7 +35,7 @@ export default function DesignPreviewPage() {
       <Nav
         links={NAV_LINKS}
         activeHref="#components"
-        cta={{ label: "Book Miss Lana", href: "#book" }}
+        cta={{ label: "Book a show", href: "#book" }}
         mainContentId="content"
       />
 

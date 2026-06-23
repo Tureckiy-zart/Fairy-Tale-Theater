@@ -1,5 +1,5 @@
 "use client";
-// BookingCTABand — the repeating "Book Miss Lana" band near the bottom of pages
+// BookingCTABand — the repeating "Book a show" band near the bottom of pages
 // (conversion architecture: lead capture everywhere — SITE_STRUCTURE §3/§5). Forest
 // panel, white text (≥9:1), a static glow accent + the brand Lantern glyph (the "light"
 // signature — §2/§7.2), the primary CTA → /booking, and click-to-call. The glow is
@@ -9,8 +9,8 @@ import { Lantern } from "@/components/brand/Glyphs";
 import { BOOK_CTA, PHONES } from "@/lib/site";
 
 export function BookingCTABand({
-  heading = "Ready to book Miss Lana?",
-  sub = "Tell us about your event and we'll bring the story to you. Placeholder copy.",
+  heading = "Ready to book your show?",
+  sub = "Tell us about your event and we'll bring the story to you.",
 }: {
   heading?: string;
   sub?: string;

@@ -2,7 +2,7 @@
 // FormatExplainer — Home block #3 (SITE_STRUCTURE §4.1): what it is, and the
 // differentiator — "a real theater show, not a one-off animator". The format is a
 // real fact (~30-min costumed play + interactive play e.g. bubbles, 35–50 min total,
-// ages 2–10 — PROJECT_BRIEF). Copy around it is placeholder. Phosphor Duotone (§6),
+// ages 2–10 — PROJECT_BRIEF). Copy is final. Phosphor Duotone (§6),
 // scroll-reveal below the fold (§10).
 import { MaskHappy, Drop, Clock, UsersThree } from "@phosphor-icons/react";
 import { Section, SectionHeader } from "@/components/ui";
@@ -14,22 +14,22 @@ const POINTS = [
   {
     icon: MaskHappy,
     title: "A costumed fairy-tale play",
-    body: "About 30 minutes of live, costumed storytelling — a real story with a moral. Placeholder copy.",
+    body: "About 30 minutes of real, costumed storytelling — a kind story with heart.",
   },
   {
     icon: Drop,
     title: "Interactive play with the kids",
-    body: "Then the children join in — like a bubble show — so everyone is part of the magic. Placeholder copy.",
+    body: "Then the children join in (like a bubble show), so everyone is part of the magic.",
   },
   {
     icon: Clock,
     title: `${FACTS.showLength} in total`,
-    body: "Long enough to delight, short enough for little ones. Placeholder copy.",
+    body: "Long enough to delight, short enough for little ones.",
   },
   {
     icon: UsersThree,
     title: FACTS.ages,
-    body: "Tuned for young audiences and performed by a professional troupe. Placeholder copy.",
+    body: "Tuned for young audiences, performed by a professional troupe.",
   },
 ];
 
@@ -44,7 +44,7 @@ export function FormatExplainer() {
             A real theater show — <span className="text-forest-600">not a one-off animator.</span>
           </>
         }
-        subtitle="Costumed actors bring a kind fairy tale to life, then play along with the children. Placeholder copy — final wording lands in a later phase."
+        subtitle="Costumed actors bring a kind fairy tale to life, then play along with the children. Here's what makes it special."
       />
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {POINTS.map(({ icon: Icon, title, body }, i) => (

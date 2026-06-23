@@ -1,7 +1,7 @@
 // Pricing (/pricing) — SITE_STRUCTURE_AND_BLOCKS.md §4.4. The "by number of children"
-// logic + what's included + distance ON REQUEST (no guessed surcharge amounts —
-// PROJECT_BRIEF / non-goals) + packages by segment + CTA. Public price face is
-// "from $350". Server component; metadata via lib/seo (noindex pre-launch).
+// logic + what's included + distance rule (free within 30 miles of LA, quoted by
+// distance beyond — NO dollar amounts) + packages by segment + CTA. Public price face
+// is "from $350" (table floor = $350). Server component; metadata via lib/seo (noindex).
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import {
@@ -12,7 +12,6 @@ import {
   Container,
   Section,
   SectionHeader,
-  Tag,
 } from "@/components/ui";
 import type { Accent } from "@/components/ui/accent";
 import { cx } from "@/components/ui/cx";
@@ -30,15 +29,15 @@ const INCLUDED = [
 ];
 
 const PACKAGES: { title: string; accent: Accent; blurb: string }[] = [
-  { title: "Preschools & schools", accent: "sage", blurb: "Assembly-ready, values-driven shows priced by group size. Placeholder copy." },
-  { title: "Birthday parties", accent: "coral", blurb: "A real theater show for the birthday child, at home or a venue. Placeholder copy." },
-  { title: "Characters & friends", accent: "berry", blurb: "Costumed characters who come to visit the kids. Placeholder copy." },
+  { title: "Preschools & schools", accent: "sage", blurb: "Assembly-ready, values-driven shows priced by group size." },
+  { title: "Birthday parties", accent: "coral", blurb: "A real theater show for the birthday child, at home or a venue." },
+  { title: "Characters & friends", accent: "berry", blurb: "Costumed characters who come to visit the kids." },
 ];
 
 export const metadata: Metadata = buildMetadata({
   title: "Pricing",
   description:
-    "Simple, transparent pricing for Miss Lana's Fairy-Tale Theater — from $350, by number of children. Distance is quoted on request. Serving LA and beyond.",
+    "Simple, transparent pricing for Miss Lana's Fairy-Tale Theater — from $350, by number of children. Travel is free within 30 miles of LA, quoted by distance beyond. Serving LA and beyond.",
   path: "/pricing",
   noindex: true,
 });
@@ -59,7 +58,7 @@ export default function PricingPage() {
           eyebrow="Pricing"
           marker={<SparkStar size={16} />}
           title="Simple pricing, by group size"
-          subtitle="Transparent, market pricing — from $350. Amounts scale with the number of children; distance is quoted on request."
+          subtitle="Transparent, market pricing — from $350. Amounts scale with the number of children; travel is quoted by distance."
         />
       </Container>
 
@@ -90,11 +89,11 @@ export default function PricingPage() {
         </div>
         <p className="mt-3 text-sm text-ink-soft">
           Approximate, by number of children; the final quote is confirmed on booking. Figures
-          follow the owner&rsquo;s pricing logic (placeholder presentation).
+          follow the owner&rsquo;s pricing logic.
         </p>
       </Section>
 
-      {/* What's included + distance on request */}
+      {/* What's included + distance rule (free within 30 miles, quoted by distance beyond) */}
       <Section tone="surface">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
@@ -113,14 +112,13 @@ export default function PricingPage() {
           <div className="flex flex-col gap-4 rounded-2xl border border-border-soft bg-cream p-6 md:p-8">
             <SectionHeader as="h2" title="Distance" />
             <p className="text-ink">
-              We travel across Los Angeles and to San Diego, Sacramento and San Jose. Travel beyond
-              our base area is <strong>quoted on request</strong>.
+              We travel <strong>free within 30 miles of Los Angeles</strong>. Beyond that, travel is{" "}
+              <strong>quoted individually by distance</strong>.
             </p>
             <p className="text-ink-soft">
-              Exact travel amounts are set by the owner and are not published yet — we&rsquo;ll
-              confirm them with your quote.
+              We also travel to San Diego, Sacramento and San Jose — we&rsquo;ll confirm travel
+              with your quote.
             </p>
-            <Tag>Surcharge amounts pending</Tag>
           </div>
         </div>
       </Section>
@@ -131,7 +129,7 @@ export default function PricingPage() {
           eyebrow="Packages"
           marker={<SparkStar size={16} />}
           title="By who it's for"
-          subtitle="Every package starts from $350. Placeholder copy."
+          subtitle="Every package starts from $350."
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {PACKAGES.map((p) => (
@@ -155,7 +153,7 @@ export default function PricingPage() {
 
       <BookingCTABand
         heading="Ready for a quote?"
-        sub="Send your group size and date — we'll confirm pricing and availability. Placeholder copy."
+        sub="Send your group size and date — we'll confirm pricing and availability."
       />
     </SiteShell>
   );

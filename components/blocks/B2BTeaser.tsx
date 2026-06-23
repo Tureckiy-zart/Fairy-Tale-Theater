@@ -1,7 +1,7 @@
 "use client";
 // B2BTeaser — Home block #6 (SITE_STRUCTURE §4.1): the schools/preschools path
 // (values/SEL, professionalism, turnkey) → /school-shows. School Shows line accent =
-// sage (§12). Copy is placeholder; the differentiators (turnkey, troupe, ages 2–10,
+// sage (§12). Copy is final; the differentiators (turnkey, troupe, ages 2–10,
 // transparent pricing) are real positioning (02_POSITIONING §5). Phosphor Duotone (§6).
 import { CheckCircle } from "@phosphor-icons/react";
 import { Button, Section, SectionHeader, Tag } from "@/components/ui";
@@ -9,7 +9,7 @@ import { Reveal } from "@/components/motion/Reveal";
 
 const POINTS = [
   "Assembly-ready and turnkey — we bring the whole show to you.",
-  "Kind values and SEL themes woven into every story. Placeholder copy.",
+  "Kind values and SEL themes woven into every story.",
   "A professional troupe, age-appropriate for 2–10.",
   "Transparent pricing by group size — easy to budget.",
 ];
@@ -24,7 +24,7 @@ export function B2BTeaser() {
               accent="sage"
               eyebrow="For preschools & schools"
               title="Theater your director can say yes to"
-              subtitle="Professional, values-driven shows that fit a school day. Placeholder copy."
+              subtitle="Assembly-ready, values-driven shows that fit a school day — and we bring everything."
             />
             <ul className="mt-6 flex flex-col gap-3">
               {POINTS.map((p) => (

@@ -1,11 +1,11 @@
 "use client";
 // PersonaIntro — Home block #8 (SITE_STRUCTURE §4.1): a warm first-person intro from
-// Miss Lana → /about. Persona-lead brand (BRAND.md). The portrait is a PLACEHOLDER
-// (final Miss Lana character is gated on trademark-clearance — §8/§15), marked with a
-// Tag; the first-person voice is the canon direction (DESIGN_SYSTEM §8). The quiet
-// Ukrainian theatrical backstory lives on /about, never as a slogan (no Slavic coding).
-import { UserCircle } from "@phosphor-icons/react";
-import { Button, Section, SectionHeader, Tag } from "@/components/ui";
+// Miss Lana → /about. Persona-lead brand (BRAND.md). The portrait is a real photo of
+// Miss Lana (the director) supplied by the operator — placeholder direction pending
+// final graded assets; the first-person voice is the canon direction (DESIGN_SYSTEM §8).
+// The quiet Ukrainian theatrical backstory lives on /about, never as a slogan.
+import Image from "next/image";
+import { Button, Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { SparkStar } from "@/components/brand/Glyphs";
 
@@ -13,16 +13,16 @@ export function PersonaIntro() {
   return (
     <Section>
       <div className="grid items-center gap-10 lg:grid-cols-2">
-        {/* Placeholder portrait — final character pending (§15). */}
+        {/* Miss Lana — real portrait (operator-supplied); final graded asset pending. */}
         <Reveal>
-          <div className="relative mx-auto flex aspect-square w-full max-w-sm items-center justify-center rounded-2xl border border-border-soft bg-linear-to-br from-glow-50 to-surface">
-            <div className="flex flex-col items-center gap-3 text-center">
-              <span data-icon="duotone-brand" className="text-forest-700">
-                <UserCircle size={96} weight="duotone" aria-hidden />
-              </span>
-              <p className="font-display text-xl text-forest-700">Miss Lana — portrait</p>
-              <Tag>Character pending</Tag>
-            </div>
+          <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-2xl border border-border-soft shadow-md">
+            <Image
+              src="/images/miss-lana-portrait.jpg"
+              alt="Miss Lana, the theater's host and storyteller — a warm smiling portrait."
+              fill
+              sizes="(min-width: 1024px) 24rem, 100vw"
+              className="object-cover object-top"
+            />
           </div>
         </Reveal>
 
@@ -33,13 +33,15 @@ export function PersonaIntro() {
               eyebrow="Meet Miss Lana"
               marker={<SparkStar size={16} />}
               title="&ldquo;I&rsquo;ll bring the story to you.&rdquo;"
-              subtitle="Our warm host and storyteller. Placeholder copy."
+              subtitle="Our warm host and storyteller."
             />
             <p className="mt-5 max-w-prose text-ink">
-              {/* PLACEHOLDER first-person copy — final wording in a later phase. */}
-              Hi, I&rsquo;m Miss Lana. With a professional troupe and 30+ years of theater behind us,
-              we bring kind, timeless fairy tales to life — costumes, characters and a little light —
-              right where your children are.
+              {/* 🔴 TEMPORARY mini-story — the owner will supply Miss Lana's personal line
+                  (BUILD_MISS_LANA_COPY_FIXES_001). Do NOT invent a bio; keep this warm
+                  first-person placeholder until it lands. */}
+              Hi, I&rsquo;m Miss Lana. With 30+ years of theater behind me and a professional troupe
+              at my side, we bring kind, timeless fairy tales to life — costumes, characters and a
+              little light — right where your children are.
             </p>
             <div className="mt-7">
               <Button href="/about" variant="secondary">

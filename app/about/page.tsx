@@ -2,16 +2,17 @@
 // magic) → 30+ years → the troupe (4 artists + roles, canonical from 01_CONTENT) →
 // quiet warm backstory → PersonaIntro (Miss Lana, first person) → values → CTA.
 //
-// 🔴 GATES (kept gentle + flagged, NOT hard-coded as confirmed):
-//   • The backstory is the canon's SOFT default — a rich theatrical tradition carried
-//     to LA. It deliberately avoids any Slavic/Russian/Ukrainian visual or copy coding
-//     and is NOT a slogan (canon §4.6). The explicit heritage wording + owner sign-off
-//     are owner-gated; do not name a country or assert it as confirmed here.
+// GATES:
+//   • Heritage: owner-APPROVED to name the Ukrainian roots explicitly, once, in the
+//     backstory paragraph below (warm, not a slogan). Brand/SEO/visual layers stay
+//     country-neutral — no Slavic/Russian visual coding, never Russia.
 //   • Svitlana is listed as Director only — the "Svitlana = owner" link is unconfirmed
 //     (owner-gated); we never assert ownership.
-//   • The Miss Lana portrait + any character art stay placeholders (PersonaIntro; [TM]).
-// Copy is temporary. Server component; metadata via lib/seo (noindex pre-launch).
+//   • 🔴 The Miss Lana mini-story (PersonaIntro first-person line) is a TEMPORARY
+//     placeholder — owner to supply; do not invent a bio. Portrait/art stay placeholders [TM].
+// Copy is final (except the 🔴 mini-story). Server component; metadata via lib/seo (noindex).
 import type { Metadata } from "next";
+import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import {
   Breadcrumb,
@@ -29,7 +30,7 @@ import { FACTS, TROUPE, VALUES } from "@/lib/site";
 export const metadata: Metadata = buildMetadata({
   title: "About",
   description:
-    "Miss Lana's Fairy-Tale Theater is a professional touring troupe with 30+ years of experience, bringing kind, values-driven fairy tales to life for children across Los Angeles.",
+    "Miss Lana's Fairy-Tale Theater is a professional touring troupe led by 30+ years of experience, bringing kind, values-driven fairy tales to life for children across Los Angeles.",
   path: "/about",
   noindex: true,
 });
@@ -51,7 +52,7 @@ export default function AboutPage() {
           eyebrow="Our theater"
           marker={<SparkStar size={18} />}
           title="Theater as a little bit of magic"
-          subtitle="We believe a story, well told, can delight a child, spark their imagination and bring a kind idea to life. That's what Miss Lana's Fairy-Tale Theater brings to your event — a real, costumed performance, right where your children are. Temporary copy."
+          subtitle="For more than 30 years, ours has brought fairy tales to life for the youngest audiences — because we believe a good story can teach a child kindness, friendship, and the joy of helping one another."
         />
       </Container>
 
@@ -64,7 +65,7 @@ export default function AboutPage() {
               as="h2"
               eyebrow="Experience you can feel"
               title="Decades of bringing tales to life"
-              subtitle="More than thirty years of stage experience stand behind every show — a professional troupe whose craft turns a simple fairy tale into a performance children remember. Temporary copy."
+              subtitle="More than thirty years of stage experience stand behind every show — a professional troupe whose craft turns a simple fairy tale into a performance children remember."
             />
           </div>
         </div>
@@ -77,8 +78,25 @@ export default function AboutPage() {
           eyebrow="Meet the troupe"
           marker={<SparkStar size={16} />}
           title="A real company behind Miss Lana"
-          subtitle="Not one entertainer, but a professional company — actors, writers and directors who build every show together. Temporary copy."
+          subtitle="Not one entertainer, but a professional company — actors, writers and directors who build every show together."
         />
+
+        {/* Team presentation — real troupe group photo on stage (operator-supplied). */}
+        <figure className="mx-auto mt-10 max-w-3xl">
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft shadow-md">
+            <Image
+              src="/images/troupe-fairy-tale-theater.jpg"
+              alt="Miss Lana and the full costumed troupe together on stage after a performance."
+              fill
+              sizes="(min-width: 768px) 48rem, 100vw"
+              className="object-cover"
+            />
+          </div>
+          <figcaption className="mt-3 text-center text-sm text-ink-soft">
+            Miss Lana with the troupe on stage. Temporary photo.
+          </figcaption>
+        </figure>
+
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {TROUPE.map((member) => (
             <li
@@ -95,13 +113,15 @@ export default function AboutPage() {
           ))}
         </ul>
 
-        {/* Quiet, warm backstory — SOFT default; explicit heritage is owner-gated (🔴).
-            No Slavic/Russian/Ukrainian coding; not a slogan (canon §4.6). */}
+        {/* Warm heritage — owner-approved to name the Ukrainian roots EXPLICITLY here,
+            once, on /about only (BUILD_MISS_LANA_COPY_FIXES_001). Brand/SEO/visual layers
+            stay country-neutral; never a slogan, never Slavic/Russian visual coding, never Russia. */}
         <div className="mt-10 max-w-prose rounded-2xl border border-border-soft bg-cream p-6 md:p-8">
           <p className="text-lg text-ink">
-            Behind Miss Lana is a company rooted in a rich theatrical tradition — years of
-            classical stage training carried across the world and brought home to Los
-            Angeles, where it now lives on as a touring children&rsquo;s theater. Temporary copy.
+            For more than 30 years, our troupe has made theater for children — a craft we built
+            on the Ukrainian stage before bringing it home to families across Los Angeles. Those
+            years of classical training are what you see in every show: real costumes, real
+            characters, and stories told with heart.
           </p>
         </div>
       </Section>
@@ -116,7 +136,7 @@ export default function AboutPage() {
           eyebrow="What we stand for"
           marker={<SparkStar size={16} />}
           title="Kind stories, every time"
-          subtitle="The same thread runs through all eight of our shows. Temporary copy."
+          subtitle="The same thread runs through all eight of our shows."
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {VALUES.map((v) => (

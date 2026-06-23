@@ -3,7 +3,7 @@
 // "Book this show" primary CTA + placeholder photo) → synopsis + theme/value →
 // photo/video (placeholder) → related shows → areas + "from $350" → BookingCTABand.
 // Schema: TheaterEvent (JsonLd) + BreadcrumbList (via Breadcrumb). NO format tag
-// (owner-gated — non-goal). Titles/slugs canonical (lib/shows); synopsis temporary;
+// (owner-gated — non-goal). Titles/slugs canonical (lib/shows); synopsis final;
 // photos render the marked placeholder treatment (Phase 4 [ASSET]). Server component;
 // unique metadata per page (noindex pre-launch).
 import type { Metadata } from "next";
@@ -125,7 +125,6 @@ export default async function ShowDetailPage({
           <div className="lg:col-span-2">
             <SectionHeader as="h2" title="The story" />
             <p className="mt-5 max-w-prose text-lg text-ink">{show.synopsis}</p>
-            <p className="mt-4 text-sm text-ink-soft">Synopsis is placeholder copy, refined before launch.</p>
           </div>
           <aside className="flex h-full flex-col gap-3 rounded-2xl border border-border-soft bg-cream p-6">
             <h3 className="font-display text-xl text-forest-800">What it&rsquo;s about</h3>

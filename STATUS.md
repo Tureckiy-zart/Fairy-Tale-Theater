@@ -1,7 +1,15 @@
 # STATUS — Miss Lana's Fairy-Tale Theater (редизайн сайта)
 
-**State:** LIVE · **Phase:** discovery завершён → канон документации собран; сборка сайта стартовала (внутренний дизайн-превью `/design`).
-**Last real work:** 2026-06-22 · **Brand:** Miss Lana's Fairy-Tale Theater (см. `docs/core/BRAND.md`).
+**State:** LIVE · **Phase:** MVP-набор страниц собран (Phase 1–3) → применён **финальный копирайт** (`BUILD_MISS_LANA_COPY_FIXES_001`); дальше Phase 5 (pre-launch/launch). Сайт остаётся **noindex** до запуска.
+**Last real work:** 2026-06-23 · **Brand:** Miss Lana's Fairy-Tale Theater (см. `docs/core/BRAND.md`).
+
+> **Финальный копирайт применён (2026-06-23).** Удалены все плейсхолдер-литералы; 8 синопсисов финал;
+> прайс-флор `$350` везде (вкл. таблицу); правило расстояния = бесплатно ≤30 миль от LA, далее по расстоянию
+> (без $-сумм); `/about` явно называет украинские корни (тепло, нейтрально в бренде/SEO); alt «founder» убран.
+> Остаётся 🔴: мини-история Miss Lana (владелец), реальные graded фото/видео, соцссылки, формат-сплит шоу.
+> Находки — `docs/reports/2026-06-23-copy-fixes-build-findings.md`.
+
+---
 
 > Этот репозиторий — **factory-starter-kit, переиспользованный под проект Magic Castle / Miss Lana**.
 > Это файл прогресса/состояния **проекта** (как требует `CLAUDE.md` §7: «Прогресс/состояние

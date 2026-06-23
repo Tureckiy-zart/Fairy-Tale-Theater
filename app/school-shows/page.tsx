@@ -2,10 +2,11 @@
 // Block order: hero → offer ("what your school gets": values/SEL, professional troupe,
 // turnkey, age-appropriate, from $350) → FAQ (Accordion + FAQPage) → TrustStrip →
 // LeadForm + BookingCTABand. School Shows line accent = sage (§12). Differentiators are
-// real positioning (02_POSITIONING); copy is temporary, refined before launch. Photos
-// render the marked placeholder treatment (Phase 4 [ASSET]). NO surcharge amounts
-// (distance "on request"). Server component; metadata via lib/seo (noindex pre-launch).
+// real positioning (02_POSITIONING); copy is final. Photos render the marked
+// placeholder treatment (Phase 4 [ASSET]). Distance rule: free within 30 miles of LA,
+// quoted by distance beyond — NO dollar amounts. Server component; metadata via lib/seo (noindex).
 import type { Metadata } from "next";
+import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import type { QA } from "@/lib/seo";
 import {
@@ -37,11 +38,11 @@ export const metadata: Metadata = buildMetadata({
 const OFFER: { title: string; body: string }[] = [
   {
     title: "Kind values & SEL",
-    body: "Every story carries social-emotional themes — friendship, courage, helping each other — that fit your curriculum. Temporary copy.",
+    body: "Every story carries social-emotional themes — friendship, courage, helping each other — that fit your curriculum.",
   },
   {
     title: "A professional troupe",
-    body: "Trained actors with 30+ years of stagecraft — costumes, props and real performance, not a single party entertainer.",
+    body: "Trained actors led by 30+ years of stagecraft — costumes, props and real performance, not a single party entertainer.",
   },
   {
     title: "Turnkey & assembly-ready",
@@ -77,7 +78,7 @@ const FAQ: QA[] = [
   {
     question: "How far do you travel, and what does it cost?",
     answer:
-      "We're based in Los Angeles and travel to San Diego, Sacramento and San Jose. Pricing starts from $350 by group size; distance is quoted on request.",
+      "We're based in Los Angeles and travel to San Diego, Sacramento and San Jose. Pricing starts from $350 by group size; travel is free within 30 miles of Los Angeles, and quoted by distance beyond that.",
   },
 ];
 
@@ -85,7 +86,7 @@ export default function SchoolShowsPage() {
   return (
     <SiteShell activeHref="/school-shows">
       {/* Hero */}
-      <Container className="pb-12 pt-10 md:pb-16 md:pt-14">
+      <Container className="pb-12 pt-10 md:flex md:min-h-[calc(100svh-4rem)] md:flex-col md:pb-16 md:pt-14">
         <Breadcrumb
           items={[
             { name: "Home", href: "/" },
@@ -93,7 +94,7 @@ export default function SchoolShowsPage() {
           ]}
           className="mb-6"
         />
-        <div className="grid items-center gap-10 lg:grid-cols-2">
+        <div className="grid items-center gap-10 md:my-auto lg:grid-cols-2">
           <div>
             <Tag accent="sage" tone="accent" className="mb-3">
               For preschools &amp; schools
@@ -102,7 +103,7 @@ export default function SchoolShowsPage() {
               as="h1"
               accent="sage"
               title="Theater your school can say yes to"
-              subtitle="Professional, values-driven live shows that fit a school day — assembly-ready, age-appropriate and easy to budget. Temporary copy."
+              subtitle="Professional, values-driven live shows that fit a school day — assembly-ready, age-appropriate and easy to budget."
             />
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Button href="/booking">Request a school show</Button>
@@ -111,13 +112,16 @@ export default function SchoolShowsPage() {
               </Button>
             </div>
           </div>
-          <div className="flex aspect-4/3 items-center justify-center rounded-2xl border border-border-soft bg-sage/10 p-6 text-center">
-            <div className="flex flex-col items-center gap-3">
-              <p className="font-display text-2xl text-sage-text">Assembly / classroom photo</p>
-              <Tag accent="sage" tone="accent">
-                Photo — pending
-              </Tag>
-            </div>
+          {/* Assembly/classroom photo — real school show (operator-supplied). */}
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft shadow-md">
+            <Image
+              src="/images/school-assembly.jpg"
+              alt="A costumed performer on a small stage during a live show for a room full of seated preschoolers."
+              fill
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
       </Container>
@@ -150,7 +154,7 @@ export default function SchoolShowsPage() {
           <p className="max-w-md text-ink">
             Transparent pricing by group size makes it easy to budget — every show starts{" "}
             <span className="font-display text-2xl capitalize text-forest-700">{FACTS.priceFrom}</span>.
-            Distance is quoted on request.
+            Free within 30 miles of Los Angeles; beyond that, travel is quoted by distance.
           </p>
           <Button href="/pricing" variant="secondary">
             See pricing
