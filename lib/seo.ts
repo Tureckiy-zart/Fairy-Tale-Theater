@@ -11,7 +11,7 @@ import type { JsonLdData } from "@/components/ui/JsonLd";
 export const SITE = {
   name: "Miss Lana's Fairy-Tale Theater",
   shortName: "Miss Lana",
-  description: "Touring children's live-costumed fairy-tale theater serving Los Angeles and beyond.",
+  description: "Touring live costumed children's theater serving Los Angeles and beyond.",
   // Service-area business (no public storefront, 04_SEO.md).
   areasServed: ["Los Angeles", "San Diego", "Sacramento", "San Jose"],
   // click-to-call numbers (SITE_STRUCTURE_AND_BLOCKS.md §2 footer).

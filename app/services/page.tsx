@@ -4,7 +4,7 @@
 // Parties / & Friends), each with a blurb + CTA to its own page, on its per-line accent
 // (§12) → BookingCTABand. Composed from primitives (Card service-line mode) + lib/site
 // (SERVICE_LINES). "One troupe, four ways to book" is the real umbrella positioning
-// (BRAND.md); copy is temporary. Server component; metadata via lib/seo (noindex).
+// (BRAND.md); copy is final. Server component; metadata via lib/seo (noindex).
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { Breadcrumb, Card, Container, Section, SectionHeader } from "@/components/ui";
@@ -39,7 +39,7 @@ export default function ServicesPage() {
           eyebrow="One troupe, four ways to book"
           marker={<SparkStar size={18} />}
           title="The same theater, shaped to your day"
-          subtitle="Under one roof, Miss Lana's professional troupe brings kind, costumed fairy tales to life — on a stage, in a classroom, at a birthday or right at your door. Pick the format that fits your event. Temporary copy."
+          subtitle="Miss Lana's Fairy-Tale Theater is one professional troupe — and we shape the same warm, live theater to fit your day. Here are the four ways we come to you."
         />
       </Container>
 
@@ -54,13 +54,16 @@ export default function ServicesPage() {
               accent={line.accent}
               blurb={line.blurb}
               cta={{ label: "Explore", href: line.href, variant: "secondary" }}
+              mediaSrc={line.media}
+              mediaAlt={line.mediaAlt}
+              mediaSizes="(min-width: 640px) 50vw, 100vw"
             />
           ))}
         </div>
         <p className="mt-8 max-w-prose text-ink-soft">
           Every line is the same professional troupe and the same kind stories — a real
-          performance for ages 2–10, {FACTS.priceFrom}. Distance beyond our base area is
-          quoted on request. Temporary copy.
+          performance for ages 2–10, {FACTS.priceFrom}. Free within 30 miles of Los Angeles;
+          beyond that, travel is quoted by distance.
         </p>
       </Section>
 

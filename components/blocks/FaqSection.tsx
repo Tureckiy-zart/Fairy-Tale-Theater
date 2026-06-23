@@ -2,7 +2,7 @@
 // matching FAQPage JSON-LD (SITE_STRUCTURE §3 FAQAccordion + §6 schema; 04_SEO).
 // Server component — it renders the (client) Accordion island and emits the schema
 // server-side from the SAME items, so the disclosure list and the FAQPage never drift.
-// Used by /school-shows and /birthdays. Copy is temporary, refined before launch.
+// Used by /school-shows and /birthdays. Copy is final.
 import { Accordion, JsonLd, Section, SectionHeader } from "@/components/ui";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { faqSchema, type QA } from "@/lib/seo";

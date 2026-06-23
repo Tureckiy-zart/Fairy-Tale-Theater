@@ -1,7 +1,7 @@
 // Shows hub (/shows) — SITE_STRUCTURE_AND_BLOCKS.md §4.2. The SEO hub for the
 // repertoire: SectionHeader + intro → ShowCardGrid (all 8 shows, each linking to its
 // own indexable /shows/{slug} page) → BookingCTABand. Titles/slugs/themes are canonical
-// (lib/shows); synopses are temporary copy; photos render the marked placeholder
+// (lib/shows); synopses are final copy; photos render the marked placeholder
 // treatment (assets gated — Phase 4 [ASSET]). NO format filter (owner-gated — non-goal).
 // Server component; metadata via lib/seo (noindex pre-launch).
 import type { Metadata } from "next";

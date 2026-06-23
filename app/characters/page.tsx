@@ -3,9 +3,10 @@
 // to visit → differentiation from generic animators (the quality of a real theater
 // troupe) → how it works → CTA + BookingCTABand. "& Friends" line accent = berry (§12).
 // "A real troupe, not a one-off animator" is real positioning (02_POSITIONING); copy is
-// temporary. Costumed-character media renders the marked placeholder treatment (Phase 4
+// final. Costumed-character media renders the marked placeholder treatment (Phase 4
 // [ASSET]/[TM]). Server component; metadata via lib/seo (noindex). Breadcrumb → schema.
 import type { Metadata } from "next";
+import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import {
   ACCENT_BORDER_TOP,
@@ -32,29 +33,29 @@ export const metadata: Metadata = buildMetadata({
 const DIFFERENCE: { title: string; body: string }[] = [
   {
     title: "A professional troupe",
-    body: "Trained actors with 30+ years of stagecraft stay fully in character — voice, movement and warmth — not a costume hired for the hour. Temporary copy.",
+    body: "Led by 30+ years of stagecraft, our trained actors stay fully in character — voice, movement and warmth — not a costume hired for the hour.",
   },
   {
     title: "Real theater quality",
-    body: "Costumes, props and performance built for the stage come to your event, so the magic feels genuine rather than improvised. Temporary copy.",
+    body: "Costumes, props and performance built for the stage come to your event, so the magic feels genuine rather than improvised.",
   },
   {
     title: "Kind and age-aware",
-    body: "Gentle with the littlest, lively with the older ones — every visit is shaped around the children and stays kind throughout. Temporary copy.",
+    body: "Gentle with the littlest, lively with the older ones — every visit is shaped around the children and stays kind throughout.",
   },
 ];
 
 const STEPS: { n: string; title: string; body: string }[] = [
-  { n: "1", title: "Choose your characters", body: "Tell us who you'd love to welcome and the kind of moment you have in mind. Temporary copy." },
-  { n: "2", title: "Send a request", body: "Share your date, place and group — we'll confirm availability and a quote. Temporary copy." },
-  { n: "3", title: "They come to visit", body: "Our troupe arrives in character, ready to greet, play and make the day magical. Temporary copy." },
+  { n: "1", title: "Choose your characters", body: "Tell us who you'd love to welcome and the kind of moment you have in mind." },
+  { n: "2", title: "Send a request", body: "Share your date, place and group — we'll confirm availability and a quote." },
+  { n: "3", title: "They come to visit", body: "Our troupe arrives in character, ready to greet, play and make the day magical." },
 ];
 
 export default function CharactersPage() {
   return (
     <SiteShell activeHref="/characters">
       {/* Hero */}
-      <Container className="pb-12 pt-10 md:pb-16 md:pt-14">
+      <Container className="pb-12 pt-10 md:flex md:min-h-[calc(100svh-4rem)] md:flex-col md:pb-16 md:pt-14">
         <Breadcrumb
           items={[
             { name: "Home", href: "/" },
@@ -62,7 +63,7 @@ export default function CharactersPage() {
           ]}
           className="mb-6"
         />
-        <div className="grid items-center gap-10 lg:grid-cols-2">
+        <div className="grid items-center gap-10 md:my-auto lg:grid-cols-2">
           <div>
             <Tag accent="berry" tone="accent" className="mb-3">
               Miss Lana &amp; Friends
@@ -71,7 +72,7 @@ export default function CharactersPage() {
               as="h1"
               accent="berry"
               title="Costumed characters who come to visit"
-              subtitle="Friendly characters arrive at your event in full costume and in character — performed by our professional troupe. Not a one-off animator: a real piece of theater that comes to the children. Temporary copy."
+              subtitle="Friendly characters arrive at your event in full costume and in character — performed by our professional troupe. Not a one-off animator: a real piece of theater that comes to the children."
             />
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Button href="/booking">Book a character visit</Button>
@@ -80,13 +81,16 @@ export default function CharactersPage() {
               </Button>
             </div>
           </div>
-          <div className="flex aspect-4/3 items-center justify-center rounded-2xl border border-border-soft bg-berry/10 p-6 text-center">
-            <div className="flex flex-col items-center gap-3">
-              <p className="font-display text-2xl text-berry-text">Costumed characters photo</p>
-              <Tag accent="berry" tone="accent">
-                Photo — pending
-              </Tag>
-            </div>
+          {/* Costumed-character photo — operator-supplied. */}
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft shadow-md">
+            <Image
+              src="/images/miss-lana-friends.jpg"
+              alt="A performer in a bee costume on the grass in front of a flower-decorated backdrop."
+              fill
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
       </Container>
@@ -99,7 +103,7 @@ export default function CharactersPage() {
           eyebrow="The difference"
           marker={<SparkStar size={16} />}
           title="The quality of a real troupe"
-          subtitle="Why a character visit from Miss Lana & Friends feels different from a one-off animator. Temporary copy."
+          subtitle="Why a character visit from Miss Lana & Friends feels different from a one-off animator."
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {DIFFERENCE.map((d) => (
@@ -125,7 +129,7 @@ export default function CharactersPage() {
           eyebrow="How it works"
           marker={<SparkStar size={16} />}
           title="Three steps to a visit"
-          subtitle="From first message to the moment they arrive. From $350; distance quoted on request. Temporary copy."
+          subtitle="From first message to the moment they arrive. From $350; free within 30 miles, beyond quoted by distance."
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {STEPS.map((s) => (

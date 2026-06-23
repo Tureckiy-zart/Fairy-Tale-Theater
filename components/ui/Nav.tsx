@@ -18,7 +18,7 @@ export interface NavProps {
   links: NavLink[];
   /** href of the current page/section — gets the active treatment + aria-current. */
   activeHref?: string;
-  /** Primary CTA (defaults to "Book Miss Lana"). */
+  /** Primary CTA (defaults to "Book a show"). */
   cta?: { label: string; href: string };
   /** Wordmark/persona slot. Defaults to a text wordmark + placeholder light glyph. */
   wordmark?: ReactNode;
@@ -55,7 +55,7 @@ function DefaultWordmark() {
 export function Nav({
   links,
   activeHref,
-  cta = { label: "Book Miss Lana", href: "#book" },
+  cta = { label: "Book a show", href: "#book" },
   wordmark,
   homeHref = "/",
   mainContentId = "main-content",

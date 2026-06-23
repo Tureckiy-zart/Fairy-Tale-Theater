@@ -54,7 +54,7 @@ export default function BookingPage() {
         <SectionHeader
           as="h2"
           title="Where we go"
-          subtitle="A touring, service-area theater — we come to you. Distance is quoted on request."
+          subtitle="A touring, service-area theater — we come to you. Free within 30 miles of Los Angeles; beyond that, travel is quoted by distance."
         />
         <div className="mt-6 flex flex-wrap gap-2">
           <Tag tone="solid" accent="forest">

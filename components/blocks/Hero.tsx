@@ -3,7 +3,8 @@
 // hero is as fast as possible. The signature glow is a static CSS gradient and the
 // "photo" is a clearly-marked placeholder panel (no asset yet — §9/§15). H1 copy is
 // the canon tagline (02_POSITIONING §7); facts (30+ years, areas) come from lib/site.
-import { Button, Container, Tag } from "@/components/ui";
+import Image from "next/image";
+import { Button, Container } from "@/components/ui";
 import { GlowOrb, SparkStar } from "@/components/brand/Glyphs";
 import { AREAS, FACTS, PHONES } from "@/lib/site";
 
@@ -22,7 +23,7 @@ function PhoneGlyph() {
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-linear-to-b from-cream to-surface">
+    <section className="relative flex overflow-hidden bg-linear-to-b from-cream to-surface md:min-h-[calc(100svh-4rem)] md:items-center">
       {/* Static decorative glow (off-frame lantern light) — NOT animated (LCP, §10.4). */}
       <GlowOrb
         className="pointer-events-none absolute -right-24 -top-20 hidden h-112 w-112 md:block"
@@ -38,15 +39,14 @@ export function Hero() {
             Live theater that comes to you.
           </h1>
           <p className="mt-5 max-w-xl text-lg text-ink-soft">
-            {/* PLACEHOLDER lead — facts are real; phrasing is swappable copy. */}
-            Professional children&rsquo;s theater for {AREAS.base} preschools, schools &amp;
-            parties — {FACTS.experience} of kind, timeless fairy tales, brought to life by a
-            live costumed troupe.
+            Professional live children&rsquo;s theater for {AREAS.base} — preschools, schools
+            &amp; families. {FACTS.experience} of kind, timeless fairy tales, brought to life and
+            brought to you.
           </p>
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button href="/booking" size="lg">
-              Book Miss Lana
+              Book a show
             </Button>
             <Button href="/shows" size="lg" variant="secondary">
               See our shows
@@ -70,16 +70,18 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Placeholder media — real hero photo/video is pending (§9/§15). Reserved 4:3
-            box so there is no layout shift when the asset lands. */}
+        {/* Hero photo — placeholder direction asset (§9/§15), not final/cleared.
+            Reserved 4:3 box so there is no layout shift; priority + sizes for LCP. */}
         <div className="relative">
-          <div className="relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-2xl border border-border-soft bg-linear-to-br from-forest-100 via-glow-50 to-surface shadow-md">
-            <GlowOrb className="pointer-events-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2" />
-            <div className="relative flex flex-col items-center gap-3 text-center">
-              <SparkStar size={40} />
-              <p className="font-display text-2xl text-forest-700">Real show photo / video</p>
-              <Tag>Asset pending</Tag>
-            </div>
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft shadow-md">
+            <Image
+              src="/images/hero-girl-curtain.jpg"
+              alt="A young girl in a tiara peeks out from behind a red stage curtain."
+              fill
+              priority
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
       </Container>

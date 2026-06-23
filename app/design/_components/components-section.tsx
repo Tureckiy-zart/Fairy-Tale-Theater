@@ -29,7 +29,7 @@ function ButtonsShowcase() {
     <>
       <SubHead>Button — variants</SubHead>
       <div className="flex flex-wrap items-center gap-4">
-        <Button leadingIcon={lanternIcon(20)}>Book Miss Lana</Button>
+        <Button leadingIcon={lanternIcon(20)}>Book a show</Button>
         <Button variant="secondary">See the shows</Button>
         <Button variant="tertiary">Learn more</Button>
       </div>

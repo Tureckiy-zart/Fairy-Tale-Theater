@@ -16,7 +16,7 @@ export function ServiceLineCards() {
         eyebrow="One troupe, four ways to book"
         marker={<SparkStar size={16} />}
         title="Pick the format that fits your day"
-        subtitle="The same professional theater, shaped to your event. Placeholder copy."
+        subtitle="The same professional theater, shaped to fit your event."
       />
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {SERVICE_LINES.map((line, i) => (
@@ -28,6 +28,9 @@ export function ServiceLineCards() {
               blurb={line.blurb}
               href={line.href}
               ctaLabel="Explore"
+              mediaSrc={line.media}
+              mediaAlt={line.mediaAlt}
+              mediaSizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
             />
           </Reveal>
         ))}

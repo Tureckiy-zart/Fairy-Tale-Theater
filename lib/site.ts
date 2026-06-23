@@ -2,8 +2,9 @@
 // client components (plain module, no hooks). Facts come from the canon, NOT from
 // memory: PROJECT_BRIEF.md (phones, ages, areas, 30+ years, troupe, pricing logic),
 // BRAND.md (brand/lines), SITE_STRUCTURE_AND_BLOCKS.md §2 (nav/footer). Marketing
-// COPY lives in the blocks and is placeholder (clearly marked); only verified facts
-// live here. Do not invent values — change the canon first.
+// COPY (service-line blurbs, values) is the approved final copy
+// (BUILD_MISS_LANA_COPY_FIXES_001); only verified facts live here. Do not invent
+// values — change the canon first.
 import type { Accent } from "@/components/ui/accent";
 
 /** Brand identity (BRAND.md — LOCK). Domain not yet live; shown for reference only. */
@@ -17,12 +18,12 @@ export const BRAND = {
 /** Verified facts (PROJECT_BRIEF.md / 01_CONTENT_INVENTORY.md / 02_POSITIONING). */
 export const FACTS = {
   experience: "30+ years",
-  troupe: "professional troupe of 4",
+  troupe: "professional troupe",
   ages: "Ages 2–10",
   /** ~30-min costumed show + interactive play (e.g. a bubble show); 35–50 min total. */
   showLength: "35–50 min",
   format: "A ~30-minute costumed fairy-tale play plus interactive play with the kids",
-  /** Public price face (PROJECT_BRIEF): real amount by group size; distance is on request. */
+  /** Public price face (PROJECT_BRIEF): real amount by group size; travel free within 30 mi of LA, quoted by distance beyond. */
   priceFrom: "from $350",
 } as const;
 
@@ -48,7 +49,7 @@ export const NAV_LINKS = [
 ] as const;
 
 /** Primary CTA target — the booking/contact page (conversion block #1). */
-export const BOOK_CTA = { label: "Book Miss Lana", href: "/booking" } as const;
+export const BOOK_CTA = { label: "Book a show", href: "/booking" } as const;
 
 /** Footer mini-sitemap (SITE_STRUCTURE_AND_BLOCKS.md §2). */
 export const FOOTER_LINKS = [
@@ -72,41 +73,52 @@ export const SERVICE_LINES: {
   title: string;
   /** Short line/audience label shown as the card Tag. */
   tag: string;
-  blurb: string; // placeholder copy
+  blurb: string; // final copy (BUILD_MISS_LANA_COPY_FIXES_001)
   href: string;
   accent: Accent;
+  /** Card photo (operator-supplied; placeholder direction). Omit → "Photo — pending". */
+  media?: string;
+  mediaAlt?: string;
 }[] = [
   {
     key: "theater",
     title: "Fairy-Tale Theater",
     tag: "Flagship",
-    blurb: "Our flagship — costumed actors bring a kind fairy tale to life, then play along with the kids. Placeholder copy.",
+    blurb: "Our eight kind fairy-tale shows, performed live with an interactive finale.",
     href: "/shows",
     accent: "forest",
+    media: "/images/troupe-fairy-tale-theater.jpg",
+    mediaAlt: "Miss Lana and the costumed troupe together on stage after a fairy-tale show.",
   },
   {
     key: "birthdays",
     title: "Birthday Parties",
     tag: "For families",
-    blurb: "A real theater show for the birthday child — magic that comes to you, no hassle. Placeholder copy.",
+    blurb: "A real theater show for the birthday child, at your home or venue.",
     href: "/birthdays",
     accent: "coral",
+    media: "/images/birthday-party.jpg",
+    mediaAlt: "A princess-costumed performer playing with a little girl at an outdoor birthday party.",
   },
   {
     key: "school",
     title: "School Shows",
     tag: "For schools",
-    blurb: "Assembly-ready, values-driven theater for preschools, Montessori and schools. Placeholder copy.",
+    blurb: "Assembly-ready, values-driven theater for preschools, Montessori and schools.",
     href: "/school-shows",
     accent: "sage",
+    media: "/images/school-assembly.jpg",
+    mediaAlt: "A live costumed show for a room full of seated preschoolers in their classroom.",
   },
   {
     key: "friends",
     title: "Miss Lana & Friends",
     tag: "Characters",
-    blurb: "Costumed characters who come to visit — the quality of a theater troupe, not a one-off animator. Placeholder copy.",
+    blurb: "Costumed characters who come to visit the children.",
     href: "/characters",
     accent: "berry",
+    media: "/images/miss-lana-friends.jpg",
+    mediaAlt: "A performer in a bee costume on the grass in front of a flower-decorated backdrop.",
   },
 ];
 
@@ -121,9 +133,10 @@ export const SERVICE_LINES: {
  * The professional troupe (01_CONTENT_INVENTORY.md §"Команда"). Names + roles are
  * CANONICAL facts (do not invent/alter). NOTE: Svitlana is listed as Director; the
  * "Svitlana = owner" link is NOT yet confirmed (🔴 owner-gated) — so we present her
- * role only, never assert ownership. The "Ukrainian theatrical school" is the quiet
- * warm backstory (canon §4.6) — kept gentle on /about, never as Slavic/Russian/
- * Ukrainian visual or copy coding, and the explicit heritage wording stays owner-gated.
+ * role only, never assert ownership. The Ukrainian roots are the owner-approved
+ * backstory (BUILD_MISS_LANA_COPY_FIXES_001) — named explicitly and warmly ONCE, in
+ * the /about heritage paragraph only; brand/SEO/visual layers stay country-neutral,
+ * never Slavic/Russian/Ukrainian visual coding, never a slogan, never Russia.
  */
 export const TROUPE: { name: string; role: string }[] = [
   { name: "Svitlana Grygoryshyna", role: "Director" },
@@ -134,30 +147,30 @@ export const TROUPE: { name: string; role: string }[] = [
 
 /**
  * The values that run through every show (01_CONTENT_INVENTORY.md / 02_POSITIONING):
- * kindness, friendship, helping one another. Used on /about. Placeholder framing copy.
+ * kindness, friendship, helping one another. Used on /about. Final copy.
  */
 export const VALUES: { title: string; body: string }[] = [
   {
-    title: "Kindness first",
-    body: "Every tale we tell is built around a kind heart — gentleness, generosity and doing the right thing. Placeholder copy.",
+    title: "Kindness",
+    body: "Every story we tell carries it — gentleness, generosity and doing the right thing.",
   },
   {
-    title: "Friendship & helping",
-    body: "Our stories celebrate showing up for one another — friendship, teamwork and lending a hand. Placeholder copy.",
+    title: "Friendship",
+    body: "The heart of what we do — friendship, teamwork and standing by your friends.",
   },
   {
-    title: "Wonder for every child",
-    body: "Theater as magic that delights, inspires and brings a story to life — for ages 2–10. Placeholder copy.",
+    title: "Helping one another",
+    body: "The lesson children take home — small acts of help that make everything better.",
   },
 ];
 
 /**
  * Pricing logic by number of children (PROJECT_BRIEF.md). Real, approximate, owner
- * logic — public face is "from $350"; distance surcharge amounts are NOT decided
- * (shown as "on request", never guessed).
+ * logic — public face is "from $350" (no sub-$350 figure shown publicly); travel is
+ * free within 30 miles of LA and quoted by distance beyond that (no dollar amounts).
  */
 export const PRICING_TIERS: { group: string; price: string }[] = [
-  { group: "Up to ~15 children", price: "$300–350" },
+  { group: "Up to ~15 children", price: "$350" },
   { group: "About 40 children", price: "~$400" },
   { group: "About 50 children", price: "~$500" },
   { group: "About 60 children", price: "~$600" },

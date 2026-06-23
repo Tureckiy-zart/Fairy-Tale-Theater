@@ -1,8 +1,8 @@
 "use client";
 // HowItWorksAreas — Home block #10 (SITE_STRUCTURE §4.1): three simple steps +
 // areas served + the "from $350" price face → /pricing. Real facts: areas (LA +
-// San Diego/Sacramento/San Jose) and "from $350" (lib/site); distance is quoted ON
-// REQUEST — never a guessed surcharge amount (PROJECT_BRIEF / non-goals). Phosphor (§6).
+// San Diego/Sacramento/San Jose) and "from $350" (lib/site); travel is free within
+// 30 miles of LA and quoted by distance beyond — never a dollar amount (owner rule). Phosphor (§6).
 import { NumberCircleOne, NumberCircleTwo, NumberCircleThree, MapPin } from "@phosphor-icons/react";
 import { Button, Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
@@ -10,9 +10,9 @@ import { SparkStar } from "@/components/brand/Glyphs";
 import { AREAS, FACTS } from "@/lib/site";
 
 const STEPS = [
-  { icon: NumberCircleOne, title: "Choose a show", body: "Pick a fairy tale and a date. Placeholder copy." },
-  { icon: NumberCircleTwo, title: "Book in a minute", body: "Send a quick request or give us a call. Placeholder copy." },
-  { icon: NumberCircleThree, title: "We come to you", body: "We bring the whole show to your venue. Placeholder copy." },
+  { icon: NumberCircleOne, title: "Choose a show", body: "Pick a fairy tale and a date." },
+  { icon: NumberCircleTwo, title: "Book in a minute", body: "Send a quick request, or give us a call." },
+  { icon: NumberCircleThree, title: "We come to you", body: "We bring the whole show to your venue." },
 ];
 
 export function HowItWorksAreas() {
@@ -22,7 +22,7 @@ export function HowItWorksAreas() {
         eyebrow="How it works"
         marker={<SparkStar size={16} />}
         title="Three steps to a show"
-        subtitle="From first call to curtain. Placeholder copy."
+        subtitle="From first call to curtain."
       />
       <div className="mt-10 grid gap-5 sm:grid-cols-3">
         {STEPS.map(({ icon: Icon, title, body }, i) => (
@@ -46,8 +46,8 @@ export function HowItWorksAreas() {
             Where we go
           </p>
           <p className="mt-2 max-w-md text-ink-soft">
-            Based in {AREAS.base}; we travel to {AREAS.travel.join(", ")}. Distance is quoted on
-            request.
+            Based in {AREAS.base}; we travel to {AREAS.travel.join(", ")}. Free within 30 miles;
+            beyond that, travel is quoted by distance.
           </p>
         </div>
         <div className="flex flex-col items-start gap-3 md:items-end">

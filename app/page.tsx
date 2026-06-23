@@ -1,5 +1,5 @@
 // Home (/) — the full §4.1 block stack (SITE_STRUCTURE_AND_BLOCKS.md), assembled from
-// the shell + Home blocks, all on placeholders. Order is verbatim from §4.1:
+// the shell + Home blocks, on final copy. Order is verbatim from §4.1:
 // Hero → TrustStrip → FormatExplainer → ServiceLineCards → Featured shows → B2B teaser
 // → B2C teaser → PersonaIntro → Gallery teaser → How it works + areas → BookingCTABand
 // + LeadForm → SiteFooter (the last via SiteShell). Server component; metadata via
@@ -21,9 +21,9 @@ import { GalleryTeaser } from "@/components/blocks/GalleryTeaser";
 import { HowItWorksAreas } from "@/components/blocks/HowItWorksAreas";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Live children's theater that comes to you",
+  title: "Live theater that comes to you",
   description:
-    "Professional live-costumed children's fairy-tale theater for LA preschools, schools and parties — 30+ years, ages 2–10. Book Miss Lana.",
+    "Professional live-costumed children's fairy-tale theater for LA preschools, schools and parties — 30+ years, ages 2–10. Book a show.",
   path: "/",
   noindex: true,
 });
@@ -45,7 +45,7 @@ export default function HomePage() {
       <LeadForm
         id="book"
         eyebrow="Get started"
-        heading="Book Miss Lana"
+        heading="Book a show"
         sub="Tell us about your event and we'll get back to you. Demo form — no message is sent yet."
       />
     </SiteShell>
