@@ -1,7 +1,14 @@
-# STATUS — Miss Lana's Fairy-Tale Theater (редизайн сайта)
+# STATUS — Miss Lana's Fairy-Tale Theatre (редизайн сайта)
 
-**State:** LIVE · **Phase:** MVP-набор страниц собран (Phase 1–3) → применён **финальный копирайт** (`BUILD_MISS_LANA_COPY_FIXES_001`); дальше Phase 5 (pre-launch/launch). Сайт остаётся **noindex** до запуска.
-**Last real work:** 2026-06-23 · **Brand:** Miss Lana's Fairy-Tale Theater (см. `docs/core/BRAND.md`).
+**Deployment: LIVE** · **Launch state: PRE-LAUNCH** · **Phase:** MVP-набор страниц и финальный копирайт
+собраны; дальше pre-launch/launch execution. Сайт остаётся **noindex** до публичного запуска.
+**Last real work:** 2026-06-25 · **Brand:** Miss Lana's Fairy-Tale Theatre (см. `docs/core/BRAND.md`).
+**Domain/contact:** `misslanatheatre.com` is the live primary production domain; `misslanatheater.com`
+is protective alternate only → 301 to primary. Primary contact: `info@misslanatheatre.com`,
+**(323) 903-2039**; SMS/email/WhatsApp accepted; Svitlana replies in **1-2 business days**.
+**Launch dependencies:** verified reviews/testimonials are required before launch (`[OWNER/CONTENT]`);
+target at least 5 real verified reviews with permission/source, plus form delivery, redirects, GBP/Search
+Console, QA, real media, and noindex removal.
 
 > **Финальный копирайт применён (2026-06-23).** Удалены все плейсхолдер-литералы; 8 синопсисов финал;
 > прайс-флор `$350` везде (вкл. таблицу); правило расстояния = бесплатно ≤30 миль от LA, далее по расстоянию
@@ -18,26 +25,25 @@
 ## Где проект сейчас
 
 - ✅ **Discovery / бриф** — собран; источник истины по фактам: `docs/core/PROJECT_BRIEF.md`.
-- ✅ **Ребрендинг** — имя/домен закреплены: **Miss Lana's Fairy-Tale Theater**, зонтик **Miss
-  Lana**, домен `misslanatheater.com` (свободен). Старый `magic-castle-puppet-theater.com` → 301.
+- ✅ **Ребрендинг** — имя/домен закреплены: **Miss Lana's Fairy-Tale Theatre**, зонтик **Miss
+  Lana**, primary production domain `misslanatheatre.com` уже live. `misslanatheater.com` —
+  protective alternate only → 301 на primary. Старый `magic-castle-puppet-theater.com` → 301
+  на релевантные новые URL.
   Канон бренда — `docs/core/BRAND.md` (LOCK).
 - ✅ **Кор-документация** — `docs/core/` (BRAND + 00–05 + PROJECT_BRIEF); индекс — корневой `README.md`.
 - ✅ **Ресёрч** — карта конкурентов (`docs/reports/2026-06-21-la-kids-puppet-theater-competitor-research.md`,
   архивная рамка) + Google Maps Platform scoping (`docs/reports/2026-06-21-google-maps-platform-scoping.md`).
-- 🟡 **Сборка сайта** — идёт в `baselines/js-next/` (единственное Next.js-приложение репо).
-  Готова **токен-основа** (Tailwind v4 `@theme`, `next/font` Fraunces+Nunito, `@phosphor-icons/react` — единый
-  источник) и **продакшн-библиотека примитивов** `components/ui/` (`Button`/`Field`/`Card`/`Nav` —
-  типизированные, WCAG-AA, motion-safe, token-driven; usage-док `components/ui/README.md`). Внутренний
-  **noindex**-маршрут `/design` = живая галерея: рендерит реальные примитивы (+ 9 секций DS v1.0).
-  Гейт `ci:exact` + e2e зелёные (6/6). Превью-находки — `docs/reports/2026-06-22-design-preview-build-findings.md`;
-  закрытие/находки примитивов — ниже (раздел «Закрытие IMPLEMENT_MISS_LANA_DESIGN_TOKENS_001»).
-  Перед продом `/design` env-guard'ить. Дальше: **реальные страницы** (home + 4 линии-секции) из этих
-  примитивов, когда готовы copy/IA; за trademark-гейтом — финальные лого/вордмарк/персонаж/иллюстрации.
+- 🟡 **Сборка сайта** — активное Next.js-приложение находится в **repository root**
+  (`app/`, `components/`, `lib/`, `public/`, `tests/`). `baselines/js-next/` — исторический путь из ранней
+  фазы и не является текущим местом разработки. MVP-набор страниц собран, финальный copy pass применён,
+  production deployment на `misslanatheatre.com` live; публичный запуск ещё **pre-launch/noindex**.
+  Перед запуском `/design` env-guard'ить или убрать; за trademark-гейтом — финальные
+  лого/вордмарк/персонаж/иллюстрации.
 
 ## Открытые вопросы (блокируют часть сборки)
 
 trademark-clearance (до лого/печати) · доплата за расстояние (суммы/правило — за владельцем) ·
-ссылки на соцсети · статус оплаты старого домена · стратегия по гос. школам · подача 2 названий
+ссылки на соцсети · verified reviews/testimonials (target ≥5, permission/source) · 301/оплата protective/legacy domains · стратегия по гос. школам · подача 2 названий
 шоу (Morozko, «Well Red Bow wait») · редизайн лого 2026 · фото/видео-активы. Полный список — в
 `docs/core/PROJECT_BRIEF.md` и корневом `README.md`.
 
@@ -57,14 +63,14 @@ repoint `/design` (components-section → реальные примитивы; `
   карточки при фокусе; убрано, чтобы outline следовал форме элемента.
 - **LOW (пред-существующее, НЕ чинил — вне scope)** — CSP в `next.config.ts` без `'unsafe-eval'` даёт dev-only
   предупреждения React в консоли (`eval() is not supported`); на прод не влияет, тесты зелёные.
-- **NOTE (исправлено в `CLEANUP_MISS_LANA_POST_PHASE1_001`)** — `phosphor-react@1.4.1` (устаревший) заменён
+- **NOTE (исправлено в `CLEANUP_MISS_LANA_POST_PHASE1_001`)** — legacy Phosphor React package (устаревший) заменён
   на поддерживаемый преемник `@phosphor-icons/react@2.1.10` (тот же набор Phosphor, React 19); по-прежнему
   одна библиотека. Duotone-нить (`path[opacity]` → `glow-400`) рендерится без изменений селектора.
 - **NOTE (gated)** — финальные лого/вордмарк/персонаж/продакшн-иллюстрации — за trademark-clearance;
   примитивы работают на плейсхолдерах (text-вордмарк + Phosphor-glyph), финальных ассетов не вшивал.
 
-**Дальше:** реальные страницы (home + 4 линии-секции) из этих примитивов, когда готовы copy/IA;
-отдельной задачей за TM-гейтом — финальные ассеты вместо плейсхолдеров. `/design` env-guard'ить перед продом.
+**Дальше:** исторически этот блок вёл к сборке страниц; текущее состояние см. в верхнем разделе STATUS.
+Отдельной задачей за TM-гейтом — финальные ассеты вместо плейсхолдеров. `/design` env-guard'ить перед продом.
 
 ## Закрытие EXTEND_MISS_LANA_PRIMITIVES_001 (2026-06-22)
 
@@ -135,7 +141,7 @@ Phase 5; `/design` env-guard'ить/удалить перед продом. Owne
 ## Закрытие CLEANUP_MISS_LANA_POST_PHASE1_001 (2026-06-22)
 
 **Сделано:** четыре ограниченных пункта долга после Phase 1, без новых страниц/блоков/редизайна.
-(1) **Иконки** — `phosphor-react@1.4.1` → `@phosphor-icons/react@2.1.10` (поддерживаемый преемник,
+(1) **Иконки** — legacy Phosphor React package → `@phosphor-icons/react@2.1.10` (поддерживаемый преемник,
 React 19); мигрированы все 18 импортов (UI-примитивы, блоки, `/design`); по-прежнему **одна** библиотека.
 Duotone-нить рендерится без правки селектора (v2 тоже метит вторичный путь `opacity="0.2"`, CSS
 `[data-icon="duotone-brand"] … path[opacity]` → `glow-400` цел). (2) **Nav** — добавлен проп
@@ -160,7 +166,7 @@ Duotone-нить рендерится без правки селектора (v2
   dev-only предупреждение React (`eval() is not supported`); на прод не влияет, тесты зелёные. Остаётся
   трекнутой находкой (тюнить при харднинге CSP с реальными страницами).
 - **NOTE (вне scope)** — `STATUS.md` строка про `baselines/js-next/` и `2026-06-22-design-system-research-v2.md`
-  всё ещё упоминают `phosphor-react`/старый путь как **исторические** артефакты — не канон-зависимости,
+  всё ещё упоминают старый Phosphor package/старый путь как **исторические** артефакты — не канон-зависимости,
   оставлены как запись истории. Консолидация `lib/site`↔`lib/seo` — отдельная опциональная задача.
 
 **Дальше:** Phase 2 `BUILD_MISS_LANA_SHOWS_AND_LANDINGS_001`, построенная **mobile-first** (теперь канон).

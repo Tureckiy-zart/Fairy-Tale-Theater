@@ -1,0 +1,379 @@
+{
+  "task": "MISS_LANA_CANON_SYNC_001",
+  "version": "2.0",
+  "task_mode": "canon-sync",
+  "priority": "critical",
+  "description": "Synchronize all Miss Lana project canon and operational documentation with the newly locked public brand spelling, primary domain, email, contact workflow, and current migration status. Replace obsolete project-owned references to 'Miss Lana's Fairy-Tale Theater' and misslanatheater.com with the locked 'Miss Lana's Fairy-Tale Theatre' and misslanatheatre.com, while preserving third-party proper names, historical URLs, quoted search phrases, and other contexts where 'theater' is intentionally correct. This task changes documentation canon only; it must not redesign pages, rewrite unrelated marketing copy, or modify production code.",
+  "authority_scope": {
+    "primary_authorities": [
+      "Current operator decision in project chat dated 2026-06-25",
+      "docs/core/BRAND.md",
+      "PROJECT_BRIEF.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "00_PROJECT_INSTRUCTIONS.md",
+      "05_BUILD_CLAUDE.md",
+      "2026-06-22-design-system-research-v2.md",
+      "TUNG-EXECUTION-RULE-(CANON).txt",
+      "tung_system_specification.md"
+    ],
+    "current_truth": [
+      "The locked public brand is 'Miss Lana's Fairy-Tale Theatre'.",
+      "The short umbrella name remains 'Miss Lana'.",
+      "The primary production domain is misslanatheatre.com.",
+      "The production site has already been moved to misslanatheatre.com; documentation must not describe this domain as merely available, proposed, or awaiting purchase.",
+      "The primary public email is info@misslanatheatre.com.",
+      "The primary public phone is (323) 903-2039.",
+      "The second phone number is reserve-only and must not be presented as an equal primary contact.",
+      "Customers may contact the theatre by SMS, email, or WhatsApp; any written method is preferred.",
+      "Svitlana currently answers inquiries herself; there is no manager or backup operator.",
+      "The realistic reply window is 1-2 business days.",
+      "Messages may be sent at any time; calls should be placed during reasonable daytime hours.",
+      "Customers do not need a full emailed copy of the submitted inquiry, but the website should display a clear submission confirmation.",
+      "Approved confirmation copy: 'Thank you! We've received your request. Miss Lana will reply by text, email, or WhatsApp within 1-2 business days.'",
+      "misslanatheater.com may be retained only as a protective alternate domain and should 301 redirect to misslanatheatre.com.",
+      "magic-castle-puppet-theater.com remains a legacy domain and should 301 redirect to the most relevant new URLs.",
+      "The website remains one English-first site with four service lines under Miss Lana: Fairy-Tale Theatre, Birthday Parties, School Shows, and Miss Lana & Friends / Characters.",
+      "The business remains a professional travelling live children's theatre based in Los Angeles, with four performers, 30+ years of experience primarily in Ukraine, live costumed fairy-tale performances, interactive activities, ages 2-10, and a starting public price of $350 unless later owner decisions change it.",
+      "The brand is not positioned as Russian, Slavic, or puppet-first.",
+      "Trademark clearance remains required before heavy investment in final logo, print, merchandise, or permanent branded production assets. Domain migration does not equal trademark clearance."
+    ],
+    "precedence_rules": [
+      "The current operator decision in this task overrides older brand/domain/contact statements in the listed project documents.",
+      "After synchronization, BRAND.md is the source of truth for brand name, domain, email naming, and service-line naming.",
+      "PROJECT_BRIEF.md remains the source of truth for business facts.",
+      "Do not alter verified third-party names, official venue names, competitor names, quoted titles, or historical facts merely to force Theatre spelling.",
+      "Do not replace 'theater' inside legacy domains, source URLs, quotations, file names, schema vocabulary, code identifiers, or SEO keyword examples unless the context is project-owned branding and the change is explicitly correct."
+    ],
+    "allowed_change_classes": [
+      "Canonical Markdown documentation updates",
+      "Operational instruction updates",
+      "Brand/domain/email/contact fact synchronization",
+      "Status-label updates such as proposed/available to live/primary",
+      "Cross-reference and changelog corrections",
+      "Documentation-only validation reports"
+    ],
+    "forbidden_change_classes": [
+      "Production code changes",
+      "UI implementation",
+      "DNS, email, hosting, redirect, or deployment changes",
+      "New pricing or travel-fee invention",
+      "Unconfirmed safety, insurance, background-check, or school-document claims",
+      "Final logo or trademark decisions",
+      "Unrelated rewriting of show descriptions, design tokens, or business strategy"
+    ]
+  },
+  "prerequisites": {
+    "required_files": [
+      "BRAND.md",
+      "PROJECT_BRIEF.md",
+      "00_PROJECT_INSTRUCTIONS.md",
+      "01_CONTENT_INVENTORY.md",
+      "02_POSITIONING_AND_TONE.md",
+      "03_SITEMAP_AND_SCOPE.md",
+      "04_SEO.md",
+      "DESIGN_SYSTEM.md",
+      "SITE_STRUCTURE_AND_BLOCKS.md",
+      "05_BUILD_CLAUDE.md",
+      "2026-06-22-design-system-research-v2.md",
+      "TUNG-EXECUTION-RULE-(CANON).txt",
+      "tung_system_specification.md"
+    ],
+    "read_before_editing": [
+      "TUNG-EXECUTION-RULE-(CANON).txt",
+      "tung_system_specification.md",
+      "BRAND.md",
+      "PROJECT_BRIEF.md"
+    ],
+    "blocking_condition": "If tung_system_specification.md is missing from the repository, do not invent or reconstruct the canonical specification. Report the missing prerequisite, but continue the documentation synchronization only if the executor already has an approved v2-full runtime/template that validates this task."
+  },
+  "scope": {
+    "in_scope": [
+      "Audit all listed project documents for obsolete project-owned brand spelling, domain, email, phone, contact workflow, and migration status.",
+      "Update the public brand to 'Miss Lana's Fairy-Tale Theatre' everywhere it refers to this project or its own service line.",
+      "Update the primary domain to misslanatheatre.com and primary email to info@misslanatheatre.com.",
+      "Update documentation to state that the production site is already on the new domain.",
+      "Update contact guidance to one primary phone, reserve-only second phone, SMS/email/WhatsApp availability, Svitlana as sole responder, and 1-2 business-day response window.",
+      "Update form and contact-block specifications to include preferred written contact methods and the approved on-screen confirmation message.",
+      "Update GBP, schema-name, metadata-name, footer, header, contact, migration, and SEO documentation references where they describe project-owned branding.",
+      "Preserve both 'theatre' and 'theater' in SEO research where they represent distinct real user queries; mark Theatre as the public brand spelling.",
+      "Add concise changelog/status notes to core files indicating the 2026-06-25 canon sync.",
+      "Produce an audit report of changed files, preserved exceptions, unresolved questions, and verification results."
+    ],
+    "out_of_scope": [
+      "Editing the live website or application code.",
+      "Implementing redirects, DNS, email mailboxes, form delivery, GBP, analytics, schema, or Search Console.",
+      "Writing the final Home page copy deck.",
+      "Resolving open owner questions about travel surcharges, insurance, deposits, cancellations, show names, or public-school paperwork.",
+      "Changing official names of competitors or venues such as Bob Baker Marionette Theater.",
+      "Changing the legacy domain magic-castle-puppet-theater.com.",
+      "Replacing American search-query examples solely for stylistic consistency.",
+      "Editing deprecated TUNG v1 or TUNG specifications beyond correcting project-specific Miss Lana examples, if any."
+    ]
+  },
+  "non_goals": [
+    "Do not perform a global blind replacement of every occurrence of 'theater'.",
+    "Do not redesign the website or alter design-system tokens.",
+    "Do not invent missing business facts or close owner questions without evidence.",
+    "Do not treat the domain migration as trademark clearance.",
+    "Do not make the reserve phone publicly equivalent to the primary phone.",
+    "Do not create a second public brand spelling or mixed Theater/Theatre identity.",
+    "Do not modify third-party proper names, quoted material, historical URLs, or source citations.",
+    "Do not remove valid SEO keyword variants that contain 'theater'."
+  ],
+  "forbidden_execution_patterns": [
+    "No repository-wide search-and-replace without per-occurrence semantic review.",
+    "No changing files outside the declared scope merely because they contain the word theater.",
+    "No silent deletion of historical context; obsolete decisions should be updated or clearly marked superseded where useful.",
+    "No claiming redirects, email delivery, DNS, GBP, Search Console, or website code are configured unless separately verified.",
+    "No replacing legacy-domain strings with the new domain inside migration instructions.",
+    "No changing competitor or venue spellings to match the Miss Lana brand.",
+    "No publishing unconfirmed contact hours as exact opening hours.",
+    "No converting the 1-2 business-day response window into a faster promise.",
+    "No broad copy rewrite disguised as canon synchronization.",
+    "No completion claim without a post-edit residue scan and manual exception review."
+  ],
+  "execution_guardrails": [
+    "Create a pre-edit occurrence inventory for: Miss Lana's Fairy-Tale Theater, misslanatheater.com, info@misslanatheater.com, 213-282-1054, 323-903-2039, proposed/available domain wording, and mixed Theater/Theatre service-line names.",
+    "Classify every occurrence before editing as PROJECT_BRAND, PROJECT_DOMAIN, PROJECT_EMAIL, PROJECT_CONTACT, SEO_KEYWORD, THIRD_PARTY_NAME, LEGACY_URL, QUOTATION, HISTORICAL_NOTE, or TECHNICAL_IDENTIFIER.",
+    "Automatically change only PROJECT_BRAND, PROJECT_DOMAIN, PROJECT_EMAIL, and confirmed PROJECT_CONTACT occurrences; manually inspect all other classes.",
+    "Use ASCII apostrophe in technical/domain-adjacent contexts and preserve typographic apostrophe only where the existing documentation style intentionally uses it.",
+    "Keep the domain lowercase exactly as misslanatheatre.com and email lowercase exactly as info@misslanatheatre.com.",
+    "Use the formatted phone exactly as (323) 903-2039 in public-copy specifications and tel:+13239032039 where a technical link example is required.",
+    "Document the second phone as reserve-only; if its exact number remains in old documentation, remove it from public-facing specifications unless an explicit alternate-contact label is required.",
+    "Preserve the old domain magic-castle-puppet-theater.com exactly in migration and redirect references.",
+    "Preserve misslanatheater.com only in protective-domain and redirect context after synchronization.",
+    "Keep SEO keyword examples such as children's theater Los Angeles when they reflect American search intent; add theatre variants where useful, but do not dilute the locked public spelling.",
+    "Do not alter design principles, colors, fonts, age range, duration, pricing, team size, or service architecture unless required to correct a direct contradiction with current truth.",
+    "For every modified file, review headings, tables, code fences, internal links, examples, and changelog text—not only body paragraphs.",
+    "Use git diff or equivalent full diff review before closure.",
+    "All changed Markdown files must remain valid UTF-8 and readable."
+  ],
+  "steps": [
+    {
+      "id": "S1",
+      "title": "Establish repository paths and create a pre-edit inventory",
+      "actions": [
+        "Locate the canonical copies of all required project documents; do not assume the uploaded flat paths equal repository paths.",
+        "Record git status before changes.",
+        "Run case-sensitive and case-insensitive searches for obsolete brand/domain/email/contact strings and migration-status wording.",
+        "Create docs/reports/MISS_LANA_CANON_SYNC_001_pre_edit_inventory.md with file, line, occurrence, classification, and intended action."
+      ],
+      "expected_outcome": "Every relevant occurrence is known and semantically classified before editing.",
+      "affected_files": [
+        "docs/reports/MISS_LANA_CANON_SYNC_001_pre_edit_inventory.md"
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "Update the brand lock first",
+      "actions": [
+        "Edit BRAND.md before all dependent files.",
+        "Lock 'Miss Lana's Fairy-Tale Theatre', misslanatheatre.com, and info@misslanatheatre.com.",
+        "State that misslanatheatre.com is already the primary production domain.",
+        "State that misslanatheater.com is protective/alternate only and should 301 to the primary domain.",
+        "Retain the one-site/four-service-lines architecture and trademark-clearance gate.",
+        "Add a 2026-06-25 changelog/status note explaining that Theatre now replaces Theater in project-owned branding."
+      ],
+      "expected_outcome": "BRAND.md becomes the updated source of truth before dependent documentation is changed.",
+      "affected_files": [
+        "BRAND.md"
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "Synchronize business facts and project instructions",
+      "actions": [
+        "Update PROJECT_BRIEF.md with the locked brand, domain, email, production-domain status, primary phone, reserve-phone rule, written contact options, response owner, and 1-2 business-day response window.",
+        "Update 00_PROJECT_INSTRUCTIONS.md and 05_BUILD_CLAUDE.md so future agents read the new canon and do not reintroduce Theater or misslanatheater.com as primary.",
+        "Preserve all unrelated business facts and negative-scope rules."
+      ],
+      "expected_outcome": "Human and agent-facing project instructions agree with the brand lock and current contact workflow.",
+      "affected_files": [
+        "PROJECT_BRIEF.md",
+        "00_PROJECT_INSTRUCTIONS.md",
+        "05_BUILD_CLAUDE.md"
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "Synchronize positioning, content, structure, and design documentation",
+      "actions": [
+        "Update project-owned brand and service-line spelling in 01_CONTENT_INVENTORY.md, 02_POSITIONING_AND_TONE.md, 03_SITEMAP_AND_SCOPE.md, DESIGN_SYSTEM.md, SITE_STRUCTURE_AND_BLOCKS.md, and 2026-06-22-design-system-research-v2.md.",
+        "Update header/footer/contact/form specifications to use the primary phone and new email.",
+        "Update the Booking/LeadForm specification with SMS, email, WhatsApp, optional phone call, Svitlana as sole responder, and approved success-state copy.",
+        "Mark the second phone as reserve-only and remove it from equal public presentation.",
+        "Preserve design tokens, IA, show facts, and unrelated recommendations."
+      ],
+      "expected_outcome": "All content, UX, and design specifications use one public spelling and current contact facts.",
+      "affected_files": [
+        "01_CONTENT_INVENTORY.md",
+        "02_POSITIONING_AND_TONE.md",
+        "03_SITEMAP_AND_SCOPE.md",
+        "DESIGN_SYSTEM.md",
+        "SITE_STRUCTURE_AND_BLOCKS.md",
+        "2026-06-22-design-system-research-v2.md"
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "Synchronize SEO and migration documentation without damaging search intent",
+      "actions": [
+        "Update 04_SEO.md so the public brand, GBP business name, schema name, canonical domain, primary email references, and migration status use Theatre/misslanatheatre.com.",
+        "State that the website is already on the new domain while redirect and listing verification remain implementation/verification work.",
+        "Retain misslanatheater.com only as an alternate redirect domain.",
+        "Retain magic-castle-puppet-theater.com as the legacy domain to redirect.",
+        "Preserve American-search keyword examples containing theater; add paired theatre variants only where editorially useful.",
+        "Do not claim redirects or Search Console updates are completed unless repository evidence proves it."
+      ],
+      "expected_outcome": "SEO documentation supports one public brand while retaining valid search-language variants and migration history.",
+      "affected_files": [
+        "04_SEO.md"
+      ]
+    },
+    {
+      "id": "S6",
+      "title": "Perform residue scan and semantic exception review",
+      "actions": [
+        "Search all in-scope documents again for obsolete brand/domain/email references.",
+        "For every remaining occurrence of 'Miss Lana's Fairy-Tale Theater', misslanatheater.com, or info@misslanatheater.com, document why it is intentionally preserved or correct it.",
+        "Review every remaining standalone 'theater' occurrence in context and classify it as third-party, SEO, legacy, quotation, historical, technical, or error.",
+        "Search for obsolete statements that the new domain is free, proposed, awaiting purchase, or not yet live.",
+        "Search for two-phone equal presentation and obsolete email/contact flow.",
+        "Confirm no official third-party names or old URLs were corrupted."
+      ],
+      "expected_outcome": "No unexplained obsolete project-owned references remain.",
+      "affected_files": [
+        "All in-scope documentation"
+      ]
+    },
+    {
+      "id": "S7",
+      "title": "Review diffs and create synchronization report",
+      "actions": [
+        "Review the complete diff file by file for scope drift, accidental replacements, broken Markdown, and factual changes.",
+        "Create docs/reports/MISS_LANA_CANON_SYNC_001_report.md with executive summary, changed files, key decisions applied, preserved Theater exceptions, unresolved owner questions, verification commands, and final status.",
+        "Create docs/reviews/MISS_LANA_CANON_SYNC_001_review.md with reviewer-grade analysis of consistency, accidental edits, unresolved contradictions, and recommendations.",
+        "Update project progress tracking only if the repository already has a canonical progress file; do not invent a new progress system."
+      ],
+      "expected_outcome": "The canon sync is documented, reviewable, and safe to hand to the next website-copy task.",
+      "affected_files": [
+        "docs/reports/MISS_LANA_CANON_SYNC_001_report.md",
+        "docs/reviews/MISS_LANA_CANON_SYNC_001_review.md",
+        "Existing canonical progress file if present"
+      ]
+    }
+  ],
+  "success_criteria": [
+    "All project-owned brand references use 'Miss Lana's Fairy-Tale Theatre'.",
+    "All primary-domain references use misslanatheatre.com.",
+    "All primary-email references use info@misslanatheatre.com.",
+    "Documentation states that the production site is already on misslanatheatre.com.",
+    "misslanatheater.com appears only in protective-domain/redirect context.",
+    "magic-castle-puppet-theater.com remains intact in legacy migration context.",
+    "The primary public phone is (323) 903-2039 and the second number is not presented as an equal primary contact.",
+    "SMS, email, and WhatsApp are documented as accepted written channels.",
+    "Svitlana is documented as the current sole responder with a realistic 1-2 business-day response window.",
+    "The booking specification includes a clear on-screen confirmation and does not require sending the customer a full copy of the inquiry.",
+    "Third-party proper names, official venue names, quotations, legacy URLs, and valid SEO query examples remain correct.",
+    "No blind global replacement damage exists.",
+    "No unrelated strategy, pricing, design, show, or code changes were introduced.",
+    "Pre-edit inventory, final report, and reviewer-grade review files exist and are readable.",
+    "The final residue scan contains no unexplained obsolete project-owned references.",
+    "All execution-safety sections were respected."
+  ],
+  "verification": {
+    "required_commands": [
+      "git status --short",
+      "git diff --check",
+      "git diff -- BRAND.md PROJECT_BRIEF.md 00_PROJECT_INSTRUCTIONS.md 01_CONTENT_INVENTORY.md 02_POSITIONING_AND_TONE.md 03_SITEMAP_AND_SCOPE.md 04_SEO.md DESIGN_SYSTEM.md SITE_STRUCTURE_AND_BLOCKS.md 05_BUILD_CLAUDE.md 2026-06-22-design-system-research-v2.md",
+      "rg -n --hidden --glob '*.md' \"Miss Lana['’]s Fairy-Tale Theater|misslanatheater\\.com|info@misslanatheater\\.com\" .",
+      "rg -n --hidden --glob '*.md' \"Miss Lana['’]s Fairy-Tale Theatre|misslanatheatre\\.com|info@misslanatheatre\\.com\" .",
+      "rg -n --hidden --glob '*.md' \"213[- )]282[- ]1054|323[- )]903[- ]2039\" .",
+      "rg -n --hidden --glob '*.md' \"domain.*(free|available|proposed|purchase|buy)|свободен|занять|купить домен\" .",
+      "test -f docs/reports/MISS_LANA_CANON_SYNC_001_pre_edit_inventory.md && test -r docs/reports/MISS_LANA_CANON_SYNC_001_pre_edit_inventory.md",
+      "test -f docs/reports/MISS_LANA_CANON_SYNC_001_report.md && test -r docs/reports/MISS_LANA_CANON_SYNC_001_report.md",
+      "test -f docs/reviews/MISS_LANA_CANON_SYNC_001_review.md && test -r docs/reviews/MISS_LANA_CANON_SYNC_001_review.md"
+    ],
+    "manual_checks": [
+      "Confirm every remaining misslanatheater.com reference is explicitly protective/redirect context.",
+      "Confirm every remaining project-relevant Theater occurrence is either a valid SEO keyword, third-party proper name, quotation, legacy URL, historical note, or technical term.",
+      "Confirm the old legacy domain remains unchanged.",
+      "Confirm no exact business hours were invented from the phrase reasonable daytime hours.",
+      "Confirm the response promise remains 1-2 business days.",
+      "Confirm the second phone is not displayed as equal primary contact in any public-facing specification.",
+      "Confirm the approved success message is copied exactly or changed only for punctuation/typography without changing meaning.",
+      "Confirm all Markdown tables and code fences remain valid and readable.",
+      "Confirm no production implementation claims were added without evidence.",
+      "Confirm all non_goals, forbidden_execution_patterns, and execution_guardrails were respected."
+    ],
+    "failure_conditions": [
+      "Any unexplained obsolete project-owned brand/domain/email reference remains.",
+      "Any third-party name, legacy URL, or search-query example is incorrectly rewritten.",
+      "Any production code or deployment configuration is modified.",
+      "Any new unsupported business fact is introduced.",
+      "Any required report or review file is missing.",
+      "git diff --check reports errors.",
+      "The executor cannot access the canonical v2 specification or approved v2 template required by repository policy."
+    ]
+  },
+  "deliverables": {
+    "modified_files": [
+      "BRAND.md",
+      "PROJECT_BRIEF.md",
+      "00_PROJECT_INSTRUCTIONS.md",
+      "01_CONTENT_INVENTORY.md",
+      "02_POSITIONING_AND_TONE.md",
+      "03_SITEMAP_AND_SCOPE.md",
+      "04_SEO.md",
+      "DESIGN_SYSTEM.md",
+      "SITE_STRUCTURE_AND_BLOCKS.md",
+      "05_BUILD_CLAUDE.md",
+      "2026-06-22-design-system-research-v2.md"
+    ],
+    "created_files": [
+      "docs/reports/MISS_LANA_CANON_SYNC_001_pre_edit_inventory.md",
+      "docs/reports/MISS_LANA_CANON_SYNC_001_report.md",
+      "docs/reviews/MISS_LANA_CANON_SYNC_001_review.md"
+    ],
+    "report_requirements": [
+      "List every modified file and summarize the exact classes of changes.",
+      "List all intentionally preserved Theater occurrences by category, not necessarily every identical SEO-keyword repetition.",
+      "List unresolved owner questions without attempting to solve them.",
+      "State whether the repository contains and validates against tung_system_specification.md.",
+      "Include command results or concise pass/fail summaries.",
+      "Declare whether the task is READY FOR NEXT TASK or BLOCKED."
+    ],
+    "final_response_requirements": [
+      "State the task status: completed, partially completed, or blocked.",
+      "List modified and created files.",
+      "Summarize preserved exceptions and unresolved questions.",
+      "Report verification results.",
+      "Do not claim website code, redirects, email delivery, or GBP were implemented."
+    ]
+  },
+  "mandatory_closure": {
+    "required": true,
+    "closure_sequence": [
+      "Step 1 — Scope verification: confirm only declared documentation and report files were changed; confirm no non_goals were implemented.",
+      "Step 2 — Canon verification: confirm BRAND.md, PROJECT_BRIEF.md, and all dependent docs consistently use Theatre, misslanatheatre.com, info@misslanatheatre.com, and the approved contact workflow.",
+      "Step 3 — Exception verification: review all preserved Theater occurrences and confirm each is third-party, SEO, legacy, quotation, historical, or technical context.",
+      "Step 4 — Reviewer-grade review: inspect the full diff for accidental replacement, contradictions, broken links/tables/fences, overreach, and unsupported claims; save the review artifact.",
+      "Step 5 — Command verification: run every required verification command and resolve all failures within scope.",
+      "Step 6 — Deliverable verification: confirm all required modified/created files exist, are readable, and contain the required content.",
+      "Step 7 — Execution-safety confirmation: explicitly confirm no non_goals were fixed, no forbidden_execution_patterns were violated, and all execution_guardrails were respected.",
+      "Step 8 — Closure statement: declare READY FOR NEXT TASK only if all success criteria pass; otherwise declare BLOCKED and list exact blockers without pretending completion."
+    ],
+    "closure_artifact": "docs/reports/MISS_LANA_CANON_SYNC_001_report.md"
+  },
+  "post_actions": [
+    "Do not edit website code as part of this task.",
+    "After successful closure, use the synchronized canon as the only source for the next task: site-wide public copy inventory and Home/contact/form text synchronization.",
+    "Create a separate TUNG v2-full task for production website text/code changes.",
+    "Create separate implementation tasks for domain redirects, email delivery, GBP, Search Console, schema, and form handling if not already verified."
+  ]
+}

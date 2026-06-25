@@ -22,6 +22,7 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
 
 **Первичка (EN):**
 - children's theater Los Angeles
+- children's theatre Los Angeles *(brand-spelling support variant; American `theater` keyword remains valid)*
 - fairy tale show for preschools / daycare LA
 - costumed character birthday party Los Angeles
 - school assembly show Los Angeles
@@ -49,20 +50,24 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
 ## Google Business Profile (критично — приоритетнее карты на сайте)
 
 - Завести/заявить профиль как **service-area** (без публичного адреса), указать зоны.
+- **Business name:** **Miss Lana's Fairy-Tale Theatre**.
 - **Категории:** Children's theater / Entertainment / Event planner (**НЕ «Puppet theater»**).
-- Фото/видео, телефоны, ссылка на сайт. **Это часто главный источник локальных лидов** (map pack).
+- Фото/видео, primary phone **(323) 903-2039**, primary email `info@misslanatheatre.com`,
+  ссылка на `https://misslanatheatre.com`. **Это часто главный источник локальных лидов** (map pack).
 - **Проверить, нет ли уже профиля** (владелец «не знает») — возможно есть забытый.
 - По Треку B: **GBP важнее встройки карты** — заводим в первую очередь.
 
 ## Имя и домен (обновляет прежний совет «домен не менять»)
 
 - **Бренд (закреплён, `BRAND.md`):** зонтик **Miss Lana**, флагман — **Miss Lana's Fairy-Tale
-  Theater**. Зонтик категориально-нейтрален, а **секции-дескрипторы** (Birthday Parties / School
+  Theatre**. Зонтик категориально-нейтрален, а **секции-дескрипторы** (Birthday Parties / School
   Shows / Characters) несут интент-ключи → **сильно для SEO** (ранжируемся под разные форматы).
-- **Домен:** **`misslanatheater.com`** (свободен — занять). Старый `magic-castle-puppet-theater.com`
-  SEO-капитала практически не несёт → **301** на новый, держать редиректящим, обновить
-  GBP/листинги, пересабмитить sitemap. (Доменное «theater» = идентичность; охват не сужает —
-  birthday/characters/assembly ловят свои секции.)
+- **Canonical domain:** **`misslanatheatre.com`** — primary production domain, already live.
+  `misslanatheater.com` — protective alternate only → **301** на primary. Старый
+  `magic-castle-puppet-theater.com` SEO-капитала практически не несёт → **301** на релевантные
+  новые URL, держать редиректящим, обновить GBP/листинги, пересабмитить sitemap. Не утверждать,
+  что redirects/Search Console/GBP уже настроены, пока это отдельно не проверено. (Доменное
+  «theatre» = идентичность; охват не сужает — birthday/characters/assembly ловят свои секции.)
 
 ## Конкуренты — карта (Трек A; владелец считал, что их нет)
 
@@ -79,7 +84,15 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
 ## Следующие шаги по SEO
 
 1. **Завести/проверить GBP** + статус домена.
-2. **Имя/домен** закреплены (Miss Lana's Fairy-Tale Theater / misslanatheater.com) — занять домен/хэндлы + trademark-clearance; миграция с 301.
+2. **Имя/домен** закреплены (Miss Lana's Fairy-Tale Theatre / misslanatheatre.com); сайт уже
+   на primary production domain. Проверить/настроить 301 для `misslanatheater.com` и
+   `magic-castle-puppet-theater.com`, GBP/listings/Search Console, sitemap resubmit; trademark-clearance остаётся отдельным gate.
 3. **Подтвердить семантику** инструментом (EN-интент).
 4. **Заложить URL-структуру** (страница на шоу/услугу) в сборку; посадочные под интент
    (ассамблеи, дни рождения, костюмированные шоу, bubble/интерактив).
+
+## Changelog
+
+- **2026-06-25:** canon sync — public brand/GBP/schema name changed to Theatre; canonical
+  domain set to live `misslanatheatre.com`; `misslanatheater.com` documented only as protective
+  alternate redirect; primary email/phone added; valid American `theater` SEO keywords preserved.

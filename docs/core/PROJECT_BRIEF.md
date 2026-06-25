@@ -9,7 +9,7 @@ v2 (2026-06-22). Переписан под актуальную рамку (хе
 
 ## Что мы строим (одна фраза)
 
-Сайт **выездного детского театра** (бренд: **Miss Lana's Fairy-Tale Theater**, зонтик **Miss Lana**, домен `misslanatheater.com` — см. `BRAND.md`) с базой в
+Сайт **выездного детского театра** (бренд: **Miss Lana's Fairy-Tale Theatre**, зонтик **Miss Lana**, primary production domain `misslanatheatre.com` — см. `BRAND.md`) с базой в
 Лос-Анджелесе: профессиональная труппа показывает **театрализованные шоу по добрым
 сказкам** (живые костюмированные актёры) с **интерактивным перформансом для детей**;
 плюс анимация, дни рождения, детские праздники. **Своего помещения нет** — театр
@@ -75,6 +75,11 @@ v2 (2026-06-22). Переписан под актуальную рамку (хе
   **Доплата за расстояние сейчас отсутствует — нужно ввести** (суммы/правило — за владельцем;
   рекомендация Трека B: бесплатно в радиусе X миль; Сан-Диего — фикс.; Сакраменто/Сан-Хосе — по запросу).
 - **Каналы:** сарафан, соцсети, партнёрства; ручной обзвон + реклама раньше работали, сейчас не делаются.
+- **Контакты:** primary public email — `info@misslanatheatre.com`; primary public phone —
+  **(323) 903-2039**. Второй телефон — reserve-only, не равный публичный контакт.
+- **Contact workflow:** клиенты могут писать по SMS, email или WhatsApp; письменный канал
+  предпочтителен. Звонки — в разумные дневные часы, без публикации точных business hours.
+  Svitlana сейчас отвечает сама; реалистичное окно ответа — **1-2 business days**.
 
 ## Голос бренда / тон
 
@@ -89,29 +94,35 @@ v2 (2026-06-22). Переписан под актуальную рамку (хе
 - **Ярко, но по-доброму**; тёплые тона (любимые — зелёные); крупные тёплые фото/видео
   реальных шоу.
 - **Обязательные блоки:** онлайн-заявка/бронь, галерея/видео, прайс/пакеты, репертуар,
-  витрина услуг (театрализованные шоу → анимация/праздники). **Отзывы пока не нужны**
-  (место заложить, включить позже).
+  витрина услуг (театрализованные шоу → анимация/праздники), **verified reviews/testimonials**
+  as launch trust layer `[OWNER/CONTENT]`. Initial target: at least **5** real verified reviews,
+  ideally from parents and preschool/school representatives; no invented reviews.
 - **Активы:** фото/видео есть (владелец вышлет); логотип — есть старый, нужен редизайн под 2026.
 
 ## Имя и домен (ребрендинг)
 
 - **Бренд закреплён (см. `BRAND.md`):** зонтик/персона — **Miss Lana**; флагман и основное
-  публичное имя/сайт — **Miss Lana's Fairy-Tale Theater**; домен **`misslanatheater.com`** (свободен).
+  публичное имя/сайт — **Miss Lana's Fairy-Tale Theatre**; primary production domain
+  **`misslanatheatre.com`** уже live.
 - **ОДИН сайт, не пять.** Суб-бренды — это **секции/линии услуг внутри одного сайта** под зонтиком
-  Miss Lana, не отдельные сайты: Fairy-Tale Theater (флагман) · Birthday Parties · School Shows ·
-  & Friends (костюмированные герои). «Theater» в домене = узкая идентичность; широкие услуги — секциями.
+  Miss Lana, не отдельные сайты: Fairy-Tale Theatre (флагман) · Birthday Parties · School Shows ·
+  & Friends (костюмированные герои). «Theatre» в бренде/домене = узкая идентичность; широкие услуги — секциями.
 - **Почему ушли от «Magic Castle»:** коллизия с голливудским **The Magic Castle** (клуб магов,
   активный знак) + под этим именем нет SEO/бренд-капитала (история была под «Теремок»).
-- **Домен:** `misslanatheater.com` (занять/зафиксировать); старый `magic-castle-puppet-theater.com`
-  → **301**; обновить GBP/листинги. **Trademark-clearance у юриста — до тяжёлых вложений** (лого/печать;
-  «Lana» популярна — знак проверить).
+- **Домен:** `misslanatheatre.com` — primary production domain. `misslanatheater.com` —
+  protective alternate only → **301** на основной домен; старый `magic-castle-puppet-theater.com`
+  → **301** на релевантные новые URL; обновить GBP/листинги. **Trademark-clearance у юриста —
+  до тяжёлых вложений** (лого/печать; «Lana» популярна — знак проверить).
 
-## Текущий сайт (объект редизайна)
+## Current and legacy site status
 
-- **URL:** `https://magic-castle-puppet-theater.com/` — действующий, **переделываем + ребрендим**.
-- Контент богатый (8 шоу, команда, параметры), но устарел: только «позвоните» вместо
-  онлайн-заявки, нет прайса/галереи/SEO-структуры; имя/домен сужают («puppet»).
-- **Проследить стабильность оплаты домена** (был простой) — на период миграции.
+- **Current production site:** `https://misslanatheatre.com/` — live and in content, conversion,
+  trust-layer, and SEO refinement.
+- **Legacy domain/source material:** `https://magic-castle-puppet-theater.com/` — legacy only.
+  Старый контент был богатый (8 шоу, команда, параметры), но устаревший: call-first flow, слабее
+  онлайн-заявка/прайс/галерея/SEO-структура, имя/домен сужали («puppet»). Использовать только как
+  historical/source-material context and redirect source.
+- **Redirect/payment check:** проверить 301 и оплату legacy/protective domains на период миграции.
 
 ## Прочий онлайн-след
 
@@ -132,11 +143,21 @@ v2 (2026-06-22). Переписан под актуальную рамку (хе
 
 ## Открытые вопросы / следующие шаги
 
-- **Имя/домен** закреплены (Miss Lana's Fairy-Tale Theater / misslanatheater.com, см. `BRAND.md`); остаётся trademark-clearance + занять домен/хэндлы.
+- **Имя/домен** закреплены (Miss Lana's Fairy-Tale Theatre / misslanatheatre.com, см. `BRAND.md`);
+  сайт уже на primary production domain. Остаётся trademark-clearance + хэндлы/листинги.
 - **8 названий шоу** — универсальная подача (в `01_CONTENT_INVENTORY.md`); решить по
   специфически-русски-кодированным (Морозко; «Ну погоди»-элемент в «Well Red Bow wait»).
 - **Доплата за расстояние** — суммы/правило.
-- **Соцсети** — ссылки. **Домен** — статус оплаты.
+- **Соцсети** — ссылки. **Protective/legacy domains** — проверить 301 и оплату на период миграции.
+- **Verified reviews/testimonials** — собрать минимум 5 real verified reviews target с permission/source.
 - **Гос. школы** — отдельная go-to-market.
 - **Лого 2026** — редизайн. **Фото/видео** — получить.
 - **Подтвердить:** Svitlana Grygoryshyna = владелец; рамку «театр/англо-первично/украинское-как-бэкстори».
+
+## Changelog
+
+- **2026-06-25:** canon sync — Theatre spelling, live primary domain `misslanatheatre.com`,
+  primary email/phone, reserve-phone rule, written-contact workflow, and 1-2 business-day
+  response window added.
+- **2026-06-25 finalization:** current-vs-legacy site status clarified; verified reviews/testimonials
+  moved into launch trust scope; no invented reviews allowed.

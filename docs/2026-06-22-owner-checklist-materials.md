@@ -53,10 +53,15 @@ Donkey's Birthday · Little Red Riding Hood · The Bunny's Little House · Cinde
 - [ ] **Соцсети** — точные ссылки: Instagram / Facebook / YouTube (что есть). *(сейчас — заглушки)*
 - [ ] **Svitlana Grygoryshyna = владелец?** да/нет *(нужно для «О нас»)*
 - [ ] **Формат 8 шоу** — все живые костюмированные? Если какое-то отличается — отметить. *(тогда добавим фильтр/метку на странице шоу)*
-- [ ] **Email для заявок** — на какой адрес слать заявки с формы (когда подключим отправку).
-- [ ] **Телефоны** — подтвердить: 213-282-1054 и 323-903-2039 — верные?
+- [x] **Email для заявок** — primary public email: `info@misslanatheatre.com`.
+- [x] **Телефон primary** — **(323) 903-2039**. Второй телефон из старых материалов — reserve-only,
+  не равный публичный контакт.
 - [ ] **Гос. школы** — нужен отдельный блок под них? *(можно позже)*
-- [ ] **Домен** — зарегистрировать/занять `misslanatheater.com`.
+- [x] **Домен** — `misslanatheatre.com` уже live primary production domain.
+- [ ] **Redirects** — проверить/настроить `misslanatheater.com` protective alternate → primary и
+  legacy `magic-castle-puppet-theater.com` → релевантные новые URL.
+- [ ] **Verified reviews/testimonials** — собрать минимум **5** сильных реальных verified reviews
+  (идеально: родители + представители садов/школ), получить permission/source. Ничего не выдумывать.
 
 ---
 

@@ -19,7 +19,8 @@ Code, identifiers, comments, commit messages, filenames — **English**.
 
 0. **`PROJECT_BRIEF.md` (root) → `docs/core/PROJECT_BRIEF.md`** — read FIRST. Root
    brief is a pointer; the **canonical facts** live in `docs/core/PROJECT_BRIEF.md`.
-   Brand: **Miss Lana's Fairy-Tale Theater** (touring children's theater, LA).
+   Brand: **Miss Lana's Fairy-Tale Theatre** (touring children's theatre, LA);
+   primary production domain: `misslanatheatre.com`.
 1. `docs/core/` — **project canon** (source of truth): `BRAND.md`,
    `02_POSITIONING_AND_TONE.md`, `DESIGN_SYSTEM.md`, `01_CONTENT_INVENTORY.md`,
    `03_SITEMAP_AND_SCOPE.md`, `04_SEO.md`, `05_BUILD_CLAUDE.md`,
@@ -30,17 +31,19 @@ Code, identifiers, comments, commit messages, filenames — **English**.
 
 ## 3. Stack & project reality (slot 4)
 
-- **What it is:** Interactive fairy-tale theater — a web app where stories play
-  out as interactive performances in the browser.
+- **What it is:** Marketing and lead-generation website for Miss Lana's
+  travelling children's theatre in Los Angeles: live, in-person shows for
+  schools, preschools, birthday parties, and family events.
 - **Runtime:** Node + Next.js 16 (App Router), ES modules.
 - **Language/tooling:** TypeScript 5 (strict), Tailwind CSS 4, ESLint 9
   (eslint-config-next).
 - **Framework:** Next.js 16.2.9 + React 19.2.4.
 - **Tests:** Playwright e2e (`tests/e2e/`). No unit-test runner wired yet.
 - **Package manager:** **pnpm** only — never mix lockfiles (no npm/yarn).
-- **What it is NOT:** not the factory-starter-kit (`~/factory-starter-kit` — the
-  template this was deployed from), not any sibling project under
-  `/home/tureckiy/Projects/`, not a monorepo root.
+- **What it is NOT:** not an interactive browser theatre, game, streaming
+  product, ticketing platform, factory-starter-kit (`~/factory-starter-kit` —
+  the template this was deployed from), sibling project under
+  `/home/tureckiy/Projects/`, or monorepo root.
 
 ## 4. Commands (slot 5)
 

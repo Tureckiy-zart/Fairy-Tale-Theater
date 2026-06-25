@@ -4,9 +4,10 @@
 > разделителя) как **`CLAUDE.md`** в корне. Стек — JS-baseline (Next.js).
 
 <!--
-v2 (2026-06-22). Переписан под актуальную рамку: сайт английский-первый (двуязычие RU
+v3 (2026-06-25). Canon sync: сайт английский-первый (двуязычие RU
 снято), идентичность «театрализованное шоу» (не «puppet»), команда украинская (без
-русского/славянского кодирования), 30+ лет (не «25»), ребрендинг (новое имя/домен).
+русского/славянского кодирования), 30+ лет (не «25»), locked Theatre spelling, live
+primary domain, and current contact workflow.
 -->
 
 ---
@@ -60,10 +61,22 @@ pnpm run ci:exact     # ГЕЙТ: lint + typecheck + governance + build
 - **Опыт: «30+ лет» (в осн. Украина), НЕ «25 лет в LA».**
 - **Тон/визуал:** добрый, тёплый, ярко-но-не-агрессивно; тёплые тона. **Анти-пример (запрет):**
   американский стиль «больших открытых ртов», кричащий; и холодный шаблонный вид.
-- **Имя/домен (закреплены, см. `BRAND.md`).** Бренд — **Miss Lana's Fairy-Tale Theater** (зонтик
-  **Miss Lana**); домен **`misslanatheater.com`**; старый `magic-castle-puppet-theater.com` → 301.
+- **Имя/домен (закреплены, см. `BRAND.md`).** Бренд — **Miss Lana's Fairy-Tale Theatre** (зонтик
+  **Miss Lana**); primary production domain **`misslanatheatre.com`** уже live;
+  `misslanatheater.com` — protective alternate only → 301 на primary; старый
+  `magic-castle-puppet-theater.com` → 301 на релевантные новые URL.
   **ОДИН сайт**, суб-бренды (Birthday Parties / School Shows / & Friends) — секции, не отдельные сайты.
   До **trademark-clearance** у юриста — не делать финальный лого/печать.
+- **Контакты/форма:** primary email `info@misslanatheatre.com`, primary phone **(323) 903-2039**,
+  второй телефон reserve-only. Клиенты могут писать SMS/email/WhatsApp; Svitlana сейчас отвечает
+  сама в течение **1-2 business days**. Success state:
+  “Thank you! We've received your request. Miss Lana will reply by text, email, or WhatsApp within 1-2 business days.”
+  On-screen confirmation is required; do not email the full submitted-form copy by default. A short
+  confirmation email may be added later if operationally useful.
+- **Verified reviews/testimonials:** launch-required `[OWNER/CONTENT]` trust layer; publish only real
+  verified reviews with permission/source. Target at least 5 before launch; do not invent content.
+- **Icons:** current React package is `@phosphor-icons/react`; do not prescribe deprecated `phosphor-react`
+  for new implementation.
 - **Цены — не публиковать догадки** про доплату за расстояние, пока владелец не дал значения.
   До этого — «от $350».
 - Build-выходы не коммитить: `.next/`, `node_modules/`, `dist/`, `.tsbuildinfo`, реальный `.env`

@@ -21,7 +21,7 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
 ├── /shows               Репертуар (8 театрализованных шоу, карточки)
 │   └── /shows/{slug}    Страница шоу (синопсис, возраст, длит., фото/видео, CTA «заказать»)
 ├── /services            Витрина форматов: театрализованное шоу → анимация/персонажи → праздники
-├── /for-preschools      Для садов и школ (оффер B2B: пакеты, как заказать)
+├── /school-shows        Для садов и школ (оффер B2B: пакеты, как заказать)
 ├── /birthdays           Дни рождения и частные праздники (оффер B2C)
 ├── /pricing             Цены и пакеты (логика «от числа детей» + доплата за расстояние)
 ├── /gallery             Галерея фото/видео
@@ -35,10 +35,16 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
 
 ## Требования к функциям
 
-### 1. Онлайн-заявка / бронь (критично — её сейчас нет)
+### 1. Онлайн-заявка / бронь
 - Форма: имя, телефон/email, тип (сад/школа/день рождения/праздник), дата/время,
   город/адрес выезда, число детей, выбранное шоу (опц.), комментарий.
-- Лид уходит на email/телефон владельца (+ опц. в таблицу/CRM). Подтверждение на экране.
+- UI заявки уже реализован с клиентской валидацией и on-screen success state. **Production delivery**
+  to `info@misslanatheatre.com` / primary phone **(323) 903-2039** is unverified/not connected unless
+  separately proven; это launch dependency, а не закрытый факт.
+- Клиент может выбрать/использовать SMS, email или WhatsApp; written contact preferred. Svitlana
+  сейчас отвечает сама; окно ответа — **1-2 business days**.
+- Подтверждение на экране обязательно; полная email-копия заявки клиенту не требуется.
+  Success copy: “Thank you! We've received your request. Miss Lana will reply by text, email, or WhatsApp within 1-2 business days.”
 - CTA «Заказать выезд» на каждой странице шоу и в шапке.
 
 ### 2. Прайс и логика цены
@@ -68,23 +74,44 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
   сайте — вторично после GBP; для встройки — Maps Embed/Static, server-side Routes для расчёта.
 
 ### 7. Контакты
-- Телефоны 213-282-1054, 323-903-2039 (click-to-call), форма, соцсети (по ссылкам).
+- Primary phone **(323) 903-2039** (`tel:+13239032039`), primary email
+  `info@misslanatheatre.com`, SMS/email/WhatsApp, форма, соцсети (по ссылкам).
+- Второй телефон из старых материалов — **reserve-only**; не выводить как равный primary contact.
+
+## Launch dependencies
+
+- **Verified reviews/testimonials** — launch trust requirement `[OWNER/CONTENT]`: собрать и
+  опубликовать только реальные отзывы с разрешением/источником. Initial target: **at least five**
+  strong verified reviews, ideally from both parents and preschool/school representatives. Не
+  придумывать review copy, имена, рейтинги, школы или permissions.
+- Подтвердить production delivery формы, реальные медиа, редиректы, Google Business Profile/Search
+  Console, QA, noindex removal.
 
 ## Вне объёма (пока)
 
-- **Отзывы** — владелец сказал «не нужны». Заложить место в дизайне, включить позже.
 - Онлайн-оплата/продажа билетов — модель B2B-выездная, оплата вне сайта (можно позже).
 - Личный кабинет/CRM — на старте достаточно лида на email.
 
 ## Открытые вопросы (блокируют часть сборки)
 
-- ✅ **Имя/домен закреплены (`BRAND.md`):** **Miss Lana's Fairy-Tale Theater** (зонтик **Miss
-  Lana**), домен **`misslanatheater.com`** (свободен). **ОДИН сайт:** навигация = 4 линии-секции
-  под Miss Lana (Theater · Birthdays · School Shows · Characters), не отдельные сайты. Остаётся:
+- ✅ **Имя/домен закреплены (`BRAND.md`):** **Miss Lana's Fairy-Tale Theatre** (зонтик **Miss
+  Lana**), primary production domain **`misslanatheatre.com`** уже live. `misslanatheater.com` —
+  protective alternate only → 301 на primary. **ОДИН сайт:** навигация = 4 линии-секции
+  под Miss Lana (Theatre · Birthdays · School Shows · Characters), не отдельные сайты. Остаётся:
   **trademark-clearance у юриста** до лого/печати.
 - 🔴 **Доплата за расстояние** — конкретные суммы/правило (зональная модель — рекомендация).
 - 🔴 **Подача 2 названий шоу** — «Morozko» (→ Father Frost / заменить) и «Well Red Bow wait»
   (→ Little Red Riding Hood); см. [01_CONTENT_INVENTORY.md](01_CONTENT_INVENTORY.md).
-- 🟡 **Соцсети** — ссылки. **Домен** — статус оплаты старого (на период миграции).
+- 🟡 **Соцсети** — ссылки. **Protective/legacy domains** — 301 и статус оплаты на период миграции.
 - 🟡 **Гос. школы** — нужен ли отдельный лендинг/оффер (отдельная go-to-market).
 - 🟡 **Фото/видео, лого 2026** — активы от владельца.
+- 🟡 **Verified reviews/testimonials** — launch-required trust layer; at least five real verified
+  reviews target, not yet collected/verified in canon.
+
+## Changelog
+
+- **2026-06-25:** canon sync — Theatre spelling, live primary domain, protective alternate domain,
+  primary email/phone, reserve-phone rule, SMS/email/WhatsApp, Svitlana responder, and approved
+  form success copy added.
+- **2026-06-25 finalization:** `/school-shows` locked as canonical B2B route; reviews moved into
+  launch-required `[OWNER/CONTENT]` scope with no invented content.

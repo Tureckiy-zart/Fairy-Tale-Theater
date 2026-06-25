@@ -1,0 +1,451 @@
+{
+  "task": "MISS_LANA_CANON_FINALIZATION_002",
+  "version": "2.0",
+  "task_mode": "canon-sync",
+  "priority": "critical",
+  "description": "Finalize the Miss Lana documentation canon after the first brand/domain/contact synchronization. Remove or neutralize superseded duplicate canon files, resolve the remaining cross-document contradictions, standardize project-owned public copy to the locked Theatre spelling, lock /school-shows as the canonical B2B route, make verified reviews/testimonials an explicit launch trust requirement without inventing any reviews, update current-vs-legacy site status, standardize the Phosphor React package, and clarify form-confirmation behavior. This is a documentation canon-finalization task only.",
+  "authority_scope": {
+    "primary_authorities": [
+      "Current operator decision in project chat dated 2026-06-25",
+      "docs/core/BRAND.md",
+      "PROJECT_BRIEF.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "00_PROJECT_INSTRUCTIONS.md",
+      "05_BUILD_CLAUDE.md",
+      "2026-06-22-design-system-research-v2.md",
+      "TUNG-EXECUTION-RULE-(CANON).txt",
+      "tung_system_specification.md"
+    ],
+    "current_truth": [
+      "The locked public brand is 'Miss Lana's Fairy-Tale Theatre'.",
+      "The primary production domain is misslanatheatre.com and the current production website is already live on that domain.",
+      "The primary public email is info@misslanatheatre.com.",
+      "The primary public phone is (323) 903-2039; the second phone is reserve-only.",
+      "SMS, email, and WhatsApp are accepted; written contact is preferred.",
+      "Svitlana currently answers inquiries herself within 1-2 business days.",
+      "The customer must receive a clear on-screen form confirmation. A full copy of the submitted form must not be emailed by default; a short confirmation email may be added later if operationally useful.",
+      "The approved on-screen confirmation copy is: 'Thank you! We've received your request. Miss Lana will reply by text, email, or WhatsApp within 1-2 business days.'",
+      "Project-owned public brand and marketing copy should use Theatre consistently. American 'theater' forms remain valid only in SEO query examples, third-party proper names, legacy URLs, quotations, historical references, schema vocabulary, and technical identifiers.",
+      "The canonical B2B route is /school-shows. /for-preschools is obsolete as a canonical route and may only remain as a redirect reference if it has ever been published.",
+      "Verified testimonials/reviews are in launch scope as a trust requirement. Only real reviews with permission may be published. No review content may be invented. Initial launch target: at least five strong verified reviews, ideally from both parents and preschool/school representatives.",
+      "The current site is misslanatheatre.com and remains in content, conversion, SEO, and trust-layer refinement. magic-castle-puppet-theater.com is a legacy domain only.",
+      "misslanatheater.com is a protective alternate domain only and should redirect to misslanatheatre.com.",
+      "The canonical React icon package is @phosphor-icons/react. The deprecated phosphor-react package must not be prescribed for new implementation.",
+      "Trademark clearance remains required before final logo, print, merchandise, or permanent branded production assets.",
+      "Travel surcharges, exact cancellation rules, insurance/background-check claims, and unresolved show titles remain open owner questions and must not be invented."
+    ],
+    "precedence_rules": [
+      "This task's current_truth overrides older contradictory statements in project documentation.",
+      "BRAND.md is authoritative for brand, domain, email naming, and service-line naming.",
+      "PROJECT_BRIEF.md is authoritative for business facts and current-site status.",
+      "SITE_STRUCTURE_AND_BLOCKS.md is authoritative for detailed page routes and block architecture; /school-shows is canonical.",
+      "DESIGN_SYSTEM.md is authoritative for implementation dependencies and design tokens; @phosphor-icons/react is canonical.",
+      "Do not modify third-party proper names, official venue names, legacy URLs, SEO query examples, schema type names, or quoted source language merely to force Theatre spelling.",
+      "If multiple files with the same logical role exist, retain exactly one canonical active version in the documented canonical path and remove/archive superseded repository duplicates according to repository policy."
+    ],
+    "allowed_change_classes": [
+      "Canonical Markdown documentation updates",
+      "Repository duplicate-canon cleanup or archival",
+      "Operational instruction updates",
+      "Route and public-copy consistency fixes",
+      "Review/testimonial scope status updates",
+      "Current-vs-legacy website status corrections",
+      "Dependency-name normalization",
+      "Cross-reference, changelog, and index corrections",
+      "Documentation-only reports and review artifacts"
+    ],
+    "forbidden_change_classes": [
+      "Production website code or UI changes",
+      "DNS, redirects, email, hosting, deployment, GBP, Search Console, analytics, or schema implementation",
+      "Invented reviews, testimonials, client names, ratings, or permissions",
+      "Invented travel fees, business hours, cancellation rules, insurance, background checks, or school credentials",
+      "Final trademark, logo, or print decisions",
+      "Unrelated redesign or strategy rewrites",
+      "Deletion of legitimate third-party, historical, SEO, legacy, or technical references"
+    ]
+  },
+  "prerequisites": {
+    "required_files": [
+      "BRAND.md",
+      "PROJECT_BRIEF.md",
+      "00_PROJECT_INSTRUCTIONS.md",
+      "01_CONTENT_INVENTORY.md",
+      "02_POSITIONING_AND_TONE.md",
+      "03_SITEMAP_AND_SCOPE.md",
+      "04_SEO.md",
+      "DESIGN_SYSTEM.md",
+      "SITE_STRUCTURE_AND_BLOCKS.md",
+      "05_BUILD_CLAUDE.md",
+      "2026-06-22-design-system-research-v2.md",
+      "TUNG-EXECUTION-RULE-(CANON).txt",
+      "tung_system_specification.md or an approved repository v2-full template/runtime"
+    ],
+    "read_before_editing": [
+      "TUNG-EXECUTION-RULE-(CANON).txt",
+      "tung_system_specification.md",
+      "BRAND.md",
+      "PROJECT_BRIEF.md"
+    ],
+    "blocking_condition": "If no canonical v2-full specification/template/runtime is available, do not invent the schema. Report the governance blocker. If an approved runtime already validated MISS_LANA_CANON_SYNC_001, this task may use the same approved v2-full execution contract."
+  },
+  "scope": {
+    "in_scope": [
+      "Inventory all active and superseded copies of the eleven project canon/operational documents in the repository.",
+      "Ensure exactly one active canonical copy exists for each logical document and that indexes/instructions reference the canonical path.",
+      "Remove, archive, or mark superseded duplicate repository copies according to repository policy; do not silently delete historical source material where archival is required.",
+      "Update all project-owned public brand and marketing copy to Theatre spelling, including taglines, hero examples, CTA copy, service descriptions, and reasons-to-believe.",
+      "Preserve American theater SEO keywords, third-party names, legacy URLs, schema TheaterEvent, quotations, historical notes, and technical identifiers where correct.",
+      "Correct all documentation to identify https://misslanatheatre.com as the current production website and magic-castle-puppet-theater.com as legacy only.",
+      "Replace obsolete language saying the current site still needs to be rebranded or moved; describe it as live and under content/conversion/SEO refinement.",
+      "Lock /school-shows as the canonical B2B route in all IA, sitemap, navigation, SEO, and build documents.",
+      "Remove /for-preschools as a canonical destination; retain only as a documented redirect source if repository history or production evidence shows it was published.",
+      "Change reviews/testimonials from excluded/later to a launch trust requirement with [OWNER/CONTENT] status and an initial target of at least five verified reviews.",
+      "Explicitly prohibit invented reviews and require permission/source attribution appropriate to the review source.",
+      "Normalize all new implementation guidance to @phosphor-icons/react and mark phosphor-react as deprecated/historical where it appears in research history.",
+      "Clarify form behavior: on-screen confirmation required; no full submitted-form copy by default; short confirmation email optional later.",
+      "Create final residue, contradiction, duplicate, and route scans and a reviewer-grade closure report."
+    ],
+    "out_of_scope": [
+      "Editing or deploying website code.",
+      "Actually creating redirects, changing routes, configuring DNS, or migrating domains.",
+      "Collecting or writing review content; this task only makes reviews a documented requirement.",
+      "Implementing form email behavior.",
+      "Resolving travel fees, exact business hours, cancellation/deposit rules, insurance, background checks, show-title decisions, or public-school procurement.",
+      "Changing third-party proper names or SEO evidence.",
+      "Changing design tokens, page visual design, or product pricing.",
+      "Deleting duplicate files outside the repository/project workspace or manipulating Claude/ChatGPT Project knowledge UI; report such external duplicates for manual removal."
+    ]
+  },
+  "non_goals": [
+    "Do not perform a blind Theater-to-Theatre replacement.",
+    "Do not invent, paraphrase, or fabricate reviews.",
+    "Do not implement website, route, redirect, form, email, GBP, or SEO runtime changes.",
+    "Do not resolve unrelated owner questions.",
+    "Do not rewrite the entire marketing strategy.",
+    "Do not remove valid theater spellings in SEO queries, third-party names, legacy URLs, schema, or quotations.",
+    "Do not claim external Project knowledge duplicates were removed unless the executor actually has access to that UI/system.",
+    "Do not treat reviews as already collected merely because they are now in launch scope."
+  ],
+  "forbidden_execution_patterns": [
+    "No global replacement without per-occurrence semantic classification.",
+    "No deleting all older files solely by filename; inspect repository path, references, and history first.",
+    "No invented testimonial text, names, star ratings, school names, or permissions.",
+    "No converting /for-preschools into /school-shows in external links without documenting redirect implications.",
+    "No claiming a route redirect or domain redirect exists unless separately verified.",
+    "No mixing project-owned public copy with SEO keyword spelling rules.",
+    "No prescribing both phosphor-react and @phosphor-icons/react as interchangeable current dependencies.",
+    "No leaving contradictory current-site descriptions in lower sections after updating document headers.",
+    "No completion claim without duplicate scan, contradiction scan, route scan, dependency scan, and full diff review."
+  ],
+  "execution_guardrails": [
+    "Create a pre-edit matrix listing every logical document, all repository paths found, active/superseded status, and intended action.",
+    "Classify every remaining 'theater' occurrence as PROJECT_PUBLIC_COPY, SEO_KEYWORD, THIRD_PARTY_NAME, LEGACY_URL, SCHEMA_OR_TECHNICAL, QUOTATION, HISTORICAL_NOTE, or ERROR.",
+    "Use Theatre for PROJECT_PUBLIC_COPY and project-owned brand/service names.",
+    "Preserve all other semantically valid categories exactly unless a separate factual correction is required.",
+    "Search for old current-site wording such as current site, needs rebrand, domain available/free, only call us, no gallery, no online form, or old URL as current; verify context manually.",
+    "Set reviews to [OWNER/CONTENT] or equivalent launch-required status, not READY and not completed.",
+    "State launch review target as a target/recommendation, not an existing asset count.",
+    "Standardize canonical route examples to /school-shows and document /for-preschools only as a possible redirect source.",
+    "Standardize implementation dependency to @phosphor-icons/react; in the research document, preserve historical mention only if clearly marked superseded.",
+    "Keep the approved form success copy unchanged except for typographic punctuation.",
+    "Retain the exact primary phone, email, and domain values.",
+    "Review headings, tables, code fences, diagrams, URL trees, examples, changelogs, and cross-links—not only prose.",
+    "Use git diff --check and full diff review before closure.",
+    "If duplicate files exist only in an external project-knowledge UI, create a manual cleanup list rather than claiming repository deletion."
+  ],
+  "steps": [
+    {
+      "id": "S1",
+      "title": "Inventory canonical paths and duplicate versions",
+      "actions": [
+        "Locate every repository copy of the eleven project documents by filename and logical role.",
+        "Record path, version/date header, brand/domain state, inbound references, and active/superseded recommendation.",
+        "Create docs/reports/MISS_LANA_CANON_FINALIZATION_002_pre_edit_matrix.md.",
+        "If duplicates are external to the repository, list them separately as MANUAL PROJECT-KNOWLEDGE CLEANUP."
+      ],
+      "expected_outcome": "There is an evidence-based duplicate/canonical-path plan before editing or removal.",
+      "affected_files": [
+        "docs/reports/MISS_LANA_CANON_FINALIZATION_002_pre_edit_matrix.md"
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "Clean duplicate canon and repair references",
+      "actions": [
+        "Retain exactly one active canonical repository copy per logical document.",
+        "Remove or archive superseded duplicates according to repository policy.",
+        "Update README, project instructions, indexes, and cross-links to canonical paths.",
+        "Do not claim external knowledge duplicates were removed; produce a manual removal list when applicable."
+      ],
+      "expected_outcome": "Future agents resolve one canonical file per document and no repository reference points to a superseded copy.",
+      "affected_files": [
+        "Canonical indexes/instructions and superseded duplicate files as discovered"
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "Finalize brand spelling in public copy",
+      "actions": [
+        "Change project-owned taglines, hero examples, reasons-to-believe, service copy, and CTA examples from theater to theatre.",
+        "Keep the locked brand name and service-line spelling consistent.",
+        "Preserve SEO keywords, third-party names, legacy URLs, TheaterEvent schema, quotations, and historical notes.",
+        "Add a brief style rule distinguishing public copy from SEO/technical exceptions."
+      ],
+      "expected_outcome": "The project presents one public spelling without corrupting evidence or technical vocabulary.",
+      "affected_files": [
+        "BRAND.md",
+        "PROJECT_BRIEF.md",
+        "00_PROJECT_INSTRUCTIONS.md",
+        "01_CONTENT_INVENTORY.md",
+        "02_POSITIONING_AND_TONE.md",
+        "03_SITEMAP_AND_SCOPE.md",
+        "04_SEO.md",
+        "DESIGN_SYSTEM.md",
+        "SITE_STRUCTURE_AND_BLOCKS.md",
+        "05_BUILD_CLAUDE.md",
+        "2026-06-22-design-system-research-v2.md"
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "Correct current-site and legacy-site status",
+      "actions": [
+        "Identify misslanatheatre.com as the current production site in all relevant documents.",
+        "Describe the current site as live and under content, conversion, trust, and SEO refinement.",
+        "Identify magic-castle-puppet-theater.com as legacy only.",
+        "Remove obsolete statements implying the brand/domain migration has not happened.",
+        "Keep redirect, GBP, Search Console, and listing work as unverified implementation tasks unless evidence proves completion."
+      ],
+      "expected_outcome": "No document confuses the live new site with the legacy site or an unstarted redesign.",
+      "affected_files": [
+        "PROJECT_BRIEF.md",
+        "00_PROJECT_INSTRUCTIONS.md",
+        "01_CONTENT_INVENTORY.md",
+        "03_SITEMAP_AND_SCOPE.md",
+        "04_SEO.md",
+        "SITE_STRUCTURE_AND_BLOCKS.md"
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "Lock the canonical B2B route",
+      "actions": [
+        "Use /school-shows as the only canonical B2B destination in sitemap, navigation, page blueprints, metadata examples, and build order.",
+        "Remove /for-preschools as a canonical route.",
+        "If /for-preschools was previously published or is referenced externally, document a future 301 redirect requirement without implementing it."
+      ],
+      "expected_outcome": "All documentation agrees on /school-shows and no competing canonical B2B route remains.",
+      "affected_files": [
+        "03_SITEMAP_AND_SCOPE.md",
+        "04_SEO.md",
+        "SITE_STRUCTURE_AND_BLOCKS.md",
+        "05_BUILD_CLAUDE.md"
+      ]
+    },
+    {
+      "id": "S6",
+      "title": "Move verified reviews into launch scope",
+      "actions": [
+        "Replace statements that reviews are not needed or are out of scope.",
+        "Define testimonials/reviews as a launch trust requirement with [OWNER/CONTENT] status.",
+        "Set an initial target of at least five real verified reviews, ideally from both parents and preschool/school representatives.",
+        "Require permission/source verification and prohibit invented review copy.",
+        "Do not mark the requirement complete or imply existing review inventory."
+      ],
+      "expected_outcome": "Every relevant document treats reviews consistently as required but not yet collected/verified.",
+      "affected_files": [
+        "PROJECT_BRIEF.md",
+        "01_CONTENT_INVENTORY.md",
+        "02_POSITIONING_AND_TONE.md",
+        "03_SITEMAP_AND_SCOPE.md",
+        "SITE_STRUCTURE_AND_BLOCKS.md"
+      ]
+    },
+    {
+      "id": "S7",
+      "title": "Normalize icon dependency and form-confirmation rules",
+      "actions": [
+        "Set @phosphor-icons/react as the only current implementation package.",
+        "Mark phosphor-react references in research history as superseded or replace them where they are prescriptive.",
+        "Clarify that on-screen confirmation is required, the full submitted-form copy is not emailed by default, and a short confirmation email may be added later.",
+        "Preserve the approved on-screen confirmation text."
+      ],
+      "expected_outcome": "No dependency conflict or form-confirmation ambiguity remains.",
+      "affected_files": [
+        "DESIGN_SYSTEM.md",
+        "2026-06-22-design-system-research-v2.md",
+        "05_BUILD_CLAUDE.md",
+        "03_SITEMAP_AND_SCOPE.md",
+        "SITE_STRUCTURE_AND_BLOCKS.md",
+        "01_CONTENT_INVENTORY.md"
+      ]
+    },
+    {
+      "id": "S8",
+      "title": "Run final contradiction and residue audits",
+      "actions": [
+        "Scan for obsolete brand/domain/email references.",
+        "Scan for project-owned public-copy theater occurrences and classify every remainder.",
+        "Scan for reviews excluded/later/not needed wording.",
+        "Scan for /for-preschools canonical references.",
+        "Scan for phosphor-react prescriptive references.",
+        "Scan for old URL described as current and new URL described as proposed/free.",
+        "Scan for duplicate logical documents and broken cross-links."
+      ],
+      "expected_outcome": "No unexplained contradiction or residue remains.",
+      "affected_files": [
+        "All in-scope documentation"
+      ]
+    },
+    {
+      "id": "S9",
+      "title": "Create reviewer-grade finalization report",
+      "actions": [
+        "Review the complete diff file by file.",
+        "Create docs/reports/MISS_LANA_CANON_FINALIZATION_002_report.md.",
+        "Create docs/reviews/MISS_LANA_CANON_FINALIZATION_002_review.md.",
+        "Include duplicate actions, preserved theater exceptions, route decision, review status, dependency decision, current-site status, unresolved owner questions, and verification results.",
+        "Declare READY FOR SITE COPY SYNC only if every success criterion passes."
+      ],
+      "expected_outcome": "The finalized canon is documented, reviewable, and safe for the next site-copy task.",
+      "affected_files": [
+        "docs/reports/MISS_LANA_CANON_FINALIZATION_002_report.md",
+        "docs/reviews/MISS_LANA_CANON_FINALIZATION_002_review.md"
+      ]
+    }
+  ],
+  "success_criteria": [
+    "Exactly one active canonical repository copy exists for each logical project document, or external duplicates are explicitly listed for manual cleanup.",
+    "All project-owned public brand and marketing copy uses Theatre spelling.",
+    "Every remaining theater occurrence is valid and classified as SEO, third-party, legacy, schema/technical, quotation, or historical context.",
+    "misslanatheatre.com is consistently described as the current live production site.",
+    "magic-castle-puppet-theater.com is consistently described as legacy only.",
+    "No document says the new domain is merely free, proposed, awaiting purchase, or awaiting migration.",
+    "/school-shows is the sole canonical B2B route in all active documents.",
+    "/for-preschools appears only as a potential redirect-source note if historically needed.",
+    "Verified testimonials/reviews are consistently in launch scope with [OWNER/CONTENT] status and no invented content.",
+    "The launch target of at least five verified reviews is presented as a target, not an existing fact.",
+    "@phosphor-icons/react is the only current prescribed React icon package.",
+    "The form rules require on-screen confirmation, do not send a full form copy by default, and allow a future short confirmation email.",
+    "The primary domain, email, phone, written-contact methods, responder, and response window remain correct.",
+    "No unrelated code, pricing, legal, design-token, or business-fact changes were introduced.",
+    "Final report and reviewer-grade review exist and are readable.",
+    "All execution-safety requirements were respected."
+  ],
+  "verification": {
+    "required_commands": [
+      "git status --short",
+      "git diff --check",
+      "find . -type f \\( -name 'BRAND.md' -o -name 'PROJECT_BRIEF.md' -o -name '00_PROJECT_INSTRUCTIONS.md' -o -name '01_CONTENT_INVENTORY.md' -o -name '02_POSITIONING_AND_TONE.md' -o -name '03_SITEMAP_AND_SCOPE.md' -o -name '04_SEO.md' -o -name 'DESIGN_SYSTEM.md' -o -name 'SITE_STRUCTURE_AND_BLOCKS.md' -o -name '05_BUILD_CLAUDE.md' -o -name '2026-06-22-design-system-research-v2.md' \\) -print | sort",
+      "rg -n --hidden --glob '*.md' \"Miss Lana['’]s Fairy-Tale Theater|misslanatheater\\.com|info@misslanatheater\\.com\" .",
+      "rg -n --hidden --glob '*.md' \"Live theater|children['’]s theater|theater troupe|theater show|values-driven theater|30\\+ years of.*theater\" .",
+      "rg -n --hidden --glob '*.md' \"reviews.*(not needed|not required|later|out of scope)|Отзывы.*(не нужны|позже)|ReviewsBlock.*(off|disabled|later)\" .",
+      "rg -n --hidden --glob '*.md' \"/for-preschools|/school-shows\" .",
+      "rg -n --hidden --glob '*.md' \"phosphor-react|@phosphor-icons/react\" .",
+      "rg -n --hidden --glob '*.md' \"magic-castle-puppet-theater\\.com|misslanatheatre\\.com\" .",
+      "rg -n --hidden --glob '*.md' \"current site|текущий сайт|needs.*rebrand|нужно.*ребренд|domain.*(free|available|proposed|purchase)|свободен|занять|купить домен\" .",
+      "test -f docs/reports/MISS_LANA_CANON_FINALIZATION_002_pre_edit_matrix.md && test -r docs/reports/MISS_LANA_CANON_FINALIZATION_002_pre_edit_matrix.md",
+      "test -f docs/reports/MISS_LANA_CANON_FINALIZATION_002_report.md && test -r docs/reports/MISS_LANA_CANON_FINALIZATION_002_report.md",
+      "test -f docs/reviews/MISS_LANA_CANON_FINALIZATION_002_review.md && test -r docs/reviews/MISS_LANA_CANON_FINALIZATION_002_review.md"
+    ],
+    "manual_checks": [
+      "Confirm every active logical document has one canonical repository path.",
+      "Confirm external knowledge duplicates, if any, are listed for manual removal and not falsely claimed deleted.",
+      "Confirm every remaining project-owned public phrase uses Theatre.",
+      "Confirm valid American SEO phrases and third-party names were preserved.",
+      "Confirm misslanatheatre.com is the current site and the old domain is legacy only.",
+      "Confirm /school-shows is canonical everywhere.",
+      "Confirm reviews are required but not represented as already collected.",
+      "Confirm no review text, names, ratings, or permissions were invented.",
+      "Confirm @phosphor-icons/react is the only current prescribed dependency.",
+      "Confirm the form confirmation distinction is clear and consistent.",
+      "Confirm all Markdown tables, trees, links, code fences, and changelogs remain readable.",
+      "Confirm no website implementation was claimed or performed.",
+      "Confirm non_goals, forbidden_execution_patterns, and execution_guardrails were respected."
+    ],
+    "failure_conditions": [
+      "A superseded duplicate remains active or referenced as canonical without explanation.",
+      "Any unexplained project-owned Theater public-copy occurrence remains.",
+      "Any valid SEO, third-party, legacy, schema, quotation, or historical spelling is incorrectly changed.",
+      "Any active document still describes the legacy domain as the current site.",
+      "Any active document still treats /for-preschools as canonical.",
+      "Any active document still says reviews are not needed or excluded from launch.",
+      "Any review content is invented.",
+      "phosphor-react remains prescribed as a current implementation package.",
+      "Any required report/review artifact is missing.",
+      "git diff --check reports errors.",
+      "Production code or external infrastructure is modified."
+    ]
+  },
+  "deliverables": {
+    "modified_files": [
+      "BRAND.md",
+      "PROJECT_BRIEF.md",
+      "00_PROJECT_INSTRUCTIONS.md",
+      "01_CONTENT_INVENTORY.md",
+      "02_POSITIONING_AND_TONE.md",
+      "03_SITEMAP_AND_SCOPE.md",
+      "04_SEO.md",
+      "DESIGN_SYSTEM.md",
+      "SITE_STRUCTURE_AND_BLOCKS.md",
+      "05_BUILD_CLAUDE.md",
+      "2026-06-22-design-system-research-v2.md",
+      "Canonical indexes/README files if they reference superseded paths"
+    ],
+    "created_files": [
+      "docs/reports/MISS_LANA_CANON_FINALIZATION_002_pre_edit_matrix.md",
+      "docs/reports/MISS_LANA_CANON_FINALIZATION_002_report.md",
+      "docs/reviews/MISS_LANA_CANON_FINALIZATION_002_review.md"
+    ],
+    "conditional_actions": [
+      "Archive/remove superseded repository duplicates according to repository policy.",
+      "Create a MANUAL PROJECT-KNOWLEDGE CLEANUP list if duplicate files exist only outside the repository."
+    ],
+    "report_requirements": [
+      "List the one canonical path for every logical document.",
+      "List every duplicate and its disposition: retained, archived, removed, or manual external cleanup.",
+      "Summarize Theatre public-copy changes and preserved theater exceptions.",
+      "Confirm /school-shows as canonical and document any future redirect requirement.",
+      "Confirm reviews are launch-required but not yet collected/verified.",
+      "Confirm @phosphor-icons/react as canonical dependency.",
+      "Confirm current and legacy site status.",
+      "List unresolved owner questions without solving them.",
+      "Include command pass/fail results and final READY/BLOCKED status."
+    ],
+    "final_response_requirements": [
+      "State completed, partially completed, or blocked.",
+      "List modified, created, archived, and removed files.",
+      "List any external duplicate files requiring manual deletion.",
+      "Summarize preserved exceptions and unresolved questions.",
+      "Report verification results.",
+      "Do not claim website code, redirects, routes, email delivery, reviews, or infrastructure were implemented."
+    ]
+  },
+  "mandatory_closure": {
+    "required": true,
+    "closure_sequence": [
+      "Step 1 — Scope verification: confirm only documentation, duplicate-canon cleanup, indexes, and required reports were changed.",
+      "Step 2 — Duplicate verification: confirm one active canonical path per logical document and document external duplicates separately.",
+      "Step 3 — Public-copy verification: confirm project-owned copy uses Theatre and all preserved theater exceptions are semantically valid.",
+      "Step 4 — Status verification: confirm current-site, legacy-site, domain, email, phone, and contact workflow are consistent.",
+      "Step 5 — Route/review/dependency verification: confirm /school-shows, launch-required verified reviews, and @phosphor-icons/react are consistently locked.",
+      "Step 6 — Reviewer-grade diff review: inspect all edits, removals, archives, links, tables, trees, fences, and changelogs; save review artifact.",
+      "Step 7 — Command verification: run every required command and resolve all in-scope failures.",
+      "Step 8 — Deliverable verification: confirm all reports and review artifacts exist and are readable.",
+      "Step 9 — Execution-safety confirmation: explicitly confirm no non_goals were fixed, no forbidden patterns were violated, and all guardrails were respected.",
+      "Step 10 — Closure statement: declare READY FOR SITE COPY SYNC only when every success criterion passes; otherwise declare BLOCKED with exact reasons."
+    ],
+    "closure_artifact": "docs/reports/MISS_LANA_CANON_FINALIZATION_002_report.md"
+  },
+  "post_actions": [
+    "Do not edit production website code as part of this task.",
+    "After successful closure, use only the finalized canonical files for the site-wide public copy inventory and synchronization task.",
+    "Create a separate TUNG v2-full for website text/code synchronization, beginning with header, footer, contacts, booking form, and Home page.",
+    "Create separate implementation tasks for redirects/routes, form delivery, reviews collection workflow, GBP, Search Console, schema, and analytics."
+  ]
+}

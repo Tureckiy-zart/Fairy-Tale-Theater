@@ -1,0 +1,276 @@
+{
+  "task": "MISS_LANA_CANON_FINAL_CLEANUP_003",
+  "version": "2.0",
+  "task_mode": "canon-sync",
+  "priority": "critical",
+  "description": "Perform the final documentation-only cleanup of the Miss Lana project canon after brand/domain/contact synchronization. Fix only the remaining verified inconsistencies between root operational documents and core canon: product description in CLAUDE.md, active app location and launch-state wording in STATUS.md, form implementation status and review placement in 03_SITEMAP_AND_SCOPE.md, and next-step status in README.md. Do not perform duplicate-file cleanup: the operator confirmed BRAND.md exists only once in the project.",
+  "authority_scope": {
+    "primary_authorities": [
+      "Current operator correction: BRAND.md exists only once in the project; previous duplicate warning was false and must not be acted upon.",
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "STATUS.md",
+      "README.md",
+      "CLAUDE.md",
+      "docs/PROJECT_PROGRESS.md",
+      "TUNG-EXECUTION-RULE-(CANON).txt",
+      "Approved repository v2-full TUNG runtime/template"
+    ],
+    "current_truth": [
+      "The project is a marketing and lead-generation website for a travelling children's theatre in Los Angeles, not an interactive browser theatre experience.",
+      "The active Next.js application lives at repository root: app/, components/, lib/, public/, tests/.",
+      "baselines/js-next/ is historical only and must not be described as the current active app location.",
+      "The production domain is live at misslanatheatre.com, but public launch is still pre-launch/noindex.",
+      "The inquiry form UI already exists with client-side validation and on-screen success state.",
+      "Production delivery of form submissions to info@misslanatheatre.com must be described as unverified/not yet connected unless separately proven.",
+      "Verified reviews/testimonials are a launch dependency, not out of scope.",
+      "The current next phase is pre-launch/launch work: form delivery verification, real media, reviews, redirects, GBP/Search Console, technical QA, noindex removal, and launch.",
+      "The locked brand remains Miss Lana's Fairy-Tale Theatre; primary domain misslanatheatre.com; primary email info@misslanatheatre.com; primary phone (323) 903-2039.",
+      "No duplicate-file cleanup is authorized or required by this task."
+    ],
+    "precedence_rules": [
+      "Current operator correction overrides any prior audit claim about duplicate BRAND.md files.",
+      "BRAND.md remains authoritative for brand/domain/contact naming.",
+      "STATUS.md must describe present repository and launch state only; history belongs in PROJECT_PROGRESS.md.",
+      "README.md must reflect current state and next steps, not completed earlier phases.",
+      "03_SITEMAP_AND_SCOPE.md must distinguish implemented UI from unverified production delivery.",
+      "Do not change business facts, pricing, routes, brand spelling, or design-system decisions in this task."
+    ],
+    "allowed_change_classes": [
+      "Documentation-only consistency corrections",
+      "Operational wording fixes",
+      "Current-state and next-step synchronization",
+      "Launch-dependency classification fixes",
+      "Append-only project progress entry",
+      "Final audit report and reviewer-grade closure artifact"
+    ],
+    "forbidden_change_classes": [
+      "Deleting or archiving project files based on presumed duplicates",
+      "Production code changes",
+      "DNS, redirect, email, hosting, GBP, Search Console, analytics, or deployment changes",
+      "Business-fact changes",
+      "Pricing or travel-policy changes",
+      "Brand, logo, or trademark changes",
+      "Invented reviews or client claims"
+    ]
+  },
+  "prerequisites": {
+    "required_files": [
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "docs/PROJECT_PROGRESS.md"
+    ],
+    "read_before_editing": [
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md"
+    ],
+    "blocking_condition": "If the repository paths differ from those documented here, inspect the actual tree and update only the equivalent canonical files. Do not infer or delete duplicates."
+  },
+  "scope": {
+    "in_scope": [
+      "Rewrite CLAUDE.md product reality so it clearly describes a marketing/lead-generation website for a travelling children's theatre.",
+      "Add an explicit negative statement that the product is not an interactive browser performance, game, streaming product, ticketing platform, or virtual theatre experience.",
+      "Correct STATUS.md so the active app location is repository root and baselines/js-next is historical only.",
+      "Split STATUS.md state wording into deployment status and launch status: production domain live; public launch pre-launch/noindex.",
+      "Correct 03_SITEMAP_AND_SCOPE.md to state that the inquiry-form UI is implemented, while production submission delivery remains unverified/not connected unless separately proven.",
+      "Move verified reviews/testimonials out of the 'out of scope' section and into a launch dependencies section.",
+      "Update README.md so completed Phase 1-3 page work is not described as future work.",
+      "Update README.md next steps to current Phase 5/pre-launch work.",
+      "Ensure all edited files remain consistent with Theatre spelling, canonical domain, canonical email, canonical phone, /school-shows, and @phosphor-icons/react.",
+      "Append a short factual entry to docs/PROJECT_PROGRESS.md describing the documentation final cleanup.",
+      "Create a final verification report and reviewer-grade review artifact."
+    ],
+    "out_of_scope": [
+      "Any duplicate-file scan, deletion, archival, or Project knowledge cleanup.",
+      "Website code or UI modifications.",
+      "Form backend implementation or email delivery setup.",
+      "Redirect, DNS, hosting, Search Console, GBP, or noindex implementation.",
+      "Collecting or drafting reviews.",
+      "Changing pricing, show titles, travel rules, cancellation policy, insurance, or public-school strategy.",
+      "Rewriting historical entries in PROJECT_PROGRESS.md."
+    ]
+  },
+  "non_goals": [
+    "Do not delete any BRAND.md or other canon file as a duplicate.",
+    "Do not alter code, runtime behavior, routes, or deployment configuration.",
+    "Do not claim form delivery is working unless independently verified.",
+    "Do not claim the site is publicly launched while noindex remains active.",
+    "Do not invent reviews, permissions, ratings, or clients.",
+    "Do not rewrite completed historical progress entries."
+  ],
+  "forbidden_execution_patterns": [
+    "No duplicate cleanup based on search-result history or uploaded-file history.",
+    "No broad global replacement across the repository.",
+    "No mixing present-state wording with historical build-location wording.",
+    "No describing reviews as both launch-required and out-of-scope.",
+    "No describing the inquiry form as absent when the UI already exists.",
+    "No describing a live deployment as a completed public launch while noindex is active.",
+    "No completion claim without cross-document contradiction scan and full diff review."
+  ],
+  "execution_guardrails": [
+    "Inspect git status before editing and touch only files listed in scope.",
+    "Preserve append-only history in docs/PROJECT_PROGRESS.md.",
+    "Use precise status vocabulary: Deployment = LIVE; Launch = PRE-LAUNCH / NOINDEX.",
+    "Use precise form vocabulary: UI implemented; production delivery unverified/not connected.",
+    "Keep README current-state summary concise and aligned with STATUS.md.",
+    "Do not change any locked brand/domain/contact facts.",
+    "After editing, search for the obsolete phrases 'interactive fairy-tale theatre', 'baselines/js-next/ (единственное Next.js-приложение', 'её сейчас нет', and outdated README future-phase wording."
+  ],
+  "steps": [
+    {
+      "id": "S1",
+      "title": "Pre-edit current-state matrix",
+      "actions": [
+        "Record current wording in CLAUDE.md, STATUS.md, README.md, and docs/core/03_SITEMAP_AND_SCOPE.md.",
+        "Confirm BRAND.md exists once in the repository and record that no duplicate cleanup will be performed.",
+        "List exact contradictions to be corrected and no others."
+      ],
+      "expected_outcome": "A bounded correction matrix with no duplicate-file action."
+    },
+    {
+      "id": "S2",
+      "title": "Correct CLAUDE.md product reality",
+      "actions": [
+        "Replace the browser-interactive-theatre description with the marketing/lead-generation website description.",
+        "Add a clear what-it-is-not statement covering interactive browser experience, game, streaming, and ticketing."
+      ],
+      "expected_outcome": "Operational agents receive the correct product model."
+    },
+    {
+      "id": "S3",
+      "title": "Correct STATUS.md current state",
+      "actions": [
+        "Set active app location to repository root paths.",
+        "Mark baselines/js-next as historical only.",
+        "Separate deployment status from launch status.",
+        "Keep historical build notes unchanged in the append-only/history sections."
+      ],
+      "expected_outcome": "STATUS.md accurately describes the present repository and pre-launch state."
+    },
+    {
+      "id": "S4",
+      "title": "Correct sitemap/scope implementation status",
+      "actions": [
+        "Replace wording that says the inquiry form does not exist.",
+        "State that the UI, validation, and on-screen confirmation exist.",
+        "State that production delivery to info@misslanatheatre.com remains launch-critical and unverified unless proven.",
+        "Move verified reviews/testimonials into a Launch dependencies section."
+      ],
+      "expected_outcome": "Scope distinguishes implemented interface from missing production integration and treats reviews consistently."
+    },
+    {
+      "id": "S5",
+      "title": "Update README current status and next steps",
+      "actions": [
+        "Remove language saying Home and service pages are future work.",
+        "State that MVP pages and final copy are already assembled.",
+        "List Phase 5/pre-launch priorities: form delivery, real media, verified reviews, redirects, GBP/Search Console, QA, noindex removal, launch."
+      ],
+      "expected_outcome": "README matches STATUS.md and no longer sends agents backward to completed phases."
+    },
+    {
+      "id": "S6",
+      "title": "Progress log and verification",
+      "actions": [
+        "Append a concise 2026-06-25 entry to docs/PROJECT_PROGRESS.md.",
+        "Run targeted residue and contradiction searches.",
+        "Review the complete diff with BLOCKER/HIGH/MEDIUM/LOW/NOTE severity labels.",
+        "Create the required report and review artifacts."
+      ],
+      "expected_outcome": "All verified inconsistencies are closed and documented."
+    }
+  ],
+  "success_criteria": [
+    "CLAUDE.md describes the real marketing/lead-generation website and explicitly rejects the browser-interactive product model.",
+    "STATUS.md identifies root app paths as active and baselines/js-next as historical.",
+    "STATUS.md separates live deployment from pre-launch/noindex state.",
+    "03_SITEMAP_AND_SCOPE.md states the form UI exists and production delivery is unverified/not connected.",
+    "Verified reviews are no longer located under an out-of-scope heading.",
+    "README.md reflects completed MVP pages/copy and current Phase 5 work.",
+    "No duplicate file was deleted or archived by this task.",
+    "Locked brand/domain/contact/route/dependency facts remain unchanged.",
+    "No BLOCKER or HIGH finding remains open after review.",
+    "docs/PROJECT_PROGRESS.md has one append-only entry for this task."
+  ],
+  "verification": {
+    "required_commands": [
+      "git status --short",
+      "git diff -- CLAUDE.md STATUS.md README.md docs/core/03_SITEMAP_AND_SCOPE.md docs/PROJECT_PROGRESS.md",
+      "rg -n \"Interactive fairy-tale theatre|interactive performances in the browser|baselines/js-next.*единственное Next.js|её сейчас нет|реальные страницы.*когда готовы\" CLAUDE.md STATUS.md README.md docs/core/03_SITEMAP_AND_SCOPE.md",
+      "rg -n \"Deployment: LIVE|Launch state: PRE-LAUNCH|repository root|production delivery|Launch dependencies|verified reviews\" CLAUDE.md STATUS.md README.md docs/core/03_SITEMAP_AND_SCOPE.md",
+      "rg -n \"Miss Lana's Fairy-Tale Theater|misslanatheater.com.*primary|info@misslanatheater.com|/for-preschools|phosphor-react\" CLAUDE.md STATUS.md README.md docs/core/03_SITEMAP_AND_SCOPE.md"
+    ],
+    "manual_checks": [
+      "Confirm the last search returns only semantically valid protective-domain or historical references, if any.",
+      "Confirm no duplicate cleanup was performed.",
+      "Confirm README and STATUS describe the same current phase.",
+      "Confirm the form status is not overstated.",
+      "Confirm reviews are launch-required but not claimed as collected.",
+      "Confirm PROJECT_PROGRESS was appended, not rewritten."
+    ],
+    "review_severity_vocabulary": [
+      "BLOCKER",
+      "HIGH",
+      "MEDIUM",
+      "LOW",
+      "NOTE"
+    ]
+  },
+  "deliverables": {
+    "modified_files": [
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/PROJECT_PROGRESS.md"
+    ],
+    "report_files": [
+      "docs/reports/2026-06-25-canon-final-cleanup-report.md",
+      "docs/reviews/MISS_LANA_CANON_FINAL_CLEANUP_003_review.md"
+    ],
+    "report_requirements": [
+      "List each corrected contradiction with before/after summary.",
+      "Explicitly record that the prior duplicate-BRAND finding was false and no duplicate cleanup was performed.",
+      "List files changed and verification commands/results.",
+      "State remaining open owner/launch dependencies without expanding scope."
+    ]
+  },
+  "mandatory_closure": {
+    "required": true,
+    "closure_sequence": [
+      "Confirm all five scoped files were reviewed and only required files were changed.",
+      "Confirm no duplicate file was deleted, archived, renamed, or marked superseded.",
+      "Confirm obsolete product, app-location, form-status, review-scope, and README-next-step wording is removed.",
+      "Perform reviewer-grade diff review and resolve every BLOCKER/HIGH finding.",
+      "Confirm no non_goals were fixed, no forbidden_execution_patterns were violated, and all execution_guardrails were respected.",
+      "Confirm report and review artifacts exist and are readable.",
+      "Close with status: CANON CLEAN — READY FOR PRE-LAUNCH EXECUTION."
+    ],
+    "failure_conditions": [
+      "Any duplicate file is removed or archived.",
+      "CLAUDE.md still describes an interactive browser theatre product.",
+      "STATUS.md still presents baselines/js-next as the active app.",
+      "Form UI is still described as absent.",
+      "Reviews remain under an out-of-scope heading.",
+      "README still lists completed page-building work as future work.",
+      "Any BLOCKER or HIGH review finding remains open."
+    ]
+  },
+  "post_actions": [
+    "Do not continue into code or deployment work in this task.",
+    "Use the cleaned canon as the source for the next pre-launch TUNG.",
+    "Next recommended task class: pre-launch audit and execution plan covering form delivery, media, reviews, redirects, GBP/Search Console, technical QA, and noindex removal."
+  ]
+}

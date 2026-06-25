@@ -59,8 +59,8 @@
 
 ---
 
-> Что уже учтено с ваших слов (переспрашивать не нужно): формат — живые актёры +
-> кукольное шоу + мастер-классы/дни рождения/выезды; театр выездной без своего
-> помещения; аудитория — семьи с детьми, школы и сады, русскоязычная диаспора LA;
-> цель сайта — заявки + витрина + SEO; обязательные блоки — онлайн-заявка/бронь,
-> галерея/видео, прайс/пакеты, репертуар (отзывы пока не нужны).
+> Canon update 2026-06-25: for current facts, use `docs/core/PROJECT_BRIEF.md` and
+> `docs/core/BRAND.md`. Current frame: Miss Lana's Fairy-Tale Theatre, live site
+> `misslanatheatre.com`, English-first audience, professional live fairy-tale theatre,
+> and verified reviews/testimonials are a launch trust requirement `[OWNER/CONTENT]`
+> (target at least 5 real verified reviews with permission/source; do not invent content).

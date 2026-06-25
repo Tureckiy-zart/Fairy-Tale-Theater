@@ -19,9 +19,11 @@ v2 (2026-06-22). Прежний бриф из корня (рамка «Magic Cas
 
 ## Актуальная рамка (одной строкой)
 
-Выездной **детский театр** «**Miss Lana's Fairy-Tale Theater**» (зонтик Miss Lana, домен
-`misslanatheater.com`), LA: театрализованные шоу по добрым сказкам, **30+ лет** опыта (в осн.
+Выездной **детский театр** «**Miss Lana's Fairy-Tale Theatre**» (зонтик Miss Lana, primary
+production domain `misslanatheatre.com` уже live), LA: театрализованные шоу по добрым сказкам, **30+ лет** опыта (в осн.
 Украина), **команда украинская — бренд не ассоциируем с Россией**, сайт **английский-первый**
-(двуязычие RU/EN снято). Цель сайта — заявки + витрина + локальное SEO. Подробности и все
+(двуязычие RU/EN снято). Primary email: `info@misslanatheatre.com`; primary phone:
+**(323) 903-2039**; письменные каналы (SMS/email/WhatsApp) предпочтительны; ответ от Miss Lana
+в течение **1-2 business days**. Цель сайта — заявки + витрина + локальное SEO. Подробности и все
 открытые вопросы — в [docs/core/PROJECT_BRIEF.md](docs/core/PROJECT_BRIEF.md).
 </content>
