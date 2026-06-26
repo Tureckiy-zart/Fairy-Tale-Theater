@@ -7,6 +7,7 @@
 // photos render the marked placeholder treatment (Phase 4 [ASSET]). Server component;
 // unique metadata per page (noindex pre-launch).
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   Breadcrumb,
@@ -108,14 +109,27 @@ export default async function ShowDetailPage({
             </div>
           </div>
 
-          {/* Placeholder media (assets gated — Phase 4 [ASSET]) */}
-          <div className="flex aspect-4/3 items-center justify-center rounded-2xl border border-border-soft bg-surface p-6 text-center">
-            <div className="flex flex-col items-center gap-3">
-              <SparkStar size={28} />
-              <p className="font-display text-2xl text-forest-700">Show photo</p>
-              <Tag>Photo — pending</Tag>
+          {/* Hero photo — real asset when set (lib/shows), else marked placeholder. */}
+          {show.image ? (
+            <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft bg-surface">
+              <Image
+                src={show.image}
+                alt={`A scene from Miss Lana's "${show.title}".`}
+                fill
+                priority
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className={`object-cover ${show.imagePosition === "top" ? "object-top" : show.imagePosition === "bottom" ? "object-bottom" : ""}`}
+              />
             </div>
-          </div>
+          ) : (
+            <div className="flex aspect-4/3 items-center justify-center rounded-2xl border border-border-soft bg-surface p-6 text-center">
+              <div className="flex flex-col items-center gap-3">
+                <SparkStar size={28} />
+                <p className="font-display text-2xl text-forest-700">Show photo</p>
+                <Tag>Photo — pending</Tag>
+              </div>
+            </div>
+          )}
         </div>
       </Container>
 

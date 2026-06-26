@@ -29,6 +29,7 @@ export function ShowCardGrid({
             ctaLabel="See this show"
             mediaSrc={show.image}
             mediaAlt={show.image ? `A scene from Miss Lana's "${show.title}".` : ""}
+            mediaPosition={show.imagePosition}
             meta={[
               { icon: UsersThree, label: show.ages },
               { icon: Clock, label: show.length },

@@ -34,6 +34,8 @@ export interface Show {
   featured?: boolean;
   /** Temporary photo path under /public — none yet (placeholder treatment, Phase 4 [ASSET]). */
   image?: string;
+  /** object-position for the card crop (e.g. "top" so a portrait's face isn't cut). */
+  imagePosition?: "top" | "center" | "bottom";
 }
 
 const LENGTH = "35–50 min";
@@ -60,7 +62,8 @@ export const SHOWS: Show[] = [
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
-    image: "/images/gallery/troupe/red-cape-character-with-basket.jpg",
+    image: "/images/gallery/troupe/red-cape-character-with-basket-2.jpg",
+    imagePosition: "top",
   },
   {
     slug: "the-bunnys-little-house",
@@ -84,7 +87,7 @@ export const SHOWS: Show[] = [
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
-    image: "/images/gallery/shows/performer-arms-raised-on-stage.jpg",
+    // image pending — owner to supply a Cinderella-specific photo.
   },
   {
     slug: "the-magic-castle",
@@ -120,7 +123,7 @@ export const SHOWS: Show[] = [
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
-    image: "/images/gallery/shows/bunny-and-fox-chase-scene.jpg",
+    // image pending — owner to supply a Gingerbread Man-specific photo.
   },
   {
     slug: "suzy-bee",
