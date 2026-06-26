@@ -1,12 +1,17 @@
 // GalleryTeaser — Home block #9 (SITE_STRUCTURE §4.1): a strip of real-show photos
-// → /gallery. Assets are gated (§9/§15), so the tiles are clearly-marked placeholders
-// (reserved squares so there is no CLS when photos land). Server component (no
-// Phosphor) — it renders the client <Reveal> for the one-shot fade-in (§10).
-import { Button, Section, SectionHeader, Tag } from "@/components/ui";
+// → /gallery. Pulls the first six on-brand photos from lib/gallery.ts (the same
+// curated source the /gallery grid renders), so swapping/adding assets never touches
+// this block. Square tiles keep a steady rhythm; <Image fill> + object-cover gives the
+// "gentle crop" with no CLS. Server component — it renders the client <Reveal> for the
+// one-shot fade-in (§10).
+import Image from "next/image";
+import { Button, Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { SparkStar } from "@/components/brand/Glyphs";
+import { GALLERY_ITEMS } from "@/lib/gallery";
 
-const TILES = ["a", "b", "c", "d", "e", "f"];
+// First six real photos from the curated gallery set (skip any video).
+const TILES = GALLERY_ITEMS.filter((i) => i.kind === "photo" && i.src).slice(0, 6);
 
 export function GalleryTeaser() {
   return (
@@ -16,19 +21,21 @@ export function GalleryTeaser() {
           eyebrow="Real moments"
           marker={<SparkStar size={16} />}
           title="From our shows"
-          subtitle="Warm photos and video from real performances. Placeholder tiles — assets pending."
+          subtitle="Warm photos from our real performances — the shows on stage, the troupe in costume, and the children who watch them."
         />
-        <Tag>Photos pending</Tag>
       </div>
       <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        {TILES.map((t, i) => (
-          <Reveal key={t} delayMs={i * 60}>
-            <div className="flex aspect-square items-center justify-center rounded-lg border border-border-soft bg-surface text-ink-muted">
-              <div className="flex flex-col items-center gap-1.5">
-                <SparkStar size={20} />
-                <span className="text-xs font-semibold uppercase tracking-[0.06em]">Photo — pending</span>
-              </div>
-            </div>
+        {TILES.map((item, i) => (
+          <Reveal key={item.id} delayMs={i * 60}>
+            <figure className="relative aspect-square overflow-hidden rounded-lg border border-border-soft bg-surface">
+              <Image
+                src={item.src!}
+                alt={item.caption}
+                fill
+                sizes="(min-width: 1024px) 16vw, (min-width: 640px) 33vw, 50vw"
+                className="object-cover"
+              />
+            </figure>
           </Reveal>
         ))}
       </div>
