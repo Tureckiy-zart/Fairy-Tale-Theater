@@ -8,8 +8,6 @@ import { Phone, MapPin, Sparkle } from "@phosphor-icons/react";
 import { Tag } from "@/components/ui";
 import { AREAS, BRAND, FACTS, FOOTER_LINKS, PHONES } from "@/lib/site";
 
-const SOCIAL_PLACEHOLDERS = ["Instagram", "Facebook", "YouTube"];
-
 export function SiteFooter() {
   const year = new Date().getFullYear();
   return (
@@ -86,20 +84,6 @@ export function SiteFooter() {
               </span>
             </p>
 
-            <h2 className="mt-6 flex items-center gap-2 font-body text-sm font-bold uppercase tracking-[0.06em] text-ink">
-              Social
-              <Tag>Links pending</Tag>
-            </h2>
-            <ul className="mt-3 flex flex-wrap gap-2">
-              {SOCIAL_PLACEHOLDERS.map((s) => (
-                <li
-                  key={s}
-                  className="cursor-default select-none rounded-pill border border-border-soft bg-white px-3 py-1 text-sm text-ink-muted"
-                >
-                  {s}
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 
