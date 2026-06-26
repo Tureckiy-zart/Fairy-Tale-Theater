@@ -6,7 +6,7 @@
 // Server component; metadata via lib/seo (noindex pre-launch).
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
-import { Breadcrumb, Container, Section, SectionHeader, Tag } from "@/components/ui";
+import { Breadcrumb, Container, Section, SectionHeader } from "@/components/ui";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
@@ -44,7 +44,6 @@ export default function ShowsPage() {
       <Section>
         <div className="mb-6 flex flex-wrap items-center gap-3">
           <p className="text-ink-soft">Tap a show to read the story, its theme, and how to book it.</p>
-          <Tag>Photos coming soon</Tag>
         </div>
         <ShowCardGrid shows={SHOWS} />
       </Section>

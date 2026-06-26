@@ -34,6 +34,8 @@ export interface Show {
   featured?: boolean;
   /** Temporary photo path under /public — none yet (placeholder treatment, Phase 4 [ASSET]). */
   image?: string;
+  /** CSS object-position for the crop (keyword or "x% y%") so faces/bodies aren't cut. */
+  imagePosition?: string;
 }
 
 const LENGTH = "35–50 min";
@@ -42,7 +44,8 @@ export const SHOWS: Show[] = [
   {
     slug: "donkeys-birthday",
     title: "Donkey's Birthday",
-    teaser: "A warm, funny tale about friendship and the small ways we show people we care.",
+    teaser:
+      "A warm, funny tale about friendship and the small ways we show people we care.",
     synopsis:
       "It's Donkey's birthday, and all he really wants is for his friends to remember. A warm, funny tale about friendship and the small ways we show people we care.",
     theme: "Friendship and mutual respect",
@@ -53,14 +56,16 @@ export const SHOWS: Show[] = [
   {
     slug: "little-red-riding-hood",
     title: "Little Red Riding Hood",
-    teaser: "A classic tale of courage, care, and looking out for the people we love.",
+    teaser:
+      "A classic tale of courage, care, and looking out for the people we love.",
     synopsis:
       "A brave little girl sets off through the woods to visit her grandmother — and meets a sly wolf along the way. A classic tale of courage, care, and looking out for the people we love.",
     theme: "Courage, care and being safe",
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
-    image: "/images/gallery/troupe/red-cape-character-with-basket.jpg",
+    image: "/images/gallery/troupe/red-cape-character-with-basket-2.jpg",
+    imagePosition: "52% 42%",
   },
   {
     slug: "the-bunnys-little-house",
@@ -77,19 +82,21 @@ export const SHOWS: Show[] = [
     slug: "cinderella",
     title: "Cinderella",
     altTitle: "The Magic Slipper",
-    teaser: "The beloved fairy tale about kindness, hope, and good hearts rewarded.",
+    teaser:
+      "The beloved fairy tale about kindness, hope, and good hearts rewarded.",
     synopsis:
       "Kind-hearted Cinderella dreams of the ball, and a little magic helps her get there. The beloved fairy tale about kindness, hope, and good hearts rewarded.",
     theme: "Kindness is rewarded",
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
-    image: "/images/gallery/shows/performer-arms-raised-on-stage.jpg",
+    // image pending — owner to supply a Cinderella-specific photo.
   },
   {
     slug: "the-magic-castle",
     title: "The Magic Castle",
-    teaser: "Our signature show — full of wonder, and a reminder that helping a friend is the greatest magic of all.",
+    teaser:
+      "Our signature show — full of wonder, and a reminder that helping a friend is the greatest magic of all.",
     synopsis:
       "Behind the gates of a magic castle, a big adventure and true friendship await. Our signature show — full of wonder, and a reminder that helping a friend is the greatest magic of all.",
     theme: "Friendship, helping and a little magic",
@@ -113,25 +120,28 @@ export const SHOWS: Show[] = [
   {
     slug: "the-gingerbread-man",
     title: "The Gingerbread Man",
-    teaser: "A lively favourite about cleverness, caution, and listening to those who care about us.",
+    teaser:
+      "A lively favourite about cleverness, caution, and listening to those who care about us.",
     synopsis:
-      "Freshly baked and full of mischief, the Gingerbread Man runs as fast as he can — \"Catch me if you can!\" A lively favourite about cleverness, caution, and listening to those who care about us.",
+      'Freshly baked and full of mischief, the Gingerbread Man runs as fast as he can — "Catch me if you can!" A lively favourite about cleverness, caution, and listening to those who care about us.',
     theme: "Listening and looking before you leap",
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
-    image: "/images/gallery/shows/bunny-and-fox-chase-scene.jpg",
+    // image pending — owner to supply a Gingerbread Man-specific photo.
   },
   {
     slug: "suzy-bee",
     title: "Suzy Bee",
-    teaser: "A sweet, gentle story about kindness and how even the smallest of us can make the whole garden better.",
+    teaser:
+      "A sweet, gentle story about kindness and how even the smallest of us can make the whole garden better.",
     synopsis:
       "Little Suzy Bee buzzes through the meadow, helping every friend she meets. A sweet, gentle story about kindness and how even the smallest of us can make the whole garden better.",
     theme: "Kindness and helping friends",
     ages: "Ages 2–10",
     length: LENGTH,
     image: "/images/gallery/troupe/bee-character-posing.jpg",
+    imagePosition: "50% 60%",
   },
 ];
 

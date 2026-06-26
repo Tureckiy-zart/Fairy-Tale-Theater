@@ -16,6 +16,7 @@ import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import {
   Breadcrumb,
+  Button,
   Container,
   Section,
   SectionHeader,
@@ -93,8 +94,13 @@ export default function AboutPage() {
             />
           </div>
           <figcaption className="mt-3 text-center text-sm text-ink-soft">
-            Miss Lana with the troupe on stage. Temporary photo.
+            Miss Lana with the troupe on stage.
           </figcaption>
+          <div className="mt-6 flex justify-center">
+            <Button href="/gallery" variant="secondary">
+              See the troupe in our gallery
+            </Button>
+          </div>
         </figure>
 
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

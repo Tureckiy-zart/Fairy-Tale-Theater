@@ -47,6 +47,8 @@ export interface CardProps {
   ctaLabel?: string;
   /** Image `sizes` hint for responsive loading. */
   mediaSizes?: string;
+  /** CSS object-position for the crop (keyword or "x% y%") — keeps faces/bodies in frame. */
+  mediaPosition?: string;
   className?: string;
 }
 
@@ -62,6 +64,7 @@ export function Card({
   mediaAlt = "",
   ctaLabel = "See this show",
   mediaSizes = "(min-width: 768px) 33vw, 100vw",
+  mediaPosition,
   className,
 }: CardProps) {
   return (
@@ -77,7 +80,14 @@ export function Card({
       {/* Media slot — fixed 3:2 so height is reserved (no CLS, §10.4). */}
       <div className="relative aspect-[3/2] overflow-hidden bg-surface">
         {mediaSrc ? (
-          <Image src={mediaSrc} alt={mediaAlt} fill sizes={mediaSizes} className="object-cover" />
+          <Image
+            src={mediaSrc}
+            alt={mediaAlt}
+            fill
+            sizes={mediaSizes}
+            className="object-cover"
+            style={mediaPosition ? { objectPosition: mediaPosition } : undefined}
+          />
         ) : (
           <div
             aria-hidden
