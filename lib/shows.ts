@@ -34,8 +34,8 @@ export interface Show {
   featured?: boolean;
   /** Temporary photo path under /public — none yet (placeholder treatment, Phase 4 [ASSET]). */
   image?: string;
-  /** object-position for the card crop (e.g. "top" so a portrait's face isn't cut). */
-  imagePosition?: "top" | "center" | "bottom";
+  /** CSS object-position for the crop (keyword or "x% y%") so faces/bodies aren't cut. */
+  imagePosition?: string;
 }
 
 const LENGTH = "35–50 min";
@@ -135,7 +135,7 @@ export const SHOWS: Show[] = [
     ages: "Ages 2–10",
     length: LENGTH,
     image: "/images/gallery/troupe/bee-character-posing.jpg",
-    imagePosition: "center",
+    imagePosition: "50% 60%",
   },
 ];
 

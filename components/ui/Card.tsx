@@ -47,8 +47,8 @@ export interface CardProps {
   ctaLabel?: string;
   /** Image `sizes` hint for responsive loading. */
   mediaSizes?: string;
-  /** object-position for the crop — "top" keeps a portrait's face in frame. */
-  mediaPosition?: "top" | "center" | "bottom";
+  /** CSS object-position for the crop (keyword or "x% y%") — keeps faces/bodies in frame. */
+  mediaPosition?: string;
   className?: string;
 }
 
@@ -64,7 +64,7 @@ export function Card({
   mediaAlt = "",
   ctaLabel = "See this show",
   mediaSizes = "(min-width: 768px) 33vw, 100vw",
-  mediaPosition = "center",
+  mediaPosition,
   className,
 }: CardProps) {
   return (
@@ -85,11 +85,8 @@ export function Card({
             alt={mediaAlt}
             fill
             sizes={mediaSizes}
-            className={cx(
-              "object-cover",
-              mediaPosition === "top" && "object-top",
-              mediaPosition === "bottom" && "object-bottom",
-            )}
+            className="object-cover"
+            style={mediaPosition ? { objectPosition: mediaPosition } : undefined}
           />
         ) : (
           <div

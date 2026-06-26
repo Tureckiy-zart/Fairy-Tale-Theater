@@ -118,7 +118,8 @@ export default async function ShowDetailPage({
                 fill
                 priority
                 sizes="(min-width: 1024px) 50vw, 100vw"
-                className={`object-cover ${show.imagePosition === "top" ? "object-top" : show.imagePosition === "bottom" ? "object-bottom" : ""}`}
+                className="object-cover"
+                style={show.imagePosition ? { objectPosition: show.imagePosition } : undefined}
               />
             </div>
           ) : (
