@@ -3,8 +3,9 @@
 // (a magical party without the hassle) → /birthdays. Birthday Parties line accent =
 // coral (§12). Copy is final; "a real theater show, not just an entertainer" is
 // real positioning (02_POSITIONING §5). On desktop the media sits left (alternation).
+import Image from "next/image";
 import { Sparkle } from "@phosphor-icons/react";
-import { Button, Section, SectionHeader, Tag } from "@/components/ui";
+import { Button, Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 
 export function B2CTeaser() {
@@ -34,13 +35,14 @@ export function B2CTeaser() {
           </div>
         </Reveal>
         <Reveal delayMs={75}>
-          <div className="flex aspect-4/3 items-center justify-center rounded-2xl border border-border-soft bg-coral/10 p-6 text-center lg:order-first">
-            <div className="flex flex-col items-center gap-3">
-              <p className="font-display text-2xl text-coral-text">Birthday party photo</p>
-              <Tag accent="coral" tone="accent">
-                Asset pending
-              </Tag>
-            </div>
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft bg-coral/10 lg:order-first">
+            <Image
+              src="/images/gallery/children/host-dancing-with-girl.jpg"
+              alt="A costumed performer spins and dances with a giggling girl at an indoor party."
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </Reveal>
       </div>

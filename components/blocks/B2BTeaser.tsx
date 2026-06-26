@@ -3,8 +3,9 @@
 // (values/SEL, professionalism, turnkey) → /school-shows. School Shows line accent =
 // sage (§12). Copy is final; the differentiators (turnkey, troupe, ages 2–10,
 // transparent pricing) are real positioning (02_POSITIONING §5). Phosphor Duotone (§6).
+import Image from "next/image";
 import { CheckCircle } from "@phosphor-icons/react";
-import { Button, Section, SectionHeader, Tag } from "@/components/ui";
+import { Button, Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 
 const POINTS = [
@@ -42,13 +43,14 @@ export function B2BTeaser() {
           </div>
         </Reveal>
         <Reveal delayMs={75}>
-          <div className="flex aspect-4/3 items-center justify-center rounded-2xl border border-border-soft bg-sage/10 p-6 text-center">
-            <div className="flex flex-col items-center gap-3">
-              <p className="font-display text-2xl text-sage-text">Assembly / classroom photo</p>
-              <Tag accent="sage" tone="accent">
-                Asset pending
-              </Tag>
-            </div>
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft bg-sage/10">
+            <Image
+              src="/images/gallery/children/host-with-seated-children.jpg"
+              alt="A costumed performer engages a room of seated children watching attentively."
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </Reveal>
       </div>

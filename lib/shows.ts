@@ -48,6 +48,7 @@ export const SHOWS: Show[] = [
     theme: "Friendship and mutual respect",
     ages: "Ages 2–10",
     length: LENGTH,
+    image: "/images/gallery/shows/performer-on-stage-large-audience.jpg",
   },
   {
     slug: "little-red-riding-hood",
@@ -59,6 +60,7 @@ export const SHOWS: Show[] = [
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
+    image: "/images/gallery/troupe/red-cape-character-with-basket.jpg",
   },
   {
     slug: "the-bunnys-little-house",
@@ -69,6 +71,7 @@ export const SHOWS: Show[] = [
     theme: "Friendship and helping each other",
     ages: "Ages 2–10",
     length: LENGTH,
+    image: "/images/gallery/shows/bunny-and-fox-with-bubbles.jpg",
   },
   {
     slug: "cinderella",
@@ -81,6 +84,7 @@ export const SHOWS: Show[] = [
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
+    image: "/images/gallery/shows/performer-arms-raised-on-stage.jpg",
   },
   {
     slug: "the-magic-castle",
@@ -91,6 +95,7 @@ export const SHOWS: Show[] = [
     theme: "Friendship, helping and a little magic",
     ages: "Ages 2–8",
     length: LENGTH,
+    image: "/images/gallery/shows/performer-with-kids-castle-stage.jpg",
   },
   {
     slug: "the-winters-gift",
@@ -103,6 +108,7 @@ export const SHOWS: Show[] = [
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
+    image: "/images/gallery/children/kids-with-santa-by-tree.jpg",
   },
   {
     slug: "the-gingerbread-man",
@@ -114,6 +120,7 @@ export const SHOWS: Show[] = [
     ages: "Ages 2–10",
     length: LENGTH,
     featured: true,
+    image: "/images/gallery/shows/bunny-and-fox-chase-scene.jpg",
   },
   {
     slug: "suzy-bee",
@@ -124,6 +131,7 @@ export const SHOWS: Show[] = [
     theme: "Kindness and helping friends",
     ages: "Ages 2–10",
     length: LENGTH,
+    image: "/images/gallery/troupe/bee-character-posing.jpg",
   },
 ];
 
