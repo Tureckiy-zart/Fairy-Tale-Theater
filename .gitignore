@@ -34,3 +34,6 @@ build/
 
 # OS
 .DS_Store
+
+# Next.js generated type reference (regenerated each build)
+next-env.d.ts

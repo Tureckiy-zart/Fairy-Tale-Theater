@@ -1,11 +1,10 @@
-// GalleryGrid — the /gallery scaffold (SITE_STRUCTURE §4.5 + §3 GalleryGrid). A warm,
-// masonry-style grid (CSS columns → no JS, no layout-jank), grouped by the four canon
+// GalleryGrid — the /gallery grid (SITE_STRUCTURE §4.5 + §3 GalleryGrid). A warm,
+// masonry-style grid (CSS columns → no JS, no layout-jank), grouped by the canon
 // categories (Shows / Troupe / Children / Backstage), with embedded-video support
 // (muted + captioned). Built from primitives + the brand light glyph; data comes from
-// lib/gallery.ts so real graded assets drop in without touching this block (Phase 4
-// [ASSET]). Until then every tile renders the marked "Photo/Asset — pending"
-// placeholder (§9/§15) — clearly not final, generic alt, never scraped. Server
-// component that renders the <Reveal> island for the one-shot fade-in (§10).
+// lib/gallery.ts so swapping/adding assets never touches this block. An item with no
+// `src` falls back to the marked placeholder treatment (§9/§15). A category with no
+// items is skipped. Server component that renders the <Reveal> island (§10).
 import Image from "next/image";
 import { Section, SectionHeader, Tag } from "@/components/ui";
 import { cx } from "@/components/ui/cx";
@@ -102,9 +101,8 @@ export function GalleryGrid() {
           <div key={category} className="mb-12 last:mb-0">
             <SectionHeader
               as="h2"
-              eyebrow={category}
               marker={<SparkStar size={16} />}
-              title={`${category} — pending assets`}
+              title={category}
             />
             {/* Masonry via CSS columns: balanced, no JS, break-inside-avoid per tile. */}
             <div className="mt-8 gap-4 [column-fill:_balance] sm:columns-2 lg:columns-3">

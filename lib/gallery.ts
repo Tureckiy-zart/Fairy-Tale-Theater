@@ -1,11 +1,17 @@
-// Gallery media-data scaffold — the single source for /gallery (SITE_STRUCTURE §4.5).
-// Mirrors lib/shows.ts: real assets drop into the optional `src` (and `poster` for
-// video) without touching the page or the GalleryGrid block. Until then every item
-// renders the design-system "Photo/Asset — pending" placeholder treatment (§9/§15;
-// Phase 4 [ASSET]). NO scraping of the old site — placeholders only (CSP img-src
-// 'self'; IP/hygiene). Categories come from the canon: Shows / Troupe / Children /
-// Backstage. Captions are written as generic, non-final alt text (no real people
-// named, nothing presented as a finished asset).
+// Gallery media-data — the single source for /gallery (SITE_STRUCTURE §4.5). Mirrors
+// lib/shows.ts: the page + GalleryGrid render straight from this list, so swapping or
+// adding assets never touches a component. Photos are the operator-supplied, web-
+// optimized shots under public/images/gallery/<category>/, sorted by content.
+//
+// CURATION (brand): the full sorted set lives on disk; this DISPLAY list is the
+// on-brand subset — live costumed performers, the troupe, and the children. Overt
+// hand-puppet / puppet-booth frames, near-duplicates and blurry shots are filed under
+// public/images/gallery/ but intentionally NOT listed here, because the brand is locked
+// as live costumed theater, NOT a puppet theater (BRAND.md / 01_CONTENT — "уйти от
+// puppet"). 🔴 Owner to reconcile positioning vs. the real (partly puppet) repertoire.
+// The 4 video clips (public/images/gallery/clips/) are filed but not displayed —
+// content unverified (can't grade here); wire them in once reviewed.
+// Captions are generic alt text (scene + emotion, §9) — no real person is named.
 
 /** The four gallery categories (SITE_STRUCTURE §4.5). */
 export type GalleryCategory = "Shows" | "Troupe" | "Children" | "Backstage";
@@ -23,41 +29,53 @@ export interface GalleryItem {
   category: GalleryCategory;
   /** Photo tile, or an embedded video (muted + captioned — §4.5). */
   kind: "photo" | "video";
-  /**
-   * Generic caption / alt text (scene + emotion, §9). TEMPORARY, non-final — no real
-   * person is named and nothing is presented as a final asset.
-   */
+  /** Generic caption / alt text (scene + emotion, §9) — no real person named. */
   caption: string;
-  /** Tile aspect ratio (drives the masonry rhythm). */
+  /** Tile aspect ratio (drives the masonry rhythm), derived from the photo orientation. */
   aspect: "1/1" | "3/4" | "4/3" | "4/5" | "16/9";
-  /** Real photo/video-poster path under /public — none yet (placeholder until Phase 4). */
+  /** Asset path under /public (the photo, or a video poster frame). */
   src?: string;
-  /** Poster frame for a video — none yet (placeholder until Phase 4). */
+  /** Video source (muted + captioned via captionsSrc) — none displayed yet. */
   poster?: string;
-  /** Captions/subtitles track for a video (WebVTT) — wired for Phase 4. */
+  /** Captions/subtitles track for a video (WebVTT). */
   captionsSrc?: string;
 }
 
-// Placeholder set — varied aspects per category so the masonry reads as a real grid
-// the moment assets land (no CLS: each tile reserves its ratio now). All `src` pending.
+const DIR = "/images/gallery";
+
+// Display set (on-brand, deduped). Aspect: portrait → 3/4, landscape → 4/3, square → 1/1.
 export const GALLERY_ITEMS: GalleryItem[] = [
-  { id: "show-1", category: "Shows", kind: "photo", aspect: "4/3", caption: "A costumed fairy-tale scene mid-performance." },
-  { id: "show-2", category: "Shows", kind: "video", aspect: "16/9", caption: "A short clip from a live show — muted, with captions." },
-  { id: "show-3", category: "Shows", kind: "photo", aspect: "3/4", caption: "A character on stage in full costume." },
-  { id: "show-4", category: "Shows", kind: "photo", aspect: "4/5", caption: "A magical moment from one of the tales." },
+  // --- Shows: live costumed performers on stage ---
+  { id: "show-1", category: "Shows", kind: "photo", aspect: "4/3", src: `${DIR}/shows/performer-with-kids-castle-stage.jpg`, caption: "A costumed performer entertains a seated group of preschoolers in front of a colourful castle stage set." },
+  { id: "show-2", category: "Shows", kind: "photo", aspect: "4/3", src: `${DIR}/shows/performer-arms-raised-on-stage.jpg`, caption: "A performer throws her arms wide with joy on stage as children watch." },
+  { id: "show-3", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/fish-character-with-children.jpg`, caption: "A performer in a bright fish costume leans toward excited children during the show." },
+  { id: "show-4", category: "Shows", kind: "photo", aspect: "4/3", src: `${DIR}/shows/performer-on-stage-large-audience.jpg`, caption: "A costumed performer presents on a small stage to a large seated audience of children." },
+  { id: "show-5", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/bunny-and-fox-with-bubbles.jpg`, caption: "Bunny and fox characters delight children amid a flurry of bubbles." },
+  { id: "show-6", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/bunny-and-fox-chase-scene.jpg`, caption: "A bunny and a fox character act out a playful chase scene on stage." },
+  { id: "show-7", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/fox-and-rabbit-stage-scene.jpg`, caption: "Two costumed performers act out a tender scene on a decorated stage." },
+  { id: "show-8", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/rabbit-sweeping-stage-scene.jpg`, caption: "A rabbit-costumed actor sweeps the stage while a fox character looks on." },
 
-  { id: "troupe-1", category: "Troupe", kind: "photo", aspect: "4/5", caption: "A member of the troupe in costume." },
-  { id: "troupe-2", category: "Troupe", kind: "photo", aspect: "1/1", caption: "The troupe together before a show." },
-  { id: "troupe-3", category: "Troupe", kind: "photo", aspect: "4/3", caption: "An actor sharing a moment with the audience." },
+  // --- Troupe: the performers ---
+  { id: "troupe-1", category: "Troupe", kind: "photo", aspect: "3/4", src: `${DIR}/troupe/bee-character-posing.jpg`, caption: "A performer in a black-and-yellow bee costume poses playfully before a flower-decked backdrop." },
+  { id: "troupe-2", category: "Troupe", kind: "photo", aspect: "3/4", src: `${DIR}/troupe/red-cape-character-with-basket.jpg`, caption: "An actress in a red hooded cape holds a flower-trimmed basket outdoors." },
+  { id: "troupe-3", category: "Troupe", kind: "photo", aspect: "4/3", src: `${DIR}/troupe/santa-and-host-portrait.jpg`, caption: "A performer dressed as Santa stands beside a smiling host among the pines." },
+  { id: "troupe-4", category: "Troupe", kind: "photo", aspect: "3/4", src: `${DIR}/troupe/host-portrait-floral.jpg`, caption: "A warm close-up portrait of a smiling performer with a floral wrap." },
+  { id: "troupe-5", category: "Troupe", kind: "photo", aspect: "3/4", src: `${DIR}/troupe/wolf-costume-character-posing.jpg`, caption: "A performer in a furry wolf costume strikes a playful pose." },
+  { id: "troupe-6", category: "Troupe", kind: "photo", aspect: "3/4", src: `${DIR}/troupe/fox-and-rabbit-characters-posing.jpg`, caption: "Two performers in fox and rabbit costumes pose together before a spring backdrop." },
+  { id: "troupe-7", category: "Troupe", kind: "photo", aspect: "3/4", src: `${DIR}/troupe/fox-character-in-window.jpg`, caption: "A smiling performer in a bright fox costume poses in a decorative window frame." },
+  { id: "troupe-8", category: "Troupe", kind: "photo", aspect: "3/4", src: `${DIR}/troupe/santa-and-elf-characters.jpg`, caption: "A Santa performer and an elf-costumed entertainer pose together." },
 
-  { id: "children-1", category: "Children", kind: "photo", aspect: "4/3", caption: "Children laughing during the interactive play." },
-  { id: "children-2", category: "Children", kind: "photo", aspect: "3/4", caption: "A child reaching for the bubbles." },
-  { id: "children-3", category: "Children", kind: "video", aspect: "16/9", caption: "Kids joining in the show — muted, with captions." },
-  { id: "children-4", category: "Children", kind: "photo", aspect: "1/1", caption: "Delighted faces in the front row." },
-
-  { id: "backstage-1", category: "Backstage", kind: "photo", aspect: "4/3", caption: "Costumes and props ready before the curtain." },
-  { id: "backstage-2", category: "Backstage", kind: "photo", aspect: "3/4", caption: "Setting up the stage at a venue." },
-  { id: "backstage-3", category: "Backstage", kind: "photo", aspect: "1/1", caption: "A quiet moment getting into character." },
+  // --- Children: the audience ---
+  { id: "children-1", category: "Children", kind: "photo", aspect: "3/4", src: `${DIR}/children/host-greeting-little-girl.jpg`, caption: "A costumed performer kneels to greet a delighted little girl at an outdoor event." },
+  { id: "children-2", category: "Children", kind: "photo", aspect: "4/3", src: `${DIR}/children/kids-cheering-with-bubbles.jpg`, caption: "Children raise their hands cheering amid floating bubbles during the show." },
+  { id: "children-3", category: "Children", kind: "photo", aspect: "4/3", src: `${DIR}/children/happy-kids-in-bubbles.jpg`, caption: "A group of laughing children cheers and reaches up amid bubbles." },
+  { id: "children-4", category: "Children", kind: "photo", aspect: "3/4", src: `${DIR}/children/host-dancing-with-girl.jpg`, caption: "A performer spins and dances with a giggling girl at an indoor party." },
+  { id: "children-5", category: "Children", kind: "photo", aspect: "3/4", src: `${DIR}/children/children-dancing-in-bubbles.jpg`, caption: "Excited children dance and play in a cloud of bubbles." },
+  { id: "children-6", category: "Children", kind: "photo", aspect: "3/4", src: `${DIR}/children/kids-with-santa-and-elf.jpg`, caption: "Two children pose happily with a Santa performer and an elf entertainer." },
+  { id: "children-7", category: "Children", kind: "photo", aspect: "3/4", src: `${DIR}/children/child-on-santas-lap.jpg`, caption: "A young child sits on Santa's lap in front of a decorated tree." },
+  { id: "children-8", category: "Children", kind: "photo", aspect: "3/4", src: `${DIR}/children/child-hugging-bunny-character.jpg`, caption: "A smiling child is held by a friendly bunny-costumed performer in a garden." },
+  { id: "children-9", category: "Children", kind: "photo", aspect: "3/4", src: `${DIR}/children/boys-laughing-in-audience.jpg`, caption: "Two young boys laugh and watch from their seats in the audience." },
+  { id: "children-10", category: "Children", kind: "photo", aspect: "4/3", src: `${DIR}/children/host-with-seated-children.jpg`, caption: "A costumed performer engages a room of seated children watching attentively." },
 ];
 
 /** Items for a given category (the page groups the masonry by category). */

@@ -217,14 +217,15 @@ test.describe("Phase 3 — services + characters + gallery + about", () => {
     }
   });
 
-  test("the gallery scaffold renders its category headings + pending placeholders", async ({ page }) => {
+  test("the gallery renders its category sections with real photos", async ({ page }) => {
     await page.goto("/gallery");
-    for (const cat of ["Shows", "Troupe", "Children", "Backstage"]) {
-      await expect(page.getByRole("heading", { name: new RegExp(`${cat} — pending assets`, "i") })).toBeVisible();
+    for (const cat of ["Shows", "Troupe", "Children"]) {
+      await expect(page.getByRole("heading", { level: 2, name: cat })).toBeVisible();
     }
-    // Assets are gated — tiles render the marked placeholder treatment, not real media.
-    await expect(page.getByText("Photo — pending").first()).toBeVisible();
-    await expect(page.getByText("Video — pending").first()).toBeVisible();
+    // Real, content-sorted assets are wired (not placeholders): tiles render <img>.
+    const imgs = page.locator("main img");
+    expect(await imgs.count()).toBeGreaterThan(0);
+    await expect(imgs.first()).toBeVisible();
   });
 
   test("/about shows the 30+ years line and the full troupe", async ({ page }) => {
