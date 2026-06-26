@@ -135,6 +135,7 @@ export const SHOWS: Show[] = [
     ages: "Ages 2–10",
     length: LENGTH,
     image: "/images/gallery/troupe/bee-character-posing.jpg",
+    imagePosition: "bottom",
   },
 ];
 
