@@ -44,7 +44,7 @@ export function FormatExplainer() {
             A real theater show — <span className="text-forest-600">not a one-off animator.</span>
           </>
         }
-        subtitle="Costumed actors bring a kind fairy tale to life, then play along with the children. Here's what makes it special."
+        subtitle="A story steps out of the book, familiar characters come close, and children are invited to feel, imagine, laugh, and discover something new together. Here's what makes it special."
       />
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {POINTS.map(({ icon: Icon, title, body }, i) => (

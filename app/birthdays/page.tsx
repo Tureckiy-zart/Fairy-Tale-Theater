@@ -30,7 +30,6 @@ export const metadata: Metadata = buildMetadata({
   description:
     "A real costumed fairy-tale show for the birthday child — magic that comes to your home or venue, no hassle. Professional troupe, interactive play, ages 2–10. From $350.",
   path: "/birthdays",
-  noindex: true,
 });
 
 const INCLUDED = [

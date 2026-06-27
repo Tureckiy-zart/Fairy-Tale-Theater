@@ -15,7 +15,6 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Request a booking for Miss Lana's Fairy-Tale Theatre — preschools, schools, birthdays and parties across Los Angeles, San Diego, Sacramento and San Jose. Call or send a request.",
   path: "/booking",
-  noindex: true,
 });
 
 export default function BookingPage() {

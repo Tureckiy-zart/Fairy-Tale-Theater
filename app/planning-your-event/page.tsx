@@ -27,7 +27,6 @@ export const metadata: Metadata = buildMetadata({
   description:
     "A friendly guide to hosting Miss Lana's Fairy-Tale Theatre — the space we need, indoor and outdoor setups, sound, parking, photos and more. We bring everything and come to you.",
   path: "/planning-your-event",
-  noindex: true,
 });
 
 // Grouped, confirmed-only Q/A (OWNER_ANSWERS_DECISION_RECORD §1). "Recommended" vs

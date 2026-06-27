@@ -18,15 +18,15 @@ const nunito = Nunito({
   display: "swap",
 });
 
-// Site-wide noindex until launch (Phase 5) so placeholder content is never indexed —
-// SITE_STRUCTURE_AND_BLOCKS.md §9 / task guardrail. Pages set their own title/
-// description/canonical via lib/seo `buildMetadata` (also with noindex), so meta is
-// launch-ready while indexing stays off. /design keeps its own noindex.
+// LAUNCHED (STABILIZE_MISS_LANA_PRELAUNCH_001, 2026-06-27): site-wide noindex
+// removed by explicit owner decision — the site is now publicly indexable. Pages set
+// their own title/description/canonical via lib/seo `buildMetadata`. /design keeps its
+// OWN noindex (internal preview, never public). To roll back to pre-launch, restore
+// `robots: { index:false, follow:false }` here + per-page noindex + robots.ts Disallow.
 export const metadata: Metadata = {
   title: "Miss Lana's Fairy-Tale Theatre",
   description:
     "Touring children's live-costumed fairy-tale theater serving Los Angeles and beyond.",
-  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({

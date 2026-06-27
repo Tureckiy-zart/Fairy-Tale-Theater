@@ -18,7 +18,6 @@ export const metadata: Metadata = buildMetadata({
   description:
     "The repertoire of Miss Lana's Fairy-Tale Theatre — eight kind, timeless fairy tales for ages 2–10. A real costumed show plus interactive play, brought to your venue across LA and beyond.",
   path: "/shows",
-  noindex: true,
 });
 
 export default function ShowsPage() {
@@ -37,7 +36,7 @@ export default function ShowsPage() {
           eyebrow="The repertoire"
           marker={<SparkStar size={16} />}
           title="Eight kind fairy tales to choose from"
-          subtitle="Each show is a real costumed performance plus interactive play with the kids — about an hour, for ages 2–10. Pick the tale; we bring the whole theater to you."
+          subtitle="Every Miss Lana production begins with a familiar fairy-tale feeling and grows into a live, shared adventure. Some stories are playful, some are tender, and a few hold a little suspense — but each returns to what children understand most deeply: friendship, courage, kindness, and helping one another. About an hour, for ages 2–10."
         />
       </Container>
 

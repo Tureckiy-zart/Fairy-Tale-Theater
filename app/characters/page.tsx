@@ -27,7 +27,6 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Costumed characters who come to visit the children — performed by a professional theater troupe, not a one-off animator. Warm, in-character and full of wonder, for ages 2–10.",
   path: "/characters",
-  noindex: true,
 });
 
 const DIFFERENCE: { title: string; body: string }[] = [

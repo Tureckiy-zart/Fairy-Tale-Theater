@@ -19,7 +19,6 @@ export const metadata: Metadata = buildMetadata({
   description:
     "One professional troupe, four ways to book: live fairy-tale theater, school shows, birthday parties and costumed characters who come to visit. Ages 2–10, across Los Angeles. From $350.",
   path: "/services",
-  noindex: true,
 });
 
 export default function ServicesPage() {

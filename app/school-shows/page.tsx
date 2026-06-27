@@ -32,13 +32,12 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Assembly-ready, values-driven live theater for preschools, Montessori and schools across LA — a professional troupe, kind SEL themes, turnkey setup, ages 2–10. From $350.",
   path: "/school-shows",
-  noindex: true,
 });
 
 const OFFER: { title: string; body: string }[] = [
   {
     title: "Kind values & SEL",
-    body: "Every story carries social-emotional themes — friendship, courage, helping each other — that fit your curriculum.",
+    body: "Through the choices the characters make, children see friendship in action, notice where selfishness leads, and discover how courage, patience, and helping one another can change a story.",
   },
   {
     title: "A professional troupe",

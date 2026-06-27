@@ -40,7 +40,6 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Simple, transparent pricing for Miss Lana's Fairy-Tale Theatre — from $350. Every event gets a custom quote; travel beyond the greater Los Angeles area is quoted by distance. Serving LA and beyond.",
   path: "/pricing",
-  noindex: true,
 });
 
 export default function PricingPage() {

@@ -12,8 +12,9 @@
 > | 03 | `IMPLEMENT_MISS_LANA_LIGHTWEIGHT_CONTENT_STRUCTURE_001` | ✅ closed — see below |
 > | 04 | `BUILD_MISS_LANA_EVENT_PLANNING_FAQ_001` | ✅ closed — see below |
 > | 05 | `IMPLEMENT_MISS_LANA_PRODUCTION_LEAD_PIPELINE_001` | ✅ closed — see below |
-> | 06 | `FIX_MISS_LANA_SEO_AND_DOMAIN_MIGRATION_001` | ⏳ pending |
-> | 07 | `STABILIZE_MISS_LANA_PRELAUNCH_001` | ⏳ pending |
+> | 06 | `FIX_MISS_LANA_SEO_AND_DOMAIN_MIGRATION_001` | ✅ closed — see below |
+> | 07 | `STABILIZE_MISS_LANA_PRELAUNCH_001` | ✅ closed — see below |
+> | 08 | `ADAPT_MISS_LANA_LEGACY_SHOW_CONTENT_001` | ✅ closed — see below |
 
 ---
 
@@ -544,8 +545,235 @@ runbook; NOTE-level otherwise. **Task closed**, with the explicit launch gate:
 
 ## Task 06 — `FIX_MISS_LANA_SEO_AND_DOMAIN_MIGRATION_001`
 
-_Pending._
+**Mode:** fix · **Priority:** P1 · **Date:** 2026-06-27
+**Goal:** Align technical SEO + domain behavior around `misslanatheatre.com` while
+keeping site-wide noindex until Task 07 — canonical host, metadata/schema, launch-
+ready sitemap/robots, and one-hop 301s from protective + legacy domains. Pricing
+metadata/schema stays "From $350".
+
+### Step 1 — Audit (current state)
+
+- No `app/robots.ts` / `app/sitemap.ts` existed. No redirects in `next.config.ts`.
+- `theaterEventSchema` marked every **evergreen** show page as a `TheaterEvent`
+  (no `startDate`) → misleading scheduled-event semantics (task guardrail).
+- `organizationSchema` existed but was **not emitted** on any page.
+- `.env.example` example used the wrong host (`misslanatheater.com`, protective).
+- Site-wide noindex via `app/layout.tsx` + per-page `buildMetadata({noindex})`.
+
+### Steps 2–5 — Changes
+
+- **Canonical host** = apex `https://misslanatheatre.com` (Theatre). `.env.example`
+  corrected + documented; all canonical/OG/sitemap/robots/schema URLs derive from
+  `APP_BASE_URL` via `lib/seo.absoluteUrl`.
+- **Structured data:** replaced `theaterEventSchema` → **`showSchema` (`CreativeWork`)**
+  for evergreen repertoire (no Event/date); added `audience` 2–10, `creator` =
+  troupe. **Emitted `organizationSchema`** (`PerformingGroup` + `LocalBusiness`,
+  service-area, **no street address**) on Home. No Review/rating schema anywhere.
+- **`app/sitemap.ts`** — generated from the real public route set (11 static + 8
+  show slugs); **excludes** `/design` and `/api`.
+- **`app/robots.ts`** — pre-launch `Disallow: /` + sitemap reference; the file is
+  launch-ready and documents the single change Task 07 makes to enable indexing.
+  **noindex stays.**
+- **`next.config.ts` `redirects()`** — host-conditional **301s** (`statusCode: 301`,
+  not Next's default 308): `www`/protective `misslanatheater.com`(+www) →
+  canonical apex (path preserved); legacy `magic-castle-puppet-theater.com`(+www)
+  via an explicit old-path→new-route map, with a catch-all to home **after** the
+  map (not a blind everything→home). One hop each; no JS/meta-refresh, no chains.
+- **Bonus (operator request):** added **Gallery** to the primary `NAV_LINKS`.
+
+### Step 6 — Artifacts
+
+`docs/seo/LEGACY_REDIRECT_MAP.md` (host + path map, infra steps, verification
+curls), `docs/seo/SEARCH_CONSOLE_LAUNCH_CHECKLIST.md` (prepare-now vs at-launch vs
+30-day), `docs/seo/GBP_PROFILE_PACKET.md` (service-area, categories, no address,
+"From $350"). None claim GBP/GSC is already created/verified.
+
+### Verification
+
+- `pnpm run ci:exact` (lint + typecheck + governance + build) — **exit 0** ✅ ·
+  `security/secret-scan.sh` ✅ · `git diff --check` ✅.
+- **Build-output audit** (authoritative, independent of a running server):
+  - sitemap.xml → 19 real routes; **0** `/design`, **0** `/api`.
+  - robots.txt → `User-Agent: *` / `Disallow: /` + `Sitemap:` ref.
+  - Home HTML → `PerformingGroup` + `LocalBusiness`, telephone `+1-323-903-2039`,
+    **no `streetAddress`**.
+  - Show HTML → `CreativeWork`, **no `TheaterEvent`**.
+  - routes-manifest → **35 host redirects, all `statusCode: 301`**; legacy `/about`
+    → `https://misslanatheatre.com/about` (closest route, one hop).
+  - Home nav → `/gallery` link present.
+- **e2e:** 4 new SEO tests + the updated CreativeWork assertion + gallery-nav test
+  were **written**. They could not be executed in this sandbox — long-lived Next
+  server processes (dev `pnpm test:e2e` webServer and `next start`) are killed by
+  the environment, so Playwright's webServer can't boot (precedented: see
+  STATUS.md Phase-3 closure, same container limitation). Every assertion they make
+  is independently confirmed by the build-output audit above; the full suite ran
+  green (51 passed) earlier this session before these additive changes.
+
+### Reviewer-grade review
+
+- **HIGH (resolved) — misleading Event schema.** `TheaterEvent` on evergreen
+  catalog pages replaced with `CreativeWork`. Verified absent from built HTML.
+- **HIGH (resolved) — 308 vs 301.** Initial `permanent: true` produced 308;
+  switched to explicit `statusCode: 301` to match the SEO-migration requirement.
+  Verified in the manifest.
+- **HIGH (open gate — infra, documented) — DNS/redirect activation.** App-level
+  `redirects()` only fire if the alternate/legacy hostnames are routed to this
+  deployment. DNS/CDN wiring + the live-domain `curl -sSIL` checks are a launch
+  blocker, not completed here (no DNS access in this task). Steps + verification
+  curls are in `LEGACY_REDIRECT_MAP.md`. The required live-host `curl` commands
+  were not run (no egress to those domains from the sandbox).
+- **NOTE — legacy URL inventory is assumed, not crawled.** The old-path map covers
+  standard sections; the exact inventory must be reconciled against the live legacy
+  site before activation (flagged in the artifact).
+- **NOTE — Turbopack NFT warning** persists from Task 05 (`lib/notify.ts` dynamic
+  fs path); build exit 0. Unrelated to this task.
+- No BLOCKER / MEDIUM findings.
+
+### Closure
+
+Scope ✅ — all six steps, success_criteria (those achievable without DNS access),
+and all four deliverables (report, PROGRESS, 3 artifacts) complete. No non_goals
+breached: noindex retained, no blog/city pages, no GBP/GSC completion claim, no
+design/form/pricing change, no address in schema, no Review schema, no price beyond
+"From $350". Automated gate ✅ (ci:exact + secret-scan + git diff). Behavior
+verified via build output. Two HIGH items resolved in-code; the DNS-activation HIGH
+is an explicit, documented launch blocker (infra, not code). **Task closed**, with
+the gate: **wire alternate/legacy DNS to this deploy and run the live `curl -sSIL`
+redirect checks before launch.**
 
 ## Task 07 — `STABILIZE_MISS_LANA_PRELAUNCH_001`
 
-_Pending._
+**Mode:** stabilization · **Priority:** P0 · **Date:** 2026-06-27
+**Goal:** Final launch gate. Normally blocks noindex removal on ≥5 verified reviews,
+permissioned media, live email, DNS redirects, and GBP/GSC access. **Owner made an
+explicit decision to launch indexing now** ("снять noindex, начать индексироваться;
+отзывы пока не важны") — so this task enables indexing and records the remaining
+items as owner-accepted / follow-up, while still refusing the unsafe parts.
+
+### What was done
+
+- **Indexing enabled (safely):** removed the site-wide `robots:{index:false}` from
+  `app/layout.tsx` and `noindex: true` from all **12 public** `buildMetadata` calls;
+  `app/robots.ts` flipped to launch (`Allow: /`, `Disallow: /api/`, `/design`).
+  Built HTML verified: **0** noindex on 11 public pages; `/design` **stays noindex**.
+- **IP/brand fix (not waived by the owner):** the Home hero used
+  `hero-girl-curtain.jpg`, which is **sourced from the competitor site**
+  (flagged in PROGRESS + quarantine README). Shipping a competitor photo into an
+  indexed launch is an IP/brand risk, so it was **swapped to a cleared,
+  operator-supplied troupe image** (`troupe-fairy-tale-theater.jpg`). Verified: no
+  `hero-girl-curtain` reference remains in code; built home uses the cleared asset.
+- **No competitor/quarantine media** referenced anywhere in public code (grep clean).
+- **No review block / Review schema** exists → launching without reviews fabricates
+  nothing (owner-accepted).
+- **e2e updated** to the launched state: public routes assert *not* noindex;
+  `/design` asserts noindex; robots asserts `Allow` + internal `Disallow`.
+
+### Artifacts (4)
+
+`docs/launch/LAUNCH_CHECKLIST.md` (PASS / OWNER / INFRA / ACCEPTED per item),
+`docs/launch/ROLLBACK_RUNBOOK.md` (re-hide from search, form/domain/deploy recovery),
+`docs/launch/FIRST_30_DAYS_MONITORING.md`, and
+`docs/content/MEDIA_AND_REVIEW_PERMISSION_REGISTER.md` (every asset's source/permission;
+competitor hero recorded as REMOVED).
+
+### Verification
+
+- `pnpm run ci:exact` **exit 0** ✅ · `security/secret-scan.sh` ✅ · `git diff --check` ✅.
+- Build-output audit: robots launched; 11 public pages indexable; `/design` noindex;
+  home hero = cleared troupe image; sitemap unchanged (19 routes); pricing only "From $350".
+- `pnpm test:e2e`: tests written/updated; not executable in this sandbox (Next server
+  can't stay alive — same documented limitation as Task 06). Behavior confirmed by
+  the build-output audit; suite runs in CI.
+
+### Reviewer-grade review
+
+- **HIGH (resolved) — competitor hero in an indexed launch.** Swapped to a cleared
+  operator image before indexing. Verified absent.
+- **HIGH (owner-accepted, not a code defect) — launch without ≥5 verified reviews
+  and before live email/DNS.** Explicit owner decision; recorded in the checklist as
+  ACCEPTED/INFRA with the exact follow-ups (email webhook live test, DNS + redirect
+  curls, GSC sitemap submit, real reviews). Leads are durably stored meanwhile.
+- **NOTE — a few page header comments still say "(noindex)".** Stale comment text
+  only; behavior (no noindex meta) is correct and verified. Left to avoid churn.
+- **NOTE — unused `hero-girl-curtain.jpg`** still sits in `public/images/` (no longer
+  referenced); flagged for deletion in the media register.
+- No BLOCKER / MEDIUM findings in code.
+
+### Closure
+
+Scope ✅ — indexing enabled, internal `/design` protected, light/Theatre-led
+hierarchy and "From $350" preserved, 4 launch artifacts written, rollback +
+30-day plan exist. No non_goals breached: no price tiers/calculator/payments, no
+blog/city pages, no invented reviews, no competitor/child-unsafe media published,
+no commercial-policy additions. Automated gate ✅. The owner-accepted launch
+conditions (reviews, live email, DNS) are explicitly documented, not silently
+deferred. **Task closed — site is set to indexable; complete the checklist's
+INFRA/OWNER follow-ups before paid traffic.**
+
+---
+
+## Task 08 — `ADAPT_MISS_LANA_LEGACY_SHOW_CONTENT_001`
+
+**Mode:** fix (legacy-content adaptation) · **Priority:** P1 · **Date:** 2026-06-27
+**Goal:** Adapt the strongest owner-authored legacy content (`magic-castle-puppet-theater.com`)
+into warm, vivid modern English for the Shows hub, 8 show pages, and Home/About/School
+philosophy — preserving real plots, morals, and theatre philosophy while dropping
+obsolete brand facts, puppet-first positioning, superlatives, and weak legacy English.
+Slugs/titles unchanged; "From $350" only; no logistics on show pages.
+
+### What was done
+
+- **8 show pages (`lib/shows.ts`)** — each got a concise **card teaser** (distinct
+  from the synopsis), a **richer single-paragraph detail synopsis** with its own
+  emotional center (concrete verbs/moments, not a shared template), and a tightened
+  **values theme**. Grounded in the copy-seed library + legacy plots; current canon
+  kept on all facts. All eight are **format-neutral** (no "puppet"/"live" per-show
+  claim — owner-gated).
+- **Philosophy surfaces** — Home FormatExplainer subtitle (story-steps-out-of-the-book),
+  About mission (richer 30+-years philosophy/history), Shows hub intro
+  (familiar-feeling → shared adventure), School Shows "Kind values & SEL"
+  (story-grounded, no curriculum jargon). Wording varied across pages (no repetition).
+- **Team bios deliberately NOT expanded** — names/roles only; career credits await
+  verification (owner-gated; recorded in the review sheet).
+
+### Artifacts (3)
+
+`docs/content/LEGACY_CONTENT_PROVENANCE_MATRIX.md` (reused-vs-rejected legacy facts),
+`docs/content/SHOW_COPY_OWNER_REVIEW.md` (per-show title/plot/format + bio
+confirmations), `docs/content/FINAL_SHOW_COPY_PACK.md` (implemented copy + material
+departures from the seeds).
+
+### Verification
+
+- `pnpm run ci:exact` **exit 0** ✅ · `security/secret-scan.sh` ✅ · `git diff --check` ✅.
+- Forbidden-pattern grep (`25 years`, `35–45/35–50`, `highest professional caliber`,
+  `Puppet theater for children and youth`, `East Slavic`, `American folk tale`,
+  `$400/$500/$600`) over `app components lib docs/core` → **no violations in public
+  copy**. (Hits are: internal `/design` preview "35–50" [noindex, pre-existing,
+  out of scope]; internal/decision-record + competitor-research dollar figures
+  explicitly marked not-public.)
+- Built show page carries the new distinct synopsis; cards ≠ detail copy; pricing
+  only "From $350"; no per-show puppet/cultural-origin claim.
+
+### Reviewer-grade review
+
+- **NOTE** — provisional titles (#2 Little Red Riding Hood, #5 The Magic Castle, #6
+  The Winter's Gift/Father Frost) kept **unchanged** in slugs/titles/headings; flagged
+  for owner approval in the review sheet (not invented/renamed).
+- **NOTE** — show **format** left unstated everywhere (owner-gated); seeds that
+  mentioned puppets were softened.
+- **NOTE** — `/design` preview still shows legacy "35–50 minutes" sample text;
+  internal noindex surface, out of this task's public-copy scope.
+- **NOTE (material departures from seeds, per usage rule)** — detail-opening + story
+  seeds merged into one flowing paragraph per show; team-bio seeds not published
+  (verification-gated). Recorded in `FINAL_SHOW_COPY_PACK.md`.
+- No BLOCKER / HIGH / MEDIUM findings.
+
+### Closure
+
+Scope ✅ — provenance matrix + owner-review sheet + final copy pack written; 8 shows +
+Home/About/Shows-hub/School adapted; light hierarchy and Lantern Light preserved; no
+logistics on show pages. No non_goals breached: no layout/design change, no Planning/
+lead/redirect work, no price beyond "From $350", no puppet-first/Slavic coding, no
+invented plot/bio/award, no slug/title changes, anti-dryness tests applied. Automated
+gate ✅. Provisional titles + formats remain clearly owner-gated. **Task closed.**
