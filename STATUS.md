@@ -2,7 +2,7 @@
 
 **Deployment: LIVE** · **Launch state: PRE-LAUNCH** · **Phase:** MVP-набор страниц и финальный копирайт
 собраны; дальше pre-launch/launch execution. Сайт остаётся **noindex** до публичного запуска.
-**Last real work:** 2026-06-25 · **Brand:** Miss Lana's Fairy-Tale Theatre (см. `docs/core/BRAND.md`).
+**Last real work:** 2026-06-27 · **Brand:** Miss Lana's Fairy-Tale Theatre (см. `docs/core/BRAND.md`).
 **Domain/contact:** `misslanatheatre.com` is the live primary production domain; `misslanatheater.com`
 is protective alternate only → 301 to primary. Primary contact: `info@misslanatheatre.com`,
 **(323) 903-2039**; SMS/email/WhatsApp accepted; Svitlana replies in **1-2 business days**.
@@ -15,6 +15,18 @@ Console, QA, real media, and noindex removal.
 > (без $-сумм); `/about` явно называет украинские корни (тепло, нейтрально в бренде/SEO); alt «founder» убран.
 > Остаётся 🔴: мини-история Miss Lana (владелец), реальные graded фото/видео, соцссылки, формат-сплит шоу.
 > Находки — `docs/reports/2026-06-23-copy-fixes-build-findings.md`.
+
+> **Owner-answers canon-sync применён (2026-06-27, TUNG `CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001`).**
+> Канон фактов синхронизирован с ответами владелицы: длительность → **около часа** (~30 мин спектакль +
+> ~30 мин интерактив), труппа → **3–4 артиста**, публичная цена → **только «From $350»** (градация по
+> числу детей — внутренняя, не публикуется), правило расстояния подтверждено (greater LA/Orange County
+> free, дальние — по расстоянию), сетап/площадка зафиксированы (~20 м², ~15–20 мин, свой звук),
+> **Svitlana Grygoryshyna = владелец и директор**, California с 2022. Решение «куклы внутри» подтверждено
+> и записано, но переписывание «no puppet» guardrails — **отдельным пассом**. Новый артефакт фактов —
+> `docs/core/OWNER_ANSWERS_DECISION_RECORD.md`; единый отчёт пайплайна —
+> `docs/reports/CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001.md`. **Кода/сайта не меняли.**
+> ⚠️ Note: в коде (`lib/shows.ts` и др.) длительность «35–50 min» ещё стоит — это применит Task 02
+> (`FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001`), а не canon-sync.
 
 ---
 
@@ -42,10 +54,27 @@ Console, QA, real media, and noindex removal.
 
 ## Открытые вопросы (блокируют часть сборки)
 
-trademark-clearance (до лого/печати) · доплата за расстояние (суммы/правило — за владельцем) ·
-ссылки на соцсети · verified reviews/testimonials (target ≥5, permission/source) · 301/оплата protective/legacy domains · стратегия по гос. школам · подача 2 названий
-шоу (Morozko, «Well Red Bow wait») · редизайн лого 2026 · фото/видео-активы. Полный список — в
-`docs/core/PROJECT_BRIEF.md` и корневом `README.md`.
+trademark-clearance (до лого/печати) · ссылки на соцсети · verified reviews/testimonials
+(target ≥5, permission/source) · 301/оплата protective/legacy domains · стратегия по гос. школам ·
+подача 2 названий шоу (Morozko, «Well Red Bow wait») · редизайн лого 2026 · фото/видео-активы ·
+формат-сплит 8 шоу + переписать «no puppet» guardrails (формат «куклы внутри» подтверждён) ·
+финализация политик (отмена/депозит/перенос — owner дал ориентиры, как публичная политика не
+закреплены). Доплата за расстояние — ✅ правило подтверждено (greater LA/Orange County free, дальние
+по расстоянию). Полный список — в `docs/core/PROJECT_BRIEF.md`, `docs/core/OWNER_ANSWERS_DECISION_RECORD.md`
+(§4 unresolved) и корневом `README.md`.
+
+## Prelaunch pipeline — порядок задач (`tasks/miss-lana-prelaunch-pipeline/`)
+
+1. ✅ `CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001` (canon-sync; этот заход)
+2. `FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001` — бренд/телефон/длительность/travel wording в коде
+3. `IMPLEMENT_MISS_LANA_LIGHTWEIGHT_CONTENT_STRUCTURE_001` — распределение контента по страницам
+4. `BUILD_MISS_LANA_EVENT_PLANNING_FAQ_001` — страница `/planning-your-event`
+5. `IMPLEMENT_MISS_LANA_PRODUCTION_LEAD_PIPELINE_001` — реальная отправка формы (∥ с 3–4 после 2)
+6. `FIX_MISS_LANA_SEO_AND_DOMAIN_MIGRATION_001` — canonical/metadata/schema/sitemap/301
+7. `STABILIZE_MISS_LANA_PRELAUNCH_001` — реальные фото, отзывы, QA, снятие noindex, запуск
+
+Единый отчёт пайплайна — `docs/reports/CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001.md` (по каждой задаче
+дописывается своя секция). Очередность/правила параллелизации — `tasks/miss-lana-prelaunch-pipeline/README.md`.
 
 ## Закрытие IMPLEMENT_MISS_LANA_DESIGN_TOKENS_001 (2026-06-22)
 

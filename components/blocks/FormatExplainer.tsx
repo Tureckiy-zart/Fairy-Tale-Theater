@@ -1,9 +1,9 @@
 "use client";
 // FormatExplainer — Home block #3 (SITE_STRUCTURE §4.1): what it is, and the
 // differentiator — "a real theater show, not a one-off animator". The format is a
-// real fact (~30-min costumed play + interactive play e.g. bubbles, 35–50 min total,
-// ages 2–10 — PROJECT_BRIEF). Copy is final. Phosphor Duotone (§6),
-// scroll-reveal below the fold (§10).
+// real fact (~30-min costumed play + ~30 min of games/dancing/bubbles, about an hour
+// total, ages 2–10 — PROJECT_BRIEF / OWNER_ANSWERS_DECISION_RECORD §1). Copy is final.
+// Phosphor Duotone (§6), scroll-reveal below the fold (§10).
 import { MaskHappy, Drop, Clock, UsersThree } from "@phosphor-icons/react";
 import { Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
@@ -18,18 +18,18 @@ const POINTS = [
   },
   {
     icon: Drop,
-    title: "Interactive play with the kids",
-    body: "Then the children join in (like a bubble show), so everyone is part of the magic.",
+    title: "Then everyone joins in",
+    body: "About 30 minutes of games, dancing and bubbles, so every child is part of the magic.",
   },
   {
     icon: Clock,
     title: `${FACTS.showLength} in total`,
-    body: "Long enough to delight, short enough for little ones.",
+    body: "Long enough to delight, short enough for little ones — for ages 2–10.",
   },
   {
     icon: UsersThree,
-    title: FACTS.ages,
-    body: "Tuned for young audiences, performed by a professional troupe.",
+    title: "Everything comes with us",
+    body: "Scenery, props and our own sound, brought by a professional troupe of 3–4 artists.",
   },
 ];
 

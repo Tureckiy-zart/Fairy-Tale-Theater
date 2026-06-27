@@ -1,0 +1,198 @@
+{
+  "task": "CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001",
+  "version": "2.0",
+  "task_mode": "canon-sync",
+  "task_type": "owner-answers-canonization",
+  "priority": "P0",
+  "layer": "Miss Lana / project canon",
+  "description": "Synchronize the canonical project documentation with the owner's confirmed questionnaire answers without changing public pages or application behavior. Establish one authoritative current truth for show duration, troupe size, included experience, setup, venue requirements, birthday personalization, add-ons, geography, owner identity, California start year, and unresolved policy/document questions. Pricing must remain public-facing only as 'From $350'; no audience-size price tiers may be authorized for the website in this task.",
+  "non_goals": [
+    "Do not edit app/, components/, lib/, public/, tests/, runtime configuration, metadata generation, or deployment behavior",
+    "Do not publish audience-size price tiers such as 30 / 40 / 50 / 60 children",
+    "Do not finalize cancellation, deposit-refund, late-arrival, weather-rescheduling, or penalty policies",
+    "Do not claim insurance, background checks, district approval, vendor approval, legal registration, or school documentation without inspected evidence",
+    "Do not publish the owner's private residential address",
+    "Do not finalize show names, team biographies, awards, social links, logo, character art, or trademark-dependent assets"
+  ],
+  "decision_basis": {
+    "origin": "User-approved seven-task implementation plan after live-site review and owner questionnaire review on 2026-06-27.",
+    "investigation_findings": [
+      "Owner confirmed a typical complete experience of about 60 minutes: about 30 minutes of theatre plus about 30 minutes of games, dancing, bubbles, and interaction",
+      "Owner confirmed that a typical production uses three or four performers depending on the show",
+      "Owner confirmed scenery, props, sound, games, dancing, and bubbles as part of the standard experience",
+      "Owner confirmed setup and pack-down of about 15–20 minutes each and a recommended clear area of about 20 square metres / 215 square feet",
+      "Owner confirmed birthday-child participation, name greeting, optional small role, birthday song, finale, small gift, balloons, and family-taken photos",
+      "Owner confirmed optional face painting/body art, standalone bubble show, and costumed character appearances",
+      "Owner confirmed Svitlana Grygoryshyna as owner and director and California operations since 2022",
+      "User explicitly decided that the website must show only 'From $350' until pricing is reconsidered"
+    ]
+  },
+  "authority_scope": {
+    "must_read": [
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/00_PROJECT_INSTRUCTIONS.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "CLIENT_QUESTIONS.md",
+      "Owner questionnaire answers supplied 2026-06-25 through 2026-06-26",
+      "docs/_internal/governance/TUNG-EXECUTION-RULE-(CANON).txt",
+      "docs/_internal/governance/tung_system_specification.md"
+    ],
+    "must_not_violate": [
+      "docs/core/BRAND.md remains the brand authority: Miss Lana's Fairy-Tale Theatre, misslanatheatre.com, info@misslanatheatre.com, (323) 903-2039",
+      "Public identity remains professional live children's fairy-tale theatre, not puppet-first entertainment",
+      "The site remains English-first and must not use Russian/Slavic brand coding",
+      "Owner statements that create legal, safety, privacy, or contractual risk must be recorded as unresolved rather than normalized into public claims",
+      "Public pricing canon must be limited to 'From $350' and custom quote language",
+      "Historical records and archived reports must not be rewritten as if they were current canon"
+    ],
+    "requires_unlock": false,
+    "allowed_change_classes": [
+      "docs-sync",
+      "canon-clarification",
+      "verification"
+    ]
+  },
+  "forbidden_execution_patterns": [
+    "No blind global replacement of numbers, names, Theater/theatre terms, URLs, or historical text",
+    "No conversion of ambiguous owner speech into definite public policy",
+    "No edits to frozen docs/_internal/governance/",
+    "No invented resolution for unanswered questionnaire fields",
+    "No claim that media permissions exist merely because nobody objected"
+  ],
+  "execution_guardrails": [
+    "Apply semantic edits only to current canonical documents and current-state summaries",
+    "Mark each unresolved item as OWNER / LEGAL / DOCUMENT / MEDIA-PERMISSION / POLICY rather than guessing",
+    "Preserve American generic SEO keyword variants using 'theater' while keeping the owned brand spelling 'Theatre'",
+    "Where duration is normalized, use 'about one hour' and explain the approximate 30 + 30 structure; do not promise exact minute-by-minute timing",
+    "Keep pricing language deliberately minimal: 'From $350' plus custom quote factors only",
+    "If the task classification appears wrong mid-execution, stop and escalate; do not switch task_mode"
+  ],
+  "prerequisites": {
+    "must_have_completed": [],
+    "must_be_ready": true,
+    "readiness_notes": [
+      "Owner questionnaire answers are available",
+      "Brand/domain/contact canon is already locked",
+      "No code changes are authorized in this task"
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Update current canonical facts in docs/core/PROJECT_BRIEF.md, 01_CONTENT_INVENTORY.md, 02_POSITIONING_AND_TONE.md, 03_SITEMAP_AND_SCOPE.md, SITE_STRUCTURE_AND_BLOCKS.md, and related current instructions where the new facts materially apply",
+      "Update STATUS.md current snapshot and open-question list without rewriting historical closure records",
+      "Create a structured owner-answer decision record separating confirmed public facts, internal operating facts, unsafe statements, and unresolved questions",
+      "Replace obsolete current-canon duration statements of 35–50 minutes with the approved approximate one-hour structure",
+      "Replace obsolete current-canon audience-size pricing detail with 'From $350' and custom-quote wording",
+      "Document the future Planning Your Event information architecture and the rule against repeating technical requirements across marketing pages"
+    ],
+    "out_of_scope": [
+      "Public website copy implementation",
+      "New route creation",
+      "Form delivery",
+      "Domain redirects",
+      "GBP, Search Console, analytics, launch, or noindex removal"
+    ]
+  },
+  "steps": [
+    {
+      "title": "Inventory current canonical conflicts",
+      "actions": [
+        "Search current canon and STATUS for 35–50 minutes, audience-size pricing tiers, free-within-30-miles claims, two-phone presentation, and old owner/team facts",
+        "Classify each occurrence as current canon, historical record, research evidence, or implementation note",
+        "Create a conflict matrix in the task report before editing"
+      ],
+      "expectation": "Every affected current-canon statement has a documented target state and historical text is protected"
+    },
+    {
+      "title": "Create the structured owner-answer decision record",
+      "actions": [
+        "Record confirmed public facts, confirmed internal operations, unresolved policy questions, legal/document verification needs, and media-permission risks",
+        "Record the explicit pricing decision: public website uses only 'From $350'; no audience-size tiers",
+        "Record the content-distribution rule: light marketing pages, one Planning Your Event page, and booking-specific details after inquiry"
+      ],
+      "expectation": "A reviewer can identify exactly what is safe to publish and what remains blocked"
+    },
+    {
+      "title": "Synchronize canonical documents",
+      "actions": [
+        "Apply semantic updates to the declared docs/core files",
+        "Normalize duration, troupe size, included experience, setup, venue, birthday, add-on, owner, and California-since-2022 facts",
+        "Remove current-canon authorization for public audience-size price tiers and unconfirmed travel-zone pricing",
+        "Keep cancellation, supervision, physical-contact, vendor, insurance, and media-permission topics explicitly unresolved"
+      ],
+      "expectation": "Current canonical documents agree on all newly confirmed facts and no unsafe statement becomes public canon"
+    },
+    {
+      "title": "Update current status and backlog",
+      "actions": [
+        "Update STATUS.md top-level current snapshot and open launch dependencies",
+        "Preserve historical closure sections unchanged except where an explicit current-status correction is necessary",
+        "List the next six implementation TUNG IDs and their dependency order"
+      ],
+      "expectation": "STATUS reflects the new truth and points cleanly to implementation work"
+    }
+  ],
+  "success_criteria": [
+    "All current canonical documents consistently use an approximately one-hour complete experience and the approximate 30 + 30 structure",
+    "All current canonical public pricing guidance is limited to 'From $350' and custom quote language",
+    "No public canon contains audience-size price tiers, a guaranteed free travel radius, or a fixed San Diego surcharge",
+    "Confirmed owner facts and unresolved legal/policy/media questions are clearly separated",
+    "The planned information architecture keeps technical details off Home and show cards/pages except for minimal essentials and a link to Planning Your Event",
+    "No code, runtime, deployment, or frozen governance files changed"
+  ],
+  "verification": {
+    "required_commands": [
+      "pnpm governance",
+      "git diff --check",
+      "grep -RInE '35[–-]50|up to ~?15|free within 30 miles|\\$400|\\$500|\\$600' docs/core STATUS.md README.md || true"
+    ],
+    "manual_checks": [
+      "Review every changed statement against the original owner questionnaire answers",
+      "Confirm historical reports and closure records were not rewritten into present-tense canon",
+      "Confirm private address, unsafe supervision statements, media assumptions, and unverified vendor/insurance claims are absent from public canon",
+      "Confirm the only approved public price expression is 'From $350'"
+    ],
+    "regression_targets": [
+      "Brand lock and primary contact canon",
+      "English-first positioning",
+      "Live-theatre identity",
+      "Trademark gate",
+      "Append-only project progress convention"
+    ]
+  },
+  "deliverables": {
+    "reports": [
+      "docs/reports/CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001.md"
+    ],
+    "progress_updates": [
+      "docs/PROJECT_PROGRESS.md"
+    ],
+    "artifacts": [
+      "docs/core/OWNER_ANSWERS_DECISION_RECORD.md"
+    ]
+  },
+  "mandatory_closure": {
+    "required": true,
+    "blocks_completion_until_passed": true,
+    "closure_sequence": [
+      "Step 1: Scope verification — confirm all steps, success_criteria, and deliverables are complete; confirm execution-safety compliance (no non_goals fixed, no forbidden_execution_patterns violated, execution_guardrails respected)",
+      "Step 2: Automated verification — run only the required_commands explicitly listed for the scoped task, confirm all pass",
+      "Step 3: Reviewer-grade pre-closure code review — analyze all changes against the review dimensions, record explicit findings with BLOCKER / HIGH / MEDIUM / LOW / NOTE severity",
+      "Step 4: Closure resolution — resolve or explicitly defer findings with severity, write the final verification summary, and update the task report",
+      "Step 5: PROJECT_PROGRESS update — append the substantive change entry only after all previous closure steps pass"
+    ]
+  },
+  "post_actions": [
+    "Do not begin public-copy implementation until this task's mandatory_closure passes",
+    "Use the resulting canon as the authority for the remaining six TUNG tasks"
+  ]
+}

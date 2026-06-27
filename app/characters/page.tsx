@@ -51,6 +51,23 @@ const STEPS: { n: string; title: string; body: string }[] = [
   { n: "3", title: "They come to visit", body: "Our troupe arrives in character, ready to greet, play and make the day magical." },
 ];
 
+// Optional extras — availability-based and inventory-neutral (no guaranteed characters
+// or fixed list; OWNER_ANSWERS_DECISION_RECORD §1 add-ons / §4 owner-gated inventory).
+const EXTRAS: { title: string; body: string }[] = [
+  {
+    title: "Face painting",
+    body: "Gentle face painting can be added to a visit — ask us when you enquire.",
+  },
+  {
+    title: "A standalone bubble show",
+    body: "A bubble show on its own, full of giant bubbles and wonder, can be arranged.",
+  },
+  {
+    title: "A costumed character visit",
+    body: "A favourite character can come to greet the children, subject to availability.",
+  },
+];
+
 export default function CharactersPage() {
   return (
     <SiteShell activeHref="/characters">
@@ -121,15 +138,38 @@ export default function CharactersPage() {
         </div>
       </Section>
 
-      {/* How it works */}
+      {/* Optional extras — availability-based, inventory-neutral */}
       <Section>
+        <SectionHeader
+          as="h2"
+          accent="berry"
+          eyebrow="Optional extras"
+          marker={<SparkStar size={16} />}
+          title="Add a little more magic"
+          subtitle="A few optional touches you can add to a visit or a show — just ask when you enquire, and we'll let you know what's available for your date."
+        />
+        <div className="mt-10 grid gap-5 sm:grid-cols-3">
+          {EXTRAS.map((e) => (
+            <div
+              key={e.title}
+              className="flex h-full flex-col gap-2 rounded-lg border border-border-soft bg-white p-6 shadow-sm"
+            >
+              <h3 className="font-display text-xl text-forest-800">{e.title}</h3>
+              <p className="text-ink">{e.body}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* How it works */}
+      <Section tone="surface">
         <SectionHeader
           as="h2"
           accent="berry"
           eyebrow="How it works"
           marker={<SparkStar size={16} />}
           title="Three steps to a visit"
-          subtitle="From first message to the moment they arrive. From $350; free within 30 miles, beyond quoted by distance."
+          subtitle="From first message to the moment they arrive. From $350; travel across greater LA is free, beyond quoted by distance."
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {STEPS.map((s) => (

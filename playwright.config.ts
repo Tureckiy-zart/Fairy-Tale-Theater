@@ -18,5 +18,7 @@ export default defineConfig({
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    // Keep e2e lead submissions out of the real store (test-results/ is git-ignored).
+    env: { LEAD_STORE_DIR: "test-results/.leads-e2e" },
   },
 });

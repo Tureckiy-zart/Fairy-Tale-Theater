@@ -9,13 +9,15 @@ import type { JsonLdData } from "@/components/ui/JsonLd";
 
 // --- Brand constants (docs/core/BRAND.md · SITE_STRUCTURE_AND_BLOCKS.md §2) ----
 export const SITE = {
-  name: "Miss Lana's Fairy-Tale Theater",
+  name: "Miss Lana's Fairy-Tale Theatre",
   shortName: "Miss Lana",
+  // Generic search-intent phrase keeps American "theater" spelling on purpose.
   description: "Touring live costumed children's theater serving Los Angeles and beyond.",
   // Service-area business (no public storefront, 04_SEO.md).
   areasServed: ["Los Angeles", "San Diego", "Sacramento", "San Jose"],
-  // click-to-call numbers (SITE_STRUCTURE_AND_BLOCKS.md §2 footer).
-  phones: ["+1-213-282-1054", "+1-323-903-2039"],
+  // Primary public click-to-call only (SITE_STRUCTURE_AND_BLOCKS.md §2). The legacy
+  // second number is reserve-only and is never exposed publicly or in schema.
+  phones: ["+1-323-903-2039"],
 } as const;
 
 /** Absolute URL for a site-relative path, from APP_BASE_URL (lib/env). */
@@ -37,7 +39,7 @@ interface MetaInput {
 
 /**
  * Build a page's Next Metadata: unique title/description, canonical, Open Graph,
- * robots (04_SEO.md). Titles are templated "<page> — Miss Lana's Fairy-Tale Theater"
+ * robots (04_SEO.md). Titles are templated "<page> — Miss Lana's Fairy-Tale Theatre"
  * unless they already include the brand.
  */
 export function buildMetadata({ title, description, path, image, noindex }: MetaInput): Metadata {

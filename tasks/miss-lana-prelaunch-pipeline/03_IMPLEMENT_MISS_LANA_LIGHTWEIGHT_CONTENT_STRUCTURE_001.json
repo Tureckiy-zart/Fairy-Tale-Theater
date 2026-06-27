@@ -1,0 +1,234 @@
+{
+  "task": "IMPLEMENT_MISS_LANA_LIGHTWEIGHT_CONTENT_STRUCTURE_001",
+  "version": "2.0",
+  "task_mode": "fix",
+  "task_type": "lightweight-page-content",
+  "priority": "P1",
+  "layer": "Miss Lana / Home, Birthdays, School Shows, Characters, Pricing, show details",
+  "description": "Integrate the owner's newly confirmed service details into existing pages while keeping the site light, emotional, and theatre-led. Add only the minimum information each page needs to sell its specific offer. Do not repeat venue logistics across pages; detailed operational information belongs in the later Planning Your Event route. Pricing remains only 'From $350'.",
+  "non_goals": [
+    "Do not create the Planning Your Event route or full technical FAQ",
+    "Do not redesign page templates or add large technical tables",
+    "Do not add audience-size price tiers, fixed travel fees, discount promises, or package calculators",
+    "Do not finalize cancellation policies, supervision claims, media permissions, school documentation claims, or team biographies",
+    "Do not create new show titles or resolve outstanding repertoire naming questions",
+    "Do not implement form delivery, redirects, analytics, GBP, Search Console, or launch"
+  ],
+  "decision_basis": {
+    "origin": "User-approved seven-task implementation plan after live-site review and owner questionnaire review on 2026-06-27.",
+    "investigation_findings": [
+      "User explicitly wants marketing pages to remain light and visually similar to the current site",
+      "Home should sell the experience, not host setup, parking, weather, and policy details",
+      "Show cards/pages should focus on each story with only minimal service facts",
+      "Birthday answers provide a real differentiated offer through child participation and a celebration ritual",
+      "School answers support age-group sessions, consecutive performances, values/SEL language, and a recommended smaller-audience format",
+      "Characters and add-ons are confirmed but exact inventory and pricing remain unresolved"
+    ]
+  },
+  "authority_scope": {
+    "must_read": [
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/00_PROJECT_INSTRUCTIONS.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "CLIENT_QUESTIONS.md",
+      "Owner questionnaire answers supplied 2026-06-25 through 2026-06-26",
+      "docs/_internal/governance/TUNG-EXECUTION-RULE-(CANON).txt",
+      "docs/_internal/governance/tung_system_specification.md",
+      "docs/core/OWNER_ANSWERS_DECISION_RECORD.md",
+      "docs/reports/CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001.md",
+      "docs/reports/FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001.md",
+      "app/page.tsx",
+      "app/birthdays/",
+      "app/school-shows/",
+      "app/characters/",
+      "app/pricing/",
+      "app/shows/",
+      "components/blocks/",
+      "lib/site.ts"
+    ],
+    "must_not_violate": [
+      "Marketing pages must stay story-led, warm, and concise",
+      "Home and show pages must not become technical-company pages",
+      "Public pricing is limited to 'From $350'",
+      "Technical details must not be duplicated across every page",
+      "Birthday gifts, balloons, post-show time, and personalization must be worded with appropriate availability qualifiers unless canon marks them guaranteed",
+      "Do not make unverified maximum-capacity, safety, document, or permission claims"
+    ],
+    "requires_unlock": false,
+    "allowed_change_classes": [
+      "implementation",
+      "verification",
+      "docs-sync"
+    ]
+  },
+  "forbidden_execution_patterns": [
+    "No new logistics wall on Home or show details",
+    "No table containing 30 / 40 / 50 / 60 child prices",
+    "No guaranteed phrases for optional add-ons or character inventory",
+    "No generic corporate or engineering tone",
+    "No new page block unless the existing page cannot express the approved content cleanly"
+  ],
+  "execution_guardrails": [
+    "Prefer editing existing blocks over creating new blocks",
+    "Use progressive disclosure: brief page copy plus future Planning Your Event link slot",
+    "Keep Home practical information to a short format explanation and three or four proof points",
+    "Keep show-card metadata minimal and show-detail facts in one compact Show Details component",
+    "Use warm plain English and concrete experiences rather than repeated adjectives",
+    "If content requires an unresolved fact, omit it or mark the code/data slot as owner-gated rather than inventing text"
+  ],
+  "prerequisites": {
+    "must_have_completed": [
+      "CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001",
+      "FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001"
+    ],
+    "must_be_ready": true,
+    "readiness_notes": [
+      "Shared facts and global copy must already be corrected"
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Home existing format explainer and proof copy",
+      "Birthday page differentiation around the birthday child",
+      "School page concise operational suitability and values framing",
+      "Characters/add-ons availability wording",
+      "Pricing page simplification to only From $350 and custom quote factors",
+      "Compact show-detail metadata and a reusable future link slot for event requirements",
+      "Small FAQ accordions on School and Birthday pages only where they answer page-specific buyer concerns"
+    ],
+    "out_of_scope": [
+      "Full technical FAQ content",
+      "Policies and legal pages",
+      "Media installation and reviews",
+      "Back-end form work",
+      "SEO migration and launch"
+    ]
+  },
+  "steps": [
+    {
+      "title": "Define per-page content budgets",
+      "actions": [
+        "Document the approved role, maximum practical-detail level, and prohibited duplication for Home, show cards, show details, School Shows, Birthdays, Characters, Pricing, and Booking",
+        "Map each newly confirmed fact to exactly one primary page or to the future Planning Your Event page"
+      ],
+      "expectation": "No fact is scattered across unrelated pages and technical material has a single future home"
+    },
+    {
+      "title": "Update Home without structural expansion",
+      "actions": [
+        "Update the existing format explanation to communicate approximately 30 minutes of live story plus approximately 30 minutes of interactive games, dancing, and bubbles",
+        "Mention that scenery, props, sound, and typically three or four performers come with the production using one concise proof treatment",
+        "Do not add setup, parking, power, weather, deposit, or policy content"
+      ],
+      "expectation": "Home explains the complete experience in a warm, quick-to-scan way"
+    },
+    {
+      "title": "Differentiate Birthday Parties",
+      "actions": [
+        "Add or refine one compact block showing that the birthday child can be greeted by name and may join the story, dance, birthday song, and finale according to comfort and show suitability",
+        "Mention family/organizer-taken photos and optional birthday touches with accurate qualifiers",
+        "Keep add-ons concise and availability-based"
+      ],
+      "expectation": "Birthday is a distinct product, not merely the School page relabeled"
+    },
+    {
+      "title": "Strengthen School Shows",
+      "actions": [
+        "Add concise values/SEL themes such as kindness, friendship, cooperation, and teamwork",
+        "Explain that consecutive performances can be arranged for separate age groups",
+        "Use careful language around a recommended smaller-audience format without presenting an unverified hard maximum",
+        "Keep documentation and procurement claims out until verified"
+      ],
+      "expectation": "School buyers understand educational relevance and scheduling flexibility without a technical rider"
+    },
+    {
+      "title": "Simplify Characters and Pricing",
+      "actions": [
+        "Present face painting/body art, standalone bubbles, and costumed character appearances as optional and availability-based",
+        "Do not list unconfirmed characters",
+        "Keep Pricing to From $350, what influences a custom quote, and a booking CTA",
+        "Remove or avoid all audience-size tiers, calculators, fixed travel fees, and guaranteed discounts"
+      ],
+      "expectation": "The offer is clear without prematurely locking commercial policy"
+    },
+    {
+      "title": "Keep show surfaces story-led",
+      "actions": [
+        "Ensure show cards remain image, title, short premise, age/value metadata, and CTA",
+        "Use one compact Show Details block on show pages for approximate duration, format, and typical troupe size only where shared facts are appropriate",
+        "Add a non-functional or future-ready semantic link slot for Planning Your Event only if the target route will be created immediately by the next task; otherwise defer the link"
+      ],
+      "expectation": "Show surfaces remain about the production, not operational requirements"
+    }
+  ],
+  "success_criteria": [
+    "Home remains visually and structurally light while accurately explaining the one-hour experience",
+    "Birthday page clearly explains the birthday child's special participation",
+    "School page explains values, age-group scheduling, and consecutive-performance capability without unsupported procurement claims",
+    "Characters/add-ons copy is accurate, optional, and inventory-neutral",
+    "Pricing displays only 'From $350' and custom quote wording",
+    "No setup, parking, weather, power, cancellation, or document details are repeated across marketing pages",
+    "Show cards and pages remain story-led with minimal reusable details",
+    "All required commands pass"
+  ],
+  "verification": {
+    "required_commands": [
+      "pnpm lint",
+      "pnpm typecheck",
+      "pnpm governance",
+      "pnpm build",
+      "pnpm test:e2e",
+      "git diff --check"
+    ],
+    "manual_checks": [
+      "Compare page density before and after on mobile and desktop; no page should feel materially heavier or more technical",
+      "Confirm Home contains no setup, parking, weather, power, cancellation, or policy wall",
+      "Confirm Pricing contains no numeric prices except From $350",
+      "Confirm each show page still leads with story and imagery",
+      "Confirm birthday personalization is not worded as mandatory participation"
+    ],
+    "regression_targets": [
+      "Existing page hierarchy",
+      "LCP behavior on Home",
+      "Mobile navigation and CTA flow",
+      "Design-system token use",
+      "Existing show routes and content",
+      "Noindex pre-launch state"
+    ]
+  },
+  "deliverables": {
+    "reports": [
+      "docs/reports/IMPLEMENT_MISS_LANA_LIGHTWEIGHT_CONTENT_STRUCTURE_001.md"
+    ],
+    "progress_updates": [
+      "docs/PROJECT_PROGRESS.md"
+    ],
+    "artifacts": [
+      "docs/reports/miss-lana-page-content-distribution-matrix.md"
+    ]
+  },
+  "mandatory_closure": {
+    "required": true,
+    "blocks_completion_until_passed": true,
+    "closure_sequence": [
+      "Step 1: Scope verification — confirm all steps, success_criteria, and deliverables are complete; confirm execution-safety compliance (no non_goals fixed, no forbidden_execution_patterns violated, execution_guardrails respected)",
+      "Step 2: Automated verification — run only the required_commands explicitly listed for the scoped task, confirm all pass",
+      "Step 3: Reviewer-grade pre-closure code review — analyze all changes against the review dimensions, record explicit findings with BLOCKER / HIGH / MEDIUM / LOW / NOTE severity",
+      "Step 4: Closure resolution — resolve or explicitly defer findings with severity, write the final verification summary, and update the task report",
+      "Step 5: PROJECT_PROGRESS update — append the substantive change entry only after all previous closure steps pass"
+    ]
+  },
+  "post_actions": [
+    "Proceed to Planning Your Event implementation after closure",
+    "Do not add numeric pricing tiers in any follow-up without a new owner decision and canon sync"
+  ]
+}

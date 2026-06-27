@@ -1,0 +1,242 @@
+{
+  "task": "IMPLEMENT_MISS_LANA_PRODUCTION_LEAD_PIPELINE_001",
+  "version": "2.0",
+  "task_mode": "fix",
+  "task_type": "production-lead-pipeline",
+  "priority": "P0",
+  "layer": "Miss Lana / booking and lead delivery",
+  "description": "Replace the demo-only inquiry experience with a reliable production lead pipeline. Implement server-side validation, owner notification to info@misslanatheatre.com, honest success/failure states, spam protection, source attribution, and a minimal durable lead record. Preserve the light form experience and collect only information useful for qualification and response.",
+  "non_goals": [
+    "Do not implement online payment, deposits, customer accounts, availability calendar, automatic quoting, or full CRM automation",
+    "Do not publish audience-size price tiers or calculate a final quote",
+    "Do not send sensitive private information to analytics",
+    "Do not expose secrets, provider keys, private addresses, or internal lead data",
+    "Do not redesign unrelated pages or modify domain redirects",
+    "Do not promise a customer email copy if the implementation does not send one reliably"
+  ],
+  "decision_basis": {
+    "origin": "User-approved seven-task implementation plan after live-site review and owner questionnaire review on 2026-06-27.",
+    "investigation_findings": [
+      "Current public forms are client-side/demo surfaces and do not provide proven production delivery",
+      "Primary destination is info@misslanatheatre.com and Svitlana responds herself within 1–2 business days",
+      "Preferred channels include SMS, email, and WhatsApp",
+      "Useful qualification fields include event type, date, city/ZIP, venue type, indoor/outdoor, audience size, ages, selected show, and optional add-ons",
+      "The user wants the public site light; the form must not become a long procurement questionnaire",
+      "Pricing remains quote-based with only From $350 public"
+    ]
+  },
+  "authority_scope": {
+    "must_read": [
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/00_PROJECT_INSTRUCTIONS.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "CLIENT_QUESTIONS.md",
+      "Owner questionnaire answers supplied 2026-06-25 through 2026-06-26",
+      "docs/_internal/governance/TUNG-EXECUTION-RULE-(CANON).txt",
+      "docs/_internal/governance/tung_system_specification.md",
+      "docs/core/OWNER_ANSWERS_DECISION_RECORD.md",
+      "components/shell/LeadForm.tsx",
+      "lib/env.ts",
+      ".env.example",
+      "security/SECURITY.md",
+      "security/secret-scan.sh",
+      "next.config.ts",
+      "app/booking/",
+      "tests/e2e/"
+    ],
+    "must_not_violate": [
+      "All environment access must go through lib/env.ts",
+      "No secrets may be committed or printed",
+      "The success state may render only after the server confirms acceptance",
+      "Primary owner notification must target info@misslanatheatre.com",
+      "The customer must be told Miss Lana will reply within 1–2 business days",
+      "Form fields and consent language must not imply a binding booking or final price",
+      "Do not collect unnecessary sensitive child data",
+      "Public price stays From $350; no quote calculator"
+    ],
+    "requires_unlock": false,
+    "allowed_change_classes": [
+      "implementation",
+      "verification",
+      "docs-sync"
+    ]
+  },
+  "forbidden_execution_patterns": [
+    "No fake success response when delivery or persistence fails",
+    "No client-side-only email submission",
+    "No direct process.env access outside lib/env.ts",
+    "No provider-specific credentials in code, fixtures, screenshots, reports, or logs",
+    "No logging full free-text message bodies or personal data to public analytics",
+    "No broad analytics implementation beyond lead-related events required by this task"
+  ],
+  "execution_guardrails": [
+    "Choose the smallest production-suitable provider/integration supported by the repository and deployment environment; document the choice",
+    "Validate and normalize on the server even if client validation exists",
+    "Use rate limiting or equivalent abuse protection plus a honeypot or provider-supported bot control",
+    "Keep the default form concise and use conditional fields only where they improve qualification",
+    "Store the minimum lead record needed for recovery and attribution",
+    "Make delivery failures observable to the owner/operator without exposing private data to users",
+    "If provider or account access is unavailable, implement a fully testable adapter and block closure until a live delivery test is completed"
+  ],
+  "prerequisites": {
+    "must_have_completed": [
+      "CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001",
+      "FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001"
+    ],
+    "must_be_ready": true,
+    "readiness_notes": [
+      "Production email/provider credentials must be available through deployment secrets before live verification",
+      "Owner notification destination is locked"
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "LeadForm UX refinement and conditional fields",
+      "Server endpoint/action for inquiry submission",
+      "Server-side validation and sanitization",
+      "Owner notification",
+      "Optional short customer acknowledgement only if reliably implemented",
+      "Minimal durable lead logging/storage with timestamp, source, service, and UTM",
+      "Spam and abuse protection",
+      "Success, validation, network, provider, and retry states",
+      "Lead conversion events without personal data",
+      "Production delivery tests and operational documentation"
+    ],
+    "out_of_scope": [
+      "Payment/deposit collection",
+      "Automatic booking confirmation",
+      "Calendar synchronization",
+      "Detailed CRM workflows",
+      "Pricing computation",
+      "Domain migration and noindex removal"
+    ]
+  },
+  "steps": [
+    {
+      "title": "Define and document the form contract",
+      "actions": [
+        "Finalize required, optional, and conditional fields",
+        "Define payload schema, normalization, consent/privacy microcopy, success/failure messages, and attribution fields",
+        "Keep the visible form concise and avoid collecting child names except an optional event note if truly necessary"
+      ],
+      "expectation": "The client/server contract is explicit and privacy-minimal"
+    },
+    {
+      "title": "Implement server-side submission handling",
+      "actions": [
+        "Create the server handler using the repository's supported Next.js pattern",
+        "Validate, sanitize, rate-limit, and reject malformed or automated submissions",
+        "Generate an internal inquiry ID and normalized event summary"
+      ],
+      "expectation": "Invalid or abusive submissions cannot trigger a false success or uncontrolled notification"
+    },
+    {
+      "title": "Implement notification and durable recovery",
+      "actions": [
+        "Send the owner notification to info@misslanatheatre.com with all useful event details and source attribution",
+        "Persist a minimal lead record in the approved store so provider delivery failure does not silently lose the inquiry",
+        "Implement an optional concise customer acknowledgement only if sender configuration and deliverability are proven"
+      ],
+      "expectation": "A valid lead is recoverable and the owner receives an actionable notification"
+    },
+    {
+      "title": "Implement truthful client states",
+      "actions": [
+        "Connect LeadForm to the server handler",
+        "Show field-level validation, submitting, success, recoverable failure, and retry states",
+        "Remove demo-form notices only after live pipeline verification",
+        "Use the approved success copy and response window"
+      ],
+      "expectation": "The user sees success only after acceptance and can recover from failure"
+    },
+    {
+      "title": "Add conversion events safely",
+      "actions": [
+        "Emit lead-success, lead-error, phone-click, SMS-click, WhatsApp-click, and email-click events through the existing analytics abstraction or a minimal no-op-safe layer",
+        "Exclude names, emails, phone numbers, addresses, comments, and child information from event payloads"
+      ],
+      "expectation": "Lead behavior is measurable without leaking personal data"
+    },
+    {
+      "title": "Test live delivery and failure paths",
+      "actions": [
+        "Add unit/contract coverage if the repository supports it and e2e coverage for visible form behavior",
+        "Perform live production submissions from mobile and desktop",
+        "Verify owner delivery, persisted record, optional customer acknowledgement, spam control, and provider-failure handling"
+      ],
+      "expectation": "The pipeline is proven end to end, not merely mocked"
+    }
+  ],
+  "success_criteria": [
+    "A valid production inquiry reaches info@misslanatheatre.com and creates a recoverable lead record",
+    "The form never displays success for failed validation, failed acceptance, or provider failure",
+    "Spam protection and server-side validation are active",
+    "Demo-form public notices are removed only after successful live verification",
+    "No secrets or personal lead data are exposed in code, logs, reports, or analytics",
+    "The visible form remains concise and mobile-usable",
+    "Public pricing remains From $350 with no calculator or tier logic",
+    "Required commands and live delivery evidence pass"
+  ],
+  "verification": {
+    "required_commands": [
+      "pnpm lint",
+      "pnpm typecheck",
+      "pnpm governance",
+      "pnpm build",
+      "pnpm test:e2e",
+      "security/secret-scan.sh",
+      "git diff --check"
+    ],
+    "manual_checks": [
+      "Submit valid inquiries from representative mobile and desktop browsers and verify owner delivery",
+      "Force provider/network failure and verify no false success is shown",
+      "Verify stored lead fields are minimal and access-controlled",
+      "Inspect analytics payloads and logs for personal data leakage",
+      "Verify all contact-method links and 1–2 business day success wording",
+      "Verify form completion remains reasonable on mobile"
+    ],
+    "regression_targets": [
+      "Client-side field accessibility",
+      "Booking and embedded form instances",
+      "Existing security governance",
+      "Environment-variable access rules",
+      "Noindex pre-launch state",
+      "Page performance and hydration"
+    ]
+  },
+  "deliverables": {
+    "reports": [
+      "docs/reports/IMPLEMENT_MISS_LANA_PRODUCTION_LEAD_PIPELINE_001.md"
+    ],
+    "progress_updates": [
+      "docs/PROJECT_PROGRESS.md"
+    ],
+    "artifacts": [
+      "docs/operations/LEAD_PIPELINE_RUNBOOK.md"
+    ]
+  },
+  "mandatory_closure": {
+    "required": true,
+    "blocks_completion_until_passed": true,
+    "closure_sequence": [
+      "Step 1: Scope verification — confirm all steps, success_criteria, and deliverables are complete; confirm execution-safety compliance (no non_goals fixed, no forbidden_execution_patterns violated, execution_guardrails respected)",
+      "Step 2: Automated verification — run only the required_commands explicitly listed for the scoped task, confirm all pass",
+      "Step 3: Reviewer-grade pre-closure code review — analyze all changes against the review dimensions, record explicit findings with BLOCKER / HIGH / MEDIUM / LOW / NOTE severity",
+      "Step 4: Closure resolution — resolve or explicitly defer findings with severity, write the final verification summary, and update the task report",
+      "Step 5: PROJECT_PROGRESS update — append the substantive change entry only after all previous closure steps pass"
+    ]
+  },
+  "post_actions": [
+    "Do not start paid traffic until live delivery, persistence, and failure handling are proven",
+    "Record provider/account ownership and recovery steps in the runbook without secrets"
+  ]
+}

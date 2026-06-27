@@ -31,7 +31,7 @@ import { FACTS, TROUPE, VALUES } from "@/lib/site";
 export const metadata: Metadata = buildMetadata({
   title: "About",
   description:
-    "Miss Lana's Fairy-Tale Theater is a professional touring troupe led by 30+ years of experience, bringing kind, values-driven fairy tales to life for children across Los Angeles.",
+    "Miss Lana's Fairy-Tale Theatre is a professional touring troupe led by 30+ years of experience, bringing kind, values-driven fairy tales to life for children across Los Angeles.",
   path: "/about",
   noindex: true,
 });

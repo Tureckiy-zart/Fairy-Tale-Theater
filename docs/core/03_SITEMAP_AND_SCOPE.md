@@ -23,7 +23,7 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
 ├── /services            Витрина форматов: театрализованное шоу → анимация/персонажи → праздники
 ├── /school-shows        Для садов и школ (оффер B2B: пакеты, как заказать)
 ├── /birthdays           Дни рождения и частные праздники (оффер B2C)
-├── /pricing             Цены и пакеты (логика «от числа детей» + доплата за расстояние)
+├── /pricing             Цены («From $350» + custom-quote; правило расстояния)
 ├── /gallery             Галерея фото/видео
 ├── /about               О театре и команда (30+ лет, украинская труппа, миссия)
 ├── /booking (/contact)  Онлайн-заявка + телефоны + зоны выезда + карта
@@ -48,12 +48,15 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
 - CTA «Заказать выезд» на каждой странице шоу и в шапке.
 
 ### 2. Прайс и логика цены
-- Базовая логика **от числа детей** (от владельца):
-  до ~15 детей → **$300–350**; ~40 → **~$400**; 50 → **$500**; 60 → **$600**; далее линейно.
-- **Доплата за расстояние** — сейчас её нет, нужно ввести. Рекомендация (Трек B):
-  **бесплатно в радиусе X миль от LA; Сан-Диего — фикс. доплата; Сакраменто/Сан-Хосе — «по запросу».**
-  **Конкретные суммы/правило — за владельцем** (open question). До этого на сайте — «от $350».
-- Отобразить понятно: пакеты (сад / школа / день рождения) + калькулятор/ориентир цены.
+- **Публично — только «From $350»** + custom-quote («final price depends on the show,
+  cast, length and travel; confirmed on booking»). Градация по числу детей (≤30→$350 ·
+  ~40→~$400 · ~50→~$500 · ~60→~$600, далее линейно) — **внутренняя, на сайте не
+  показывается** (locked commercial constraint; `OWNER_ANSWERS_DECISION_RECORD.md` §2).
+  Публикация tiers — отдельным owner-решением + canon-sync.
+- **Правило расстояния (подтв., уже на сайте):** бесплатно по **greater Los Angeles &
+  Orange County**; дальние локации (San Diego, Sacramento, San Jose) — travel surcharge,
+  **котируется по расстоянию** (без фикс. $-сумм на сайте).
+- Отобразить понятно: «From $350» + что входит + custom-quote CTA (без публичного калькулятора).
 
 ### 3. Галерея фото/видео
 - Раздел с реальными материалами владельца (шоу, актёры, дети). Видео — встроенные.
@@ -99,7 +102,8 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
   protective alternate only → 301 на primary. **ОДИН сайт:** навигация = 4 линии-секции
   под Miss Lana (Theatre · Birthdays · School Shows · Characters), не отдельные сайты. Остаётся:
   **trademark-clearance у юриста** до лого/печати.
-- 🔴 **Доплата за расстояние** — конкретные суммы/правило (зональная модель — рекомендация).
+- ✅ **Доплата за расстояние** — правило подтверждено (greater LA/Orange County free,
+  дальние — котируются по расстоянию; публичных $-сумм нет).
 - 🔴 **Подача 2 названий шоу** — «Morozko» (→ Father Frost / заменить) и «Well Red Bow wait»
   (→ Little Red Riding Hood); см. [01_CONTENT_INVENTORY.md](01_CONTENT_INVENTORY.md).
 - 🟡 **Соцсети** — ссылки. **Protective/legacy domains** — 301 и статус оплаты на период миграции.
@@ -115,3 +119,6 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
   form success copy added.
 - **2026-06-25 finalization:** `/school-shows` locked as canonical B2B route; reviews moved into
   launch-required `[OWNER/CONTENT]` scope with no invented content.
+- **2026-06-27 owner-answers canon-sync:** pricing section reduced to public "From $350" +
+  custom-quote (headcount tiers moved internal); travel rule confirmed (greater LA/Orange County
+  free, farther quoted by distance). New artifact: `OWNER_ANSWERS_DECISION_RECORD.md`.

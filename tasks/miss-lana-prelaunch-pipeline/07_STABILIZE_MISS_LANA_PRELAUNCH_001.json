@@ -1,0 +1,269 @@
+{
+  "task": "STABILIZE_MISS_LANA_PRELAUNCH_001",
+  "version": "2.0",
+  "task_mode": "stabilization",
+  "task_type": "prelaunch-trust-qa-release",
+  "priority": "P0",
+  "layer": "Miss Lana / full site launch gate",
+  "description": "Complete the final pre-launch trust, media, quality, operations, and release gate. Install only permission-safe real media and verified reviews, verify every route and lead path, confirm redirects and search controls, then remove site-wide noindex and perform a controlled production launch. The site must remain light and public pricing must remain only From $350.",
+  "non_goals": [
+    "Do not add audience-size price tiers, a calculator, online payment, customer accounts, or advanced CRM automation",
+    "Do not create blog posts, city pages, broad public-school procurement materials, or large illustration production",
+    "Do not finalize trademark-gated logo, mascot, merchandise, or print work",
+    "Do not publish child faces, school logos, reviews, awards, or documents without recorded permission/source",
+    "Do not introduce new service claims, policies, prices, or add-ons during QA",
+    "Do not launch paid advertising as part of this task"
+  ],
+  "decision_basis": {
+    "origin": "User-approved seven-task implementation plan after live-site review and owner questionnaire review on 2026-06-27.",
+    "investigation_findings": [
+      "Launch requires a working form, real media, verified reviews, correct redirects, Search Console/GBP readiness, and full QA",
+      "The user wants a light theatre site rather than a dense technical-company presentation",
+      "Owner media is scattered across phone, Telegram, and files and permissions are not consistently documented",
+      "At least five real verified reviews are the current trust target",
+      "Noindex removal must be the last controlled step after all launch blockers pass",
+      "Pricing remains intentionally limited to From $350"
+    ]
+  },
+  "authority_scope": {
+    "must_read": [
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/00_PROJECT_INSTRUCTIONS.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "CLIENT_QUESTIONS.md",
+      "Owner questionnaire answers supplied 2026-06-25 through 2026-06-26",
+      "docs/_internal/governance/TUNG-EXECUTION-RULE-(CANON).txt",
+      "docs/_internal/governance/tung_system_specification.md",
+      "docs/core/OWNER_ANSWERS_DECISION_RECORD.md",
+      "docs/reports/CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001.md",
+      "docs/reports/FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001.md",
+      "docs/reports/IMPLEMENT_MISS_LANA_LIGHTWEIGHT_CONTENT_STRUCTURE_001.md",
+      "docs/reports/BUILD_MISS_LANA_EVENT_PLANNING_FAQ_001.md",
+      "docs/reports/IMPLEMENT_MISS_LANA_PRODUCTION_LEAD_PIPELINE_001.md",
+      "docs/reports/FIX_MISS_LANA_SEO_AND_DOMAIN_MIGRATION_001.md",
+      "docs/operations/LEAD_PIPELINE_RUNBOOK.md",
+      "docs/seo/LEGACY_REDIRECT_MAP.md",
+      "docs/seo/SEARCH_CONSOLE_LAUNCH_CHECKLIST.md",
+      "docs/seo/GBP_PROFILE_PACKET.md",
+      "public/",
+      "tests/e2e/"
+    ],
+    "must_not_violate": [
+      "No launch with unresolved BLOCKER or HIGH findings",
+      "No invented reviews or fabricated source attribution",
+      "No identifiable child media without adequate permission evidence",
+      "No private address or reserve phone publication",
+      "No public pricing beyond From $350",
+      "Do not remove noindex until form delivery, redirects, routes, metadata, analytics, trust content, and QA pass",
+      "Keep /design and other internal surfaces noindex or unavailable in production",
+      "Preserve the approved light content hierarchy and Lantern Light system"
+    ],
+    "requires_unlock": false,
+    "allowed_change_classes": [
+      "implementation",
+      "verification",
+      "docs-sync",
+      "cleanup"
+    ]
+  },
+  "forbidden_execution_patterns": [
+    "No visual redesign disguised as launch polish",
+    "No mass media upload without curation, compression, alt text, dimensions, and permission status",
+    "No review publication based on anonymous screenshots without source/permission tracking",
+    "No launch based only on local tests",
+    "No silent deferral of failed live form, redirect, SSL, indexing, or analytics checks",
+    "No last-minute commercial-policy additions"
+  ],
+  "execution_guardrails": [
+    "Use a launch checklist with explicit PASS / BLOCKED / NOT APPLICABLE evidence",
+    "Treat real-media permission status as a hard gate for identifiable children",
+    "Keep illustrations subordinate to real performance evidence",
+    "Optimize media before implementation and reserve dimensions to avoid CLS",
+    "Run production smoke tests immediately before and after noindex removal",
+    "Maintain rollback instructions for deployment, form provider, and indexing state",
+    "If any BLOCKER or HIGH issue appears, keep noindex and stop launch"
+  ],
+  "prerequisites": {
+    "must_have_completed": [
+      "CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001",
+      "FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001",
+      "IMPLEMENT_MISS_LANA_LIGHTWEIGHT_CONTENT_STRUCTURE_001",
+      "BUILD_MISS_LANA_EVENT_PLANNING_FAQ_001",
+      "IMPLEMENT_MISS_LANA_PRODUCTION_LEAD_PIPELINE_001",
+      "FIX_MISS_LANA_SEO_AND_DOMAIN_MIGRATION_001"
+    ],
+    "must_be_ready": true,
+    "readiness_notes": [
+      "Production form credentials and domain access are available",
+      "Launch media and review candidates have been supplied with source/permission evidence",
+      "Owner can respond to leads consistently"
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Media inventory, permission classification, curation, compression, responsive variants, captions, and alt text",
+      "Install a minimum launch media set across Home, School, Birthday, Shows, About, Gallery, and OG surfaces",
+      "Collect and publish at least five verified reviews with source/permission, balancing parent and educator proof where possible",
+      "Verify owner/team factual content that is actually published",
+      "Implement/verify privacy and cookie disclosures required by the actual form/analytics stack",
+      "Full route, content, mobile, accessibility, performance, browser, form, email, analytics, metadata, schema, redirect, SSL, 404, robots, and sitemap QA",
+      "Configure/verify analytics conversion events without personal data",
+      "Controlled noindex removal, sitemap submission, live inquiry test, and launch monitoring",
+      "Launch runbook, rollback checklist, and first-30-day monitoring plan"
+    ],
+    "out_of_scope": [
+      "New pricing model",
+      "Public-school procurement buildout",
+      "Paid acquisition campaign execution",
+      "Blog/city SEO expansion",
+      "Trademark-gated asset finalization"
+    ]
+  },
+  "steps": [
+    {
+      "title": "Build the launch evidence register",
+      "actions": [
+        "Inventory all candidate photos, videos, reviews, awards, school/client names, team facts, and permissions",
+        "Classify each item as publishable, needs permission, internal-only, or rejected",
+        "Select a minimum launch set and identify blockers"
+      ],
+      "expectation": "No trust asset can be published without traceable source and permission status"
+    },
+    {
+      "title": "Prepare and install real media",
+      "actions": [
+        "Create optimized responsive image/video variants with consistent warm treatment and natural skin tones",
+        "Reserve dimensions, use correct loading priority, add captions/alt text, and avoid identifiable child faces without permission",
+        "Replace public placeholders and verify the site remains fast"
+      ],
+      "expectation": "The site demonstrates real theatre work without privacy or performance regressions"
+    },
+    {
+      "title": "Publish verified social proof",
+      "actions": [
+        "Verify and obtain permission for at least five launch reviews",
+        "Separate parent and educator context where evidence allows",
+        "Publish only exact approved wording or faithful translation with source context",
+        "Add Review schema only if it accurately matches visible eligible reviews and current search guidelines"
+      ],
+      "expectation": "The site has a real, traceable trust layer"
+    },
+    {
+      "title": "Complete privacy and measurement readiness",
+      "actions": [
+        "Verify actual analytics/form technologies and add only required privacy/cookie disclosure",
+        "Confirm conversion events for form success and contact clicks without personal data",
+        "Verify Search Console and GBP operational readiness and account ownership status"
+      ],
+      "expectation": "Measurement and disclosures match the technologies actually used"
+    },
+    {
+      "title": "Run full pre-launch QA",
+      "actions": [
+        "Test every public route, navigation path, contact action, form state, email delivery, lead persistence, metadata, schema, sitemap, robots, 404, redirects, SSL, and analytics event",
+        "Test representative mobile/desktop viewports, keyboard navigation, screen-reader labels, contrast, reduced motion, Core Web Vitals, image/video loading, and browser compatibility",
+        "Perform factual proofread against canon and confirm Pricing contains only From $350",
+        "Record findings with severity and block launch on BLOCKER/HIGH"
+      ],
+      "expectation": "A signed checklist shows zero unresolved launch-blocking defects"
+    },
+    {
+      "title": "Execute controlled launch",
+      "actions": [
+        "Create deployment and indexing rollback checkpoints",
+        "Remove site-wide public noindex while keeping /design and internal surfaces protected",
+        "Deploy, verify live canonical/robots/sitemap behavior, submit sitemap, and inspect representative URLs",
+        "Run a live inquiry and verify owner delivery, persistence, analytics, and customer-visible state",
+        "Verify protective/legacy redirects and monitor 404/error/form logs"
+      ],
+      "expectation": "The site is publicly indexable, operational, measurable, and recoverable"
+    },
+    {
+      "title": "Establish the first-30-day monitoring plan",
+      "actions": [
+        "Define daily first-week and weekly first-month checks for form delivery, response time, errors, 404s, indexing, queries, conversion, and lead quality",
+        "Create an evidence-based optimization backlog without city pages or blog assumptions"
+      ],
+      "expectation": "Post-launch decisions will be based on real traffic and inquiry data"
+    }
+  ],
+  "success_criteria": [
+    "At least five real verified reviews are published with source and permission records",
+    "Launch media is real, optimized, permission-safe, and replaces public placeholders",
+    "Every public route and conversion path passes full QA with zero open BLOCKER/HIGH findings",
+    "Production form delivery, lead persistence, failure behavior, and analytics are proven live",
+    "Canonical host, SSL, redirects, metadata, schema, robots, sitemap, and 404 behavior are correct",
+    "Site-wide public noindex is removed only after all gates pass; internal /design remains protected",
+    "Pricing everywhere remains only From $350 with no tiers or calculator",
+    "A rollback procedure and first-30-day monitoring plan exist and are readable"
+  ],
+  "verification": {
+    "required_commands": [
+      "pnpm run ci:exact",
+      "pnpm test:e2e",
+      "security/secret-scan.sh",
+      "git diff --check",
+      "curl -sSIL https://misslanatheatre.com/",
+      "curl -sS https://misslanatheatre.com/robots.txt",
+      "curl -sS https://misslanatheatre.com/sitemap.xml",
+      "curl -sSIL https://misslanatheater.com/",
+      "curl -sSIL https://magic-castle-puppet-theater.com/"
+    ],
+    "manual_checks": [
+      "Complete and sign the launch checklist with PASS/BLOCKED evidence",
+      "Verify published review and media permission records",
+      "Submit a real production inquiry from mobile and desktop and confirm full delivery path",
+      "Inspect representative pages in Google Rich Results Test or equivalent current validator where applicable",
+      "Verify public pages are indexable after launch and /design remains noindex/unavailable",
+      "Confirm all numeric public pricing is limited to From $350",
+      "Confirm the site still feels light, warm, and theatre-led rather than technical or corporate"
+    ],
+    "regression_targets": [
+      "All public routes and navigation",
+      "Lead pipeline and environment security",
+      "Planning Your Event progressive disclosure",
+      "Legacy/protective redirects",
+      "Performance and accessibility budgets",
+      "Brand/contact canon",
+      "Media privacy"
+    ]
+  },
+  "deliverables": {
+    "reports": [
+      "docs/reports/STABILIZE_MISS_LANA_PRELAUNCH_001.md"
+    ],
+    "progress_updates": [
+      "docs/PROJECT_PROGRESS.md"
+    ],
+    "artifacts": [
+      "docs/launch/LAUNCH_CHECKLIST.md",
+      "docs/launch/ROLLBACK_RUNBOOK.md",
+      "docs/launch/FIRST_30_DAYS_MONITORING.md",
+      "docs/content/MEDIA_AND_REVIEW_PERMISSION_REGISTER.md"
+    ]
+  },
+  "mandatory_closure": {
+    "required": true,
+    "blocks_completion_until_passed": true,
+    "closure_sequence": [
+      "Step 1: Scope verification — confirm all steps, success_criteria, and deliverables are complete; confirm execution-safety compliance (no non_goals fixed, no forbidden_execution_patterns violated, execution_guardrails respected)",
+      "Step 2: Automated verification — run only the required_commands explicitly listed for the scoped task, confirm all pass",
+      "Step 3: Reviewer-grade pre-closure code review — analyze all changes against the review dimensions, record explicit findings with BLOCKER / HIGH / MEDIUM / LOW / NOTE severity",
+      "Step 4: Closure resolution — resolve or explicitly defer findings with severity, write the final verification summary, and update the task report",
+      "Step 5: PROJECT_PROGRESS update — append the substantive change entry only after all previous closure steps pass"
+    ]
+  },
+  "post_actions": [
+    "Begin traffic acquisition only after stable launch monitoring confirms form and response operations",
+    "Create later optimization TUNGs from real Search Console, analytics, GBP, and lead-quality evidence"
+  ]
+}

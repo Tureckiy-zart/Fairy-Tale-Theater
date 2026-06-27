@@ -3,7 +3,7 @@
 // turnkey, age-appropriate, from $350) → FAQ (Accordion + FAQPage) → TrustStrip →
 // LeadForm + BookingCTABand. School Shows line accent = sage (§12). Differentiators are
 // real positioning (02_POSITIONING); copy is final. Photos render the marked
-// placeholder treatment (Phase 4 [ASSET]). Distance rule: free within 30 miles of LA,
+// placeholder treatment (Phase 4 [ASSET]). Travel: free across the greater LA area,
 // quoted by distance beyond — NO dollar amounts. Server component; metadata via lib/seo (noindex).
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -52,6 +52,14 @@ const OFFER: { title: string; body: string }[] = [
     title: "Age-appropriate, 2–10",
     body: "We tailor energy, language and length to your group — gentle for the littlest, lively for the older classes.",
   },
+  {
+    title: "Flexible scheduling",
+    body: "We can perform back-to-back shows on the same visit for separate age groups, so each class sees a show suited to them.",
+  },
+  {
+    title: "Best in smaller groups",
+    body: "The show is warmest and most interactive for a smaller audience — tell us your class or assembly size and we'll recommend the right setup.",
+  },
 ];
 
 const FAQ: QA[] = [
@@ -63,7 +71,7 @@ const FAQ: QA[] = [
   {
     question: "How long is a show, and what ages is it for?",
     answer:
-      "Each show runs 35–50 minutes (a ~30-minute play plus interactive play) and is designed for ages 2–10. We adapt the energy and language to the group.",
+      "Each show runs about an hour (a ~30-minute play plus ~30 minutes of interactive play) and is designed for ages 2–10. We adapt the energy and language to the group.",
   },
   {
     question: "What do we need to provide?",
@@ -76,9 +84,14 @@ const FAQ: QA[] = [
       "Yes — every story is built around kind, social-emotional themes like friendship, courage and helping one another.",
   },
   {
+    question: "Can you perform for different age groups in one visit?",
+    answer:
+      "Yes — we can put on consecutive shows on the same visit so each age group sees a performance pitched for them. The show works best for a smaller audience; tell us your group sizes and we'll suggest the right schedule.",
+  },
+  {
     question: "How far do you travel, and what does it cost?",
     answer:
-      "We're based in Los Angeles and travel to San Diego, Sacramento and San Jose. Pricing starts from $350 by group size; travel is free within 30 miles of Los Angeles, and quoted by distance beyond that.",
+      "We're based in Los Angeles and travel to San Diego, Sacramento and San Jose. Pricing starts from $350, with a custom quote confirmed on booking; travel is free across the greater Los Angeles area, and quoted by distance beyond that.",
   },
 ];
 
@@ -152,9 +165,10 @@ export default function SchoolShowsPage() {
         </div>
         <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-border-soft bg-cream p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
           <p className="max-w-md text-ink">
-            Transparent pricing by group size makes it easy to budget — every show starts{" "}
-            <span className="font-display text-2xl capitalize text-forest-700">{FACTS.priceFrom}</span>.
-            Free within 30 miles of Los Angeles; beyond that, travel is quoted by distance.
+            Transparent pricing makes it easy to budget — every show starts{" "}
+            <span className="font-display text-2xl capitalize text-forest-700">{FACTS.priceFrom}</span>,
+            with a custom quote on booking. Travel is free across the greater Los Angeles area;
+            beyond that, it&rsquo;s quoted by distance.
           </p>
           <Button href="/pricing" variant="secondary">
             See pricing
@@ -169,6 +183,16 @@ export default function SchoolShowsPage() {
         title="School show questions, answered"
       />
 
+      <Container className="pb-2">
+        <p className="text-sm text-ink-soft">
+          Need the practical details — space, setup and scheduling?{" "}
+          <a href="/planning-your-event" className="font-semibold text-forest-700 underline-offset-4 hover:underline">
+            See planning your event
+          </a>
+          .
+        </p>
+      </Container>
+
       {/* Trust */}
       <TrustStrip />
 
@@ -176,7 +200,7 @@ export default function SchoolShowsPage() {
       <LeadForm
         eyebrow="Request a show"
         heading="Bring Miss Lana to your school"
-        sub="Tell us your school, group size and a date — we'll check availability and send a quote. Demo form — no message is sent yet."
+        sub="Tell us your school, group size and a date — we'll check availability and send a quote within 1–2 business days."
       />
       <BookingCTABand
         heading="Ready to book a school show?"

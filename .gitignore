@@ -8,6 +8,9 @@
 *.p12
 *.pfx
 
+# Durable lead store — booking inquiries (PII). NEVER commit.
+.leads/
+
 # Node / JS
 node_modules/
 .next/

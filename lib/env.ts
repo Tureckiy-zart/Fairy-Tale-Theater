@@ -26,12 +26,39 @@ export const env = {
   get googleSiteVerification(): string | undefined {
     return process.env.GOOGLE_SITE_VERIFICATION;
   },
-  /** Telegram bot token — booking-form notifications. SECRET, server-only. */
-  get telegramBotToken(): string {
-    return required("TELEGRAM_BOT_TOKEN");
+  /** Telegram bot token — optional secondary booking alert. SECRET, server-only. */
+  get telegramBotToken(): string | undefined {
+    return process.env.TELEGRAM_BOT_TOKEN || undefined;
   },
-  /** Telegram chat id that receives booking notifications. */
-  get telegramChatId(): string {
-    return required("TELEGRAM_CHAT_ID");
+  /** Telegram chat id that receives booking notifications (optional). */
+  get telegramChatId(): string | undefined {
+    return process.env.TELEGRAM_CHAT_ID || undefined;
+  },
+
+  // --- Lead pipeline (booking inquiries) -------------------------------------
+  /** Owner notification destination (canonical — BRAND.md). Override per deploy. */
+  get leadNotifyEmail(): string {
+    return process.env.LEAD_NOTIFY_EMAIL || "info@misslanatheatre.com";
+  },
+  /**
+   * Transactional-email delivery webhook (provider-agnostic). A POST to this URL
+   * with {to, subject, text} sends the owner notification. Works with Resend/
+   * Postmark/SES-relay/a serverless function. Optional: if unset, email delivery
+   * is "not configured" and the durable store + Telegram (if set) are the record.
+   * SECRET-adjacent (may embed an auth token in the URL) — server-only.
+   */
+  get leadEmailWebhookUrl(): string | undefined {
+    return process.env.LEAD_EMAIL_WEBHOOK_URL || undefined;
+  },
+  /** Optional bearer token sent as `Authorization: Bearer …` to the email webhook. */
+  get leadEmailWebhookToken(): string | undefined {
+    return process.env.LEAD_EMAIL_WEBHOOK_TOKEN || undefined;
+  },
+  /**
+   * Directory for the durable lead record (recovery if a provider fails). Defaults
+   * to a git-ignored `.leads` dir at the project root. Server-only; never served.
+   */
+  get leadStoreDir(): string {
+    return process.env.LEAD_STORE_DIR || ".leads";
   },
 } as const;
