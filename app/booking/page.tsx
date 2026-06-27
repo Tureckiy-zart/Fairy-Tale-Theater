@@ -13,7 +13,7 @@ import { AREAS, PHONES } from "@/lib/site";
 export const metadata: Metadata = buildMetadata({
   title: "Book a show / Contact",
   description:
-    "Request a booking for Miss Lana's Fairy-Tale Theater — preschools, schools, birthdays and parties across Los Angeles, San Diego, Sacramento and San Jose. Call or send a request.",
+    "Request a booking for Miss Lana's Fairy-Tale Theatre — preschools, schools, birthdays and parties across Los Angeles, San Diego, Sacramento and San Jose. Call or send a request.",
   path: "/booking",
   noindex: true,
 });
@@ -54,8 +54,15 @@ export default function BookingPage() {
         <SectionHeader
           as="h2"
           title="Where we go"
-          subtitle="A touring, service-area theater — we come to you. Free within 30 miles of Los Angeles; beyond that, travel is quoted by distance."
+          subtitle="A touring, service-area theater — we come to you. Free across the greater Los Angeles and Orange County area; farther locations are quoted by distance."
         />
+        <p className="mt-4 text-sm text-ink-soft">
+          New to hosting a show? See{" "}
+          <a href="/planning-your-event" className="font-semibold text-forest-700 underline-offset-4 hover:underline">
+            planning your event
+          </a>{" "}
+          for space, setup and parking.
+        </p>
         <div className="mt-6 flex flex-wrap gap-2">
           <Tag tone="solid" accent="forest">
             {AREAS.base}

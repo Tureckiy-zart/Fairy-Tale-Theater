@@ -1,0 +1,525 @@
+{
+  "task": "ADAPT_MISS_LANA_LEGACY_SHOW_CONTENT_001",
+  "version": "2.0",
+  "task_mode": "fix",
+  "task_type": "legacy-content-adaptation-and-show-copy",
+  "priority": "P1",
+  "layer": "Miss Lana / About, Shows hub, eight show pages, School Shows",
+  "description": "Adapt the strongest owner-authored legacy content from magic-castle-puppet-theater.com into warm, vivid, modern English copy for Miss Lana's Fairy-Tale Theatre. Preserve the real plots, emotional ideas, moral themes, professional history, and theatre philosophy while removing obsolete brand facts, awkward legacy English, puppet-first positioning, unsupported superlatives, and outdated duration/contact claims. The output must feel like a welcoming children's theatre, not a technical company, SEO template, or generic AI-written brochure. Use the copy seed library in this task as the minimum narrative and tonal foundation; do not replace it with shorter, drier copy unless a documented factual conflict requires revision.",
+  "non_goals": [
+    "Do not redesign page layouts, navigation, design tokens, cards, or imagery",
+    "Do not implement the Planning Your Event route, lead pipeline, analytics, redirects, or launch controls",
+    "Do not publish audience-size price tiers, fixed travel fees, discounts, or any price beyond 'From $350'",
+    "Do not turn the new brand back into a puppet-theatre brand",
+    "Do not erase a real puppet or mixed-format element from a specific production if the owner later confirms it; mark the format for confirmation instead",
+    "Do not invent plot events, characters, educational outcomes, awards, credits, dates, schools, reviews, or performer biographies",
+    "Do not resolve the final public titles of show #2, #5, or #6 without owner approval",
+    "Do not copy the legacy English verbatim when it is grammatically weak, outdated, culturally coded, or inconsistent with the new brand",
+    "Do not add setup, parking, power, weather, cancellation, or other technical information to individual show pages",
+    "Do not change business policies, contacts, duration canon, or service geography outside copy surfaces declared here"
+  ],
+  "decision_basis": {
+    "origin": "User explicitly identified the legacy Magic Castle site as an owner-approved source of tested text and asked for a canonical TUNG that preserves its warmth because prior implementation copy was too dry.",
+    "investigation_findings": [
+      "The legacy homepage contains a useful emotional philosophy: theatre impresses, delights, inspires, animates, and helps people feel and discover",
+      "The legacy repertoire contains plot and moral source material for eight productions",
+      "The legacy team section contains concrete professional-history leads for Svitlana Grygoryshyna, Armen Tadevosyan, Victoria Stolyarenko, and Roman Listopad",
+      "The legacy site also contains obsolete facts: Magic Castle branding, puppet-first category, 25 years, two public phones, 35–45 minute durations, and weak machine-like English",
+      "Current canon reframes the business as an English-first professional travelling live fairy-tale theatre with 30+ years of experience",
+      "Owner answers now support an approximately one-hour complete experience: roughly 30 minutes of story followed by roughly 30 minutes of games, dancing, bubbles, and interaction",
+      "The user requires the new site to remain light and emotional; technical information belongs on Planning Your Event rather than show pages",
+      "Public price remains only 'From $350'"
+    ]
+  },
+  "authority_scope": {
+    "must_read": [
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/00_PROJECT_INSTRUCTIONS.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "docs/core/OWNER_ANSWERS_DECISION_RECORD.md",
+      "CLIENT_QUESTIONS.md",
+      "https://magic-castle-puppet-theater.com/ — legacy owner-authored source; authoritative only for plot, moral, philosophy, and historical leads, not current brand facts",
+      "Current implementation files for Home, About, Shows hub, School Shows, and all show-detail pages",
+      "docs/_internal/governance/TUNG-EXECUTION-RULE-(CANON).txt",
+      "docs/_internal/governance/tung_system_specification.md"
+    ],
+    "must_not_violate": [
+      "Owned public brand is Miss Lana's Fairy-Tale Theatre",
+      "Primary identity is professional live children's fairy-tale theatre, not generic entertainment and not puppet-first",
+      "English is the primary public language",
+      "Tone must remain warm, kind, imaginative, theatrical, and calm rather than loud, corporate, technical, or overexcited",
+      "The site must not use Russian/Slavic visual or SEO coding",
+      "Legacy content is a semantic source, not current operational canon",
+      "Current contact, duration, geography, pricing, form, and brand facts come from current canon, not the old site",
+      "Public price may only appear as 'From $350'",
+      "No review, award, biography, school, media-permission, vendor, insurance, or safety claim may be invented",
+      "Technical requirements must not be repeated on show pages",
+      "The exact format of each production — live, puppet, or hybrid — remains owner-confirmation-gated where unresolved"
+    ],
+    "requires_unlock": false,
+    "allowed_change_classes": [
+      "implementation",
+      "verification",
+      "docs-sync",
+      "canon-clarification"
+    ]
+  },
+  "forbidden_execution_patterns": [
+    "No mechanical rewrite that preserves the sentence structure of the weak legacy English",
+    "No generic AI filler such as 'an unforgettable magical experience for children of all ages'",
+    "No SEO-keyword stuffing or repetitive use of 'kind', 'kindness', 'magical', 'professional', or 'interactive'",
+    "No flattening of every show into the same template with only character names changed",
+    "No dry feature-list copy where a short scene, emotional promise, or story idea is appropriate",
+    "No fabricated plot detail added merely to make copy sound richer",
+    "No use of 'best', 'leading', 'premier', 'highest professional caliber', 'only', or similar unsupported superiority claims",
+    "No public use of 'East Slavic', 'Russian folk tale', Soviet references, or cultural-origin claims unless separately verified and intentionally approved",
+    "No claim that The Gingerbread Man is specifically an American folk tale without a verified content decision",
+    "No blind global replacement of Theatre/theater; preserve generic American search language where appropriate",
+    "No change to unresolved show titles in slugs, navigation, metadata, or headings without explicit owner approval",
+    "No publication of performer career details copied from the legacy site before names, roles, credits, and spellings are verified"
+  ],
+  "execution_guardrails": [
+    "Treat the copy seed library below as a floor for warmth and narrative richness, not as optional inspiration",
+    "For every page, preserve factual meaning first, then improve rhythm, imagery, clarity, and emotional flow",
+    "Each show must have its own emotional center, not just a generic moral label",
+    "Use concrete verbs and moments: follows, helps, hides, searches, shares, discovers, returns, celebrates",
+    "Prefer short paragraphs with varied sentence length over bullet-heavy corporate copy",
+    "Keep show cards concise; richer writing belongs on the detail page",
+    "Use a gentle moral framing: show what children notice or explore rather than lecturing them",
+    "Write for parents and educators, but keep a sense of wonder that reflects the child's experience",
+    "Avoid aggressive American party-entertainer language, excessive exclamation marks, all-caps urgency, and cartoon hype",
+    "Where a title or plot point is unresolved, keep a clearly marked owner-review placeholder instead of inventing a final answer",
+    "Where legacy and current canon conflict, current canon wins and the report must record the rejected legacy statement",
+    "Do not place operational details in story copy; use only a compact shared Show Details component and a link to Planning Your Event when available",
+    "If implementation space is too tight for the approved text, adjust layout carefully or escalate; do not silently compress the copy into lifeless fragments"
+  ],
+  "prerequisites": {
+    "must_have_completed": [
+      "CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001",
+      "FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001"
+    ],
+    "must_be_ready": true,
+    "readiness_notes": [
+      "Current canon must already reflect approximately one-hour duration, current brand/contact facts, and From $350-only pricing",
+      "Current show route inventory and data model must be available",
+      "Show #2, #5, and #6 titles may remain provisional and must be visibly flagged for owner review in working artifacts, not necessarily on the public page"
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Create a legacy-content provenance matrix covering philosophy, eight shows, and team-history leads",
+      "Prepare and implement warm English copy for the Shows hub and eight show-detail pages",
+      "Adapt one concise philosophy passage for Home and one richer philosophy/history passage for About",
+      "Use show-specific values to strengthen the School Shows page without turning it into a curriculum document",
+      "Create concise card copy and richer detail-page copy for each production",
+      "Create an owner-review sheet for unresolved titles, formats, plot details, and biography claims",
+      "Update current content inventory with verified adapted copy and source provenance",
+      "Add or update metadata descriptions only after the visible copy is approved and implemented",
+      "Preserve the current light page hierarchy and technical-detail separation"
+    ],
+    "out_of_scope": [
+      "Pricing policy",
+      "Planning Your Event implementation",
+      "Lead pipeline",
+      "Media selection",
+      "Reviews",
+      "Full team biography publication before verification",
+      "Domain migration",
+      "Analytics",
+      "Noindex removal",
+      "Public-school procurement materials"
+    ]
+  },
+  "copy_style_contract": {
+    "desired_effect": [
+      "A parent should feel that a real theatre company is arriving, not a generic entertainer",
+      "A school director should understand the story value without reading educational jargon",
+      "A child-facing story should feel lively, safe, curious, and emotionally clear",
+      "The writing should retain the human warmth of the old site while sounding natural in modern English"
+    ],
+    "voice": [
+      "warm",
+      "gentle",
+      "imaginative",
+      "theatrical",
+      "clear",
+      "human",
+      "confident without boasting"
+    ],
+    "sentence_rules": [
+      "Use mostly 8–18 word sentences, mixed with occasional longer story sentences",
+      "Avoid three consecutive sentences with the same structure",
+      "Use one vivid image or action in each show introduction",
+      "Use no more than one exclamation mark per full page, preferably none",
+      "Avoid repeating the show title at the start of every paragraph",
+      "Avoid generic opening phrases such as 'Join us for' on every page"
+    ],
+    "preferred_vocabulary": [
+      "live story",
+      "beautifully staged",
+      "playful",
+      "gentle",
+      "curious",
+      "brave",
+      "thoughtful",
+      "helping hands",
+      "shared adventure",
+      "a story children can feel",
+      "performed by a professional troupe"
+    ],
+    "avoid_vocabulary": [
+      "premium entertainment solution",
+      "engaging content",
+      "high-quality service",
+      "memorable event experience",
+      "fun-filled",
+      "action-packed",
+      "ultimate",
+      "best-in-class",
+      "educational product",
+      "customers",
+      "deliverables"
+    ],
+    "anti_dryness_test": [
+      "Would this paragraph still make sense if every theatre name were replaced by a magician or bounce-house company? If yes, rewrite it",
+      "Does the paragraph contain a character, action, choice, feeling, or theatrical image? If not, enrich it",
+      "Does the copy merely list features? Convert at least one list into a natural sentence",
+      "Does every show sound identical? Restore its unique conflict, character energy, and emotional resolution"
+    ]
+  },
+  "legacy_source_rules": {
+    "safe_to_use_as_semantic_source": [
+      "Theatre as something that delights, inspires, awakens emotion, and helps people discover",
+      "Donkey's Birthday: friendship and mutual respect",
+      "Little Red Riding Hood working source: Wolf pursues a trusting girl; Hare understands the danger and helps",
+      "The Bunny's Little House: friendship and mutual assistance",
+      "The Magic Slipper / Cinderella: kindness is rewarded while selfishness is not",
+      "The Magic Castle: friendship, help, and wonder",
+      "Winter story working source: hard work and kindness overcome envy and laziness",
+      "The Gingerbread Man: caution, listening, and the limits of cleverness",
+      "Suzy Bee: a hardworking kind bee helps feed and care for friends",
+      "Names and broad role leads for Svitlana, Armen, Victoria, and Roman, subject to verification"
+    ],
+    "must_not_transfer_as_current_fact": [
+      "Magic Castle as the business brand",
+      "Puppet theater for children and youth as the global category",
+      "25 years",
+      "35–45 minute complete duration",
+      "Both legacy phone numbers",
+      "Highest professional caliber",
+      "Middle and high school repertoire claim unless verified",
+      "Corporate events, anniversaries, and New Year's holidays as current service lines unless re-approved",
+      "Cultural-origin labels from the legacy site",
+      "Any unverified performer credit, film title, institution spelling, or role"
+    ]
+  },
+  "copy_seed_library": {
+    "usage_rule": "These are authored working seeds to preserve warmth and narrative substance. They may be polished for factual accuracy, page rhythm, and final approved titles, but must not be reduced to generic one-line SEO summaries. The executor must record any material departure and why it was necessary.",
+    "home_philosophy_seed": "Theatre has a special kind of magic. A story steps out of the book, familiar characters come close, and children are invited to feel, imagine, laugh, and discover something new together.",
+    "about_philosophy_seed": "For Miss Lana, theatre has never been only a performance. It is a place where a child can meet courage, kindness, friendship, and wonder in a form they can see and feel. For more than 30 years, her work has brought fairy tales to life through actors, costumes, scenery, music, and the quiet magic of a shared story.",
+    "shows_hub_intro_seed": "Every Miss Lana production begins with a familiar fairy-tale feeling and grows into a live shared adventure. Some stories are playful, some are tender, and some bring a little suspense — but each one returns to the values children understand deeply: friendship, courage, kindness, and helping one another.",
+    "school_values_seed": "The stories give children more than a moment of entertainment. Through choices made by the characters, children see friendship in action, notice the consequences of selfishness, and discover how courage, patience, and helping one another can change a story.",
+    "show_seeds": [
+      {
+        "show_key": "donkeys-birthday",
+        "working_title": "Donkey's Birthday",
+        "card_seed": "A warm birthday story about friendship, thoughtful surprises, and making someone feel truly loved.",
+        "detail_opening_seed": "A birthday is coming, but the happiest surprise is not the cake or the presents. It is discovering how carefully good friends listen, remember, and come together for someone they love.",
+        "story_seed": "Donkey's friends are preparing a celebration, and each of them brings a different idea of what will make the day special. Their plans lead to playful misunderstandings, small discoveries, and a joyful reminder that friendship grows through attention, respect, and the wish to make another person happy.",
+        "values_seed": "Friendship, mutual respect, thoughtful giving, and celebrating together.",
+        "owner_review_required": [
+          "Confirm the exact source book or remove all adaptation attribution",
+          "Confirm main characters and whether the birthday celebration plot matches the current production",
+          "Confirm current live/puppet/hybrid format"
+        ]
+      },
+      {
+        "show_key": "little-red-riding-hood",
+        "working_title": "Little Red Riding Hood",
+        "card_seed": "A lively forest adventure where courage and a helpful friend can outsmart a very confident Wolf.",
+        "detail_opening_seed": "Little Red Riding Hood sets off with a trusting heart, while the Wolf is already planning a clever shortcut. But someone in the forest has noticed his tricks.",
+        "story_seed": "When the Wolf turns his attention to Little Red Riding Hood and her grandmother, the quick-thinking Hare understands the danger. What follows is a playful chase filled with courage, warning, and help arriving at just the right moment.",
+        "values_seed": "Courage, care for others, listening to warnings, and helping someone in danger.",
+        "owner_review_required": [
+          "Confirm final public title",
+          "Confirm the Hare's exact role and ending",
+          "Remove any remaining Soviet 'Well, just you wait' reference",
+          "Confirm current live/puppet/hybrid format"
+        ]
+      },
+      {
+        "show_key": "bunnys-little-house",
+        "working_title": "The Bunny's Little House",
+        "card_seed": "When Bunny loses a beloved home, loyal friends prove that no one has to face trouble alone.",
+        "detail_opening_seed": "Bunny's little house should be a safe and cheerful place. When that comfort is taken away, Bunny must find the courage to ask for help — and discover which friends will truly stand nearby.",
+        "story_seed": "One by one, different characters try to help Bunny return home. Some arrive with big promises, while others bring patience, bravery, and the right idea. The story grows into a gentle adventure about loyalty and the strength friends find when they work together.",
+        "values_seed": "Friendship, mutual help, courage, and standing beside someone in a difficult moment.",
+        "owner_review_required": [
+          "Confirm final title: The Bunny's Little House / Bunny's Hut / another approved title",
+          "Confirm antagonist and helper characters",
+          "Legacy source called the production mixed and used puppets; confirm present format"
+        ]
+      },
+      {
+        "show_key": "magic-slipper",
+        "working_title": "The Magic Slipper",
+        "card_seed": "A gentle Cinderella story in which kindness opens a door that cruelty never could.",
+        "detail_opening_seed": "Cinderella's days are filled with work and unkind words, but she has not allowed bitterness to change her heart. Then one unexpected evening brings music, wonder, and a chance to be seen for who she truly is.",
+        "story_seed": "With help from her fairy godmother, Cinderella reaches the ball and meets the Prince — but the magic cannot last forever. A lost slipper becomes the clue that leads him back to her, and the story reminds children that gentleness and courage have a strength selfishness cannot imitate.",
+        "values_seed": "Kindness, hope, inner strength, and the consequences of selfishness.",
+        "owner_review_required": [
+          "Confirm final title: Cinderella / The Magic Slipper",
+          "Confirm whether the father-death detail should appear publicly",
+          "Confirm current live/puppet/hybrid format"
+        ]
+      },
+      {
+        "show_key": "magic-castle",
+        "working_title": "The Magic Castle",
+        "card_seed": "A fairy-tale adventure where friendship and helping hands open the way to wonder.",
+        "detail_opening_seed": "Beyond the ordinary path stands a castle filled with questions, surprises, and a little bit of mystery. Reaching it is only the beginning.",
+        "story_seed": "The characters discover that no one can solve every problem alone. Step by step, they listen, share what they know, and help one another move forward. The castle becomes more than a destination — it becomes a place where friendship reveals its own kind of magic.",
+        "values_seed": "Friendship, cooperation, helping one another, and shared discovery.",
+        "owner_review_required": [
+          "Confirm the actual plot and character list; the legacy source is too general",
+          "Confirm whether the show should retain the former brand name as its title",
+          "Confirm current live/puppet/hybrid format"
+        ]
+      },
+      {
+        "show_key": "winter-gift",
+        "working_title": "The Winter's Gift",
+        "card_seed": "A snowy fairy tale where kindness and honest work bring warmth even on the coldest day.",
+        "detail_opening_seed": "Deep in the winter forest, every choice is noticed. A helpful heart finds friends among the animals, while envy and laziness make the cold feel colder.",
+        "story_seed": "A hardworking girl treats the forest and its creatures with care. Her patience and generosity are rewarded by a mysterious winter spirit, while a selfish stepsister discovers that gifts cannot be demanded and kindness cannot be pretended.",
+        "values_seed": "Kindness, hard work, patience, generosity, and the consequences of envy.",
+        "owner_review_required": [
+          "Confirm final title and whether Morozko/Father Frost appears in the current production",
+          "Confirm exact characters and ending",
+          "Do not publish Russian or East Slavic origin framing",
+          "Confirm current live/puppet/hybrid format"
+        ]
+      },
+      {
+        "show_key": "gingerbread-man",
+        "working_title": "The Gingerbread Man",
+        "card_seed": "A quick little hero races through the world, certain that cleverness can solve everything.",
+        "detail_opening_seed": "The Gingerbread Man has just come to life — and he is already on the run. Fast, cheerful, and very sure of himself, he believes no one can catch him.",
+        "story_seed": "As he meets one character after another, the Gingerbread Man keeps trusting his speed and ignoring good advice. His lively journey brings laughter and suspense, while gently showing that confidence is useful only when it is joined by care, listening, and good judgment.",
+        "values_seed": "Listening, caution, thoughtful choices, and understanding the limits of cleverness.",
+        "owner_review_required": [
+          "Confirm final ending and how gently it is presented for young children",
+          "Do not call it an American folk tale without a separate verified decision",
+          "Confirm current live/puppet/hybrid format"
+        ]
+      },
+      {
+        "show_key": "suzy-bee",
+        "working_title": "Suzy Bee",
+        "card_seed": "A bright little bee works with care and discovers how much one helpful friend can change.",
+        "detail_opening_seed": "Suzy Bee is small, busy, and always ready to notice when someone needs help. Her day begins with work, but soon becomes a story about sharing what she has with the friends around her.",
+        "story_seed": "As Suzy gathers food and meets different friends, she learns that hard work feels even more meaningful when it brings comfort to others. Her kindness travels from one character to the next, turning an ordinary day into a gentle celebration of care and community.",
+        "values_seed": "Kindness, helpfulness, hard work, sharing, and caring for a community.",
+        "owner_review_required": [
+          "Confirm exact supporting characters and conflict",
+          "Confirm what Suzy is gathering and how she helps feed her friends",
+          "Confirm current live/puppet/hybrid format"
+        ]
+      }
+    ],
+    "about_team_leads": [
+      {
+        "name": "Svitlana Grygoryshyna",
+        "safe_seed": "Svitlana Grygoryshyna is the owner and director of Miss Lana's Fairy-Tale Theatre. Her work in children's theatre began more than 30 years ago and continues in California, where she leads the troupe and brings fairy-tale productions to families, preschools, and schools.",
+        "verify_before_expansion": [
+          "Exact chronology before Ukraine",
+          "Former theatre name",
+          "Education, directing credits, festivals, awards, and film link"
+        ]
+      },
+      {
+        "name": "Armen Tadevosyan",
+        "safe_seed": "Armen brings long professional experience as an actor, comedian, host, and writer. His background in stage, television, and live performance gives his characters strong timing, warmth, and an immediate connection with audiences.",
+        "verify_before_publication": [
+          "Current troupe role",
+          "Career start year",
+          "Exact spelling and relevance of film and television credits",
+          "Current AMGA role"
+        ]
+      },
+      {
+        "name": "Victoria Stolyarenko",
+        "safe_seed": "Victoria is an actress, writer, and creative theatre professional with training in drama directing and teaching. Her stage and screen experience supports the thoughtful, carefully shaped world of each production.",
+        "verify_before_publication": [
+          "Current troupe title",
+          "Institution names and graduation years",
+          "Exact screen credits"
+        ]
+      },
+      {
+        "name": "Roman Listopad",
+        "safe_seed": "Roman is a stage and screen actor, theatre director, and acting teacher. His experience helps the troupe combine clear storytelling, character work, and a strong live connection with children.",
+        "verify_before_publication": [
+          "Current troupe title",
+          "Training and teaching details",
+          "Exact film, television, theatre, and commercial credits"
+        ]
+      }
+    ]
+  },
+  "steps": [
+    {
+      "title": "Capture and classify the legacy source",
+      "actions": [
+        "Create a provenance matrix for every useful legacy passage: source meaning, current conflict, destination page, adaptation level, and owner-verification need",
+        "Separate plot/moral/philosophy source material from obsolete operational claims",
+        "Record all legacy statements rejected because current canon supersedes them"
+      ],
+      "expectation": "The old site is preserved as a traceable content source without becoming current operational authority"
+    },
+    {
+      "title": "Audit current show copy against the seed library",
+      "actions": [
+        "Compare current card and detail-page copy for all eight shows with the copy seed library",
+        "Identify dry, generic, repetitive, factually thin, or SEO-led passages",
+        "Identify where current implementation has invented or lost plot details"
+      ],
+      "expectation": "Each show has a documented content gap and an approved narrative direction"
+    },
+    {
+      "title": "Prepare owner-review copy drafts",
+      "actions": [
+        "Draft final card copy, detail opening, story synopsis, values paragraph, and compact experience line for each show",
+        "Use the copy seeds as the narrative floor while correcting any verified facts",
+        "Prepare a side-by-side owner-review sheet for unresolved titles, formats, characters, and endings",
+        "Do not implement unresolved factual claims as final public copy"
+      ],
+      "expectation": "Eight distinct, warm, factual draft packages are ready for owner review"
+    },
+    {
+      "title": "Adapt Home, About, and School values copy",
+      "actions": [
+        "Use the philosophy seeds to write one concise Home passage and one richer About passage",
+        "Use the school values seed and show-specific morals to strengthen School Shows",
+        "Keep these surfaces concise and avoid repeating the same wording across pages"
+      ],
+      "expectation": "The wider site gains warmth and meaning without becoming text-heavy"
+    },
+    {
+      "title": "Implement approved copy",
+      "actions": [
+        "Update shared show data and page content using owner-approved titles and factual corrections",
+        "Keep cards concise and place richer narrative on detail pages",
+        "Preserve one compact shared Show Details treatment and do not add technical logistics",
+        "Update metadata descriptions only after visible page copy is final"
+      ],
+      "expectation": "The public site communicates eight distinct stories in a consistent but non-formulaic voice"
+    },
+    {
+      "title": "Run anti-dryness and factual review",
+      "actions": [
+        "Apply every anti-dryness test in copy_style_contract to every changed page",
+        "Check each sentence against current canon, legacy provenance, and owner-approved review decisions",
+        "Review repetition across all eight pages and replace duplicated generic language",
+        "Record material deviations from the copy seeds"
+      ],
+      "expectation": "The final copy is warm, specific, factual, and recognizably theatrical"
+    },
+    {
+      "title": "Verify implementation and close",
+      "actions": [
+        "Run all required commands",
+        "Inspect all changed pages on mobile and desktop",
+        "Confirm no old operational facts, price tiers, cultural coding, or puppet-first global positioning leaked into public copy",
+        "Complete reviewer-grade closure and reports"
+      ],
+      "expectation": "Copy, implementation, and documentation pass the full canonical closure"
+    }
+  ],
+  "success_criteria": [
+    "A legacy-content provenance matrix exists and clearly separates reusable meaning from obsolete facts",
+    "All eight show pages have distinct, warm, factual English copy grounded in the legacy source and current canon",
+    "Every show card remains concise while every detail page contains a real narrative opening, story synopsis, and values framing",
+    "Home and About use the theatre-philosophy source without copying weak legacy English",
+    "School Shows connects values to real stories without curriculum jargon",
+    "No public copy uses Magic Castle as the business brand, puppet-theatre as the global identity, 25 years, legacy phones, or legacy duration",
+    "No public page contains audience-size price tiers or any numeric price beyond From $350",
+    "No unresolved show title, production format, plot event, biography credit, or cultural-origin claim is silently invented",
+    "The eight show pages do not read like one repeated template",
+    "The final copy passes the anti-dryness tests and remains light enough for the existing page structure",
+    "All required verification commands pass"
+  ],
+  "verification": {
+    "required_commands": [
+      "pnpm lint",
+      "pnpm typecheck",
+      "pnpm governance",
+      "pnpm build",
+      "pnpm test:e2e",
+      "git diff --check",
+      "grep -RInE '25 years|35[–-]45|35[–-]50|highest professional caliber|Puppet theater for children and youth|East Slavic|American folk tale|\\$400|\\$500|\\$600' app components lib docs/core || true"
+    ],
+    "manual_checks": [
+      "Read every changed page aloud; flag sentences that sound corporate, translated, repetitive, or mechanically generated",
+      "Run the anti-dryness test against Home, About, Shows hub, School Shows, and each show detail page",
+      "Compare each show plot with the provenance matrix and owner-review sheet",
+      "Confirm card copy and detail copy are not identical",
+      "Confirm no show page contains setup, parking, weather, power, cancellation, or policy details",
+      "Confirm Pricing remains From $350 only wherever pricing is referenced",
+      "Confirm generic American 'theater' search wording was not confused with the owned Theatre brand",
+      "Inspect mobile page length and rhythm; copy must not overwhelm imagery or CTA",
+      "Confirm unresolved #2, #5, and #6 title decisions are either approved or still clearly gated",
+      "Confirm team biography expansion was not published without verification"
+    ],
+    "regression_targets": [
+      "Current brand and contact canon",
+      "Approximately one-hour experience",
+      "From $350-only pricing",
+      "Light Home and show-page information architecture",
+      "Existing show routes and slugs unless separately approved",
+      "Lantern Light design system",
+      "Planning Your Event separation",
+      "Pre-launch noindex state",
+      "Mobile conversion paths"
+    ]
+  },
+  "deliverables": {
+    "reports": [
+      "docs/reports/ADAPT_MISS_LANA_LEGACY_SHOW_CONTENT_001.md"
+    ],
+    "progress_updates": [
+      "docs/PROJECT_PROGRESS.md"
+    ],
+    "artifacts": [
+      "docs/content/LEGACY_CONTENT_PROVENANCE_MATRIX.md",
+      "docs/content/SHOW_COPY_OWNER_REVIEW.md",
+      "docs/content/FINAL_SHOW_COPY_PACK.md"
+    ]
+  },
+  "mandatory_closure": {
+    "required": true,
+    "blocks_completion_until_passed": true,
+    "closure_sequence": [
+      "Step 1: Scope verification — confirm all steps, success_criteria, deliverables, source provenance, owner-gated decisions, and execution-safety constraints are complete",
+      "Step 2: Automated verification — run only the required_commands listed in this task and confirm they pass",
+      "Step 3: Reviewer-grade pre-closure review — review all copy and code changes for factual accuracy, tone, anti-dryness, repetition, accessibility, SEO restraint, responsive fit, and scope compliance",
+      "Step 4: Closure resolution — resolve or explicitly defer findings with severity; record material departures from the copy seed library and their factual/layout reasons",
+      "Step 5: PROJECT_PROGRESS update — append the final substantive completion entry only after all prior closure steps pass"
+    ]
+  },
+  "post_actions": [
+    "Do not merge unresolved show-title or format assumptions as final facts",
+    "Use FINAL_SHOW_COPY_PACK.md as the source for later media selection, metadata refinement, and review by Svitlana",
+    "Create a separate follow-up task if verified team biographies require substantial About-page expansion",
+    "Do not expand pricing beyond From $350 without a new owner decision and canon-sync task"
+  ]
+}

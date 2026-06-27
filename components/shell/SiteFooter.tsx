@@ -7,6 +7,7 @@
 import { Phone, MapPin, Sparkle } from "@phosphor-icons/react";
 import { Tag } from "@/components/ui";
 import { AREAS, BRAND, FACTS, FOOTER_LINKS, PHONES } from "@/lib/site";
+import { track } from "@/lib/analytics";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -43,6 +44,7 @@ export function SiteFooter() {
                 <a
                   key={p.tel}
                   href={`tel:${p.tel}`}
+                  onClick={() => track("phone_click", { path: "footer" })}
                   className="inline-flex items-center gap-2 font-body font-semibold text-forest-700 underline-offset-4 hover:underline"
                 >
                   <Phone size={18} weight="duotone" aria-hidden className="text-forest-600" />

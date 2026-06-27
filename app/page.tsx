@@ -46,7 +46,7 @@ export default function HomePage() {
         id="book"
         eyebrow="Get started"
         heading="Book a show"
-        sub="Tell us about your event and we'll get back to you. Demo form — no message is sent yet."
+        sub="Tell us about your event and we'll reply within 1–2 business days."
       />
     </SiteShell>
   );

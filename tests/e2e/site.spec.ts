@@ -9,7 +9,7 @@ test.describe("pages render", () => {
   const PAGES: { path: string; h1: RegExp }[] = [
     { path: "/", h1: /live theater that comes to you/i },
     { path: "/booking", h1: /book a show/i },
-    { path: "/pricing", h1: /simple pricing, by group size/i },
+    { path: "/pricing", h1: /from \$350/i },
   ];
   for (const { path, h1 } of PAGES) {
     test(`${path} responds 200 with its H1`, async ({ page }) => {
@@ -245,5 +245,97 @@ test.describe("Phase 3 — services + characters + gallery + about", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/gallery");
     await expect(page.locator(".ll-reveal").first()).toHaveCSS("opacity", "1");
+  });
+});
+
+// Planning Your Event route (BUILD_MISS_LANA_EVENT_PLANNING_FAQ_001) — the single
+// home for shared venue/logistics info, friendly progressive disclosure.
+test.describe("Planning Your Event", () => {
+  test("/planning-your-event responds 200 with its H1 and is noindex", async ({ page }) => {
+    const res = await page.goto("/planning-your-event");
+    expect(res?.status()).toBe(200);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(/we bring everything/i);
+    await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+  });
+
+  test("it emits a FAQPage and a BreadcrumbList", async ({ page }) => {
+    await page.goto("/planning-your-event");
+    const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).join(" ");
+    expect(ld).toContain('"@type":"FAQPage"');
+    expect(ld).toContain('"@type":"BreadcrumbList"');
+  });
+
+  test("accordions are closed on load and open by keyboard (progressive disclosure)", async ({ page }) => {
+    await page.goto("/planning-your-event");
+    const q = page.getByRole("button", { name: /how much space do you need/i });
+    await expect(q).toHaveAttribute("aria-expanded", "false");
+    await q.focus();
+    await page.keyboard.press("Enter");
+    await expect(q).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByText(/about 20 m²/i)).toBeVisible();
+  });
+
+  test("a low-priority footer link points to the route", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator('footer a[href="/planning-your-event"]')).toBeVisible();
+  });
+
+  test("no unresolved policy / unsafe wording is published", async ({ page }) => {
+    await page.goto("/planning-your-event");
+    const body = (await page.locator("main").innerText()).toLowerCase();
+    for (const banned of ["deposit", "refund", "cancellation policy", "supervision is not", "insurance"]) {
+      expect(body, `should not publish "${banned}"`).not.toContain(banned);
+    }
+  });
+});
+
+// Production lead pipeline (IMPLEMENT_MISS_LANA_PRODUCTION_LEAD_PIPELINE_001) — the
+// booking form POSTs to /api/lead; success renders only after server acceptance.
+test.describe("Lead pipeline", () => {
+  async function fillValid(page: import("@playwright/test").Page) {
+    await page.getByLabel(/full name/i).fill("E2E Tester");
+    await page.getByLabel(/^phone/i).fill("(213) 555-0142");
+    await page.getByLabel(/event type/i).selectOption("Birthday party");
+    await page.getByLabel(/event date/i).fill("12/01/2026");
+    await page.getByLabel(/city \/ area/i).fill("Pasadena");
+  }
+
+  test("no public 'demo / nothing is sent' notice remains on the form", async ({ page }) => {
+    await page.goto("/booking");
+    const body = (await page.locator("main").innerText()).toLowerCase();
+    expect(body).not.toContain("demo");
+    expect(body).not.toContain("no message is sent");
+  });
+
+  test("a valid submission shows success only after the server accepts it", async ({ page }) => {
+    await page.goto("/booking");
+    await fillValid(page);
+    const [res] = await Promise.all([
+      page.waitForResponse((r) => r.url().endsWith("/api/lead") && r.request().method() === "POST"),
+      page.getByRole("button", { name: /request a booking/i }).click(),
+    ]);
+    expect(res.status()).toBe(200);
+    await expect(page.getByRole("heading", { name: /request received/i })).toBeVisible();
+    await expect(page.getByText(/within 1.2 business days/i)).toBeVisible();
+  });
+
+  test("validation blocks submit and shows no success", async ({ page }) => {
+    await page.goto("/booking");
+    // Submit empty → client validation stops it; no network success panel.
+    await page.getByRole("button", { name: /request a booking/i }).click();
+    await expect(page.getByText(/please fix the highlighted fields/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /request received/i })).toHaveCount(0);
+  });
+
+  test("the honeypot field is present, off the tab order, and off-screen", async ({ page }) => {
+    await page.goto("/booking");
+    const honeypot = page.locator('input[name="company"]');
+    await expect(honeypot).toHaveCount(1);
+    await expect(honeypot).toHaveAttribute("tabindex", "-1");
+    // Standard honeypot: kept in the DOM (so bots fill it) but moved off-screen and
+    // out of the a11y tree — not display:none. Assert it's far off the viewport.
+    const box = await honeypot.boundingBox();
+    expect(box === null || box.x < -1000 || box.y < -1000).toBeTruthy();
+    await expect(page.locator('[aria-hidden="true"] input[name="company"]')).toHaveCount(1);
   });
 });

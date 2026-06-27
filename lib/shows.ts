@@ -1,6 +1,6 @@
 // The 8-show repertoire — the single data source for the /shows hub, every
 // /shows/{slug} detail page, and the Home "Featured shows" grid. Facts (the eight
-// titles, universal framing, per-show themes/ages, 35–50 min, ages 2–10) come from
+// titles, universal framing, per-show themes/ages, ~60 min total, ages 2–10) come from
 // docs/core/01_CONTENT_INVENTORY.md; the two renamed titles + their slugs are the
 // owner-approved decisions in this task (Morozko → The Winter's Gift / Father Frost,
 // slug `the-winters-gift`; "Well, Red Bow, wait" → Little Red Riding Hood, slug
@@ -28,7 +28,7 @@ export interface Show {
   theme: string;
   /** Age range — per-show (most 2–10; The Magic Castle is 2–8). */
   ages: string;
-  /** Total runtime: a ~30-min costumed play + interactive play. */
+  /** Total runtime: about an hour — a ~30-min costumed play + ~30 min interactive play. */
   length: string;
   /** Show in the Home "Featured shows" grid. */
   featured?: boolean;
@@ -38,7 +38,7 @@ export interface Show {
   imagePosition?: string;
 }
 
-const LENGTH = "35–50 min";
+const LENGTH = "~60 min";
 
 export const SHOWS: Show[] = [
   {

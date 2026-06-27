@@ -1,21 +1,26 @@
 "use client";
 // LeadForm — the primary lead-capture form (the #1 conversion block — SITE_STRUCTURE
 // §4.7/§5). Built from the Field + Button primitives plus a token-matched native
-// <select> for the event type (composed, NOT a forked primitive). Client-side
-// validation + an on-screen confirmation state only — there is NO backend yet
-// (email/CRM is a later phase; the success panel says so). Spec: DESIGN_SYSTEM §11
-// (form states: helper/error/success; colour never the sole signal) + §13 (a11y).
+// <select> for the event type. PRODUCTION pipeline: the form POSTs to /api/lead,
+// which server-validates, persists a durable record, and notifies the owner. The
+// success panel renders ONLY after the server confirms acceptance (never a fake
+// success). Spec: DESIGN_SYSTEM §11 (form states) + §13 (a11y).
 import { useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { CheckCircle, WarningCircle } from "@phosphor-icons/react";
 import { Button, Field, SectionHeader } from "@/components/ui";
 import { cx } from "@/components/ui/cx";
 import { Lantern, SparkStar } from "@/components/brand/Glyphs";
 import { PHONES } from "@/lib/site";
+import { track } from "@/lib/analytics";
 
 type Errors = Partial<Record<string, string>>;
+type Status = "idle" | "submitting" | "success" | "error";
 
 const EVENT_TYPES = ["Preschool / daycare", "School assembly", "Birthday party", "Private party / event"];
 
+// Client-side validation is a UX nicety; the server (lib/leads.validateLead) is the
+// authoritative gate and re-checks everything.
 function validate(data: FormData): Errors {
   const errors: Errors = {};
   const get = (k: string) => String(data.get(k) ?? "").trim();
@@ -89,7 +94,7 @@ function SelectField({
   );
 }
 
-function SuccessPanel({ headingId }: { headingId: string }) {
+function SuccessPanel({ headingId, id }: { headingId: string; id: string | null }) {
   return (
     <div className="mx-auto max-w-xl rounded-xl border border-success bg-success-bg p-8 text-center">
       <CheckCircle size={48} weight="duotone" aria-hidden className="mx-auto text-success" />
@@ -97,14 +102,20 @@ function SuccessPanel({ headingId }: { headingId: string }) {
         Request received — thank you!
       </h2>
       <p className="mt-3 font-semibold text-success-text">
-        This is a demo form — no message is sent yet (the email/CRM backend comes in a later phase).
+        Miss Lana will reply by text, email, or WhatsApp within 1–2 business days.
       </p>
-      <p className="mt-2 text-ink-soft">In the meantime, you can reach us directly:</p>
+      {id ? (
+        <p className="mt-2 text-sm text-ink-soft">
+          Your reference is <span className="font-semibold text-ink">{id}</span>.
+        </p>
+      ) : null}
+      <p className="mt-2 text-ink-soft">Prefer to talk now? Call us:</p>
       <div className="mt-4 flex flex-wrap justify-center gap-3">
         {PHONES.map((p) => (
           <a
             key={p.tel}
             href={`tel:${p.tel}`}
+            onClick={() => track("phone_click")}
             className="inline-flex items-center gap-2 rounded-pill border-[1.5px] border-forest-600 px-5 py-2 font-body font-bold text-forest-700 hover:bg-forest-50"
           >
             {p.display}
@@ -127,8 +138,11 @@ export function LeadForm({
   sub?: string;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const pathname = usePathname();
   const [errors, setErrors] = useState<Errors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [refId, setRefId] = useState<string | null>(null);
   const [dateValue, setDateValue] = useState("");
   const headingId = `${id}-heading`;
 
@@ -145,25 +159,73 @@ export function LeadForm({
     );
   }
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const next = validate(new FormData(e.currentTarget));
+    setServerError(null);
+    const formEl = e.currentTarget;
+    const fd = new FormData(formEl);
+
+    const next = validate(fd);
     setErrors(next);
     const keys = Object.keys(next);
     if (keys.length > 0) {
       formRef.current?.querySelector<HTMLElement>(`[name="${keys[0]}"]`)?.focus();
       return;
     }
-    setSubmitted(true);
+
+    // Build a JSON payload from the form + source attribution (no PII in attribution).
+    const payload: Record<string, string> = {};
+    for (const [k, v] of fd.entries()) if (typeof v === "string") payload[k] = v;
+    payload.sourcePath = pathname ?? "/booking";
+    // Read UTM from the URL at submit time (client-only) — avoids forcing the page
+    // into a Suspense/CSR bailout that useSearchParams would require.
+    const qs = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+    payload.utmSource = qs?.get("utm_source") ?? "";
+    payload.utmMedium = qs?.get("utm_medium") ?? "";
+    payload.utmCampaign = qs?.get("utm_campaign") ?? "";
+
+    setStatus("submitting");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        id?: string;
+        error?: string;
+        fields?: Record<string, string>;
+      };
+
+      if (res.ok && data.ok) {
+        setRefId(data.id ?? null);
+        setStatus("success");
+        track("lead_success", { eventType: payload.type, path: payload.sourcePath });
+        return;
+      }
+
+      // Server rejected — show the real reason; map any field errors back.
+      if (data.fields) setErrors(data.fields);
+      setServerError(data.error ?? "Something went wrong — please try again or call us.");
+      setStatus("error");
+      track("lead_error", { path: payload.sourcePath });
+    } catch {
+      // Network failure — recoverable, never a false success.
+      setServerError("We couldn't reach the server. Please check your connection and try again.");
+      setStatus("error");
+      track("lead_error", { path: payload.sourcePath });
+    }
   }
 
   const hasErrors = Object.keys(errors).length > 0;
+  const submitting = status === "submitting";
 
   return (
     <section id={id} aria-labelledby={headingId} className="px-4 py-16 md:px-6 md:py-20">
       <div className="mx-auto max-w-3xl">
-        {submitted ? (
-          <SuccessPanel headingId={headingId} />
+        {status === "success" ? (
+          <SuccessPanel headingId={headingId} id={refId} />
         ) : (
           <>
             {heading ? (
@@ -177,6 +239,12 @@ export function LeadForm({
             ) : null}
 
             <form ref={formRef} noValidate onSubmit={onSubmit} className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              {/* Honeypot — visually hidden, off the tab order. Bots fill it; humans don't. */}
+              <div aria-hidden className="absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden">
+                <label htmlFor="lead-company">Company (leave blank)</label>
+                <input id="lead-company" type="text" name="company" tabIndex={-1} autoComplete="off" />
+              </div>
+
               <Field label="Full name" name="name" required error={errors.name} autoComplete="name" placeholder="e.g. Alex Rivera" />
               <Field label="Phone" name="phone" type="tel" required error={errors.phone} autoComplete="tel" placeholder="(213) 555-0142" />
               <Field label="Email" name="email" type="email" error={errors.email} autoComplete="email" helper="Optional — we'll mostly call." placeholder="you@example.com" />
@@ -196,7 +264,7 @@ export function LeadForm({
               />
               <Field label="Start time" name="time" type="time" helper="Optional." />
               <Field label="City / area" name="city" required error={errors.city} autoComplete="address-level2" placeholder="e.g. Pasadena" />
-              <Field label="Number of children" name="count" type="number" min={1} inputMode="numeric" error={errors.count} helper="Optional — it helps us price the show." />
+              <Field label="Number of children" name="count" type="number" min={1} inputMode="numeric" error={errors.count} helper="Optional — it helps us plan the show." />
               <Field label="Preferred show" name="show" helper="Optional — if you have one in mind." className="sm:col-span-2" />
               <Field label="Anything else?" name="notes" multiline rows={4} helper="Tell us about your event — venue, ages, timing…" className="sm:col-span-2" />
 
@@ -207,18 +275,26 @@ export function LeadForm({
                     <span>Please fix the highlighted fields below.</span>
                   </p>
                 ) : null}
+                {status === "error" && serverError ? (
+                  <p role="alert" className="flex items-start gap-1.5 text-sm text-error-text">
+                    <WarningCircle size={16} aria-hidden className="mt-0.5 shrink-0" />
+                    <span>{serverError}</span>
+                  </p>
+                ) : null}
                 <Button
                   type="submit"
                   size="lg"
                   fullWidth
                   className="sm:w-auto"
+                  disabled={submitting}
+                  aria-busy={submitting || undefined}
                   leadingIcon={<Lantern size={20} className="text-glow-200" />}
                 >
-                  Request a booking
+                  {submitting ? "Sending…" : status === "error" ? "Try again" : "Request a booking"}
                 </Button>
                 <p className="text-sm text-ink-soft">
-                  Demo only — this form doesn&rsquo;t send anything yet. Required fields are marked
-                  &ldquo;(required)&rdquo;.
+                  We&rsquo;ll reply by text, email, or WhatsApp within 1–2 business days. Required
+                  fields are marked &ldquo;(required)&rdquo;.
                 </p>
               </div>
             </form>

@@ -23,7 +23,7 @@ const nunito = Nunito({
 // description/canonical via lib/seo `buildMetadata` (also with noindex), so meta is
 // launch-ready while indexing stays off. /design keeps its own noindex.
 export const metadata: Metadata = {
-  title: "Miss Lana's Fairy-Tale Theater",
+  title: "Miss Lana's Fairy-Tale Theatre",
   description:
     "Touring children's live-costumed fairy-tale theater serving Los Angeles and beyond.",
   robots: { index: false, follow: false },

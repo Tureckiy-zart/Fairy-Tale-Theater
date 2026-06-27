@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* =============================================================================
- * Miss Lana's Fairy-Tale Theater — design tokens
+ * Miss Lana's Fairy-Tale Theatre — design tokens
  * Source of truth: docs/core/DESIGN_SYSTEM.md (DS v1.0). Every value below is
  * copied VERBATIM from that file (§3 color, §4 type, §5 spacing/radius/elevation,
  * §10 motion, §14 build tokens). Do not invent or round values here — change the

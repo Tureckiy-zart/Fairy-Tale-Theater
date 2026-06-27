@@ -14,7 +14,7 @@ import { GalleryGrid } from "@/components/blocks/GalleryGrid";
 export const metadata: Metadata = buildMetadata({
   title: "Gallery",
   description:
-    "Warm photos from real performances of Miss Lana's Fairy-Tale Theater — our shows, the troupe and the delighted children who watch them.",
+    "Warm photos from real performances of Miss Lana's Fairy-Tale Theatre — our shows, the troupe and the delighted children who watch them.",
   path: "/gallery",
   noindex: true,
 });
@@ -43,7 +43,7 @@ export default function GalleryPage() {
 
       <BookingCTABand
         heading="Want to see it live?"
-        sub="Bring Miss Lana's Fairy-Tale Theater to your event — send a request or give us a call."
+        sub="Bring Miss Lana's Fairy-Tale Theatre to your event — send a request or give us a call."
       />
     </SiteShell>
   );

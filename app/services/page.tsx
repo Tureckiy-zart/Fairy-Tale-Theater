@@ -1,6 +1,6 @@
 // Services overview (/services) — the umbrella that gathers the four Miss Lana lines
 // (SITE_STRUCTURE_AND_BLOCKS.md §4.3 + BRAND.md). Block order: hero SectionHeader +
-// intro → the four service-line cards (Fairy-Tale Theater / School Shows / Birthday
+// intro → the four service-line cards (Fairy-Tale Theatre / School Shows / Birthday
 // Parties / & Friends), each with a blurb + CTA to its own page, on its per-line accent
 // (§12) → BookingCTABand. Composed from primitives (Card service-line mode) + lib/site
 // (SERVICE_LINES). "One troupe, four ways to book" is the real umbrella positioning
@@ -39,7 +39,7 @@ export default function ServicesPage() {
           eyebrow="One troupe, four ways to book"
           marker={<SparkStar size={18} />}
           title="The same theater, shaped to your day"
-          subtitle="Miss Lana's Fairy-Tale Theater is one professional troupe — and we shape the same warm, live theater to fit your day. Here are the four ways we come to you."
+          subtitle="Miss Lana's Fairy-Tale Theatre is one professional troupe — and we shape the same warm, live theater to fit your day. Here are the four ways we come to you."
         />
       </Container>
 
@@ -62,8 +62,8 @@ export default function ServicesPage() {
         </div>
         <p className="mt-8 max-w-prose text-ink-soft">
           Every line is the same professional troupe and the same kind stories — a real
-          performance for ages 2–10, {FACTS.priceFrom}. Free within 30 miles of Los Angeles;
-          beyond that, travel is quoted by distance.
+          performance for ages 2–10, {FACTS.priceFrom}. Free across the greater Los Angeles
+          and Orange County area; farther locations are quoted by distance.
         </p>
       </Section>
 

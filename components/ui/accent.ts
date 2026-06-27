@@ -6,7 +6,7 @@
 export type Accent = "forest" | "coral" | "sage" | "berry";
 
 export const ACCENT_LINE: Record<Accent, string> = {
-  forest: "Fairy-Tale Theater",
+  forest: "Fairy-Tale Theatre",
   coral: "Birthday Parties",
   sage: "School Shows",
   berry: "& Friends",

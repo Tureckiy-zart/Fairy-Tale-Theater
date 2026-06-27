@@ -1,7 +1,8 @@
-// Pricing (/pricing) — SITE_STRUCTURE_AND_BLOCKS.md §4.4. The "by number of children"
-// logic + what's included + distance rule (free within 30 miles of LA, quoted by
-// distance beyond — NO dollar amounts) + packages by segment + CTA. Public price face
-// is "from $350" (table floor = $350). Server component; metadata via lib/seo (noindex).
+// Pricing (/pricing) — SITE_STRUCTURE_AND_BLOCKS.md §4.4. Public pricing is limited to
+// "from $350" + what shapes a custom quote + travel by custom quote + packages by
+// segment + CTA. NO audience-size price tiers, tables, calculators, or fixed travel
+// surcharges (locked commercial constraint; OWNER_ANSWERS_DECISION_RECORD.md §1/§2).
+// Server component; metadata via lib/seo (noindex).
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import {
@@ -18,13 +19,13 @@ import { cx } from "@/components/ui/cx";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
-import { PRICING_TIERS } from "@/lib/site";
+import { QUOTE_FACTORS } from "@/lib/site";
 
 const INCLUDED = [
   "A ~30-minute costumed fairy-tale play",
-  "Interactive play with the kids (e.g. a bubble show)",
-  "A professional troupe, with costumes and props",
-  "35–50 minutes in total, for ages 2–10",
+  "Then ~30 minutes of games, dancing and bubbles the kids join in on",
+  "A professional troupe, with costumes, props and our own sound",
+  "About an hour in total, for ages 2–10",
   "We travel to your venue — no hall of your own needed",
 ];
 
@@ -37,7 +38,7 @@ const PACKAGES: { title: string; accent: Accent; blurb: string }[] = [
 export const metadata: Metadata = buildMetadata({
   title: "Pricing",
   description:
-    "Simple, transparent pricing for Miss Lana's Fairy-Tale Theater — from $350, by number of children. Travel is free within 30 miles of LA, quoted by distance beyond. Serving LA and beyond.",
+    "Simple, transparent pricing for Miss Lana's Fairy-Tale Theatre — from $350. Every event gets a custom quote; travel beyond the greater Los Angeles area is quoted by distance. Serving LA and beyond.",
   path: "/pricing",
   noindex: true,
 });
@@ -57,43 +58,35 @@ export default function PricingPage() {
           as="h1"
           eyebrow="Pricing"
           marker={<SparkStar size={16} />}
-          title="Simple pricing, by group size"
-          subtitle="Transparent, market pricing — from $350. Amounts scale with the number of children; travel is quoted by distance."
+          title="From $350"
+          subtitle="Every event is a little different, so we give you one clear price up front. Shows start from $350, and we confirm your custom quote when you book."
         />
       </Container>
 
-      {/* By number of children */}
+      {/* From $350 + what shapes a custom quote (no audience-size tiers — owner rule) */}
       <Section>
-        <div className="overflow-hidden rounded-2xl border border-border-soft">
-          <table className="w-full text-left">
-            <caption className="sr-only">Approximate price by number of children</caption>
-            <thead className="bg-surface">
-              <tr>
-                <th scope="col" className="px-5 py-3 font-body text-sm font-bold uppercase tracking-[0.06em] text-ink">
-                  Group size
-                </th>
-                <th scope="col" className="px-5 py-3 font-body text-sm font-bold uppercase tracking-[0.06em] text-ink">
-                  From
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-soft">
-              {PRICING_TIERS.map((t) => (
-                <tr key={t.group} className="bg-white">
-                  <td className="px-5 py-4 text-ink">{t.group}</td>
-                  <td className="px-5 py-4 font-body font-bold text-forest-700">{t.price}</td>
-                </tr>
+        <div className="flex flex-col gap-6 rounded-2xl border border-border-soft bg-white p-6 md:flex-row md:items-center md:gap-10 md:p-8">
+          <div className="shrink-0">
+            <p className="font-display text-4xl text-forest-700 md:text-5xl">From $350</p>
+            <p className="mt-1 text-sm text-ink-soft">Confirmed with your booking</p>
+          </div>
+          <div className="flex-1">
+            <p className="mb-3 text-ink">A few things shape your quote:</p>
+            <ul className="flex flex-col gap-2">
+              {QUOTE_FACTORS.map((f) => (
+                <li key={f} className="flex items-start gap-2 text-ink">
+                  <span className="mt-1 shrink-0">
+                    <SparkStar size={16} />
+                  </span>
+                  <span>{f}</span>
+                </li>
               ))}
-            </tbody>
-          </table>
+            </ul>
+          </div>
         </div>
-        <p className="mt-3 text-sm text-ink-soft">
-          Approximate, by number of children; the final quote is confirmed on booking. Figures
-          follow the owner&rsquo;s pricing logic.
-        </p>
       </Section>
 
-      {/* What's included + distance rule (free within 30 miles, quoted by distance beyond) */}
+      {/* What's included + travel (greater LA free; farther quoted by distance — no $) */}
       <Section tone="surface">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
@@ -110,10 +103,10 @@ export default function PricingPage() {
             </ul>
           </div>
           <div className="flex flex-col gap-4 rounded-2xl border border-border-soft bg-cream p-6 md:p-8">
-            <SectionHeader as="h2" title="Distance" />
+            <SectionHeader as="h2" title="Travel" />
             <p className="text-ink">
-              We travel <strong>free within 30 miles of Los Angeles</strong>. Beyond that, travel is{" "}
-              <strong>quoted individually by distance</strong>.
+              We travel <strong>free across the greater Los Angeles and Orange County area</strong>.
+              Farther locations are <strong>quoted individually by distance</strong>.
             </p>
             <p className="text-ink-soft">
               We also travel to San Diego, Sacramento and San Jose — we&rsquo;ll confirm travel

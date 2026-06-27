@@ -1,8 +1,8 @@
 "use client";
 // HowItWorksAreas — Home block #10 (SITE_STRUCTURE §4.1): three simple steps +
 // areas served + the "from $350" price face → /pricing. Real facts: areas (LA +
-// San Diego/Sacramento/San Jose) and "from $350" (lib/site); travel is free within
-// 30 miles of LA and quoted by distance beyond — never a dollar amount (owner rule). Phosphor (§6).
+// San Diego/Sacramento/San Jose) and "from $350" (lib/site); travel is free across
+// the greater LA area and quoted by distance beyond — never a dollar amount (owner rule). Phosphor (§6).
 import { NumberCircleOne, NumberCircleTwo, NumberCircleThree, MapPin } from "@phosphor-icons/react";
 import { Button, Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
@@ -46,8 +46,8 @@ export function HowItWorksAreas() {
             Where we go
           </p>
           <p className="mt-2 max-w-md text-ink-soft">
-            Based in {AREAS.base}; we travel to {AREAS.travel.join(", ")}. Free within 30 miles;
-            beyond that, travel is quoted by distance.
+            Based in {AREAS.base}; we travel to {AREAS.travel.join(", ")}. Free across the
+            greater LA area; beyond that, travel is quoted by distance.
           </p>
         </div>
         <div className="flex flex-col items-start gap-3 md:items-end">

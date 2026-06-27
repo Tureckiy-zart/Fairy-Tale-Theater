@@ -7,12 +7,12 @@
 // values — change the canon first.
 import type { Accent } from "@/components/ui/accent";
 
-/** Brand identity (BRAND.md — LOCK). Domain not yet live; shown for reference only. */
+/** Brand identity (BRAND.md — LOCK). misslanatheatre.com is the live primary domain. */
 export const BRAND = {
-  name: "Miss Lana's Fairy-Tale Theater",
+  name: "Miss Lana's Fairy-Tale Theatre",
   umbrella: "Miss Lana",
-  descriptor: "Fairy-Tale Theater",
-  domain: "misslanatheater.com",
+  descriptor: "Fairy-Tale Theatre",
+  domain: "misslanatheatre.com",
 } as const;
 
 /** Verified facts (PROJECT_BRIEF.md / 01_CONTENT_INVENTORY.md / 02_POSITIONING). */
@@ -20,16 +20,19 @@ export const FACTS = {
   experience: "30+ years",
   troupe: "professional troupe",
   ages: "Ages 2–10",
-  /** ~30-min costumed show + interactive play (e.g. a bubble show); 35–50 min total. */
-  showLength: "35–50 min",
-  format: "A ~30-minute costumed fairy-tale play plus interactive play with the kids",
-  /** Public price face (PROJECT_BRIEF): real amount by group size; travel free within 30 mi of LA, quoted by distance beyond. */
+  /** About one hour: ~30-min costumed play + ~30 min of games, dancing and bubbles. */
+  showLength: "about an hour",
+  format: "a ~30-minute costumed fairy-tale play, then ~30 minutes of games, dancing and bubbles",
+  /** Public price face (PROJECT_BRIEF): only "from $350"; travel quoted by custom quote. */
   priceFrom: "from $350",
 } as const;
 
-/** Click-to-call phones (real — 01_CONTENT_INVENTORY.md). tel: is E.164, US (+1). */
+/**
+ * Click-to-call phone (01_CONTENT_INVENTORY.md). Only the primary public number is
+ * exposed; the legacy second number is reserve-only and never a public contact. tel:
+ * is E.164, US (+1).
+ */
 export const PHONES = [
-  { display: "(213) 282-1054", tel: "+12132821054" },
   { display: "(323) 903-2039", tel: "+13239032039" },
 ] as const;
 
@@ -60,6 +63,7 @@ export const FOOTER_LINKS = [
   { label: "Characters", href: "/characters" },
   { label: "Gallery", href: "/gallery" },
   { label: "Pricing", href: "/pricing" },
+  { label: "Planning your event", href: "/planning-your-event" },
   { label: "About", href: "/about" },
   { label: "Book / Contact", href: "/booking" },
 ] as const;
@@ -82,7 +86,7 @@ export const SERVICE_LINES: {
 }[] = [
   {
     key: "theater",
-    title: "Fairy-Tale Theater",
+    title: "Fairy-Tale Theatre",
     tag: "Flagship",
     blurb: "Our eight kind fairy-tale shows, performed live with an interactive finale.",
     href: "/shows",
@@ -165,14 +169,15 @@ export const VALUES: { title: string; body: string }[] = [
 ];
 
 /**
- * Pricing logic by number of children (PROJECT_BRIEF.md). Real, approximate, owner
- * logic — public face is "from $350" (no sub-$350 figure shown publicly); travel is
- * free within 30 miles of LA and quoted by distance beyond that (no dollar amounts).
+ * What shapes a custom quote (PROJECT_BRIEF.md / OWNER_ANSWERS_DECISION_RECORD.md §1).
+ * Public pricing is limited to "from $350" plus these factors — NO audience-size price
+ * tiers, tables, calculators, or fixed travel surcharges are shown publicly (locked
+ * commercial constraint). The internal headcount logic lives in the decision record,
+ * not in the public site.
  */
-export const PRICING_TIERS: { group: string; price: string }[] = [
-  { group: "Up to ~15 children", price: "$350" },
-  { group: "About 40 children", price: "~$400" },
-  { group: "About 50 children", price: "~$500" },
-  { group: "About 60 children", price: "~$600" },
-  { group: "Larger groups", price: "scales from there" },
+export const QUOTE_FACTORS: string[] = [
+  "The show you choose and the size of the group",
+  "How long you'd like us — the show, plus any extra interactive time",
+  "Where you are — travel beyond the greater Los Angeles area",
+  "Any optional extras, like face painting or a costumed character visit",
 ];

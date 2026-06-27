@@ -1,0 +1,215 @@
+{
+  "task": "FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001",
+  "version": "2.0",
+  "task_mode": "fix",
+  "task_type": "global-copy-and-fact-correction",
+  "priority": "P0",
+  "layer": "Miss Lana / global shell and shared content",
+  "description": "Correct the global public copy and shared content sources to match the approved canon while preserving the current light visual structure. Fix brand spelling, primary contact presentation, duration, included experience, travel wording, placeholders, and shared metadata. Public pricing must remain only 'From $350'; do not add tiers, package tables, calculators, or fixed travel fees.",
+  "non_goals": [
+    "Do not redesign the site, change the design system, add major new Home sections, or alter page order",
+    "Do not build the Planning Your Event route",
+    "Do not implement production form delivery",
+    "Do not add reviews, real media, biographies, policies, GBP, analytics, redirects, or remove site-wide noindex",
+    "Do not publish audience-size price tiers or fixed travel surcharges",
+    "Do not rewrite eight show synopses except where a shared factual label is wrong"
+  ],
+  "decision_basis": {
+    "origin": "User-approved seven-task implementation plan after live-site review and owner questionnaire review on 2026-06-27.",
+    "investigation_findings": [
+      "The current production content contains old project-owned brand spelling in some surfaces",
+      "Shared copy still contains obsolete 35–50 minute duration and free-within-30-miles wording",
+      "The second phone must remain reserve-only and not appear as an equal public contact",
+      "The user wants the current light site retained rather than expanded into a technical-company presentation",
+      "Pricing is intentionally deferred except for 'From $350'"
+    ]
+  },
+  "authority_scope": {
+    "must_read": [
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/00_PROJECT_INSTRUCTIONS.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "CLIENT_QUESTIONS.md",
+      "Owner questionnaire answers supplied 2026-06-25 through 2026-06-26",
+      "docs/_internal/governance/TUNG-EXECUTION-RULE-(CANON).txt",
+      "docs/_internal/governance/tung_system_specification.md",
+      "docs/core/OWNER_ANSWERS_DECISION_RECORD.md",
+      "docs/reports/CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001.md",
+      "lib/site.ts",
+      "lib/seo.ts",
+      "app/layout.tsx",
+      "components/shell/",
+      "components/blocks/"
+    ],
+    "must_not_violate": [
+      "Use Miss Lana's Fairy-Tale Theatre as the owned brand spelling",
+      "Keep generic American SEO phrases with 'theater' where they are keyword phrases rather than brand names",
+      "Use only (323) 903-2039 and info@misslanatheatre.com as primary public contacts",
+      "Keep public pricing limited to 'From $350' and custom quote language",
+      "Do not expose private address or reserve phone",
+      "Do not remove noindex in this task",
+      "Preserve Lantern Light tokens, component primitives, accessibility behavior, and current information architecture"
+    ],
+    "requires_unlock": false,
+    "allowed_change_classes": [
+      "implementation",
+      "verification",
+      "docs-sync"
+    ]
+  },
+  "forbidden_execution_patterns": [
+    "No global search-and-replace of every occurrence of Theater/theater",
+    "No copy expansion that adds a wall of logistics to Home, cards, or show pages",
+    "No unverified claims about safety, insurance, vendor status, permissions, cancellations, or documents",
+    "No opportunistic component refactor unrelated to the copy correction",
+    "No price table or audience-size tier implementation"
+  ],
+  "execution_guardrails": [
+    "Prefer shared source correction over editing repeated literals independently",
+    "Keep wording concise and warm; each changed block should be no longer than necessary",
+    "Use 'about one hour' and an approximate 30-minute story plus 30-minute interactive experience",
+    "Use soft travel wording: greater Los Angeles and other California locations by custom quote",
+    "Do not remove demo-form disclosure until real delivery is implemented; replace only if an honest non-deceptive state remains",
+    "If an out-of-scope issue is found, record it in the report and do not fix it"
+  ],
+  "prerequisites": {
+    "must_have_completed": [
+      "CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001"
+    ],
+    "must_be_ready": true,
+    "readiness_notes": [
+      "Current canon and owner decision record must be merged and authoritative"
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Shared site data, global layout metadata, header/footer, shared CTA copy, contact presentation, and repeated public facts",
+      "Brand spelling correction where the project-owned name is rendered",
+      "Duration and format correction across shared surfaces",
+      "Removal of unconfirmed free-within-30-miles wording and replacement with custom-quote travel language",
+      "Removal of visible developer/preview/placeholder text where it does not serve an honest functional warning",
+      "Correction of grammar and obviously broken public sentences encountered within the declared surfaces"
+    ],
+    "out_of_scope": [
+      "New Planning Your Event route",
+      "Page-specific Birthday and School content expansion",
+      "Production email delivery and lead storage",
+      "SEO migration, old-domain redirects, GBP, Search Console, analytics, launch"
+    ]
+  },
+  "steps": [
+    {
+      "title": "Map shared public facts and rendering sources",
+      "actions": [
+        "Identify all shared data modules, metadata helpers, shell components, and repeated literals controlling brand, phone, duration, travel, price, and form status",
+        "Create a before/after inventory in the task report"
+      ],
+      "expectation": "Each repeated public fact has one identified source or a justified page-local source"
+    },
+    {
+      "title": "Correct brand and contact presentation",
+      "actions": [
+        "Render the owned brand consistently as Miss Lana's Fairy-Tale Theatre",
+        "Keep generic SEO keyword phrases unchanged when they are not brand references",
+        "Remove reserve phone from public header, footer, body, metadata, schema, and click actions",
+        "Verify primary phone, email, SMS, WhatsApp, and booking links use the approved contact workflow"
+      ],
+      "expectation": "The site presents one brand spelling and one primary public phone"
+    },
+    {
+      "title": "Correct shared format, duration, travel, and price copy",
+      "actions": [
+        "Replace obsolete 35–50 minute claims with concise approximately one-hour wording",
+        "Explain the experience as approximately 30 minutes of story plus approximately 30 minutes of games, dancing, bubbles, and interaction where appropriate",
+        "Replace fixed free-radius claims with concise custom-quote travel language",
+        "Ensure public pricing appears only as 'From $350' or equivalent approved copy"
+      ],
+      "expectation": "Shared public facts match canon without adding technical clutter"
+    },
+    {
+      "title": "Remove visible implementation residue",
+      "actions": [
+        "Remove public preview labels, placeholder labels, internal notes, and broken grammar from declared surfaces",
+        "Retain an honest form-unavailable notice until TUNG 5 completes if submission is not real",
+        "Do not hide non-functionality behind a false success state"
+      ],
+      "expectation": "Public pages look intentional and truthful"
+    },
+    {
+      "title": "Verify shared behavior and appearance",
+      "actions": [
+        "Run declared checks",
+        "Inspect mobile and desktop header/footer/CTA/contact behavior",
+        "Review all public routes for prohibited old shared facts"
+      ],
+      "expectation": "Global copy is correct and the existing light design is preserved"
+    }
+  ],
+  "success_criteria": [
+    "Every project-owned public brand rendering uses Theatre",
+    "Only (323) 903-2039 is presented as the public phone",
+    "No public route states 35–50 minutes or a guaranteed free 30-mile radius",
+    "Public pricing remains only 'From $350' with no tiers, tables, or fixed travel surcharges",
+    "No visible preview, developer, or placeholder copy remains except an honest temporary form notice where still required",
+    "The current page structure and Lantern Light design remain materially unchanged",
+    "All required verification commands pass"
+  ],
+  "verification": {
+    "required_commands": [
+      "pnpm lint",
+      "pnpm typecheck",
+      "pnpm governance",
+      "pnpm build",
+      "pnpm test:e2e",
+      "git diff --check"
+    ],
+    "manual_checks": [
+      "Inspect Home, Shows, all service pages, Pricing, About, Booking, header, footer, metadata, and schema for brand/contact/duration/travel consistency",
+      "Confirm generic SEO uses of 'theater' were not incorrectly changed",
+      "Confirm no audience-size prices were introduced",
+      "Confirm the form still communicates its actual functional state honestly",
+      "Check phone, email, SMS, and WhatsApp actions on a narrow mobile viewport"
+    ],
+    "regression_targets": [
+      "Existing route availability",
+      "Navigation and mobile menu",
+      "Lantern Light visual system",
+      "Noindex pre-launch state",
+      "Form client-side validation",
+      "Existing e2e coverage"
+    ]
+  },
+  "deliverables": {
+    "reports": [
+      "docs/reports/FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001.md"
+    ],
+    "progress_updates": [
+      "docs/PROJECT_PROGRESS.md"
+    ],
+    "artifacts": []
+  },
+  "mandatory_closure": {
+    "required": true,
+    "blocks_completion_until_passed": true,
+    "closure_sequence": [
+      "Step 1: Scope verification — confirm all steps, success_criteria, and deliverables are complete; confirm execution-safety compliance (no non_goals fixed, no forbidden_execution_patterns violated, execution_guardrails respected)",
+      "Step 2: Automated verification — run only the required_commands explicitly listed for the scoped task, confirm all pass",
+      "Step 3: Reviewer-grade pre-closure code review — analyze all changes against the review dimensions, record explicit findings with BLOCKER / HIGH / MEDIUM / LOW / NOTE severity",
+      "Step 4: Closure resolution — resolve or explicitly defer findings with severity, write the final verification summary, and update the task report",
+      "Step 5: PROJECT_PROGRESS update — append the substantive change entry only after all previous closure steps pass"
+    ]
+  },
+  "post_actions": [
+    "Proceed to page-specific content and form implementation only after mandatory_closure passes",
+    "Do not remove the remaining honest demo-form notice until production delivery is proven"
+  ]
+}

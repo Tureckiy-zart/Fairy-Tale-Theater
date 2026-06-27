@@ -1,0 +1,221 @@
+{
+  "task": "BUILD_MISS_LANA_EVENT_PLANNING_FAQ_001",
+  "version": "2.0",
+  "task_mode": "fix",
+  "task_type": "event-planning-route",
+  "priority": "P1",
+  "layer": "Miss Lana / planning-your-event",
+  "description": "Create one friendly, lightweight Planning Your Event route that centralizes confirmed venue and operational information using progressive disclosure. Link to it sparingly from relevant pages so Home and show pages stay emotional and uncluttered. Do not publish unresolved cancellation, safety, supervision, vendor, insurance, or media-permission claims.",
+  "non_goals": [
+    "Do not create a technical rider, legal contract, quote calculator, or downloadable school document",
+    "Do not repeat the complete FAQ on Home, show pages, School Shows, Birthdays, or Booking",
+    "Do not publish audience-size price tiers, deposit-refund rules, penalties, fixed travel fees, or guaranteed discounts",
+    "Do not claim that adult supervision is unnecessary or that unrestricted physical contact is allowed",
+    "Do not publish the owner's private address or unverified school/vendor documentation",
+    "Do not redesign the global shell or alter the core site architecture beyond adding this route and minimal links"
+  ],
+  "decision_basis": {
+    "origin": "User-approved seven-task implementation plan after live-site review and owner questionnaire review on 2026-06-27.",
+    "investigation_findings": [
+      "User requested a separate home for technical information so marketing pages remain light",
+      "Confirmed operational facts include 15–20 minute setup and pack-down, about 215 sq ft recommended clear space, own sound, usually no power requirement, and indoor/outdoor venue flexibility",
+      "Outdoor performances require a level surface, cover/shade as appropriate, and no rain or strong wind",
+      "Parking is normally self-managed, but paid parking may be charged to the client",
+      "Parents, teachers, and organizers may take their own photos; performers generally do not photograph children",
+      "Cancellation and rescheduling answers remain contradictory and must not be converted into a hard public policy"
+    ]
+  },
+  "authority_scope": {
+    "must_read": [
+      "CLAUDE.md",
+      "STATUS.md",
+      "README.md",
+      "docs/core/BRAND.md",
+      "docs/core/PROJECT_BRIEF.md",
+      "docs/core/00_PROJECT_INSTRUCTIONS.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "CLIENT_QUESTIONS.md",
+      "Owner questionnaire answers supplied 2026-06-25 through 2026-06-26",
+      "docs/_internal/governance/TUNG-EXECUTION-RULE-(CANON).txt",
+      "docs/_internal/governance/tung_system_specification.md",
+      "docs/core/OWNER_ANSWERS_DECISION_RECORD.md",
+      "docs/reports/IMPLEMENT_MISS_LANA_LIGHTWEIGHT_CONTENT_STRUCTURE_001.md",
+      "components/ui/Accordion.tsx",
+      "components/ui/Breadcrumb.tsx",
+      "components/ui/JsonLd.tsx",
+      "lib/seo.ts",
+      "app/booking/",
+      "app/school-shows/",
+      "app/birthdays/",
+      "app/shows/",
+      "components/shell/SiteFooter.tsx"
+    ],
+    "must_not_violate": [
+      "Page title and tone must be friendly: Planning Your Event, not Technical Requirements",
+      "Only confirmed facts may be presented as current requirements",
+      "Recommendations must be distinguishable from hard requirements",
+      "No public price details beyond From $350",
+      "No unsafe child-supervision or physical-contact statements",
+      "No false media-permission assurances",
+      "Use existing design-system primitives and accordion behavior"
+    ],
+    "requires_unlock": false,
+    "allowed_change_classes": [
+      "implementation",
+      "verification",
+      "docs-sync"
+    ]
+  },
+  "forbidden_execution_patterns": [
+    "No dense all-open wall of text on initial render",
+    "No duplicate FAQ schema on pages that do not render the same visible questions",
+    "No invented exact heat threshold, ceiling height, floor-plan rule, chair requirement, or arrival guarantee",
+    "No legal-policy drafting beyond soft booking-change language approved by canon",
+    "No footer/nav expansion that makes the route look like a primary service line"
+  ],
+  "execution_guardrails": [
+    "Use accordion-based progressive disclosure and concise answers",
+    "Separate 'recommended' from 'required' wording",
+    "Place one short intro above the accordion and one booking CTA below it",
+    "Add only contextual text links from relevant routes and a low-priority footer link",
+    "Use FAQPage schema only for questions visibly rendered on this route",
+    "If a policy fact is unresolved, use 'confirmed during booking' or omit it"
+  ],
+  "prerequisites": {
+    "must_have_completed": [
+      "CANON_SYNC_MISS_LANA_OWNER_ANSWERS_001",
+      "FIX_MISS_LANA_GLOBAL_PUBLIC_COPY_001",
+      "IMPLEMENT_MISS_LANA_LIGHTWEIGHT_CONTENT_STRUCTURE_001"
+    ],
+    "must_be_ready": true,
+    "readiness_notes": [
+      "Confirmed operational facts and page-content boundaries must be canonical"
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Create /planning-your-event",
+      "Create metadata, breadcrumb, visible FAQ accordions, FAQ schema, and final booking CTA",
+      "Sections: space/setup, indoor/outdoor/weather, sound/power, parking/access, photos, multiple performances, and soft booking-change guidance",
+      "Add minimal contextual links from School Shows, Birthdays, Booking, show-detail template, and footer",
+      "Add route-level e2e coverage and accessibility checks"
+    ],
+    "out_of_scope": [
+      "Cancellation or deposit policy finalization",
+      "School technical rider or teacher guide",
+      "Insurance/vendor documentation",
+      "Lead pipeline",
+      "Reviews/media installation",
+      "Domain migration and launch"
+    ]
+  },
+  "steps": [
+    {
+      "title": "Define the public question set",
+      "actions": [
+        "Select only confirmed, decision-useful questions",
+        "Write concise answers with required/recommended language separated",
+        "Exclude or soften unresolved policy topics"
+      ],
+      "expectation": "The content set is useful but not legally or operationally overcommitted"
+    },
+    {
+      "title": "Build the Planning Your Event route",
+      "actions": [
+        "Create the route using existing Container, Section, SectionHeader, Breadcrumb, Accordion, Button, and JsonLd primitives",
+        "Use friendly introductory copy and accordion groups",
+        "Add a final CTA to booking"
+      ],
+      "expectation": "The route matches Lantern Light and is easy to scan on mobile"
+    },
+    {
+      "title": "Add structured data and metadata",
+      "actions": [
+        "Add unique metadata and canonical URL",
+        "Generate BreadcrumbList and FAQPage only from the visible question data",
+        "Keep the route subject to the current pre-launch noindex state"
+      ],
+      "expectation": "Metadata and schema reflect visible content exactly"
+    },
+    {
+      "title": "Add sparse contextual links",
+      "actions": [
+        "Add one short relevant link from School Shows, Birthdays, Booking, and the show-detail template",
+        "Add a low-priority footer link",
+        "Do not add the route as a top-level primary service navigation item"
+      ],
+      "expectation": "Detailed information is discoverable without cluttering primary journeys"
+    },
+    {
+      "title": "Test progressive disclosure and accessibility",
+      "actions": [
+        "Add/extend e2e tests for route access, accordion state, keyboard use, CTA, and contextual links",
+        "Check heading order, focus, labels, schema, and mobile layout"
+      ],
+      "expectation": "The route is accessible, lightweight, and regression-safe"
+    }
+  ],
+  "success_criteria": [
+    "/planning-your-event exists and uses friendly progressive disclosure",
+    "The route contains only confirmed venue and operational information",
+    "Home and show pages do not duplicate the detailed FAQ",
+    "Contextual links are present but visually secondary",
+    "No audience-size prices, fixed travel fees, deposit rules, penalties, or unsafe supervision statements are published",
+    "Visible FAQ content and FAQPage schema match",
+    "All required commands and route tests pass"
+  ],
+  "verification": {
+    "required_commands": [
+      "pnpm lint",
+      "pnpm typecheck",
+      "pnpm governance",
+      "pnpm build",
+      "pnpm test:e2e",
+      "git diff --check"
+    ],
+    "manual_checks": [
+      "Inspect the route on mobile and desktop with all accordions closed and open",
+      "Confirm the page feels like event guidance, not an engineering specification",
+      "Confirm contextual links do not dominate Home, show, School, Birthday, or Booking pages",
+      "Confirm no unresolved cancellation/safety/vendor/media claim leaked into the page",
+      "Validate rendered JSON-LD against the visible questions"
+    ],
+    "regression_targets": [
+      "Existing global navigation",
+      "Accordion accessibility",
+      "Booking CTA paths",
+      "Show-detail layout",
+      "Footer hierarchy",
+      "Pre-launch noindex behavior"
+    ]
+  },
+  "deliverables": {
+    "reports": [
+      "docs/reports/BUILD_MISS_LANA_EVENT_PLANNING_FAQ_001.md"
+    ],
+    "progress_updates": [
+      "docs/PROJECT_PROGRESS.md"
+    ],
+    "artifacts": []
+  },
+  "mandatory_closure": {
+    "required": true,
+    "blocks_completion_until_passed": true,
+    "closure_sequence": [
+      "Step 1: Scope verification — confirm all steps, success_criteria, and deliverables are complete; confirm execution-safety compliance (no non_goals fixed, no forbidden_execution_patterns violated, execution_guardrails respected)",
+      "Step 2: Automated verification — run only the required_commands explicitly listed for the scoped task, confirm all pass",
+      "Step 3: Reviewer-grade pre-closure code review — analyze all changes against the review dimensions, record explicit findings with BLOCKER / HIGH / MEDIUM / LOW / NOTE severity",
+      "Step 4: Closure resolution — resolve or explicitly defer findings with severity, write the final verification summary, and update the task report",
+      "Step 5: PROJECT_PROGRESS update — append the substantive change entry only after all previous closure steps pass"
+    ]
+  },
+  "post_actions": [
+    "Do not add detailed policy sections until owner and legal decisions are separately locked",
+    "Use this route as the single public source for shared venue requirements"
+  ]
+}

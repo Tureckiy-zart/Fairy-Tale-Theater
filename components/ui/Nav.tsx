@@ -45,7 +45,7 @@ function DefaultWordmark() {
           Miss Lana
         </span>
         <span className="font-body text-[11px] font-semibold uppercase tracking-[0.06em] text-forest-600">
-          Fairy-Tale Theater
+          Fairy-Tale Theatre
         </span>
       </span>
     </span>

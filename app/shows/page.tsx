@@ -16,7 +16,7 @@ import { SHOWS } from "@/lib/shows";
 export const metadata: Metadata = buildMetadata({
   title: "Shows",
   description:
-    "The repertoire of Miss Lana's Fairy-Tale Theater — eight kind, timeless fairy tales for ages 2–10. A real costumed show plus interactive play, brought to your venue across LA and beyond.",
+    "The repertoire of Miss Lana's Fairy-Tale Theatre — eight kind, timeless fairy tales for ages 2–10. A real costumed show plus interactive play, brought to your venue across LA and beyond.",
   path: "/shows",
   noindex: true,
 });
@@ -37,7 +37,7 @@ export default function ShowsPage() {
           eyebrow="The repertoire"
           marker={<SparkStar size={16} />}
           title="Eight kind fairy tales to choose from"
-          subtitle="Each show is a real costumed performance plus interactive play with the kids — 35–50 minutes, for ages 2–10. Pick the tale; we bring the whole theater to you."
+          subtitle="Each show is a real costumed performance plus interactive play with the kids — about an hour, for ages 2–10. Pick the tale; we bring the whole theater to you."
         />
       </Container>
 

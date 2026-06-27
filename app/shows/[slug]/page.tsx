@@ -85,7 +85,7 @@ export default async function ShowDetailPage({
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
             <Tag accent="forest" tone="accent" className="mb-3">
-              Fairy-Tale Theater
+              Fairy-Tale Theatre
             </Tag>
             <SectionHeader as="h1" title={show.title} subtitle={show.teaser} />
             {show.altTitle ? (
@@ -158,6 +158,10 @@ export default async function ShowDetailPage({
                 <dt className="text-ink-soft">Length</dt>
                 <dd className="font-semibold">{show.length}</dd>
               </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-soft">Troupe</dt>
+                <dd className="font-semibold">3–4 artists</dd>
+              </div>
             </dl>
           </aside>
         </div>
@@ -202,7 +206,11 @@ export default async function ShowDetailPage({
             <p className="font-display text-2xl text-forest-800">We come to you</p>
             <p className="mt-2 max-w-md text-ink-soft">
               Based in {AREAS.base}; we travel to {AREAS.travel.join(", ")}. Distance is quoted on
-              request.
+              request. See{" "}
+              <a href="/planning-your-event" className="font-semibold text-forest-700 underline-offset-4 hover:underline">
+                planning your event
+              </a>{" "}
+              for space and setup.
             </p>
           </div>
           <div className="flex flex-col items-start gap-3 md:items-end">
