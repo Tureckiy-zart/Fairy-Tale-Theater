@@ -33,7 +33,6 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Miss Lana's Fairy-Tale Theatre is a professional touring troupe led by 30+ years of experience, bringing kind, values-driven fairy tales to life for children across Los Angeles.",
   path: "/about",
-  noindex: true,
 });
 
 export default function AboutPage() {
@@ -53,7 +52,7 @@ export default function AboutPage() {
           eyebrow="Our theater"
           marker={<SparkStar size={18} />}
           title="Theater as a little bit of magic"
-          subtitle="For more than 30 years, ours has brought fairy tales to life for the youngest audiences — because we believe a good story can teach a child kindness, friendship, and the joy of helping one another."
+          subtitle="For Miss Lana, theatre has never been only a performance. It is a place where a child can meet courage, kindness, friendship, and wonder in a form they can see and feel. For more than 30 years, her work has brought fairy tales to life through actors, costumes, scenery, music, and the quiet magic of a shared story."
         />
       </Container>
 

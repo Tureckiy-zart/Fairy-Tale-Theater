@@ -84,7 +84,7 @@ export function organizationSchema(): JsonLdData {
   };
 }
 
-interface TheaterEventInput {
+interface ShowInput {
   name: string;
   description: string;
   /** Show page path. */
@@ -92,22 +92,26 @@ interface TheaterEventInput {
   image?: string;
 }
 
-/** TheaterEvent for an individual show page (docs/core/04_SEO.md). */
-export function theaterEventSchema({ name, description, path, image }: TheaterEventInput): JsonLdData {
+/**
+ * Schema for an individual show page. These are EVERGREEN repertoire/catalog pages
+ * — a touring show you can book any time, NOT a scheduled performance with a date.
+ * So we deliberately use CreativeWork (a theatrical work), NOT Event/TheaterEvent:
+ * emitting Event without a startDate is misleading scheduled-event data (04_SEO.md /
+ * task guardrail). The bookable nature is conveyed by a non-priced Offer reference to
+ * the org; no price beyond "From $350" appears anywhere in schema.
+ */
+export function showSchema({ name, description, path, image }: ShowInput): JsonLdData {
   return {
     "@context": "https://schema.org",
-    "@type": "TheaterEvent",
+    "@type": "CreativeWork",
     name,
     description,
     url: absoluteUrl(path),
     image: image ? absoluteUrl(image) : undefined,
-    performer: { "@type": "PerformingGroup", name: SITE.name },
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    location: {
-      "@type": "Place",
-      name: "At your venue (touring)",
-      address: { "@type": "PostalAddress", addressRegion: "CA", addressCountry: "US" },
-    },
+    genre: "Children's fairy-tale theatre",
+    inLanguage: "en",
+    audience: { "@type": "PeopleAudience", suggestedMinAge: 2, suggestedMaxAge: 10 },
+    creator: { "@type": "PerformingGroup", name: SITE.name },
   };
 }
 

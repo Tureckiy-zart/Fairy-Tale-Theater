@@ -115,9 +115,13 @@ test("under reduced motion, scroll-reveals are shown immediately (no motion trap
   await expect(page.getByRole("heading", { name: /three steps to a show/i })).toBeVisible();
 });
 
-test("the site is noindex pre-launch", async ({ page }) => {
+test("the home page is indexable post-launch (no noindex)", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+  // After STABILIZE launch, public pages must NOT carry a noindex robots meta.
+  const robots = page.locator('meta[name="robots"]');
+  if (await robots.count()) {
+    await expect(robots.first()).not.toHaveAttribute("content", /noindex/);
+  }
 });
 
 // Phase 2 — Shows hub + 8 show pages + School Shows / Birthdays landings
@@ -139,11 +143,13 @@ test.describe("Phase 2 — shows + landings", () => {
     });
   }
 
-  test("a show page carries TheaterEvent + BreadcrumbList JSON-LD", async ({ page }) => {
+  test("a show page carries CreativeWork (not a scheduled Event) + BreadcrumbList JSON-LD", async ({ page }) => {
     await page.goto("/shows/cinderella");
     // <script> content isn't "visible text", so read the raw text content and assert.
     const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).join(" ");
-    expect(ld).toContain('"@type":"TheaterEvent"');
+    // Evergreen repertoire pages use CreativeWork, never Event/TheaterEvent (no date).
+    expect(ld).toContain('"@type":"CreativeWork"');
+    expect(ld).not.toContain("TheaterEvent");
     expect(ld).toContain('"@type":"BreadcrumbList"');
   });
 
@@ -170,10 +176,13 @@ test.describe("Phase 2 — shows + landings", () => {
     await expect(page.getByText(/we bring everything to you/i)).toBeVisible();
   });
 
-  test("new Phase-2 routes are noindex pre-launch", async ({ page }) => {
+  test("Phase-2 routes are indexable post-launch (no noindex)", async ({ page }) => {
     for (const path of ["/shows", "/shows/suzy-bee", "/school-shows", "/birthdays"]) {
       await page.goto(path);
-      await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+      const robots = page.locator('meta[name="robots"]');
+      if (await robots.count()) {
+        await expect(robots.first()).not.toHaveAttribute("content", /noindex/);
+      }
     }
   });
 });
@@ -195,10 +204,13 @@ test.describe("Phase 3 — services + characters + gallery + about", () => {
     });
   }
 
-  test("the four Phase-3 routes are noindex pre-launch", async ({ page }) => {
+  test("the four Phase-3 routes are indexable post-launch (no noindex)", async ({ page }) => {
     for (const path of ["/services", "/characters", "/gallery", "/about"]) {
       await page.goto(path);
-      await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+      const robots = page.locator('meta[name="robots"]');
+      if (await robots.count()) {
+        await expect(robots.first()).not.toHaveAttribute("content", /noindex/);
+      }
     }
   });
 
@@ -251,11 +263,14 @@ test.describe("Phase 3 — services + characters + gallery + about", () => {
 // Planning Your Event route (BUILD_MISS_LANA_EVENT_PLANNING_FAQ_001) — the single
 // home for shared venue/logistics info, friendly progressive disclosure.
 test.describe("Planning Your Event", () => {
-  test("/planning-your-event responds 200 with its H1 and is noindex", async ({ page }) => {
+  test("/planning-your-event responds 200 with its H1 and is indexable", async ({ page }) => {
     const res = await page.goto("/planning-your-event");
     expect(res?.status()).toBe(200);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(/we bring everything/i);
-    await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+    const robots = page.locator('meta[name="robots"]');
+    if (await robots.count()) {
+      await expect(robots.first()).not.toHaveAttribute("content", /noindex/);
+    }
   });
 
   test("it emits a FAQPage and a BreadcrumbList", async ({ page }) => {
@@ -337,5 +352,49 @@ test.describe("Lead pipeline", () => {
     const box = await honeypot.boundingBox();
     expect(box === null || box.x < -1000 || box.y < -1000).toBeTruthy();
     await expect(page.locator('[aria-hidden="true"] input[name="company"]')).toHaveCount(1);
+  });
+});
+
+// Technical SEO + domain migration (FIX_MISS_LANA_SEO_AND_DOMAIN_MIGRATION_001).
+test.describe("SEO + indexing", () => {
+  test("home emits PerformingGroup/LocalBusiness org schema with no street address", async ({ page }) => {
+    await page.goto("/");
+    const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).join(" ");
+    expect(ld).toContain('"PerformingGroup"');
+    expect(ld).toContain('"LocalBusiness"');
+    // Service-area business — region only, never a streetAddress.
+    expect(ld).not.toContain("streetAddress");
+  });
+
+  test("sitemap lists real public routes and excludes /design and /api", async ({ page }) => {
+    const res = await page.goto("/sitemap.xml");
+    expect(res?.status()).toBe(200);
+    const xml = (await res?.text()) ?? "";
+    for (const path of ["/shows", "/planning-your-event", "/gallery", "/pricing"]) {
+      expect(xml).toContain(path);
+    }
+    expect(xml).toContain("/shows/cinderella");
+    expect(xml).not.toContain("/design");
+    expect(xml).not.toContain("/api/");
+  });
+
+  test("robots.txt allows crawling post-launch but blocks internal surfaces", async ({ page }) => {
+    const res = await page.goto("/robots.txt");
+    expect(res?.status()).toBe(200);
+    const txt = (await res?.text()) ?? "";
+    expect(txt).toMatch(/Allow:\s*\//);
+    expect(txt).toMatch(/Disallow:\s*\/api\//);
+    expect(txt).toMatch(/Disallow:\s*\/design/);
+    expect(txt).toContain("Sitemap:");
+  });
+
+  test("/design stays noindex after launch (internal preview)", async ({ page }) => {
+    await page.goto("/design");
+    await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+  });
+
+  test("Gallery is in the primary navigation", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("navigation").getByRole("link", { name: "Gallery" }).first()).toBeVisible();
   });
 });

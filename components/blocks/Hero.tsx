@@ -70,13 +70,15 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Hero photo — placeholder direction asset (§9/§15), not final/cleared.
-            Reserved 4:3 box so there is no layout shift; priority + sizes for LCP. */}
+        {/* Hero photo — operator-supplied, cleared troupe image (real performance
+            evidence). The previous hero was a competitor-sourced placeholder; it was
+            swapped out at launch for IP/brand safety. Reserved 4:3 box = no layout
+            shift; priority + sizes for LCP. */}
         <div className="relative">
           <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft shadow-md">
             <Image
-              src="/images/hero-girl-curtain.jpg"
-              alt="A young girl in a tiara peeks out from behind a red stage curtain."
+              src="/images/troupe-fairy-tale-theater.jpg"
+              alt="Miss Lana and the costumed troupe together on stage after a fairy-tale show."
               fill
               priority
               sizes="(min-width: 768px) 50vw, 100vw"

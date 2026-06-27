@@ -30,9 +30,77 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
 ];
 
+// Canonical production host (apex, Theatre spelling — docs/core/04_SEO.md / BRAND.md).
+const CANONICAL = "https://misslanatheatre.com";
+
+// Legacy old-site path → closest new route. One hop each (source host → final
+// canonical destination, no chains). Unmapped legacy paths fall through to the
+// catch-all → home. The exact legacy URL inventory must be confirmed against the
+// live old site before activation — see docs/seo/LEGACY_REDIRECT_MAP.md.
+const LEGACY_PATH_MAP: { source: string; destination: string }[] = [
+  { source: "/about", destination: `${CANONICAL}/about` },
+  { source: "/about-us", destination: `${CANONICAL}/about` },
+  { source: "/shows", destination: `${CANONICAL}/shows` },
+  { source: "/repertoire", destination: `${CANONICAL}/shows` },
+  { source: "/gallery", destination: `${CANONICAL}/gallery` },
+  { source: "/photos", destination: `${CANONICAL}/gallery` },
+  { source: "/prices", destination: `${CANONICAL}/pricing` },
+  { source: "/pricing", destination: `${CANONICAL}/pricing` },
+  { source: "/contact", destination: `${CANONICAL}/booking` },
+  { source: "/contacts", destination: `${CANONICAL}/booking` },
+  { source: "/booking", destination: `${CANONICAL}/booking` },
+  { source: "/birthday", destination: `${CANONICAL}/birthdays` },
+  { source: "/birthdays", destination: `${CANONICAL}/birthdays` },
+  { source: "/school", destination: `${CANONICAL}/school-shows` },
+  { source: "/school-shows", destination: `${CANONICAL}/school-shows` },
+];
+
+// Hosts that must 301 to the canonical apex host. The protective alternate spelling
+// (misslanatheater.com) and the www variant of the canonical host both fold in.
+const ALTERNATE_HOSTS = [
+  "www.misslanatheatre.com",
+  "misslanatheater.com",
+  "www.misslanatheater.com",
+];
+
+const LEGACY_HOSTS = ["magic-castle-puppet-theater.com", "www.magic-castle-puppet-theater.com"];
+
 const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
+  },
+  async redirects() {
+    const hostHas = (host: string) => [{ type: "host" as const, value: host }];
+    // Explicit 301 (not Next's default `permanent: true` → 308). SEO domain
+    // migrations expect a classic 301 Moved Permanently.
+    const redirects: Awaited<ReturnType<NonNullable<NextConfig["redirects"]>>> = [];
+
+    // 1) Alternate/protective/www hosts → canonical apex, preserving the path. 301.
+    for (const host of ALTERNATE_HOSTS) {
+      redirects.push({
+        source: "/:path*",
+        has: hostHas(host),
+        destination: `${CANONICAL}/:path*`,
+        statusCode: 301,
+      });
+    }
+
+    // 2) Legacy domain — explicit old-path map to the closest new route. 301.
+    for (const host of LEGACY_HOSTS) {
+      for (const { source, destination } of LEGACY_PATH_MAP) {
+        redirects.push({ source, has: hostHas(host), destination, statusCode: 301 });
+      }
+      // Catch-all: any other legacy path → home (one hop). Placed AFTER the map so
+      // mapped paths win; this is not a blind "everything → home".
+      redirects.push({
+        source: "/:path*",
+        has: hostHas(host),
+        destination: CANONICAL,
+        statusCode: 301,
+      });
+    }
+
+    return redirects;
   },
 };
 

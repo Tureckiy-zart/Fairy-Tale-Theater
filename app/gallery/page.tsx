@@ -16,7 +16,6 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Warm photos from real performances of Miss Lana's Fairy-Tale Theatre — our shows, the troupe and the delighted children who watch them.",
   path: "/gallery",
-  noindex: true,
 });
 
 export default function GalleryPage() {

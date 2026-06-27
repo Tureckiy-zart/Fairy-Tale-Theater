@@ -2,7 +2,8 @@
 // one indexable URL per show (×8 from lib/shows). Block order: hero (title + meta +
 // "Book this show" primary CTA + placeholder photo) → synopsis + theme/value →
 // photo/video (placeholder) → related shows → areas + "from $350" → BookingCTABand.
-// Schema: TheaterEvent (JsonLd) + BreadcrumbList (via Breadcrumb). NO format tag
+// Schema: CreativeWork (evergreen repertoire, NOT a scheduled Event) + BreadcrumbList
+// (via Breadcrumb). NO format tag
 // (owner-gated — non-goal). Titles/slugs canonical (lib/shows); synopsis final;
 // photos render the marked placeholder treatment (Phase 4 [ASSET]). Server component;
 // unique metadata per page (noindex pre-launch).
@@ -22,7 +23,7 @@ import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
 import { ShowCardGrid } from "@/components/blocks/ShowCardGrid";
-import { buildMetadata, theaterEventSchema } from "@/lib/seo";
+import { buildMetadata, showSchema } from "@/lib/seo";
 import { AREAS, FACTS } from "@/lib/site";
 import { SHOWS, getShow, relatedShows } from "@/lib/shows";
 
@@ -45,7 +46,6 @@ export async function generateMetadata({
     description: `${show.teaser} A live costumed fairy-tale show plus interactive play for ${show.ages.toLowerCase()} — ${show.length}, brought to your venue across LA and beyond.`,
     path: `/shows/${show.slug}`,
     image: show.image,
-    noindex: true,
   });
 }
 
@@ -64,7 +64,7 @@ export default async function ShowDetailPage({
   return (
     <SiteShell activeHref="/shows">
       <JsonLd
-        data={theaterEventSchema({
+        data={showSchema({
           name: show.title,
           description,
           path: `/shows/${show.slug}`,

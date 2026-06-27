@@ -5,7 +5,8 @@
 // + LeadForm → SiteFooter (the last via SiteShell). Server component; metadata via
 // lib/seo (noindex pre-launch).
 import type { Metadata } from "next";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, organizationSchema } from "@/lib/seo";
+import { JsonLd } from "@/components/ui";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
 import { LeadForm } from "@/components/shell/LeadForm";
@@ -25,12 +26,13 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Professional live-costumed children's fairy-tale theater for LA preschools, schools and parties — 30+ years, ages 2–10. Book a show.",
   path: "/",
-  noindex: true,
 });
 
 export default function HomePage() {
   return (
     <SiteShell>
+      {/* Org identity (PerformingGroup + LocalBusiness, service-area, no address). */}
+      <JsonLd data={organizationSchema()} />
       <Hero />
       <TrustStrip />
       <FormatExplainer />
