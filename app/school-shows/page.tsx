@@ -1,10 +1,8 @@
 // School Shows (/school-shows) — B2B landing, SITE_STRUCTURE_AND_BLOCKS.md §4.3.
-// Block order: hero → offer ("what your school gets": values/SEL, professional troupe,
-// turnkey, age-appropriate, from $350) → FAQ (Accordion + FAQPage) → TrustStrip →
-// LeadForm + BookingCTABand. School Shows line accent = sage (§12). Differentiators are
-// real positioning (02_POSITIONING); copy is final. Photos render the marked
-// placeholder treatment (Phase 4 [ASSET]). Travel: free across the greater LA area,
-// quoted by distance beyond — NO dollar amounts. Server component; metadata via lib/seo.
+// Block order: hero → offer (values/SEL, professional troupe, turnkey,
+// age-appropriate, from $350) → FAQ → TrustStrip → LeadForm + BookingCTABand.
+// School Shows line accent = sage (§12). Travel outside the regular Los Angeles
+// service area is confirmed in the custom quote; no fixed surcharge or free radius.
 import type { Metadata } from "next";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
@@ -25,12 +23,12 @@ import { LeadForm } from "@/components/shell/LeadForm";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
 import { TrustStrip } from "@/components/blocks/TrustStrip";
 import { FaqSection } from "@/components/blocks/FaqSection";
-import { FACTS } from "@/lib/site";
+import { AREAS, FACTS } from "@/lib/site";
 
 export const metadata: Metadata = buildMetadata({
   title: "School Shows",
   description:
-    `Assembly-ready, values-driven live theater for preschools, Montessori and schools across LA — a professional troupe, kind SEL themes, turnkey setup, ${FACTS.ages.toLowerCase()}. ${FACTS.priceFromCap}.`,
+    `Assembly-ready, values-driven live theater for preschools, Montessori and schools across Los Angeles, Southern California and farther California locations by request — a professional troupe, kind SEL themes, turnkey setup, ${FACTS.ages.toLowerCase()}. ${FACTS.priceFromCap}.`,
   path: "/school-shows",
 });
 
@@ -90,7 +88,7 @@ const FAQ: QA[] = [
   {
     question: "How far do you travel, and what does it cost?",
     answer:
-      `We're based in Los Angeles and travel to San Diego, Sacramento and San Jose. Pricing starts ${FACTS.priceFrom}, with a custom quote confirmed on booking; travel is free across the greater Los Angeles area, and quoted by distance beyond that.`,
+      `We're based in ${AREAS.base}, serve ${AREAS.region}, and travel to ${AREAS.travel.join(", ")} and other California locations by request. Pricing starts ${FACTS.priceFrom}; your custom quote confirms any travel cost before you book.`,
   },
 ];
 
@@ -124,7 +122,6 @@ export default function SchoolShowsPage() {
               </Button>
             </div>
           </div>
-          {/* Assembly/classroom photo — real school show (operator-supplied). */}
           <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft shadow-md">
             <Image
               src="/images/school-assembly.jpg"
@@ -163,11 +160,10 @@ export default function SchoolShowsPage() {
           ))}
         </div>
         <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-border-soft bg-cream p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
-          <p className="max-w-md text-ink">
+          <p className="max-w-xl text-ink">
             Transparent pricing makes it easy to budget — every show starts{" "}
             <span className="font-display text-2xl capitalize text-forest-700">{FACTS.priceFrom}</span>,
-            with a custom quote on booking. Travel is free across the greater Los Angeles area;
-            beyond that, it&rsquo;s quoted by distance.
+            with a custom quote on booking. Tell us the city or area and the quote will include any travel cost.
           </p>
           <Button href="/pricing" variant="secondary">
             See pricing
@@ -175,7 +171,6 @@ export default function SchoolShowsPage() {
         </div>
       </Section>
 
-      {/* FAQ */}
       <FaqSection
         items={FAQ}
         eyebrow="For directors"
@@ -192,18 +187,16 @@ export default function SchoolShowsPage() {
         </p>
       </Container>
 
-      {/* Trust */}
       <TrustStrip />
 
-      {/* Lead capture */}
       <LeadForm
         eyebrow="Request a show"
         heading="Bring Miss Lana to your school"
-        sub="Tell us your school, group size and a date — we'll check availability and send a quote within 1–2 business days."
+        sub="Tell us your school, group size, date and city — we'll check availability and send a quote within 1–2 business days."
       />
       <BookingCTABand
         heading="Ready to book a school show?"
-        sub={`Assembly-ready theater for ${FACTS.ages.toLowerCase()}, ${FACTS.priceFrom}. Send a request or give us a call.`}
+        sub={`Assembly-ready theater for ${FACTS.ages.toLowerCase()}, ${FACTS.priceFrom}. Send a request and choose how you'd like us to reply.`}
       />
     </SiteShell>
   );
