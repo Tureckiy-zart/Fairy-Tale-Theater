@@ -4,8 +4,9 @@ test.describe("full launch polish", () => {
   test("canonical brand and public contacts render", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page.locator("header")).toContainText("Miss Lana’s");
-    await expect(page.locator("header")).toContainText("Fairy-Tale Theatre");
+    const siteHeader = page.getByRole("banner");
+    await expect(siteHeader).toContainText("Miss Lana’s");
+    await expect(siteHeader).toContainText("Fairy-Tale Theatre");
 
     const footer = page.locator("footer");
     await expect(footer.getByRole("link", { name: "info@misslanatheatre.com" })).toHaveAttribute(
