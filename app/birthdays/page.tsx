@@ -1,10 +1,7 @@
 // Birthdays (/birthdays) — B2C landing, SITE_STRUCTURE_AND_BLOCKS.md §4.3. Block
-// order: hero ("a magical party without the hassle") → what's included → popular party
-// shows (→ /shows) → "from $350" → how to book → FAQ (Accordion + FAQPage) → LeadForm
-// + BookingCTABand. Birthday Parties line accent = coral (§12). "A real theater show,
-// not just an entertainer" is real positioning (02_POSITIONING); copy is final.
-// Photos render the marked placeholder treatment (Phase 4 [ASSET]). Travel: free across
-// the greater LA area, quoted by distance beyond — NO dollar amounts. metadata via lib/seo.
+// order: hero → what's included → popular party shows → from $350 → how to book →
+// FAQ → LeadForm + BookingCTABand. Birthday Parties line accent = coral (§12).
+// Travel is confirmed in each custom quote; no fixed surcharge or blanket free radius.
 import type { Metadata } from "next";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
@@ -24,12 +21,12 @@ import { BookingCTABand } from "@/components/shell/BookingCTABand";
 import { ShowCardGrid } from "@/components/blocks/ShowCardGrid";
 import { FaqSection } from "@/components/blocks/FaqSection";
 import { FEATURED_SHOWS } from "@/lib/shows";
-import { FACTS } from "@/lib/site";
+import { AREAS, FACTS } from "@/lib/site";
 
 export const metadata: Metadata = buildMetadata({
   title: "Birthday Parties",
   description:
-    `A real costumed fairy-tale show for the birthday child — magic that comes to your home or venue, no hassle. Professional troupe, interactive play, ${FACTS.ages.toLowerCase()}. ${FACTS.priceFromCap}.`,
+    `A real costumed fairy-tale show for the birthday child — magic that comes to your home or venue, no hassle. Professional troupe, interactive play, ${FACTS.ages.toLowerCase()}. ${FACTS.priceFromCap}. Serving Southern California and farther California locations by request.`,
   path: "/birthdays",
 });
 
@@ -43,13 +40,10 @@ const INCLUDED = [
 
 const STEPS: { n: string; title: string; body: string }[] = [
   { n: "1", title: "Pick a show & date", body: "Choose a fairy tale and tell us when the party is." },
-  { n: "2", title: "Send a request", body: "Share your details — we'll confirm availability and a quote." },
+  { n: "2", title: "Send a request", body: "Share your details and choose the best way for us to reply." },
   { n: "3", title: "We bring the magic", body: "We arrive, set up, and put on the whole show. You enjoy the party." },
 ];
 
-// The birthday child's special moments — worded as availability, never mandatory
-// (OWNER_ANSWERS_DECISION_RECORD §1: birthday personalization). The child can join in
-// "if they'd like"; touches happen "to suit" the child and show.
 const BIRTHDAY_MOMENTS: { title: string; body: string }[] = [
   {
     title: "Greeted by name",
@@ -92,14 +86,13 @@ const FAQ: QA[] = [
   {
     question: "How much does it cost, and how do we book?",
     answer:
-      `${FACTS.priceFromCap}; we confirm your custom quote when you book. Travel is free across the greater Los Angeles area and quoted by distance beyond that. Send a request with your date, or give us a call, and we'll confirm availability.`,
+      `${FACTS.priceFromCap}; we confirm your custom quote when you book. We're based in ${AREAS.base}, serve ${AREAS.region}, and travel farther across California by request. Send your date and city, choose how you'd like us to reply, and we'll confirm availability and any travel cost.`,
   },
 ];
 
 export default function BirthdaysPage() {
   return (
     <SiteShell activeHref="/birthdays">
-      {/* Hero — a magical party without the hassle */}
       <Container className="pb-12 pt-10 md:flex md:min-h-[calc(100svh-4rem)] md:flex-col md:pb-16 md:pt-14">
         <Breadcrumb
           items={[
@@ -126,7 +119,6 @@ export default function BirthdaysPage() {
               </Button>
             </div>
           </div>
-          {/* Birthday party photo — operator-supplied. */}
           <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft shadow-md">
             <Image
               src="/images/birthday-party.jpg"
@@ -140,7 +132,6 @@ export default function BirthdaysPage() {
         </div>
       </Container>
 
-      {/* What's included */}
       <Section tone="surface">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
@@ -173,7 +164,6 @@ export default function BirthdaysPage() {
         </div>
       </Section>
 
-      {/* The birthday child's special moments (availability-worded — never mandatory) */}
       <Section>
         <SectionHeader
           accent="coral"
@@ -198,7 +188,6 @@ export default function BirthdaysPage() {
         </p>
       </Section>
 
-      {/* Popular party shows → /shows */}
       <Section>
         <SectionHeader
           as="h2"
@@ -217,7 +206,6 @@ export default function BirthdaysPage() {
         </div>
       </Section>
 
-      {/* How to book */}
       <Section tone="surface">
         <SectionHeader
           as="h2"
@@ -225,7 +213,7 @@ export default function BirthdaysPage() {
           eyebrow="How to book"
           marker={<SparkStar size={16} />}
           title="Three steps to the party"
-          subtitle={`From first message to curtain. ${FACTS.priceFromCap}; travel across greater LA is free, beyond quoted by distance.`}
+          subtitle={`From first message to curtain. ${FACTS.priceFromCap}; your quote confirms any travel cost before you book.`}
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {STEPS.map((s) => (
@@ -243,18 +231,16 @@ export default function BirthdaysPage() {
         </div>
       </Section>
 
-      {/* FAQ */}
       <FaqSection items={FAQ} eyebrow="For parents" title="Birthday party questions, answered" />
 
-      {/* Lead capture */}
       <LeadForm
         eyebrow="Book a party"
         heading="Plan a magical birthday"
-        sub="Tell us the date, ages and how many children — we'll confirm availability and a quote within 1–2 business days."
+        sub="Tell us the date, ages, number of children and city — we'll confirm availability and a quote within 1–2 business days."
       />
       <BookingCTABand
         heading="Ready to book the party?"
-        sub={`A real theater show for the birthday child, ${FACTS.priceFrom}. Send a request or give us a call.`}
+        sub={`A real theater show for the birthday child, ${FACTS.priceFrom}. Send a request and choose how you'd like us to reply.`}
       />
     </SiteShell>
   );
