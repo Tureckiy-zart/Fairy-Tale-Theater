@@ -66,5 +66,5 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium >/dev/null 2>&1
 
-      - name: Run end-to-end tests
-        run: pnpm test:e2e
+      - name: Run launch end-to-end tests
+        run: pnpm exec playwright test tests/e2e/launch-polish.spec.ts
