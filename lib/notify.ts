@@ -83,12 +83,14 @@ async function writeDevCopy(lead: Lead): Promise<ChannelOutcome> {
  * Persist to the durable store. PRODUCTION authority is MongoDB Atlas. Only when
  * MONGODB_URI is unset (local dev / e2e) do we fall back to a real local-disk copy as
  * the store record — a path production never takes because the URI is always set there.
+ * `duplicate` is true only for an idempotent retry of the SAME submissionId already in
+ * MongoDB; the orchestrator uses it to suppress a second round of secondary deliveries.
  */
-async function persist(lead: Lead): Promise<ChannelOutcome> {
-  if (!env.mongodbUri) return writeDevCopy(lead);
+async function persist(lead: Lead): Promise<{ outcome: ChannelOutcome; duplicate: boolean }> {
+  if (!env.mongodbUri) return { outcome: await writeDevCopy(lead), duplicate: false };
   const outcome = await storeLead(toStoredLead(lead));
-  if (outcome.status === "ok") return { status: "ok" };
-  return { status: "error", reason: outcome.reason };
+  if (outcome.status === "ok") return { outcome: { status: "ok" }, duplicate: outcome.duplicate };
+  return { outcome: { status: "error", reason: outcome.reason }, duplicate: false };
 }
 
 /** POST {to, subject, text} to the provider-agnostic email webhook. */
@@ -152,7 +154,14 @@ async function telegramAlert(lead: Lead): Promise<ChannelOutcome> {
  * is set. POSTs the flat lead row to a deployed Apps Script Web App (or any endpoint that
  * accepts {token?, lead}) which appends one spreadsheet row — a browsable cloud log for
  * the owner. NEVER an acceptance signal. Apps Script web apps answer with a 302 to
- * script.googleusercontent.com, so follow redirects. No PII in logs/result — status only.
+ * script.googleusercontent.com, so follow redirects.
+ *
+ * Success is asserted in DEPTH, not just by HTTP status: the response must be 2xx AND
+ * parse as JSON AND carry `ok === true`. A non-2xx, an `ok:false`, malformed JSON, a
+ * timeout, an abort or a network rejection all map to "error" so a silently-rejected
+ * append (e.g. bad token) is never mistaken for success. A server-side `duplicate:true`
+ * (the Apps Script deduped by submissionId) is an idempotent "ok". No PII, no webhook
+ * URL, no token, and no response body is ever logged — only the coarse status.
  */
 async function appendToSheet(lead: Lead): Promise<ChannelOutcome> {
   const url = env.leadSheetsWebhookUrl;
@@ -168,7 +177,15 @@ async function appendToSheet(lead: Lead): Promise<ChannelOutcome> {
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return { status: "error", reason: `sheets HTTP ${res.status}` };
-    return { status: "ok" };
+    let parsed: { ok?: unknown; duplicate?: unknown };
+    try {
+      parsed = (await res.json()) as { ok?: unknown; duplicate?: unknown };
+    } catch {
+      // 2xx but the body wasn't the JSON contract — treat as a failed append.
+      return { status: "error", reason: "sheets malformed response" };
+    }
+    if (parsed?.ok !== true) return { status: "error", reason: "sheets rejected" };
+    return { status: "ok" }; // includes duplicate:true — an idempotent, accepted append
   } catch (err) {
     return { status: "error", reason: errText(err) };
   }
@@ -184,7 +201,18 @@ async function appendToSheet(lead: Lead): Promise<ChannelOutcome> {
  * acceptance). This never throws — the caller inspects `accepted` to respond honestly.
  */
 export async function deliverLead(lead: Lead): Promise<DeliveryResult> {
-  const store = await persist(lead);
+  const { outcome: store, duplicate } = await persist(lead);
+
+  // Idempotent retry of the SAME submissionId: the original submission already created
+  // the one MongoDB document AND fired every secondary channel. Re-sending now would
+  // produce a duplicate Telegram message, a duplicate Sheet row and a duplicate email,
+  // so we suppress all of them and return a safe success — the lead is already durable
+  // (store.status === "ok"), and we never re-patch the first submission's statuses.
+  if (store.status === "ok" && duplicate) {
+    const skipped: ChannelOutcome = { status: "skipped", reason: "duplicate submission" };
+    return { accepted: true, channels: { store, email: skipped, telegram: skipped, sheets: skipped } };
+  }
+
   const [email, telegram, sheets] = await Promise.all([
     emailOwner(lead),
     telegramAlert(lead),

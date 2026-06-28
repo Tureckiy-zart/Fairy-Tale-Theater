@@ -12,6 +12,31 @@
 
 ---
 
+## 0. Addendum — channel-output normalization (2026-06-28)
+
+> Task `NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001` normalized the **output** of the
+> two secondary working channels. It does **not** change the architecture, the acceptance
+> rule, the form, or the schema. It **supersedes** two earlier presentational decisions:
+>
+> 1. **Telegram is now the FULL inquiry, incl. PII** (name, phone, email, notes), by
+>    explicit **owner approval**, sent only to the **closed, owner-controlled** chat — so
+>    §E4 below ("short alert only / do not include full notes/phone/email") is superseded
+>    for content. The HTTP/timeout/never-accept rules in §E4 still hold.
+> 2. **Google Sheets** is a recognized secondary channel with a **fixed column contract**,
+>    formula-injection protection, server-side `submissionId` dedupe (LockService), and a
+>    JSON `{ok,duplicate,errorCode}` response contract. It remains **never** an acceptance
+>    signal (it is **not** the "primary database" non-goal in §4).
+>
+> Normalization guarantees added: event date keeps its **calendar day** (no UTC shift);
+> received time renders in **America/Los_Angeles** (PST/PDT); empty optional fields are
+> omitted; Telegram stays under a safe length (only **Notes** is trimmed, with a marker;
+> full text stays in MongoDB + Sheets); a **duplicate `submissionId` suppresses** all
+> secondary delivery (no second message/row/email). `notificationStatus` carries the
+> `sheets` channel status. Evidence: `docs/reports/NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001.md`.
+> **Retention period remains OPEN OWNER DECISION** (§10).
+
+---
+
 ## 1. Purpose
 
 This document is the single execution checklist for making the Miss Lana booking form production-safe.

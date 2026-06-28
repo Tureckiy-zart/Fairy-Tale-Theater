@@ -181,62 +181,217 @@ export function sanitizeSubmissionId(raw: unknown): string | null {
   return v.length >= 8 ? v : null;
 }
 
+// --- Owner-facing date/time normalization (pure, deterministic) -------------
+// The owner reads these in Telegram/Sheets, never a raw ISO blob. Two rules:
+//   1. The customer's EVENT date is a calendar day — it must NEVER shift across a
+//      timezone. We format "yyyy-mm-dd" from its literal parts (no Date/UTC parse),
+//      so August 10 stays August 10 everywhere on Earth.
+//   2. The RECEIVED instant is a real point in time — we render it in the owner's
+//      wall-clock zone (America/Los_Angeles) with a PST/PDT label, while MongoDB
+//      keeps the canonical UTC ISO. Both are derived here so tests pin the behavior.
+
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+] as const;
+
+/** "13:05" → "1:05 PM"; "09:30" → "9:30 AM". Non-HH:MM input passes through. */
+function formatTime12h(time: string): string {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(time.trim());
+  if (!m) return time.trim(); // unknown free-text time — show as the visitor typed it
+  const h = Number(m[1]);
+  const min = m[2]!;
+  if (h > 23 || Number(min) > 59) return time.trim();
+  const period = h < 12 ? "AM" : "PM";
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${h12}:${min} ${period}`;
+}
+
 /**
- * Telegram alert body — the FULL inquiry, owner-facing. Unlike the old short alert,
- * this carries every field the visitor filled so the owner (Svitlana) can act straight
- * from the chat without opening the database or email: she has no DB access and needs
- * none. Sent only to the owner's private bot/chat (a closed channel), so the full
- * contact details stay inside the owner's own notification surface. Empty optional
- * fields are omitted (no noisy em-dashes). Plain text — no markup, no secrets.
+ * Owner-facing event date. A normalized "yyyy-mm-dd" becomes "August 10, 2026"
+ * (the SAME calendar day, no UTC shift) with an optional " at 11:25 AM". A
+ * non-ISO passthrough date (e.g. "next Friday") is shown verbatim with its time.
+ */
+export function formatEventDate(date: string, time: string | null): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  const t = time ? formatTime12h(time) : null;
+  if (!m) return t ? `${date} at ${t}` : date; // free-text date, keep as-is
+  const month = MONTHS[Number(m[2]) - 1] ?? m[2];
+  const day = Number(m[3]); // strip any leading zero
+  const base = `${month} ${day}, ${m[1]}`;
+  return t ? `${base} at ${t}` : base;
+}
+
+/**
+ * Owner-facing received time, in America/Los_Angeles with a PST/PDT label, e.g.
+ * "June 28, 2026 at 11:25 AM PDT". Built from Intl parts so the wording and the
+ * DST-correct zone abbreviation are deterministic. The canonical UTC ISO stays in
+ * MongoDB; this is purely a human-readable projection. Invalid input passes through.
+ */
+export function formatReceivedLosAngeles(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZoneName: "short",
+  }).formatToParts(d);
+  const p: Record<string, string> = {};
+  for (const part of parts) p[part.type] = part.value;
+  return `${p.month} ${p.day}, ${p.year} at ${p.hour}:${p.minute} ${p.dayPeriod} ${p.timeZoneName}`;
+}
+
+// --- Telegram formatter -----------------------------------------------------
+/**
+ * Safe internal cap, comfortably below the Telegram Bot API hard limit of 4096
+ * characters. We never approach the wire limit; only the owner-facing Notes field
+ * is ever trimmed to stay under it.
+ */
+export const TELEGRAM_SAFE_LIMIT = 3900;
+
+/** Appended to a trimmed Notes so the owner knows the full text lives elsewhere. */
+export const TELEGRAM_TRUNCATION_MARKER =
+  "[truncated — full text is stored in MongoDB and Google Sheets]";
+
+/**
+ * Telegram alert body — the FULL inquiry, owner-facing. Carries every field the
+ * visitor filled so the owner (Svitlana) can act straight from the chat without the
+ * database or email. Sent only to the owner's private bot/chat (a closed channel),
+ * so the full contact details stay inside the owner's own notification surface.
+ *
+ * Deterministic and side-effect-free. Plain text — NO parse_mode — so customer text
+ * containing Markdown/HTML metacharacters (* _ < > & ` ~ [ ] etc.), emoji, Cyrillic
+ * or newlines can never break the message or be interpreted as markup. Empty optional
+ * fields are omitted entirely (no noisy em-dashes). The message is guaranteed to stay
+ * under TELEGRAM_SAFE_LIMIT: if it would exceed it, ONLY Notes is trimmed (with an
+ * explicit marker) — the id, name, phone, email, date, city and type are never cut,
+ * and the lead's own `notes` field is left untouched (the full text stays in the store).
  */
 export function formatLeadTelegram(lead: Lead): string {
-  const rows: Array<[string, string | null]> = [
-    ["🆔 ID", lead.id],
-    ["📋 Type", lead.eventType],
-    ["📅 Date", `${lead.date}${lead.time ? ` at ${lead.time}` : ""}`],
-    ["📍 City", lead.city],
-    ["👤 Name", lead.name],
-    ["📞 Phone", lead.phone],
-    ["✉️ Email", lead.email],
-    ["🧒 Children", lead.childCount != null ? String(lead.childCount) : null],
-    ["🎭 Show", lead.show],
-    ["📝 Notes", lead.notes],
-  ];
-  const lines = ["🎭 New booking inquiry", ""];
-  for (const [label, value] of rows) if (value) lines.push(`${label}: ${value}`);
+  const eventDate = formatEventDate(lead.date, lead.time);
+  const received = formatReceivedLosAngeles(lead.receivedAt);
 
-  const utm = [lead.source.utmSource, lead.source.utmMedium, lead.source.utmCampaign]
-    .filter(Boolean)
-    .join(" / ");
-  lines.push("", `🔗 Source: ${lead.source.path}${utm ? ` (${utm})` : ""}`);
-  lines.push(`🕒 Received: ${lead.receivedAt}`);
-  return lines.join("\n");
+  const build = (notes: string | null): string => {
+    const lines = ["🎭 New booking inquiry", ""];
+    const primary: Array<[string, string | null]> = [
+      ["🆔 ID", lead.id],
+      ["📋 Type", lead.eventType],
+      ["📅 Date and time", eventDate],
+      ["📍 City", lead.city],
+      ["👤 Name", lead.name],
+      ["📞 Phone", lead.phone],
+      ["✉️ Email", lead.email],
+      ["🧒 Children", lead.childCount != null ? String(lead.childCount) : null],
+      ["🎭 Show", lead.show],
+      ["📝 Notes", notes],
+    ];
+    for (const [label, value] of primary) if (value) lines.push(`${label}: ${value}`);
+
+    const attribution: Array<[string, string | null]> = [
+      ["🔗 Source", lead.source.path],
+      ["📣 UTM Source", lead.source.utmSource],
+      ["📣 UTM Medium", lead.source.utmMedium],
+      ["📣 UTM Campaign", lead.source.utmCampaign],
+      ["🕒 Received", received],
+    ];
+    lines.push("");
+    for (const [label, value] of attribution) if (value) lines.push(`${label}: ${value}`);
+    return lines.join("\n");
+  };
+
+  const full = build(lead.notes);
+  if (full.length <= TELEGRAM_SAFE_LIMIT) return full;
+
+  // Over the safe limit — trim ONLY Notes by exactly the overflow plus the marker, so
+  // the result lands at the limit and every other field is preserved intact.
+  const notes = lead.notes ?? "";
+  const overflow = full.length - TELEGRAM_SAFE_LIMIT;
+  const keep = Math.max(0, notes.length - overflow - TELEGRAM_TRUNCATION_MARKER.length - 1);
+  const trimmed = `${notes.slice(0, keep).trimEnd()} ${TELEGRAM_TRUNCATION_MARKER}`.trimStart();
+  return build(trimmed);
+}
+
+// --- Google Sheets row ------------------------------------------------------
+/**
+ * Fixed, ordered Google Sheets column contract. The header row (row 1) of the sheet
+ * MUST be exactly these names in this order, and the Apps Script maps each posted row
+ * by these keys. Changing the order is a breaking change to the spreadsheet — append,
+ * never reorder. Keep in sync with the Apps Script in LEAD_PIPELINE_RUNBOOK.md.
+ */
+export const GOOGLE_SHEETS_COLUMNS = [
+  "submissionId",
+  "id",
+  "receivedAtUtc",
+  "receivedAtLosAngeles",
+  "status",
+  "eventType",
+  "eventDate",
+  "eventTime",
+  "city",
+  "name",
+  "phone",
+  "email",
+  "childCount",
+  "show",
+  "notes",
+  "sourcePath",
+  "utmSource",
+  "utmMedium",
+  "utmCampaign",
+] as const;
+
+export type SheetColumn = (typeof GOOGLE_SHEETS_COLUMNS)[number];
+
+/**
+ * Neutralize a spreadsheet formula-injection vector. Any cell whose first non-space
+ * character is one of = + - @ is prefixed with a single quote so Sheets/Excel treat it
+ * as literal text instead of evaluating it (e.g. "=IMPORTXML(...)", "+44…", "-12", "@x").
+ * Phone numbers like "+44123456789" therefore stay text, never a formula or number.
+ */
+function neutralizeFormula(value: string): string {
+  const firstNonSpace = value.trimStart()[0];
+  if (firstNonSpace && "=+-@".includes(firstNonSpace)) return `'${value}`;
+  return value;
 }
 
 /**
  * Flat, stable-column projection of a lead for the Google Sheets webhook (one row per
- * inquiry). Order here defines the spreadsheet column order; absent optional values are
- * empty strings (not null) so cells stay blank rather than reading "null". Keep this in
- * sync with the header row in the Apps Script (docs/operations/LEAD_PIPELINE_RUNBOOK.md).
+ * inquiry). Always returns every GOOGLE_SHEETS_COLUMNS key (a stable cell count that
+ * matches the header), with null/undefined collapsed to "" and every value rendered as
+ * a string with formula injection neutralized — so customer text can never become a
+ * live spreadsheet formula and phone numbers stay text. The FULL notes are stored here
+ * (never trimmed); receivedAtUtc is the canonical ISO, receivedAtLosAngeles the
+ * human-readable mirror. `status` is "new" at submission time.
  */
-export function toSheetRow(lead: Lead): Record<string, string | number> {
+export function toSheetRow(lead: Lead): Record<SheetColumn, string> {
+  const cell = (v: string | number | null | undefined): string =>
+    v === null || v === undefined || v === "" ? "" : neutralizeFormula(String(v));
+
   return {
-    receivedAt: lead.receivedAt,
-    id: lead.id,
-    name: lead.name,
-    phone: lead.phone,
-    email: lead.email ?? "",
-    eventType: lead.eventType,
-    date: lead.date,
-    time: lead.time ?? "",
-    city: lead.city,
-    childCount: lead.childCount ?? "",
-    show: lead.show ?? "",
-    notes: lead.notes ?? "",
-    sourcePath: lead.source.path,
-    utmSource: lead.source.utmSource ?? "",
-    utmMedium: lead.source.utmMedium ?? "",
-    utmCampaign: lead.source.utmCampaign ?? "",
+    submissionId: cell(lead.submissionId),
+    id: cell(lead.id),
+    receivedAtUtc: cell(lead.receivedAt),
+    receivedAtLosAngeles: cell(formatReceivedLosAngeles(lead.receivedAt)),
+    status: "new",
+    eventType: cell(lead.eventType),
+    eventDate: cell(lead.date),
+    eventTime: cell(lead.time),
+    city: cell(lead.city),
+    name: cell(lead.name),
+    phone: cell(lead.phone),
+    email: cell(lead.email),
+    childCount: cell(lead.childCount),
+    show: cell(lead.show),
+    notes: cell(lead.notes),
+    sourcePath: cell(lead.source.path),
+    utmSource: cell(lead.source.utmSource),
+    utmMedium: cell(lead.source.utmMedium),
+    utmCampaign: cell(lead.source.utmCampaign),
   };
 }
 
