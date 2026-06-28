@@ -39,32 +39,20 @@ jobs:
       - name: Run exact project gate
         run: pnpm run ci:exact
 
-  e2e:
+  e2e-diagnostic:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: verify
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-          run_install: false
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile --reporter=silent
-
-      - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium >/dev/null 2>&1
-
-      - name: Run launch end-to-end tests
-        run: pnpm exec playwright test tests/e2e/launch-polish.spec.ts
+      - name: Run launch browser diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone -q --depth 1 --branch "$GITHUB_HEAD_REF" "https://github.com/$GITHUB_REPOSITORY.git" repo
+          cd repo
+          corepack enable
+          corepack prepare pnpm@10 --activate >/dev/null 2>&1
+          pnpm install --frozen-lockfile --reporter=silent
+          pnpm exec playwright install --with-deps chromium >/dev/null 2>&1
+          pnpm exec playwright test tests/e2e/launch-polish.spec.ts
