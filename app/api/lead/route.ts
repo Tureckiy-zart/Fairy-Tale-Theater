@@ -119,7 +119,9 @@ export async function POST(req: Request): Promise<NextResponse> {
     console.warn(`[lead] ${lead.id} sheets=${stringifyOutcome(delivery.channels.sheets)}`);
   }
 
-  return json({ ok: true, id: lead.id }, 200);
+  // Return the id that was actually stored (the store may have regenerated a colliding
+  // random id), so the visitor's reference matches MongoDB/email/Telegram/Sheets.
+  return json({ ok: true, id: delivery.id }, 200);
 }
 
 function json(payload: Record<string, unknown>, status: number): NextResponse {
