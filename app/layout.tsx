@@ -30,9 +30,14 @@ const nunito = Nunito({
 export function generateMetadata(): Metadata {
   const googleSiteVerification = env.googleSiteVerification;
   return {
+    // Absolute base for OG/canonical/icon URLs — resolves the file-based app/icon.svg,
+    // app/favicon.ico and app/apple-icon.png to absolute URLs and avoids the build warning.
+    metadataBase: new URL(env.baseUrl),
     title: "Miss Lana's Fairy-Tale Theatre",
     description:
       "Touring children's live-costumed fairy-tale theater serving Los Angeles and beyond.",
+    // Brand name signal (helps Google show the brand, not the bare domain, as site name).
+    applicationName: "Miss Lana's Fairy-Tale Theatre",
     ...(googleSiteVerification ? { verification: { google: googleSiteVerification } } : {}),
   };
 }
