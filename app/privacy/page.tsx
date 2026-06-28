@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
-import { Breadcrumb, PageHero, Section } from "@/components/ui";
+import { PageHero, Section } from "@/components/ui";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { EMAIL } from "@/lib/site";
@@ -69,13 +69,6 @@ export default function PrivacyPage() {
       />
 
       <Section>
-        <Breadcrumb
-          items={[
-            { name: "Home", href: "/" },
-            { name: "Privacy", href: "/privacy" },
-          ]}
-          className="mb-10"
-        />
         <p className="max-w-prose text-sm text-ink-soft">Last updated: June 28, 2026</p>
         <div className="mt-10 flex max-w-3xl flex-col gap-10">
           {SECTIONS.map((section) => (
