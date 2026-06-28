@@ -1,11 +1,10 @@
 // BookingCTABand — the repeating "Book a show" band near the bottom of pages
 // (conversion architecture: lead capture everywhere — SITE_STRUCTURE §3/§5). Forest
-// panel, white text (≥9:1), a static glow accent + the brand Lantern glyph (the "light"
-// signature — §2/§7.2), the primary CTA → /booking, and click-to-call. The glow is
-// decorative and NOT animated (band can sit over the fold on short pages — §10.4).
+// panel, white text, static glow, primary CTA → /booking, and direct written/call
+// contacts. The glow is decorative and not animated.
 import { Button } from "@/components/ui";
 import { Lantern } from "@/components/brand/Glyphs";
-import { BOOK_CTA, PHONES } from "@/lib/site";
+import { BOOK_CTA, EMAIL, PHONES } from "@/lib/site";
 
 export function BookingCTABand({
   heading = "Ready to book your show?",
@@ -28,7 +27,7 @@ export function BookingCTABand({
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-lg text-forest-100">{sub}</p>
 
-        <div className="mt-7 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div className="mt-7 flex flex-col items-center justify-center gap-4">
           <Button
             href={BOOK_CTA.href}
             size="lg"
@@ -37,7 +36,13 @@ export function BookingCTABand({
             {BOOK_CTA.label}
           </Button>
           <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-forest-100">
-            <span>or call</span>
+            <span>Or contact us directly:</span>
+            <a
+              href={EMAIL.href}
+              className="font-body font-bold text-white underline underline-offset-4 hover:text-glow-200"
+            >
+              {EMAIL.address}
+            </a>
             {PHONES.map((p) => (
               <a
                 key={p.tel}
