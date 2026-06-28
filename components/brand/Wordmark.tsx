@@ -1,6 +1,4 @@
-// Canonical text wordmark used until trademark-cleared final artwork lands. The public
-// spelling is locked to “Miss Lana's Fairy-Tale Theatre”; this component prevents the
-// possessive from disappearing between header and footer implementations.
+"use client";
 import { Sparkle } from "@phosphor-icons/react";
 import { BRAND } from "@/lib/site";
 import { cx } from "@/components/ui/cx";
@@ -14,7 +12,7 @@ export function BrandWordmark({ className }: { className?: string }) {
       <span className="flex flex-col leading-none">
         <span
           className="font-display text-xl text-forest-800"
-          style={{ fontVariationSettings: '"SOFT" 60' }}
+          style={{ fontVariationSettings: "'SOFT' 60" }}
         >
           {BRAND.umbrella}&rsquo;s
         </span>
