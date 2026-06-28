@@ -43,10 +43,26 @@ export const PHONES = [
   { display: "(323) 903-2039", tel: "+13239032039" },
 ] as const;
 
-/** Service-area business (04_SEO.md): base LA + named travel areas. No public address. */
+/** Primary written contact (BRAND.md / 01_CONTENT_INVENTORY.md). */
+export const EMAIL = {
+  address: "info@misslanatheatre.com",
+  href: "mailto:info@misslanatheatre.com",
+} as const;
+
+/** Reply choices shown in the booking form. Written contact remains preferred. */
+export const CONTACT_METHODS = ["Text message", "Email", "WhatsApp", "Phone call"] as const;
+
+/**
+ * Touring service-area facts. Los Angeles is the base, not the boundary: the troupe
+ * serves Southern California and accepts farther California travel by request. No
+ * blanket free-travel radius or unapproved surcharge is encoded here; every booking
+ * receives a custom quote.
+ */
 export const AREAS = {
   base: "Los Angeles",
+  region: "Southern California",
   travel: ["San Diego", "Sacramento", "San Jose"],
+  byRequest: "Other California locations",
 } as const;
 
 /** Primary header nav (SITE_STRUCTURE_AND_BLOCKS.md §2). "Book" is a CTA, not a link. */
@@ -74,6 +90,7 @@ export const FOOTER_LINKS = [
   { label: "Planning your event", href: "/planning-your-event" },
   { label: "About", href: "/about" },
   { label: "Book / Contact", href: "/booking" },
+  { label: "Privacy", href: "/privacy" },
 ] as const;
 
 /**
@@ -186,6 +203,6 @@ export const VALUES: { title: string; body: string }[] = [
 export const QUOTE_FACTORS: string[] = [
   "The show you choose and the size of the group",
   "How long you'd like us — the show, plus any extra interactive time",
-  "Where you are — travel beyond the greater Los Angeles area",
+  "Where you are — travel outside our regular Los Angeles service area",
   "Any optional extras, like face painting or a costumed character visit",
 ];
