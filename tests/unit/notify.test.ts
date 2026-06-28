@@ -9,13 +9,13 @@ import type { StoreOutcome } from "@/lib/leadStore";
 
 // --- Mock the durable store. storeLead/updateNotificationStatus are stubbed per test
 // via the mutable refs below, so we can drive every branch of the acceptance matrix.
-const storeLeadResult = { value: { status: "ok", duplicate: false } as StoreOutcome };
+const storeLeadResult = { value: { status: "ok", duplicate: false, id: "ML-ABCDE" } as StoreOutcome };
 const updateCalls: unknown[][] = [];
 vi.mock("@/lib/leadStore", () => ({
   storeLead: vi.fn(async () => storeLeadResult.value),
   updateNotificationStatus: vi.fn(async (...args: unknown[]) => {
     updateCalls.push(args);
-    return { status: "ok", duplicate: false } as StoreOutcome;
+    return { status: "ok", duplicate: false, id: "ML-ABCDE" } as StoreOutcome;
   }),
 }));
 
@@ -47,7 +47,7 @@ async function importNotify() {
 beforeEach(() => {
   vi.resetModules();
   updateCalls.length = 0;
-  storeLeadResult.value = { status: "ok", duplicate: false };
+  storeLeadResult.value = { status: "ok", duplicate: false, id: "ML-ABCDE" };
   // Baseline: Mongo configured, no email webhook, no telegram.
   process.env.MONGODB_URI = "mongodb://mock";
   delete process.env.LEAD_EMAIL_WEBHOOK_URL;
@@ -295,8 +295,27 @@ describe("deliverLead idempotency / duplicate suppression", () => {
   const sheetsCalls = (m: ReturnType<typeof stubFetch>) =>
     m.mock.calls.filter(([u]) => String(u).includes("sheets.test")).length;
 
+  it("adopts a store-regenerated id everywhere (response, Sheets row, status patch)", async () => {
+    // Simulate an id collision the store resolved by regenerating to a new id.
+    storeLeadResult.value = { status: "ok", duplicate: false, id: "ML-NEW99" };
+    process.env.GOOGLE_SHEETS_WEBHOOK_URL = "https://sheets.test/append";
+    const fetchMock = stubFetch({ sheetsStatus: 200 });
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead()); // submitted id is ML-ABCDE
+    // The DeliveryResult carries the actually-stored id, NOT the original.
+    expect(r.id).toBe("ML-NEW99");
+    expect(r.accepted).toBe(true);
+    // The Sheets row uses the adopted id.
+    const call = fetchMock.mock.calls.find(([u]) => String(u).includes("sheets.test"));
+    const body = JSON.parse((call![1] as RequestInit).body as string);
+    expect(body.lead.id).toBe("ML-NEW99");
+    // The notification-status patch targets the adopted id.
+    expect(updateCalls.length).toBe(1);
+    expect((updateCalls[0] as [string])[0]).toBe("ML-NEW99");
+  });
+
   it("fresh insert: Telegram and Sheets are each called exactly once", async () => {
-    storeLeadResult.value = { status: "ok", duplicate: false };
+    storeLeadResult.value = { status: "ok", duplicate: false, id: "ML-ABCDE" };
     process.env.TELEGRAM_BOT_TOKEN = "t";
     process.env.TELEGRAM_CHAT_ID = "c";
     process.env.GOOGLE_SHEETS_WEBHOOK_URL = "https://sheets.test/append";
@@ -310,7 +329,7 @@ describe("deliverLead idempotency / duplicate suppression", () => {
   });
 
   it("duplicate submissionId: Telegram, Sheets and email are NOT called, status still ok", async () => {
-    storeLeadResult.value = { status: "ok", duplicate: true };
+    storeLeadResult.value = { status: "ok", duplicate: true, id: "ML-ABCDE" };
     process.env.TELEGRAM_BOT_TOKEN = "t";
     process.env.TELEGRAM_CHAT_ID = "c";
     process.env.GOOGLE_SHEETS_WEBHOOK_URL = "https://sheets.test/append";
@@ -329,7 +348,7 @@ describe("deliverLead idempotency / duplicate suppression", () => {
   });
 
   it("two different submissionIds each deliver once (Telegram & Sheets called twice total)", async () => {
-    storeLeadResult.value = { status: "ok", duplicate: false };
+    storeLeadResult.value = { status: "ok", duplicate: false, id: "ML-ABCDE" };
     process.env.TELEGRAM_BOT_TOKEN = "t";
     process.env.TELEGRAM_CHAT_ID = "c";
     process.env.GOOGLE_SHEETS_WEBHOOK_URL = "https://sheets.test/append";

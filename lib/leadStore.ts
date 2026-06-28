@@ -15,15 +15,23 @@
 //      lead, the connection string, customer fields, or driver error payloads verbatim.
 import { MongoClient, type Collection, type Db } from "mongodb";
 import { env } from "./env";
-import type { StoredLead, NotificationStatus } from "./leads";
+import { makeInquiryId, type StoredLead, type NotificationStatus } from "./leads";
 
 const DB_NAME = "misslana";
 const COLLECTION = "leads";
 
-/** Outcome of a durable write. `duplicate` distinguishes a fresh insert from an
- *  idempotent retry of the same submissionId — both are an accepted lead. */
+/** How many times to regenerate a colliding inquiry id before giving up. With a 31^5
+ *  id space an actual collision is astronomically rare, so a handful of retries makes a
+ *  second collision effectively impossible while bounding the work. */
+const MAX_ID_RETRIES = 5;
+
+/** Outcome of a durable write. On success `id` is the id ACTUALLY stored (it may differ
+ *  from the submitted id if a random-id collision forced a regenerate+retry), so the
+ *  caller can keep notifications and the visitor-facing id in sync with the DB.
+ *  `duplicate` is true ONLY for an idempotent retry of the same submissionId — never for
+ *  a regenerated id collision (that is a fresh lead and must still notify). */
 export type StoreOutcome =
-  | { status: "ok"; duplicate: boolean }
+  | { status: "ok"; duplicate: boolean; id: string }
   | { status: "error"; reason: string };
 
 // --- Cached connection ------------------------------------------------------
@@ -110,21 +118,79 @@ function isDuplicateKey(err: unknown): boolean {
   return err instanceof Error && /E11000|duplicate key/i.test(err.message);
 }
 
+/**
+ * Which unique index a duplicate-key error came from. We must NOT assume every E11000 is
+ * a submissionId retry: a fresh lead whose random `id` collides with an unrelated stored
+ * lead is a DIFFERENT case (regenerate + retry, never suppress delivery). Prefer the
+ * structured `keyPattern`/`keyValue` the driver attaches; fall back to the index name in
+ * the message. submissionId is checked first so "submissionId_unique" never matches "id".
+ */
+function duplicateKeyField(err: unknown): "submissionId" | "id" | "other" {
+  const e = err as { keyPattern?: Record<string, unknown>; keyValue?: Record<string, unknown> };
+  const keys = [
+    ...(e?.keyPattern ? Object.keys(e.keyPattern) : []),
+    ...(e?.keyValue ? Object.keys(e.keyValue) : []),
+  ];
+  if (keys.includes("submissionId")) return "submissionId";
+  if (keys.includes("id")) return "id";
+  const msg = err instanceof Error ? err.message : "";
+  if (/submissionId_unique|index:\s*submissionId/i.test(msg)) return "submissionId";
+  if (/\bid_unique\b|index:\s*id_/i.test(msg)) return "id";
+  return "other";
+}
+
+/** Default colliding-id regenerator (overridable in tests). */
+function defaultRegenerateId(): string {
+  return makeInquiryId(Math.random);
+}
+
 // --- Public API -------------------------------------------------------------
 
 /**
- * Insert a lead. Insert-only: a duplicate submissionId (double-click/retry of the SAME
- * submission) is treated as an idempotent success, never a second lead. Never throws —
- * returns a structured outcome the caller maps to the acceptance decision.
+ * Insert a lead. Insert-only, with two DISTINCT duplicate-key cases handled separately:
+ *   - duplicate **submissionId** → a double-click/retry of the SAME submission → idempotent
+ *     success (`duplicate: true`); the caller suppresses a second round of notifications.
+ *   - duplicate **id** → a FRESH lead whose random ML-id happened to collide with an
+ *     unrelated stored lead → we regenerate the id and retry so the lead is actually stored
+ *     and still notified (`duplicate: false`, with the new `id`). It is NEVER reported as an
+ *     idempotent success, which previously dropped the lead AND skipped fallback delivery.
+ * An unknown unique index, or exhausted id retries, surfaces as an error (so the caller's
+ * email fallback still runs) rather than a false success. Never throws.
  */
-export async function storeLead(lead: StoredLead): Promise<StoreOutcome> {
+export async function storeLead(
+  lead: StoredLead,
+  regenerateId: () => string = defaultRegenerateId,
+): Promise<StoreOutcome> {
   try {
     const client = await getClient();
     await ensureIndexes(client);
-    await collection(client).insertOne({ ...lead });
-    return { status: "ok", duplicate: false };
+    const coll = collection(client);
+
+    let doc: StoredLead = { ...lead };
+    for (let attempt = 0; attempt <= MAX_ID_RETRIES; attempt++) {
+      try {
+        await coll.insertOne({ ...doc });
+        return { status: "ok", duplicate: false, id: doc.id };
+      } catch (err) {
+        if (!isDuplicateKey(err)) throw err;
+        const field = duplicateKeyField(err);
+        if (field === "submissionId") {
+          // Same submission already stored — idempotent; the original already notified.
+          return { status: "ok", duplicate: true, id: doc.id };
+        }
+        if (field === "id" && attempt < MAX_ID_RETRIES) {
+          // Random-id collision on a genuinely new lead — mint a new id and retry.
+          doc = { ...doc, id: regenerateId() };
+          continue;
+        }
+        // id retries exhausted, or a duplicate on some other unique index: do not pretend
+        // this is an idempotent success (that would silently drop the lead).
+        return { status: "error", reason: field === "id" ? "id collision" : "duplicate key" };
+      }
+    }
+    // Loop always returns; this satisfies the type checker.
+    return { status: "error", reason: "id collision" };
   } catch (err) {
-    if (isDuplicateKey(err)) return { status: "ok", duplicate: true };
     return { status: "error", reason: storeReason(err) };
   }
 }
@@ -146,7 +212,7 @@ export async function updateNotificationStatus(
       { id },
       { $set: { notificationStatus, updatedAt } },
     );
-    return { status: "ok", duplicate: false };
+    return { status: "ok", duplicate: false, id };
   } catch (err) {
     return { status: "error", reason: storeReason(err) };
   }

@@ -9,6 +9,9 @@ import type { StoredLead } from "@/lib/leads";
 const ctl = {
   connectError: null as Error | null,
   insertError: null as (Error & { code?: number }) | null,
+  // How many leading insertOne calls throw insertError; null = every call throws while
+  // insertError is set (the default, preserving the original behavior).
+  insertErrorCount: null as number | null,
   insertCalls: 0,
   createIndexesCalls: 0,
   closeCalls: 0,
@@ -18,10 +21,20 @@ const ctl = {
 function resetCtl() {
   ctl.connectError = null;
   ctl.insertError = null;
+  ctl.insertErrorCount = null;
   ctl.insertCalls = 0;
   ctl.createIndexesCalls = 0;
   ctl.closeCalls = 0;
   ctl.lastIndexes = null;
+}
+
+/** Build a realistic E11000 duplicate-key error for a given unique index. */
+function dupKeyError(field: "submissionId" | "id" | "email"): Error & { code: number } {
+  return Object.assign(new Error(`E11000 duplicate key error collection: misslana.leads index: ${field}_unique`), {
+    code: 11000,
+    keyPattern: { [field]: 1 },
+    keyValue: { [field]: "dup" },
+  });
 }
 
 // A minimal fake MongoClient covering exactly the surface lib/leadStore uses.
@@ -47,7 +60,8 @@ class FakeMongoClient {
         },
         insertOne: async () => {
           ctl.insertCalls++;
-          if (ctl.insertError) throw ctl.insertError;
+          const within = ctl.insertErrorCount === null || ctl.insertCalls <= ctl.insertErrorCount;
+          if (ctl.insertError && within) throw ctl.insertError;
           return { acknowledged: true, insertedId: "x" };
         },
         updateOne: async () => ({ acknowledged: true, matchedCount: 1 }),
@@ -103,10 +117,10 @@ afterEach(async () => {
 });
 
 describe("storeLead", () => {
-  it("inserts a fresh lead → ok, duplicate false", async () => {
+  it("inserts a fresh lead → ok, duplicate false, returns the stored id", async () => {
     const { storeLead } = await importStore();
     const r = await storeLead(fixtureStored());
-    expect(r).toEqual({ status: "ok", duplicate: false });
+    expect(r).toEqual({ status: "ok", duplicate: false, id: "ML-ABCDE" });
     expect(ctl.insertCalls).toBe(1);
   });
 
@@ -126,9 +140,39 @@ describe("storeLead", () => {
 
   it("treats a duplicate submissionId (E11000) as an idempotent success", async () => {
     const { storeLead } = await importStore();
-    ctl.insertError = Object.assign(new Error("E11000 duplicate key error"), { code: 11000 });
+    ctl.insertError = dupKeyError("submissionId");
     const r = await storeLead(fixtureStored());
-    expect(r).toEqual({ status: "ok", duplicate: true });
+    expect(r).toEqual({ status: "ok", duplicate: true, id: "ML-ABCDE" });
+    expect(ctl.insertCalls).toBe(1); // no regenerate/retry for a submissionId duplicate
+  });
+
+  it("regenerates a colliding random id and retries → fresh insert (NOT a duplicate)", async () => {
+    const { storeLead } = await importStore();
+    // First insert collides on the unique `id` index; the second (regenerated id) succeeds.
+    ctl.insertError = dupKeyError("id");
+    ctl.insertErrorCount = 1;
+    const r = await storeLead(fixtureStored(), () => "ML-NEW99");
+    // A fresh lead is stored under the new id — must NOT be reported as a duplicate, so
+    // the caller still fires email/Telegram/Sheets instead of suppressing them.
+    expect(r).toEqual({ status: "ok", duplicate: false, id: "ML-NEW99" });
+    expect(ctl.insertCalls).toBe(2);
+  });
+
+  it("gives up after exhausting id-collision retries → error (never a false success)", async () => {
+    const { storeLead } = await importStore();
+    ctl.insertError = dupKeyError("id"); // collides on every attempt
+    const r = await storeLead(fixtureStored(), () => "ML-STILL9");
+    expect(r.status).toBe("error");
+    if (r.status === "error") expect(r.reason).toBe("id collision");
+    expect(ctl.insertCalls).toBe(6); // original + 5 regenerated retries
+  });
+
+  it("a duplicate on an unknown unique index → error, not a false idempotent success", async () => {
+    const { storeLead } = await importStore();
+    ctl.insertError = dupKeyError("email"); // some other unique index
+    const r = await storeLead(fixtureStored());
+    expect(r.status).toBe("error");
+    if (r.status === "error") expect(r.reason).toBe("duplicate key");
   });
 
   it("two different submissions both insert (no email/phone uniqueness)", async () => {

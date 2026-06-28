@@ -26,6 +26,10 @@ import { storeLead, updateNotificationStatus } from "./leadStore";
 export interface DeliveryResult {
   /** True once the lead is durably accepted (MongoDB stored OR owner email delivered). */
   accepted: boolean;
+  /** The inquiry id that was actually used — equals the submitted id unless the store had
+   *  to regenerate a colliding random id. The route returns THIS to the visitor so the id
+   *  they see matches the one in MongoDB/email/Telegram/Sheets. */
+  id: string;
   /** Per-channel outcomes for operator observability (no PII). */
   channels: {
     store: ChannelOutcome;
@@ -86,11 +90,11 @@ async function writeDevCopy(lead: Lead): Promise<ChannelOutcome> {
  * `duplicate` is true only for an idempotent retry of the SAME submissionId already in
  * MongoDB; the orchestrator uses it to suppress a second round of secondary deliveries.
  */
-async function persist(lead: Lead): Promise<{ outcome: ChannelOutcome; duplicate: boolean }> {
-  if (!env.mongodbUri) return { outcome: await writeDevCopy(lead), duplicate: false };
+async function persist(lead: Lead): Promise<{ outcome: ChannelOutcome; duplicate: boolean; id: string }> {
+  if (!env.mongodbUri) return { outcome: await writeDevCopy(lead), duplicate: false, id: lead.id };
   const outcome = await storeLead(toStoredLead(lead));
-  if (outcome.status === "ok") return { outcome: { status: "ok" }, duplicate: outcome.duplicate };
-  return { outcome: { status: "error", reason: outcome.reason }, duplicate: false };
+  if (outcome.status === "ok") return { outcome: { status: "ok" }, duplicate: outcome.duplicate, id: outcome.id };
+  return { outcome: { status: "error", reason: outcome.reason }, duplicate: false, id: lead.id };
 }
 
 /** POST {to, subject, text} to the provider-agnostic email webhook. */
@@ -200,8 +204,12 @@ async function appendToSheet(lead: Lead): Promise<ChannelOutcome> {
  * stored lead's notificationStatus is patched best-effort (a failed patch never changes
  * acceptance). This never throws — the caller inspects `accepted` to respond honestly.
  */
-export async function deliverLead(lead: Lead): Promise<DeliveryResult> {
-  const { outcome: store, duplicate } = await persist(lead);
+export async function deliverLead(input: Lead): Promise<DeliveryResult> {
+  const { outcome: store, duplicate, id } = await persist(input);
+  // Adopt the actually-stored id. If the store regenerated a colliding random id, every
+  // downstream surface (email, Telegram, Sheets, the status patch, and the id returned to
+  // the visitor) must use the id that really landed in MongoDB — not the original.
+  const lead = id === input.id ? input : { ...input, id };
 
   // Idempotent retry of the SAME submissionId: the original submission already created
   // the one MongoDB document AND fired every secondary channel. Re-sending now would
@@ -210,7 +218,7 @@ export async function deliverLead(lead: Lead): Promise<DeliveryResult> {
   // (store.status === "ok"), and we never re-patch the first submission's statuses.
   if (store.status === "ok" && duplicate) {
     const skipped: ChannelOutcome = { status: "skipped", reason: "duplicate submission" };
-    return { accepted: true, channels: { store, email: skipped, telegram: skipped, sheets: skipped } };
+    return { accepted: true, id: lead.id, channels: { store, email: skipped, telegram: skipped, sheets: skipped } };
   }
 
   const [email, telegram, sheets] = await Promise.all([
@@ -238,7 +246,7 @@ export async function deliverLead(lead: Lead): Promise<DeliveryResult> {
     });
   }
 
-  return { accepted, channels: { store, email, telegram, sheets } };
+  return { accepted, id: lead.id, channels: { store, email, telegram, sheets } };
 }
 
 function errText(err: unknown): string {
