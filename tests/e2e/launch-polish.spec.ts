@@ -25,7 +25,7 @@ test.describe("full launch polish", () => {
     await expect(page.getByRole("link", { name: /email info@misslanatheatre.com/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /call or text \(323\) 903-2039/i })).toBeVisible();
     await expect(page.getByText("A touring theater — we come to you")).toBeVisible();
-    await expect(page.getByText(/other california locations/i)).toBeVisible();
+    await expect(page.getByText("Other California locations", { exact: true })).toBeVisible();
     await expect(page.getByText(/GBP-first/i)).toHaveCount(0);
     await expect(page.getByText(/embed later/i)).toHaveCount(0);
   });
