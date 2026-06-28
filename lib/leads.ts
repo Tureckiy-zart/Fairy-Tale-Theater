@@ -14,6 +14,15 @@ export type RawLead = Record<string, unknown>;
 export interface Lead {
   /** Internal inquiry id (e.g. "ML-7F3K2"). Safe to show the visitor + owner. */
   id: string;
+  /**
+   * Client-generated submission identifier (one per form attempt). The browser
+   * reuses it across automatic retries of the SAME submission so a double-click or
+   * network retry never creates a second lead; the durable store enforces this with a
+   * unique index on submissionId. A fresh, completed submission gets a fresh value.
+   * Always a non-empty server-trusted string (the route falls back to a random id if
+   * the client omits it), so idempotency degrades gracefully but never crashes.
+   */
+  submissionId: string;
   /** ISO timestamp the server accepted the lead. */
   receivedAt: string;
   name: string;
@@ -112,10 +121,10 @@ function normalizeDate(usDate: string): string {
 
 /**
  * Build a normalized Lead from a validated raw payload. Caller MUST have run
- * validateLead first. `id` and `receivedAt` are injected so this stays pure
- * (the route supplies them; tests can supply fixed values).
+ * validateLead first. `id`, `submissionId` and `receivedAt` are injected so this
+ * stays pure (the route supplies them; tests can supply fixed values).
  */
-export function buildLead(raw: RawLead, id: string, receivedAt: string): Lead {
+export function buildLead(raw: RawLead, id: string, submissionId: string, receivedAt: string): Lead {
   const email = clean(str(raw, "email"), MAX.email);
   const time = clean(str(raw, "time"), 16);
   const count = str(raw, "count");
@@ -129,6 +138,7 @@ export function buildLead(raw: RawLead, id: string, receivedAt: string): Lead {
 
   return {
     id,
+    submissionId,
     receivedAt,
     name: clean(str(raw, "name"), MAX.name),
     phone: clean(str(raw, "phone"), MAX.phone),
@@ -157,6 +167,20 @@ export function makeInquiryId(rand: () => number): string {
   return `ML-${out}`;
 }
 
+/**
+ * Validate + normalize the client-supplied submission id. The browser sends a
+ * `crypto.randomUUID()` (reused across retries of one submission). We accept any
+ * reasonable opaque token but bound it and strip control/whitespace, so a hostile
+ * client can't smuggle a huge or malformed value into the unique index. Returns null
+ * when the input is unusable; the route then mints a server-side fallback so a missing
+ * submissionId never blocks a valid lead (idempotency simply degrades to per-request).
+ */
+export function sanitizeSubmissionId(raw: unknown): string | null {
+  if (typeof raw !== "string") return null;
+  const v = raw.trim().replace(/[^\w.:-]/g, "").slice(0, 100);
+  return v.length >= 8 ? v : null;
+}
+
 /** Human-readable owner notification body (plain text — no secrets, no markup). */
 export function formatLeadSummary(lead: Lead): string {
   const lines = [
@@ -181,4 +205,90 @@ export function formatLeadSummary(lead: Lead): string {
     `Received:    ${lead.receivedAt}`,
   ];
   return lines.join("\n");
+}
+
+// --- Durable store document (MongoDB) ---------------------------------------
+// The shape persisted to MongoDB Atlas. Derived only from the validated Lead plus
+// pipeline lifecycle metadata. PRIVACY: we store ONLY validated customer fields with
+// a business reason — never IP, user-agent, geo, raw request bodies, or provider
+// tokens/responses (those would add risk with no operational value). See the plan §C1.
+
+/** Booking lifecycle. Starts `new`; an operator advances it out of band. */
+export type LeadStatus = "new" | "contacted" | "booked" | "declined" | "spam";
+
+/** Per-channel notification result recorded alongside the lead (no PII). */
+export type ChannelStatus = "pending" | "ok" | "error" | "skipped";
+
+export interface NotificationStatus {
+  email: ChannelStatus;
+  telegram: ChannelStatus;
+  /** ISO timestamp of the last notification attempt, once attempted. */
+  lastAttemptAt?: string;
+}
+
+/** The document stored in MongoDB. `_id` is left to MongoDB; `id` is our inquiry id. */
+export interface StoredLead {
+  id: string;
+  submissionId: string;
+
+  receivedAt: string;
+  updatedAt: string;
+  status: LeadStatus;
+
+  name: string;
+  phone: string;
+  email?: string;
+  eventType: string;
+  date: string;
+  time?: string;
+  city: string;
+  childCount?: number;
+  show?: string;
+  notes?: string;
+
+  source: {
+    path?: string;
+    utmSource?: string;
+    utmMedium?: string;
+    utmCampaign?: string;
+  };
+
+  notificationStatus: NotificationStatus;
+}
+
+/** Drop null/empty optional fields so the stored document stays minimal. */
+function pick<T>(v: T | null | undefined): T | undefined {
+  return v === null || v === undefined || v === "" ? undefined : v;
+}
+
+/**
+ * Project a validated Lead into the durable document. `updatedAt` initially equals
+ * `receivedAt`; `status` starts `new`; notifications start `pending` and are patched
+ * after delivery. Optional customer fields are omitted (not stored as null).
+ */
+export function toStoredLead(lead: Lead): StoredLead {
+  return {
+    id: lead.id,
+    submissionId: lead.submissionId,
+    receivedAt: lead.receivedAt,
+    updatedAt: lead.receivedAt,
+    status: "new",
+    name: lead.name,
+    phone: lead.phone,
+    email: pick(lead.email),
+    eventType: lead.eventType,
+    date: lead.date,
+    time: pick(lead.time),
+    city: lead.city,
+    childCount: pick(lead.childCount),
+    show: pick(lead.show),
+    notes: pick(lead.notes),
+    source: {
+      path: pick(lead.source.path),
+      utmSource: pick(lead.source.utmSource),
+      utmMedium: pick(lead.source.utmMedium),
+      utmCampaign: pick(lead.source.utmCampaign),
+    },
+    notificationStatus: { email: "pending", telegram: "pending" },
+  };
 }

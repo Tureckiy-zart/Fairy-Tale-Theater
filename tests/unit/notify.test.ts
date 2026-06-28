@@ -1,29 +1,28 @@
-// Unit tests for lib/notify.deliverLead — durable persistence + webhook email.
-// Hermetic + parallel-safe: each test gets a UNIQUE LEAD_STORE_DIR under the OS
-// temp dir, mocks global fetch, and resets modules so lib/env re-reads the env
-// before lib/notify is (re-)imported.
+// Unit tests for lib/notify.deliverLead — the delivery ORCHESTRATION layer. The
+// MongoDB store (lib/leadStore) is mocked so these tests are hermetic and assert the
+// acceptance matrix (Mongo × Email × Telegram → accepted?) and the no-PII contract,
+// without a real database or network. The store module itself is tested in isolation
+// in leadStore.test.ts. Each test resets modules, sets env, and mocks global fetch.
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { mkdir, rm, readdir } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 import type { Lead } from "@/lib/leads";
+import type { StoreOutcome } from "@/lib/leadStore";
 
-// Track temp dirs created per test so we can clean them in afterEach.
-const tempDirs: string[] = [];
-
-/** A fresh, unique store dir derived from the test name + randomness. */
-async function freshStoreDir(label: string): Promise<string> {
-  const slug = label.replace(/[^a-z0-9]+/gi, "-").toLowerCase();
-  const suffix = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-  const dir = join(tmpdir(), `ml-notify-test-${slug}-${suffix}`);
-  await mkdir(dir, { recursive: true });
-  tempDirs.push(dir);
-  return dir;
-}
+// --- Mock the durable store. storeLead/updateNotificationStatus are stubbed per test
+// via the mutable refs below, so we can drive every branch of the acceptance matrix.
+const storeLeadResult = { value: { status: "ok", duplicate: false } as StoreOutcome };
+const updateCalls: unknown[][] = [];
+vi.mock("@/lib/leadStore", () => ({
+  storeLead: vi.fn(async () => storeLeadResult.value),
+  updateNotificationStatus: vi.fn(async (...args: unknown[]) => {
+    updateCalls.push(args);
+    return { status: "ok", duplicate: false } as StoreOutcome;
+  }),
+}));
 
 function fixtureLead(): Lead {
   return {
     id: "ML-ABCDE",
+    submissionId: "sub-0123456789abcdef",
     receivedAt: "2026-06-28T12:00:00.000Z",
     name: "Jane Doe",
     phone: "(310) 555-0142",
@@ -34,12 +33,12 @@ function fixtureLead(): Lead {
     city: "Los Angeles",
     childCount: 12,
     show: null,
-    notes: null,
+    notes: "Please call after 5pm",
     source: { path: "/booking", utmSource: null, utmMedium: null, utmCampaign: null },
   };
 }
 
-/** Import a fresh copy of lib/notify after env/modules are configured. */
+/** Import a fresh copy of lib/notify after env/mocks are configured. */
 async function importNotify() {
   vi.resetModules();
   return await import("@/lib/notify");
@@ -47,87 +46,164 @@ async function importNotify() {
 
 beforeEach(() => {
   vi.resetModules();
-  // Start each test from a known env baseline (no webhook, no telegram).
+  updateCalls.length = 0;
+  storeLeadResult.value = { status: "ok", duplicate: false };
+  // Baseline: Mongo configured, no email webhook, no telegram.
+  process.env.MONGODB_URI = "mongodb://mock";
   delete process.env.LEAD_EMAIL_WEBHOOK_URL;
   delete process.env.LEAD_EMAIL_WEBHOOK_TOKEN;
   delete process.env.TELEGRAM_BOT_TOKEN;
   delete process.env.TELEGRAM_CHAT_ID;
 });
 
-afterEach(async () => {
+afterEach(() => {
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
-  delete process.env.LEAD_STORE_DIR;
+  delete process.env.MONGODB_URI;
   delete process.env.LEAD_EMAIL_WEBHOOK_URL;
   delete process.env.LEAD_EMAIL_WEBHOOK_TOKEN;
-  while (tempDirs.length) {
-    const dir = tempDirs.pop()!;
-    await rm(dir, { recursive: true, force: true });
-  }
+  delete process.env.TELEGRAM_BOT_TOKEN;
+  delete process.env.TELEGRAM_CHAT_ID;
 });
 
-describe("deliverLead", () => {
-  it("accepts via store when no webhook is configured", async () => {
-    const dir = await freshStoreDir("store-only");
-    process.env.LEAD_STORE_DIR = dir;
-    // No LEAD_EMAIL_WEBHOOK_URL → email is skipped. fetch should not be called.
-    const fetchMock = vi.fn();
-    vi.stubGlobal("fetch", fetchMock);
+/** Configure email + telegram env and a fetch mock that routes by URL. */
+function stubFetch(opts: { emailStatus?: number | "timeout"; telegramStatus?: number | "timeout" }) {
+  const fetchMock = vi.fn(async (url: string | URL) => {
+    const u = String(url);
+    const which = u.includes("api.telegram.org") ? opts.telegramStatus : opts.emailStatus;
+    if (which === "timeout") throw Object.assign(new Error("timed out"), { name: "TimeoutError" });
+    return new Response(null, { status: which ?? 200 });
+  });
+  vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
+  return fetchMock;
+}
 
+describe("deliverLead acceptance matrix", () => {
+  it("mongo ok, email skipped, telegram skipped → accepted", async () => {
     const { deliverLead } = await importNotify();
-    const result = await deliverLead(fixtureLead());
-
-    expect(result.accepted).toBe(true);
-    expect(result.channels.store.status).toBe("ok");
-    expect(result.channels.email.status).toBe("skipped");
-    expect(fetchMock).not.toHaveBeenCalled();
-
-    // A JSON record was written to the store dir.
-    const files = await readdir(dir);
-    expect(files).toHaveLength(1);
-    expect(files[0]).toMatch(/^2026-06-28_ML-ABCDE\.json$/);
+    const r = await deliverLead(fixtureLead());
+    expect(r.accepted).toBe(true);
+    expect(r.channels.store.status).toBe("ok");
+    expect(r.channels.email.status).toBe("skipped");
+    expect(r.channels.telegram.status).toBe("skipped");
   });
 
-  it("reports email ok when the webhook returns 200", async () => {
-    const dir = await freshStoreDir("webhook-ok");
-    process.env.LEAD_STORE_DIR = dir;
+  it("mongo ok, email error, telegram error → accepted (store carries it)", async () => {
     process.env.LEAD_EMAIL_WEBHOOK_URL = "https://example.test/email";
-    const fetchMock = vi.fn<typeof fetch>(async () => new Response(null, { status: 200 }));
-    vi.stubGlobal("fetch", fetchMock);
-
+    process.env.TELEGRAM_BOT_TOKEN = "t";
+    process.env.TELEGRAM_CHAT_ID = "c";
+    stubFetch({ emailStatus: 500, telegramStatus: 400 });
     const { deliverLead } = await importNotify();
-    const result = await deliverLead(fixtureLead());
-
-    expect(result.accepted).toBe(true);
-    expect(result.channels.store.status).toBe("ok");
-    expect(result.channels.email.status).toBe("ok");
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-
-    const [url, init] = fetchMock.mock.calls[0]!;
-    expect(url).toBe("https://example.test/email");
-    expect(init?.method).toBe("POST");
+    const r = await deliverLead(fixtureLead());
+    expect(r.accepted).toBe(true);
+    expect(r.channels.store.status).toBe("ok");
+    expect(r.channels.email.status).toBe("error");
+    expect(r.channels.telegram.status).toBe("error");
   });
 
-  it("reports email error but stays accepted (store ok) on a 500 webhook", async () => {
-    const dir = await freshStoreDir("webhook-500");
-    process.env.LEAD_STORE_DIR = dir;
+  it("mongo error, email ok → accepted (email is the fallback record)", async () => {
+    storeLeadResult.value = { status: "error", reason: "atlas unreachable" };
     process.env.LEAD_EMAIL_WEBHOOK_URL = "https://example.test/email";
-    const fetchMock = vi.fn<typeof fetch>(async () => new Response(null, { status: 500 }));
-    vi.stubGlobal("fetch", fetchMock);
-
+    stubFetch({ emailStatus: 200 });
     const { deliverLead } = await importNotify();
-    const result = await deliverLead(fixtureLead());
+    const r = await deliverLead(fixtureLead());
+    expect(r.accepted).toBe(true);
+    expect(r.channels.store.status).toBe("error");
+    expect(r.channels.email.status).toBe("ok");
+  });
 
-    // Store succeeded → accepted true regardless of the failed webhook.
-    expect(result.accepted).toBe(true);
-    expect(result.channels.store.status).toBe("ok");
-    expect(result.channels.email.status).toBe("error");
-    if (result.channels.email.status === "error") {
-      expect(result.channels.email.reason).toContain("500");
-    }
+  it("mongo error, email error → rejected (honest failure)", async () => {
+    storeLeadResult.value = { status: "error", reason: "atlas unreachable" };
+    process.env.LEAD_EMAIL_WEBHOOK_URL = "https://example.test/email";
+    stubFetch({ emailStatus: 500 });
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead());
+    expect(r.accepted).toBe(false);
+    expect(r.channels.store.status).toBe("error");
+    expect(r.channels.email.status).toBe("error");
+  });
 
-    // The durable record still landed on disk.
-    const files = await readdir(dir);
-    expect(files).toHaveLength(1);
+  it("mongo error, email skipped, telegram ok → rejected (telegram is never acceptance)", async () => {
+    storeLeadResult.value = { status: "error", reason: "atlas unreachable" };
+    process.env.TELEGRAM_BOT_TOKEN = "t";
+    process.env.TELEGRAM_CHAT_ID = "c";
+    stubFetch({ telegramStatus: 200 });
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead());
+    expect(r.accepted).toBe(false);
+    expect(r.channels.telegram.status).toBe("ok");
+  });
+
+  it("mongo error, email error, telegram error → rejected", async () => {
+    storeLeadResult.value = { status: "error", reason: "auth failed" };
+    process.env.LEAD_EMAIL_WEBHOOK_URL = "https://example.test/email";
+    process.env.TELEGRAM_BOT_TOKEN = "t";
+    process.env.TELEGRAM_CHAT_ID = "c";
+    stubFetch({ emailStatus: 500, telegramStatus: 401 });
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead());
+    expect(r.accepted).toBe(false);
+  });
+});
+
+describe("deliverLead provider classification", () => {
+  it("email timeout is recorded as error", async () => {
+    process.env.LEAD_EMAIL_WEBHOOK_URL = "https://example.test/email";
+    stubFetch({ emailStatus: "timeout" });
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead());
+    expect(r.channels.email.status).toBe("error");
+    if (r.channels.email.status === "error") expect(r.channels.email.reason).toBe("timeout");
+  });
+
+  it("telegram HTTP 400 is recognized as failure but does not reject the lead", async () => {
+    process.env.TELEGRAM_BOT_TOKEN = "t";
+    process.env.TELEGRAM_CHAT_ID = "c";
+    stubFetch({ telegramStatus: 400 });
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead());
+    expect(r.accepted).toBe(true); // store still ok
+    expect(r.channels.telegram.status).toBe("error");
+    if (r.channels.telegram.status === "error") expect(r.channels.telegram.reason).toContain("400");
+  });
+});
+
+describe("deliverLead notification-status persistence", () => {
+  it("patches notificationStatus when the lead was stored", async () => {
+    process.env.LEAD_EMAIL_WEBHOOK_URL = "https://example.test/email";
+    stubFetch({ emailStatus: 200 });
+    const { deliverLead } = await importNotify();
+    await deliverLead(fixtureLead());
+    expect(updateCalls.length).toBe(1);
+    const [id, status] = updateCalls[0] as [string, { email: string; telegram: string }];
+    expect(id).toBe("ML-ABCDE");
+    expect(status.email).toBe("ok");
+    expect(status.telegram).toBe("skipped");
+  });
+
+  it("does NOT patch notificationStatus when the store failed (nothing to patch)", async () => {
+    storeLeadResult.value = { status: "error", reason: "atlas unreachable" };
+    process.env.LEAD_EMAIL_WEBHOOK_URL = "https://example.test/email";
+    stubFetch({ emailStatus: 200 });
+    const { deliverLead } = await importNotify();
+    await deliverLead(fixtureLead());
+    expect(updateCalls.length).toBe(0);
+  });
+});
+
+describe("deliverLead PII safety", () => {
+  it("never leaks customer fields into channel reasons", async () => {
+    storeLeadResult.value = { status: "error", reason: "atlas unreachable" };
+    process.env.LEAD_EMAIL_WEBHOOK_URL = "https://example.test/email";
+    process.env.TELEGRAM_BOT_TOKEN = "t";
+    process.env.TELEGRAM_CHAT_ID = "c";
+    stubFetch({ emailStatus: 500, telegramStatus: 500 });
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead());
+    const blob = JSON.stringify(r);
+    expect(blob).not.toContain("Jane Doe");
+    expect(blob).not.toContain("(310) 555-0142");
+    expect(blob).not.toContain("jane@example.com");
+    expect(blob).not.toContain("Please call after 5pm");
   });
 });
