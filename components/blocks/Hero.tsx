@@ -70,19 +70,19 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Hero photo — operator-supplied, cleared troupe image (real performance
-            evidence). The previous hero was a competitor-sourced placeholder; it was
-            swapped out at launch for IP/brand safety. Reserved 4:3 box = no layout
-            shift; priority + sizes for LCP. */}
+        {/* Hero photo — the owner's signature image, from the theatre's own previous
+            site (magic-castle-puppet-theater.com = our legacy domain, NOT a
+            competitor). Owner-confirmed as our headline photo. Reserved 4:3 box = no
+            layout shift; priority + sizes for LCP. */}
         <div className="relative">
           <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft shadow-md">
             <Image
-              src="/images/troupe-fairy-tale-theater.jpg"
-              alt="Miss Lana and the costumed troupe together on stage after a fairy-tale show."
+              src="/images/hero-girl-curtain-gold.jpg"
+              alt="A young girl in a tiara peeks out from behind a red stage curtain."
               fill
               priority
               sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover"
+              className="object-cover object-[64%_center]"
             />
           </div>
         </div>

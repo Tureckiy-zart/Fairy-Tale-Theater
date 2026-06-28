@@ -6,7 +6,7 @@
 // `src` falls back to the marked placeholder treatment (§9/§15). A category with no
 // items is skipped. Server component that renders the <Reveal> island (§10).
 import Image from "next/image";
-import { Section, SectionHeader, Tag } from "@/components/ui";
+import { MediaPlaceholder, Section, SectionHeader, Tag } from "@/components/ui";
 import { cx } from "@/components/ui/cx";
 import { Reveal } from "@/components/motion/Reveal";
 import { SparkStar } from "@/components/brand/Glyphs";
@@ -24,16 +24,6 @@ const ASPECT: Record<GalleryItem["aspect"], string> = {
   "4/5": "aspect-[4/5]",
   "16/9": "aspect-video",
 };
-
-/** Server-safe play triangle for video tiles (no client icon lib needed here). */
-function PlayMark() {
-  return (
-    <svg width={28} height={28} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="12" cy="12" r="11" fill="var(--color-forest-600)" />
-      <path d="M10 8.5 16 12 10 15.5Z" fill="white" />
-    </svg>
-  );
-}
 
 function GalleryTile({ item }: { item: GalleryItem }) {
   const isVideo = item.kind === "video";
@@ -71,13 +61,8 @@ function GalleryTile({ item }: { item: GalleryItem }) {
           />
         )
       ) : (
-        // Placeholder treatment — clearly marked, generic, not final (§15).
-        <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4 text-center text-ink-muted">
-          {isVideo ? <PlayMark /> : <SparkStar size={22} />}
-          <span className="text-xs font-semibold uppercase tracking-[0.06em]">
-            {isVideo ? "Video — pending" : "Photo — pending"}
-          </span>
-        </div>
+        // Neutral on-brand fill when no asset is set — decorative only, no copy.
+        <MediaPlaceholder kind={isVideo ? "video" : "photo"} size={28} className="p-4" />
       )}
 
       {isVideo ? (

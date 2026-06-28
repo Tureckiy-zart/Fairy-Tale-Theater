@@ -4,7 +4,7 @@
 // + BookingCTABand. Birthday Parties line accent = coral (§12). "A real theater show,
 // not just an entertainer" is real positioning (02_POSITIONING); copy is final.
 // Photos render the marked placeholder treatment (Phase 4 [ASSET]). Travel: free across
-// the greater LA area, quoted by distance beyond — NO dollar amounts. metadata via lib/seo (noindex).
+// the greater LA area, quoted by distance beyond — NO dollar amounts. metadata via lib/seo.
 import type { Metadata } from "next";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
@@ -24,11 +24,12 @@ import { BookingCTABand } from "@/components/shell/BookingCTABand";
 import { ShowCardGrid } from "@/components/blocks/ShowCardGrid";
 import { FaqSection } from "@/components/blocks/FaqSection";
 import { FEATURED_SHOWS } from "@/lib/shows";
+import { FACTS } from "@/lib/site";
 
 export const metadata: Metadata = buildMetadata({
   title: "Birthday Parties",
   description:
-    "A real costumed fairy-tale show for the birthday child — magic that comes to your home or venue, no hassle. Professional troupe, interactive play, ages 2–10. From $350.",
+    `A real costumed fairy-tale show for the birthday child — magic that comes to your home or venue, no hassle. Professional troupe, interactive play, ${FACTS.ages.toLowerCase()}. ${FACTS.priceFromCap}.`,
   path: "/birthdays",
 });
 
@@ -36,7 +37,7 @@ const INCLUDED = [
   "A ~30-minute costumed fairy-tale play, chosen by you",
   "Interactive play the kids join in on (e.g. a bubble show)",
   "A professional troupe, with costumes, props and sound",
-  "About an hour of show, for ages 2–10",
+  `About an hour of show, for ${FACTS.ages.toLowerCase()}`,
   "We come to your home or venue — you just bring the cake",
 ];
 
@@ -81,7 +82,7 @@ const FAQ: QA[] = [
   },
   {
     question: "What ages is it best for?",
-    answer: "Ages 2–10. We adapt the show to the birthday child and their guests.",
+    answer: `${FACTS.ages}. We adapt the show to the birthday child and their guests.`,
   },
   {
     question: "What's included?",
@@ -91,7 +92,7 @@ const FAQ: QA[] = [
   {
     question: "How much does it cost, and how do we book?",
     answer:
-      "From $350; we confirm your custom quote when you book. Travel is free across the greater Los Angeles area and quoted by distance beyond that. Send a request with your date, or give us a call, and we'll confirm availability.",
+      `${FACTS.priceFromCap}; we confirm your custom quote when you book. Travel is free across the greater Los Angeles area and quoted by distance beyond that. Send a request with your date, or give us a call, and we'll confirm availability.`,
   },
 ];
 
@@ -116,7 +117,7 @@ export default function BirthdaysPage() {
               as="h1"
               accent="coral"
               title="A magical party — without the hassle"
-              subtitle="A real costumed theater show for the birthday child, brought to your home or venue. Not just an entertainer — a whole performance the kids join in on."
+              subtitle="A real costumed theater show for the birthday child, brought to your home or venue — a whole performance the children are part of, from the first scene to the finale."
             />
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Button href="/booking">Book a birthday show</Button>
@@ -149,7 +150,7 @@ export default function BirthdaysPage() {
               eyebrow="What's included"
               marker={<SparkStar size={16} />}
               title="Everything but the cake"
-              subtitle="A turnkey show that comes to you. From $350."
+              subtitle={`A turnkey show that comes to you. ${FACTS.priceFromCap}.`}
             />
             <p className="mt-4 text-sm text-ink-soft">
               Wondering about space, setup or the weather?{" "}
@@ -224,7 +225,7 @@ export default function BirthdaysPage() {
           eyebrow="How to book"
           marker={<SparkStar size={16} />}
           title="Three steps to the party"
-          subtitle="From first message to curtain. From $350; travel across greater LA is free, beyond quoted by distance."
+          subtitle={`From first message to curtain. ${FACTS.priceFromCap}; travel across greater LA is free, beyond quoted by distance.`}
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {STEPS.map((s) => (
@@ -253,7 +254,7 @@ export default function BirthdaysPage() {
       />
       <BookingCTABand
         heading="Ready to book the party?"
-        sub="A real theater show for the birthday child, from $350. Send a request or give us a call."
+        sub={`A real theater show for the birthday child, ${FACTS.priceFrom}. Send a request or give us a call.`}
       />
     </SiteShell>
   );

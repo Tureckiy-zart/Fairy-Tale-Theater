@@ -1,14 +1,15 @@
 # STATUS — Miss Lana's Fairy-Tale Theatre (редизайн сайта)
 
-**Deployment: LIVE** · **Launch state: PRE-LAUNCH** · **Phase:** MVP-набор страниц и финальный копирайт
-собраны; дальше pre-launch/launch execution. Сайт остаётся **noindex** до публичного запуска.
+**Deployment: LIVE** · **Launch state: LAUNCHED (publicly indexable)** · **Phase:** MVP-набор страниц и
+финальный копирайт собраны; site-wide **noindex снят 2026-06-27** (`STABILIZE_MISS_LANA_PRELAUNCH_001`,
+явное решение владельца) — публичный сайт **индексируется**. Остаются пост-лонч задачи (ниже).
 **Last real work:** 2026-06-27 · **Brand:** Miss Lana's Fairy-Tale Theatre (см. `docs/core/BRAND.md`).
 **Domain/contact:** `misslanatheatre.com` is the live primary production domain; `misslanatheater.com`
 is protective alternate only → 301 to primary. Primary contact: `info@misslanatheatre.com`,
 **(323) 903-2039**; SMS/email/WhatsApp accepted; Svitlana replies in **1-2 business days**.
-**Launch dependencies:** verified reviews/testimonials are required before launch (`[OWNER/CONTENT]`);
-target at least 5 real verified reviews with permission/source, plus form delivery, redirects, GBP/Search
-Console, QA, real media, and noindex removal.
+**Post-launch tasks (open):** verified reviews/testimonials (`[OWNER/CONTENT]`, target ≥5 with
+permission/source), live form-delivery webhook (`LEAD_EMAIL_WEBHOOK_URL`), redirect/DNS verification,
+GBP/Search Console submission, QA, and real media. (Site-wide **noindex removal — done** 2026-06-27.)
 
 > **Финальный копирайт применён (2026-06-23).** Удалены все плейсхолдер-литералы; 8 синопсисов финал;
 > прайс-флор `$350` везде (вкл. таблицу); правило расстояния = бесплатно ≤30 миль от LA, далее по расстоянию
@@ -48,9 +49,9 @@ Console, QA, real media, and noindex removal.
 - 🟡 **Сборка сайта** — активное Next.js-приложение находится в **repository root**
   (`app/`, `components/`, `lib/`, `public/`, `tests/`). `baselines/js-next/` — исторический путь из ранней
   фазы и не является текущим местом разработки. MVP-набор страниц собран, финальный copy pass применён,
-  production deployment на `misslanatheatre.com` live; публичный запуск ещё **pre-launch/noindex**.
-  Перед запуском `/design` env-guard'ить или убрать; за trademark-гейтом — финальные
-  лого/вордмарк/персонаж/иллюстрации.
+  production deployment на `misslanatheatre.com` live; публичный сайт **индексируется** (site-wide
+  noindex снят 2026-06-27). `/design` остаётся внутренним (noindex) — перед публичным трафиком
+  env-guard'ить/убрать; за trademark-гейтом — финальные лого/вордмарк/персонаж/иллюстрации.
 
 ## Открытые вопросы (блокируют часть сборки)
 

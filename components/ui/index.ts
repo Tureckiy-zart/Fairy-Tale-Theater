@@ -13,8 +13,12 @@ export { Card } from "./Card";
 export type { CardProps, CardMeta, CardCta } from "./Card";
 export { Tag } from "./Tag";
 export type { TagProps, TagTone } from "./Tag";
+export { MediaPlaceholder } from "./MediaPlaceholder";
+export type { MediaPlaceholderProps } from "./MediaPlaceholder";
 export { Accordion } from "./Accordion";
 export type { AccordionProps, AccordionItem } from "./Accordion";
+export { FeatureCard } from "./FeatureCard";
+export type { FeatureCardProps } from "./FeatureCard";
 
 // Navigation
 export { Nav } from "./Nav";
@@ -29,6 +33,8 @@ export { Section } from "./Section";
 export type { SectionProps } from "./Section";
 export { SectionHeader } from "./SectionHeader";
 export type { SectionHeaderProps } from "./SectionHeader";
+export { PageHero } from "./PageHero";
+export type { PageHeroProps } from "./PageHero";
 
 // Service-line accents (§12)
 export {

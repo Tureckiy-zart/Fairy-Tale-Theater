@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Nunito } from "next/font/google";
+import { env } from "@/lib/env";
 import "./globals.css";
 
 // Type system per DESIGN_SYSTEM.md §4 — self-hosted via next/font (§4.3):
@@ -23,11 +24,18 @@ const nunito = Nunito({
 // their own title/description/canonical via lib/seo `buildMetadata`. /design keeps its
 // OWN noindex (internal preview, never public). To roll back to pre-launch, restore
 // `robots: { index:false, follow:false }` here + per-page noindex + robots.ts Disallow.
-export const metadata: Metadata = {
-  title: "Miss Lana's Fairy-Tale Theatre",
-  description:
-    "Touring children's live-costumed fairy-tale theater serving Los Angeles and beyond.",
-};
+// Lazy (per-request) so the optional Search Console verification token is read via
+// lib/env, not baked at import time. Emits <meta name="google-site-verification"> only
+// when GOOGLE_SITE_VERIFICATION is set (04_SEO.md).
+export function generateMetadata(): Metadata {
+  const googleSiteVerification = env.googleSiteVerification;
+  return {
+    title: "Miss Lana's Fairy-Tale Theatre",
+    description:
+      "Touring children's live-costumed fairy-tale theater serving Los Angeles and beyond.",
+    ...(googleSiteVerification ? { verification: { google: googleSiteVerification } } : {}),
+  };
+}
 
 export default function RootLayout({
   children,

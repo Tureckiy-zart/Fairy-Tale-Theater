@@ -3,7 +3,7 @@
 // Hero → TrustStrip → FormatExplainer → ServiceLineCards → Featured shows → B2B teaser
 // → B2C teaser → PersonaIntro → Gallery teaser → How it works + areas → BookingCTABand
 // + LeadForm → SiteFooter (the last via SiteShell). Server component; metadata via
-// lib/seo (noindex pre-launch).
+// lib/seo.
 import type { Metadata } from "next";
 import { buildMetadata, organizationSchema } from "@/lib/seo";
 import { JsonLd } from "@/components/ui";

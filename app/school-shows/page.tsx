@@ -4,7 +4,7 @@
 // LeadForm + BookingCTABand. School Shows line accent = sage (§12). Differentiators are
 // real positioning (02_POSITIONING); copy is final. Photos render the marked
 // placeholder treatment (Phase 4 [ASSET]). Travel: free across the greater LA area,
-// quoted by distance beyond — NO dollar amounts. Server component; metadata via lib/seo (noindex).
+// quoted by distance beyond — NO dollar amounts. Server component; metadata via lib/seo.
 import type { Metadata } from "next";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
@@ -30,7 +30,7 @@ import { FACTS } from "@/lib/site";
 export const metadata: Metadata = buildMetadata({
   title: "School Shows",
   description:
-    "Assembly-ready, values-driven live theater for preschools, Montessori and schools across LA — a professional troupe, kind SEL themes, turnkey setup, ages 2–10. From $350.",
+    `Assembly-ready, values-driven live theater for preschools, Montessori and schools across LA — a professional troupe, kind SEL themes, turnkey setup, ${FACTS.ages.toLowerCase()}. ${FACTS.priceFromCap}.`,
   path: "/school-shows",
 });
 
@@ -41,7 +41,7 @@ const OFFER: { title: string; body: string }[] = [
   },
   {
     title: "A professional troupe",
-    body: "Trained actors led by 30+ years of stagecraft — costumes, props and real performance, not a single party entertainer.",
+    body: `Trained actors led by ${FACTS.experience} of stagecraft, with costumes, props and a fully staged performance shaped for young audiences.`,
   },
   {
     title: "Turnkey & assembly-ready",
@@ -70,7 +70,7 @@ const FAQ: QA[] = [
   {
     question: "How long is a show, and what ages is it for?",
     answer:
-      "Each show runs about an hour (a ~30-minute play plus ~30 minutes of interactive play) and is designed for ages 2–10. We adapt the energy and language to the group.",
+      `Each show runs about an hour (a ~30-minute play plus ~30 minutes of interactive play) and is designed for ${FACTS.ages.toLowerCase()}. We adapt the energy and language to the group.`,
   },
   {
     question: "What do we need to provide?",
@@ -90,7 +90,7 @@ const FAQ: QA[] = [
   {
     question: "How far do you travel, and what does it cost?",
     answer:
-      "We're based in Los Angeles and travel to San Diego, Sacramento and San Jose. Pricing starts from $350, with a custom quote confirmed on booking; travel is free across the greater Los Angeles area, and quoted by distance beyond that.",
+      `We're based in Los Angeles and travel to San Diego, Sacramento and San Jose. Pricing starts ${FACTS.priceFrom}, with a custom quote confirmed on booking; travel is free across the greater Los Angeles area, and quoted by distance beyond that.`,
   },
 ];
 
@@ -146,7 +146,7 @@ export default function SchoolShowsPage() {
           eyebrow="What your school gets"
           marker={<SparkStar size={16} />}
           title="Built for a school day"
-          subtitle="Everything a director needs to say yes — from values to logistics. From $350."
+          subtitle={`Everything a director needs to say yes — from values to logistics. ${FACTS.priceFromCap}.`}
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
           {OFFER.map((o) => (
@@ -203,7 +203,7 @@ export default function SchoolShowsPage() {
       />
       <BookingCTABand
         heading="Ready to book a school show?"
-        sub="Assembly-ready theater for ages 2–10, from $350. Send a request or give us a call."
+        sub={`Assembly-ready theater for ${FACTS.ages.toLowerCase()}, ${FACTS.priceFrom}. Send a request or give us a call.`}
       />
     </SiteShell>
   );

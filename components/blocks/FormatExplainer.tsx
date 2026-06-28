@@ -5,7 +5,7 @@
 // total, ages 2–10 — PROJECT_BRIEF / OWNER_ANSWERS_DECISION_RECORD §1). Copy is final.
 // Phosphor Duotone (§6), scroll-reveal below the fold (§10).
 import { MaskHappy, Drop, Clock, UsersThree } from "@phosphor-icons/react";
-import { Section, SectionHeader } from "@/components/ui";
+import { FeatureCard, Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { FACTS } from "@/lib/site";
@@ -41,7 +41,7 @@ export function FormatExplainer() {
         marker={<SparkStar size={16} />}
         title={
           <>
-            A real theater show — <span className="text-forest-600">not a one-off animator.</span>
+            A real theater show — <span className="text-forest-600">performed live, just for them.</span>
           </>
         }
         subtitle="A story steps out of the book, familiar characters come close, and children are invited to feel, imagine, laugh, and discover something new together. Here's what makes it special."
@@ -49,13 +49,9 @@ export function FormatExplainer() {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {POINTS.map(({ icon: Icon, title, body }, i) => (
           <Reveal key={title} delayMs={i * 75}>
-            <div className="flex h-full flex-col gap-3 rounded-lg border border-border-soft bg-white p-6 shadow-sm">
-              <span data-icon="duotone-brand" className="text-forest-700">
-                <Icon size={32} weight="duotone" aria-hidden />
-              </span>
-              <h3 className="font-display text-xl text-forest-800">{title}</h3>
-              <p className="text-ink">{body}</p>
-            </div>
+            <FeatureCard icon={<Icon size={32} weight="duotone" aria-hidden />} title={title}>
+              {body}
+            </FeatureCard>
           </Reveal>
         ))}
       </div>

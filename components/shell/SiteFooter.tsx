@@ -1,11 +1,8 @@
 "use client";
 // SiteFooter — global footer. Spec: SITE_STRUCTURE_AND_BLOCKS.md §2/§3 (click-to-call
-// phones, travel areas, social placeholders [OWNER], mini-sitemap, text wordmark,
-// legal). Phosphor icons (single library, §6). Social links are owner-pending, so
-// they render as non-interactive placeholders (no dead "#" links). The whole site is
-// noindex pre-launch — stated here too.
+// phones, travel areas, mini-sitemap, text wordmark, legal). Phosphor icons (single
+// library, §6).
 import { Phone, MapPin, Sparkle } from "@phosphor-icons/react";
-import { Tag } from "@/components/ui";
 import { AREAS, BRAND, FACTS, FOOTER_LINKS, PHONES } from "@/lib/site";
 import { track } from "@/lib/analytics";
 
@@ -34,7 +31,6 @@ export function SiteFooter() {
               </span>
             </div>
             <p className="mt-4 max-w-xs text-sm text-ink-soft">
-              {/* PLACEHOLDER tagline — swap for final copy in a later phase. */}
               Professional live children&rsquo;s theater that comes to you — {FACTS.experience} of
               kind, timeless fairy tales.
             </p>
@@ -89,14 +85,10 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Legal / status */}
-        <div className="mt-12 flex flex-col gap-2 border-t border-border-soft pt-6 text-sm text-ink-soft sm:flex-row sm:items-center sm:justify-between">
+        {/* Legal */}
+        <div className="mt-12 border-t border-border-soft pt-6 text-sm text-ink-soft">
           <p>
             © {year} {BRAND.name}. All rights reserved.
-          </p>
-          <p className="flex items-center gap-2">
-            <Tag>Preview build</Tag>
-            <span>Placeholder content &amp; imagery · not for indexing yet.</span>
           </p>
         </div>
       </div>

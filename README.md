@@ -70,8 +70,9 @@ Nunito через `next/font`, иконки Phosphor. Продакшн-прим�
 - ✅ MVP pages + final public copy are assembled in the repository root app.
 - 🔴 Launch trust layer: verified reviews/testimonials `[OWNER/CONTENT]` — target at least 5 real
   verified reviews with permission/source before launch; no invented content.
-- ⏭ **Дальше:** pre-launch/launch execution: form delivery, real media, verified reviews, redirects,
-  Google Business Profile/Search Console, QA, noindex removal, launch. Детали и открытые вопросы — в
+- ✅ Публичная индексация включена (site-wide noindex снят 2026-06-27, `STABILIZE_MISS_LANA_PRELAUNCH_001`).
+- ⏭ **Пост-лонч:** live form-delivery webhook (`LEAD_EMAIL_WEBHOOK_URL`), real media, verified reviews,
+  redirect/DNS verification, Google Business Profile/Search Console, QA. Детали и открытые вопросы — в
   [STATUS.md](STATUS.md) и [docs/core/PROJECT_BRIEF.md](docs/core/PROJECT_BRIEF.md).
 - 🔒 **За trademark-гейтом:** финальные лого/вордмарк/персонаж/иллюстрации — пока плейсхолдеры.
 

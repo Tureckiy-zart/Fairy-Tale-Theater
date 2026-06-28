@@ -10,14 +10,13 @@
 //     (owner-gated); we never assert ownership.
 //   • 🔴 The Miss Lana mini-story (PersonaIntro first-person line) is a TEMPORARY
 //     placeholder — owner to supply; do not invent a bio. Portrait/art stay placeholders [TM].
-// Copy is final (except the 🔴 mini-story). Server component; metadata via lib/seo (noindex).
+// Copy is final (except the 🔴 mini-story). Server component; metadata via lib/seo.
 import type { Metadata } from "next";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import {
-  Breadcrumb,
   Button,
-  Container,
+  PageHero,
   Section,
   SectionHeader,
 } from "@/components/ui";
@@ -39,22 +38,12 @@ export default function AboutPage() {
   return (
     <SiteShell activeHref="/about">
       {/* Mission */}
-      <Container className="pb-10 pt-10 md:pt-14">
-        <Breadcrumb
-          items={[
-            { name: "Home", href: "/" },
-            { name: "About", href: "/about" },
-          ]}
-          className="mb-6"
-        />
-        <SectionHeader
-          as="h1"
-          eyebrow="Our theater"
-          marker={<SparkStar size={18} />}
-          title="Theater as a little bit of magic"
-          subtitle="For Miss Lana, theatre has never been only a performance. It is a place where a child can meet courage, kindness, friendship, and wonder in a form they can see and feel. For more than 30 years, her work has brought fairy tales to life through actors, costumes, scenery, music, and the quiet magic of a shared story."
-        />
-      </Container>
+      <PageHero
+        current={{ name: "About", href: "/about" }}
+        eyebrow="Our theater"
+        title="Theater as a little bit of magic"
+        subtitle="For Miss Lana, theatre has never been only a performance. It is a place where a child can meet courage, kindness, friendship, and wonder in a form they can see and feel. For more than 30 years, her work has brought fairy tales to life through actors, costumes, scenery, music, and the quiet magic of a shared story."
+      />
 
       {/* 30+ years */}
       <Section tone="surface">
@@ -88,6 +77,7 @@ export default function AboutPage() {
               src="/images/troupe-fairy-tale-theater.jpg"
               alt="Miss Lana and the full costumed troupe together on stage after a performance."
               fill
+              priority
               sizes="(min-width: 768px) 48rem, 100vw"
               className="object-cover"
             />

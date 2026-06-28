@@ -15,6 +15,9 @@ export const BRAND = {
   domain: "misslanatheatre.com",
 } as const;
 
+/** The single public price floor. All price faces below derive from it (no drift). */
+const PRICE_FLOOR = "$350";
+
 /** Verified facts (PROJECT_BRIEF.md / 01_CONTENT_INVENTORY.md / 02_POSITIONING). */
 export const FACTS = {
   experience: "30+ years",
@@ -24,7 +27,11 @@ export const FACTS = {
   showLength: "about an hour",
   format: "a ~30-minute costumed fairy-tale play, then ~30 minutes of games, dancing and bubbles",
   /** Public price face (PROJECT_BRIEF): only "from $350"; travel quoted by custom quote. */
-  priceFrom: "from $350",
+  priceFrom: `from ${PRICE_FLOOR}`,
+  /** Capitalized price face for sentence-start / headings ("From $350"). */
+  priceFromCap: `From ${PRICE_FLOOR}`,
+  /** Bare price floor ("$350") for inline interpolation. */
+  priceFloor: PRICE_FLOOR,
 } as const;
 
 /**

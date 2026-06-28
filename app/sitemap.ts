@@ -3,10 +3,9 @@
 // dynamic non-pages. URLs are absolute and built from APP_BASE_URL (lib/seo →
 // lib/env), so they always use the canonical production host once deployed.
 //
-// NOTE: the site is intentionally noindex pre-launch (app/layout.tsx + per-page).
-// This sitemap is LAUNCH-READY but must NOT be submitted to Search Console until
-// STABILIZE_MISS_LANA_PRELAUNCH_001 flips indexing on. Generating it now does not
-// enable indexing — robots/meta still say noindex.
+// The site is LAUNCHED / publicly indexable (site-wide noindex removed 2026-06-27,
+// STABILIZE_MISS_LANA_PRELAUNCH_001). This sitemap is live and can be submitted to
+// Search Console. /design and /api/* stay excluded (internal / non-public).
 import type { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/seo";
 import { SHOWS } from "@/lib/shows";

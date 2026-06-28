@@ -10,6 +10,12 @@ import type { NextConfig } from "next";
 // governance scan dirs, so reading NODE_ENV here is fine.
 const isDev = process.env.NODE_ENV !== "production";
 
+// `script-src 'unsafe-inline'` is kept on purpose: dropping it requires a nonce-based
+// CSP via middleware, which forces every page into dynamic rendering and forfeits this
+// site's static generation. The XSS surface is minimal (no untrusted input is ever
+// reflected as HTML — JSON-LD is escaped, no dangerouslySetInnerHTML), so the tradeoff
+// isn't worth it here. `form-action`/`frame-src 'none'`/`object-src 'none'` plus
+// `frame-ancestors`/HSTS/nosniff harden the realistic vectors. (security/SECURITY.md)
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
@@ -21,6 +27,8 @@ const securityHeaders = [
       "font-src 'self' data:",
       "object-src 'none'",
       "base-uri 'self'",
+      "form-action 'self'",
+      "frame-src 'none'",
       "frame-ancestors 'none'",
     ].join("; "),
   },
@@ -28,6 +36,7 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Frame-Options", value: "DENY" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()" },
 ];
 
 // Canonical production host (apex, Theatre spelling — docs/core/04_SEO.md / BRAND.md).

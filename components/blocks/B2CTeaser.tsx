@@ -23,8 +23,8 @@ export function B2CTeaser() {
             <p className="mt-5 flex items-start gap-2 text-ink">
               <Sparkle size={22} weight="duotone" aria-hidden className="mt-0.5 shrink-0 text-coral" />
               <span>
-                Costumed actors, a kind story, and interactive play the kids join in on — not just an
-                entertainer.
+                Costumed actors, a kind story, and interactive play the children are part of — a real
+                show, brought to your celebration.
               </span>
             </p>
             <div className="mt-7">
