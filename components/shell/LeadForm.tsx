@@ -76,7 +76,7 @@ function SelectField({
       <select
         id={id}
         name={name}
-        defaultValue=""
+        defaultValue={name === "contactMethod" ? CONTACT_METHODS[0] : ""}
         required={required}
         aria-required={required || undefined}
         aria-invalid={error ? true : undefined}
@@ -87,9 +87,11 @@ function SelectField({
           error && "border-error",
         )}
       >
-        <option value="" disabled>
-          Choose one…
-        </option>
+        {name !== "contactMethod" ? (
+          <option value="" disabled>
+            Choose one…
+          </option>
+        ) : null}
         {options.map((o) => (
           <option key={o} value={o}>
             {o}
@@ -158,11 +160,6 @@ export function LeadForm({
   const [dateValue, setDateValue] = useState("");
   const headingId = `${id}-heading`;
 
-  // Idempotency key for this submission attempt. Generated once, REUSED across retries
-  // of the same submission (a double-click or "Try again" sends the same id → the
-  // server stores one lead via its unique index), and reset to null after a successful
-  // submission so the next fresh booking gets a fresh id. crypto.randomUUID is available
-  // in all our target browsers; a guarded fallback keeps older/insecure contexts working.
   const submissionIdRef = useRef<string | null>(null);
   function currentSubmissionId(): string {
     if (!submissionIdRef.current) {
@@ -174,8 +171,6 @@ export function LeadForm({
     return submissionIdRef.current;
   }
 
-  // US-format masked date (mm/dd/yyyy) — deterministic regardless of browser locale,
-  // no date library. Digits only, slashes auto-inserted.
   function onDateChange(e: React.ChangeEvent<HTMLInputElement>) {
     const d = e.target.value.replace(/\D/g, "").slice(0, 8);
     setDateValue(
@@ -201,13 +196,12 @@ export function LeadForm({
       return;
     }
 
-    // Build a JSON payload from the form + source attribution (no PII in attribution).
     const payload: Record<string, string> = {};
     for (const [k, v] of fd.entries()) if (typeof v === "string") payload[k] = v;
 
     // Keep the proven server/store/notification contract stable: the operational reply
-    // preference is prepended to the existing Notes field, so it reaches MongoDB, email,
-    // Telegram and Sheets today without a risky schema migration at launch.
+    // preference is prepended to Notes, so it reaches every current channel without a
+    // launch-time database or spreadsheet migration.
     const preferredReply = payload.contactMethod?.trim();
     const visitorNotes = payload.notes?.trim();
     delete payload.contactMethod;
@@ -215,11 +209,8 @@ export function LeadForm({
       .filter(Boolean)
       .join(" ");
 
-    // Stable idempotency key — same across retries of this submission (see ref above).
     payload.submissionId = currentSubmissionId();
     payload.sourcePath = pathname ?? "/booking";
-    // Read UTM from the URL at submit time (client-only) — avoids forcing the page
-    // into a Suspense/CSR bailout that useSearchParams would require.
     const qs = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
     payload.utmSource = qs?.get("utm_source") ?? "";
     payload.utmMedium = qs?.get("utm_medium") ?? "";
@@ -242,19 +233,16 @@ export function LeadForm({
       if (res.ok && data.ok) {
         setRefId(data.id ?? null);
         setStatus("success");
-        // Submission landed — retire this idempotency key so a later booking is fresh.
         submissionIdRef.current = null;
         track("lead_success", { eventType: payload.type, path: payload.sourcePath });
         return;
       }
 
-      // Server rejected — show the real reason; map any field errors back.
       if (data.fields) setErrors(data.fields);
       setServerError(data.error ?? "Something went wrong — please try again or call us.");
       setStatus("error");
       track("lead_error", { path: payload.sourcePath });
     } catch {
-      // Network failure — recoverable, never a false success.
       setServerError("We couldn't reach the server. Please check your connection and try again.");
       setStatus("error");
       track("lead_error", { path: payload.sourcePath });
@@ -282,7 +270,6 @@ export function LeadForm({
             ) : null}
 
             <form ref={formRef} noValidate onSubmit={onSubmit} className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              {/* Honeypot — visually hidden, off the tab order. Bots fill it; humans don't. */}
               <div aria-hidden className="absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden">
                 <label htmlFor="lead-company">Company (leave blank)</label>
                 <input id="lead-company" type="text" name="company" tabIndex={-1} autoComplete="off" />
