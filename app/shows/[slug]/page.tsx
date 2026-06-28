@@ -6,7 +6,7 @@
 // (via Breadcrumb). NO format tag
 // (owner-gated — non-goal). Titles/slugs canonical (lib/shows); synopsis final;
 // photos render the marked placeholder treatment (Phase 4 [ASSET]). Server component;
-// unique metadata per page (noindex pre-launch).
+// unique metadata per page.
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -15,6 +15,7 @@ import {
   Button,
   Container,
   JsonLd,
+  MediaPlaceholder,
   Section,
   SectionHeader,
   Tag,
@@ -72,8 +73,9 @@ export default async function ShowDetailPage({
         })}
       />
 
-      {/* Hero — title, meta, primary "Book this show" CTA + placeholder photo */}
-      <Container className="pb-12 pt-10 md:pb-16 md:pt-14">
+      {/* Hero — title, meta, primary "Book this show" CTA + photo. Full viewport on
+          desktop (minus the 4rem sticky header) so the next section never peeks. */}
+      <Container className="pb-12 pt-10 md:flex md:min-h-[calc(100svh-4rem)] md:flex-col md:pb-16 md:pt-14">
         <Breadcrumb
           items={[
             { name: "Home", href: "/" },
@@ -82,7 +84,7 @@ export default async function ShowDetailPage({
           ]}
           className="mb-6"
         />
-        <div className="grid items-center gap-10 lg:grid-cols-2">
+        <div className="grid items-center gap-10 md:my-auto lg:grid-cols-2">
           <div>
             <Tag accent="forest" tone="accent" className="mb-3">
               Fairy-Tale Theatre
@@ -109,7 +111,8 @@ export default async function ShowDetailPage({
             </div>
           </div>
 
-          {/* Hero photo — real asset when set (lib/shows), else marked placeholder. */}
+          {/* Hero photo — real asset when set (lib/shows), else a neutral on-brand
+              fill (decorative spark, no copy) so the layout never reads as unfinished. */}
           {show.image ? (
             <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border-soft bg-surface">
               <Image
@@ -123,12 +126,8 @@ export default async function ShowDetailPage({
               />
             </div>
           ) : (
-            <div className="flex aspect-4/3 items-center justify-center rounded-2xl border border-border-soft bg-surface p-6 text-center">
-              <div className="flex flex-col items-center gap-3">
-                <SparkStar size={28} />
-                <p className="font-display text-2xl text-forest-700">Show photo</p>
-                <Tag>Photo — pending</Tag>
-              </div>
+            <div className="aspect-4/3 overflow-hidden rounded-2xl border border-border-soft">
+              <MediaPlaceholder size={44} />
             </div>
           )}
         </div>
@@ -164,24 +163,6 @@ export default async function ShowDetailPage({
               </div>
             </dl>
           </aside>
-        </div>
-      </Section>
-
-      {/* Photo / video — placeholder */}
-      <Section>
-        <SectionHeader
-          as="h2"
-          eyebrow="See it in action"
-          marker={<SparkStar size={16} />}
-          title="Photos & video"
-          subtitle="Real photos and video of this show are coming soon."
-        />
-        <div className="mt-8 flex aspect-video items-center justify-center rounded-2xl border border-border-soft bg-surface text-center">
-          <div className="flex flex-col items-center gap-3">
-            <SparkStar size={28} />
-            <p className="font-display text-xl text-forest-700">Video — pending</p>
-            <Tag>Asset pending</Tag>
-          </div>
         </div>
       </Section>
 

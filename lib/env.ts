@@ -7,20 +7,22 @@
 // logged or shipped to the client — read them only in server code / route
 // handlers, never in a "use client" component.
 
-function required(name: string): string {
-  const v = process.env[name];
-  if (!v) throw new Error(`Missing required env var: ${name}`);
-  return v;
-}
-
 export const env = {
   /** Public site origin — used for canonical URLs, sitemap, OG tags. */
   get baseUrl(): string {
     return process.env.APP_BASE_URL ?? "http://localhost:3000";
   },
-  /** Google Maps Platform key (maps / service-area, per docs/reports scoping). */
-  get googleMapsApiKey(): string {
-    return required("GOOGLE_MAPS_API_KEY");
+  /** True in production builds/runtime. Used to gate internal-only routes (e.g. /design). */
+  get isProduction(): boolean {
+    return process.env.NODE_ENV === "production";
+  },
+  /**
+   * Google Maps Platform key (maps / service-area — planned, per docs/reports scoping).
+   * Optional: not consumed yet. Returns undefined when unset (never throws) so it can
+   * never crash a render before the feature is wired.
+   */
+  get googleMapsApiKey(): string | undefined {
+    return process.env.GOOGLE_MAPS_API_KEY || undefined;
   },
   /** Google Search Console verification token (SEO, docs/core/04_SEO.md). */
   get googleSiteVerification(): string | undefined {
@@ -57,8 +59,19 @@ export const env = {
   /**
    * Directory for the durable lead record (recovery if a provider fails). Defaults
    * to a git-ignored `.leads` dir at the project root. Server-only; never served.
+   * On a read-only/serverless filesystem the pipeline falls back to a temp dir and
+   * relies on the email webhook as the acceptance signal (see lib/notify).
    */
   get leadStoreDir(): string {
     return process.env.LEAD_STORE_DIR || ".leads";
+  },
+  /**
+   * Optional trusted header to read the client IP from for rate-limiting (platform-
+   * specific, e.g. an edge/proxy header). When unset, the limiter uses the LAST
+   * X-Forwarded-For entry (appended by the nearest proxy), never the first
+   * (client-controlled, spoofable). Best-effort only — see security/SECURITY.md.
+   */
+  get leadTrustedIpHeader(): string | undefined {
+    return process.env.LEAD_TRUSTED_IP_HEADER || undefined;
   },
 } as const;

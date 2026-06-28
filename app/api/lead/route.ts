@@ -10,6 +10,7 @@
 import { NextResponse } from "next/server";
 import { buildLead, makeInquiryId, validateLead, type RawLead } from "@/lib/leads";
 import { deliverLead } from "@/lib/notify";
+import { env } from "@/lib/env";
 
 // Node runtime (the durable store uses node:fs). Never statically cached.
 export const runtime = "nodejs";
@@ -32,9 +33,22 @@ function rateLimited(ip: string): boolean {
   return recent.length > MAX_PER_WINDOW;
 }
 
+// Best-effort client IP for the per-IP limiter. The FIRST X-Forwarded-For entry is
+// client-controlled and trivially spoofable (rotate it → fresh bucket every request),
+// so we trust the LAST entry — appended by the nearest reverse proxy — by default, or
+// an explicit platform header when configured (LEAD_TRUSTED_IP_HEADER). For hard
+// limits, front this with an edge/WAF limiter (security/SECURITY.md).
 function clientIp(req: Request): string {
+  const trusted = env.leadTrustedIpHeader;
+  if (trusted) {
+    const v = req.headers.get(trusted);
+    if (v) return v.split(",")[0]!.trim();
+  }
   const xff = req.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0]!.trim();
+  if (xff) {
+    const parts = xff.split(",").map((s) => s.trim()).filter(Boolean);
+    if (parts.length) return parts[parts.length - 1]!;
+  }
   return req.headers.get("x-real-ip") ?? "unknown";
 }
 
@@ -78,12 +92,18 @@ export async function POST(req: Request): Promise<NextResponse> {
   }
 
   if (!delivery.accepted) {
-    // The durable store failed → we cannot guarantee recovery → be honest.
-    console.error(`[lead] ${lead.id} NOT accepted — store=${stringifyOutcome(delivery.channels.store)}`);
+    // Neither the durable store nor the email landed → we cannot guarantee recovery → be honest.
+    console.error(
+      `[lead] ${lead.id} NOT accepted — store=${stringifyOutcome(delivery.channels.store)} email=${stringifyOutcome(delivery.channels.email)}`,
+    );
     return json({ ok: false, error: "We couldn't save your request — please try again or call us." }, 502);
   }
 
-  // Accepted. Log provider outcomes (id only, no PII) so failures are observable.
+  // Accepted (stored and/or emailed). Log any channel that didn't succeed (id only,
+  // no PII) so failures are observable — e.g. accepted-via-email on a read-only store.
+  if (delivery.channels.store.status !== "ok") {
+    console.warn(`[lead] ${lead.id} accepted via email; store=${stringifyOutcome(delivery.channels.store)}`);
+  }
   if (delivery.channels.email.status !== "ok") {
     console.warn(`[lead] ${lead.id} stored; email=${stringifyOutcome(delivery.channels.email)}`);
   }

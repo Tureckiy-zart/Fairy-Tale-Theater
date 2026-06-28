@@ -1,0 +1,307 @@
+{
+  "tung_version": "v2",
+  "task_id": "TUNG_UNIVERSAL_POST_IMPLEMENTATION_REVIEW_BLOCK_001",
+  "title": "Universal post-implementation reviewer-grade code review for completed task or task block",
+  "status": "DRAFT",
+  "mode": "review",
+  "intent": "Run a reviewer-grade post-implementation review on an already completed task or bounded block of tasks to detect subtle defects, regression risk, architectural drift, unsafe patterns, leakage surfaces, weak abstractions, DRY violations, and closure gaps before accepting the work as truly done.",
+  "scope": {
+    "in_scope": [
+      "All files changed by the target task or bounded task block",
+      "Nearby dependent files that could be silently affected by the change",
+      "Runtime, data-flow, typing, API, UI, test, and documentation implications",
+      "Detection of regressions not caught by nominal happy-path verification",
+      "Detection of hidden coupling, duplication, weak abstractions, and premature generalization",
+      "Detection of state leakage, authority leakage, data leakage, and boundary violations",
+      "Assessment of whether the implementation matches project canon, contracts, and architectural constraints",
+      "Assessment of maintainability, replayability, and closure completeness"
+    ],
+    "out_of_scope": [
+      "Net-new feature expansion unrelated to the reviewed task",
+      "Refactors not justified by concrete findings",
+      "Broad repo-wide modernization beyond the bounded review target",
+      "Speculative rewrites without evidence",
+      "Performance micro-optimizations unless the reviewed change introduced measurable risk"
+    ]
+  },
+  "inputs_required": {
+    "required": [
+      "Target TUNG id or bounded list of TUNG ids",
+      "Git diff or exact changed-file list",
+      "Relevant authority docs, contracts, and canon documents",
+      "Verification artifacts already produced by the implementation task",
+      "Any known risk notes, temporary compromises, or explicit scope cuts"
+    ],
+    "optional": [
+      "PR description or implementation summary",
+      "Screenshots, logs, traces, or benchmark artifacts",
+      "Linked reports in docs/reports/",
+      "Previous audit findings affecting the same surface"
+    ]
+  },
+  "review_objectives": [
+    "Confirm the implementation actually solves the intended problem and only that problem",
+    "Find subtle correctness issues that survive standard lint/type/test gates",
+    "Find regression vectors in adjacent behavior, state flow, rendering flow, routing flow, data contracts, and build surfaces",
+    "Find thin spots where the code works now but is brittle under realistic future change",
+    "Find authority drift, architectural bypasses, and sanctioned-surface violations",
+    "Find leakage risks: data leakage, state leakage, secret leakage, cross-boundary leakage, CSS/token leakage, event leakage, and abstraction leakage",
+    "Find DRY violations, duplication with divergence risk, copy-paste logic, inconsistent naming, and shadow contracts",
+    "Find missing tests, weak assertions, false-confidence tests, or coverage gaps around the changed surface",
+    "Find documentation drift, stale comments, stale TODOs, stale exports, stale config, and incomplete closure artifacts",
+    "Determine whether the work is genuinely closable or still has open engineering risk"
+  ],
+  "review_axes": [
+    {
+      "axis": "Correctness",
+      "checks": [
+        "Does behavior match the stated task intent and acceptance criteria exactly",
+        "Any wrong edge-case behavior, off-by-one logic, fallback bugs, null/undefined hazards, or unhandled branches",
+        "Any mismatch between runtime behavior and static types",
+        "Any incorrect assumptions about ordering, timing, identity, or environment"
+      ]
+    },
+    {
+      "axis": "Regression risk",
+      "checks": [
+        "Could adjacent routes, components, providers, API consumers, or shared utilities silently break",
+        "Any changed contract shape without complete downstream validation",
+        "Any behavior that depends on fragile defaults, hidden globals, or implicit state",
+        "Any previously passing invariant now only indirectly preserved"
+      ]
+    },
+    {
+      "axis": "Thin spots and brittleness",
+      "checks": [
+        "Places where implementation barely passes but has poor resilience",
+        "Overfitted conditionals or one-off exceptions that will fracture on next extension",
+        "Hardcoded assumptions that should have been centralized or asserted",
+        "Missing guards around optional inputs, partial data, stale config, or absent authority"
+      ]
+    },
+    {
+      "axis": "Leakage and boundary integrity",
+      "checks": [
+        "Secret/env leakage to client or logs",
+        "Internal-only state or authority crossing public boundaries",
+        "Unsanctioned imports, raw primitives, raw anchors, raw styles, or bypasses around approved adapters",
+        "Token/theme/style bleed across scopes",
+        "Event listener, timer, cache, request, or store lifecycle leakage",
+        "Cross-tenant or cross-request contamination where applicable"
+      ]
+    },
+    {
+      "axis": "Architecture and canon compliance",
+      "checks": [
+        "Matches authority docs, contracts, sanctioned surfaces, and project patterns",
+        "No accidental new source of truth",
+        "No contract drift between code, docs, exports, and tests",
+        "No silent boundary expansion beyond approved scope"
+      ]
+    },
+    {
+      "axis": "DRY and abstraction quality",
+      "checks": [
+        "Any duplicated logic, duplicated constants, duplicated selectors, duplicated mappings, or duplicated validation",
+        "Any copy-paste with divergence risk",
+        "Abstractions too thin, too broad, or incorrectly placed",
+        "Helpers introduced without clear ownership or reuse justification",
+        "Missed extraction where duplication is now structural rather than incidental"
+      ]
+    },
+    {
+      "axis": "Tests and verification quality",
+      "checks": [
+        "Do tests validate the real invariant or only implementation trivia",
+        "Any missing regression test for the actual bug/risk introduced",
+        "Any snapshots that hide semantic failure",
+        "Any mocks that make the test unrealistically easy",
+        "Any required route/integration/contract coverage still absent"
+      ]
+    },
+    {
+      "axis": "Operability and maintainability",
+      "checks": [
+        "Readability, naming clarity, file placement, ownership clarity",
+        "Whether future reviewer can reason about the change without archaeology",
+        "Any stale comments, TODO debt, dead exports, dead branches, or confusing structure",
+        "Whether rollback, extension, and debugging remain straightforward"
+      ]
+    },
+    {
+      "axis": "Security and safety",
+      "checks": [
+        "Input validation completeness",
+        "Output encoding / rendering safety where applicable",
+        "Unsafe redirects, unsafe URLs, unsafe serialization, unsafe file or query handling",
+        "Permission / auth / visibility regressions if relevant to the touched surface"
+      ]
+    },
+    {
+      "axis": "Closure integrity",
+      "checks": [
+        "Acceptance criteria genuinely satisfied",
+        "Verification evidence real and relevant",
+        "Reviewer-grade pre-closure review completed explicitly",
+        "Reports and PROJECT_PROGRESS updated only after closure resolution",
+        "No unresolved blocker or hidden FIXME masked as done"
+      ]
+    }
+  ],
+  "required_execution_steps": [
+    {
+      "step": 1,
+      "name": "Assemble review target",
+      "actions": [
+        "Collect exact TUNG ids under review",
+        "Collect exact changed files",
+        "Collect authority docs and prior reports governing the touched surfaces",
+        "State explicit bounded review perimeter"
+      ]
+    },
+    {
+      "step": 2,
+      "name": "Read changed code line-by-line",
+      "actions": [
+        "Read every changed file fully, not just hunks",
+        "Inspect adjacent helpers, registries, contracts, exports, and tests that define true behavior",
+        "Trace imports and outward dependencies for silent coupling"
+      ]
+    },
+    {
+      "step": 3,
+      "name": "Run reviewer-grade analytical pass",
+      "actions": [
+        "Perform correctness review",
+        "Perform regression vector review",
+        "Perform boundary/leakage review",
+        "Perform DRY/abstraction review",
+        "Perform canon/authority compliance review",
+        "Perform test quality and missing-test review"
+      ]
+    },
+    {
+      "step": 4,
+      "name": "Run bounded automated verification",
+      "actions": [
+        "Run only verification relevant to the touched surface",
+        "Use typecheck/lint/tests/build selectively based on real scope",
+        "Do not waste heavyweight checks on audit-only review unless required by the reviewed surface",
+        "Capture failures and classify as pre-existing, introduced, or ambiguous with evidence"
+      ]
+    },
+    {
+      "step": 5,
+      "name": "Produce findings report",
+      "actions": [
+        "List findings by severity: BLOCKER, HIGH, MEDIUM, LOW, NOTE",
+        "For each finding provide file, exact issue, why it matters, evidence, and fix direction",
+        "Separate confirmed issues from hypotheses",
+        "Separate actual regressions from design opinions"
+      ]
+    },
+    {
+      "step": 6,
+      "name": "Issue closure recommendation",
+      "actions": [
+        "Return one of: CLOSE, CLOSE_WITH_NOTES, FOLLOWUP_REQUIRED, REOPEN",
+        "Justify the decision using evidence only",
+        "If follow-up needed, enumerate exact bounded follow-up tasks"
+      ]
+    }
+  ],
+  "severity_model": {
+    "BLOCKER": "Incorrect behavior, leak, security issue, broken contract, unsanctioned boundary violation, or closure-invalidating defect",
+    "HIGH": "Strong regression risk, brittle implementation, serious missing verification, or architectural drift likely to cause near-term failure",
+    "MEDIUM": "Maintainability issue, weak abstraction, meaningful DRY violation, incomplete guard/test/doc alignment",
+    "LOW": "Minor inconsistency, readability issue, low-risk duplication, cleanup suggestion",
+    "NOTE": "Non-blocking observation or future hardening idea"
+  },
+  "deliverables": [
+    "Reviewer-grade report in docs/reports/TUNG_UNIVERSAL_POST_IMPLEMENTATION_REVIEW_BLOCK_001.md",
+    "Explicit finding list with severity, evidence, and recommended action",
+    "Closure recommendation: CLOSE / CLOSE_WITH_NOTES / FOLLOWUP_REQUIRED / REOPEN",
+    "If needed, a bounded follow-up TUNG list derived from findings",
+    "PROJECT_PROGRESS update only if closure outcome permits it and only as final administrative step"
+  ],
+  "mandatory_closure_sequence": [
+    {
+      "order": 1,
+      "name": "Scope verification",
+      "requirement": "Confirm the exact reviewed task/block perimeter, changed files, and authority baseline before judging closure."
+    },
+    {
+      "order": 2,
+      "name": "Automated verification",
+      "requirement": "Run the relevant bounded verification and record exact results, including classification of pre-existing drift."
+    },
+    {
+      "order": 3,
+      "name": "Reviewer-grade pre-closure code review",
+      "requirement": "Perform explicit human-style reasoning review across correctness, regressions, leaks, DRY, canon compliance, and test sufficiency. This step is mandatory and cannot be replaced by automation."
+    },
+    {
+      "order": 4,
+      "name": "Closure resolution",
+      "requirement": "Issue a formal recommendation: CLOSE, CLOSE_WITH_NOTES, FOLLOWUP_REQUIRED, or REOPEN, with evidence."
+    },
+    {
+      "order": 5,
+      "name": "PROJECT_PROGRESS update",
+      "requirement": "Only after closure resolution, update administrative progress artifacts if the outcome permits it."
+    }
+  ],
+  "success_criteria": [
+    "Every changed file in the target perimeter was read and reviewed, not just diff hunks",
+    "At least one explicit pass was done for subtle regressions and leakage vectors",
+    "DRY/abstraction quality was assessed, not ignored as stylistic",
+    "Tests were evaluated for sufficiency and realism, not just existence",
+    "Authority and sanctioned-surface compliance was explicitly checked",
+    "Findings are severity-ranked and evidence-based",
+    "Closure recommendation is unambiguous and justified",
+    "No PROJECT_PROGRESS update happens before closure resolution"
+  ],
+  "failure_conditions": [
+    "Review relies only on passing automation without reviewer-grade reasoning",
+    "Only diff hunks were reviewed while surrounding code was ignored",
+    "No regression/leakage pass was performed",
+    "No explicit check of canon/authority compliance",
+    "No classification of pre-existing vs introduced failures",
+    "Closure claimed despite unresolved blocker-grade issues",
+    "Administrative progress updated before closure decision"
+  ],
+  "report_template_requirements": {
+    "sections": [
+      "Task/block under review",
+      "Bounded scope and evidence set",
+      "Files reviewed",
+      "Verification executed",
+      "Findings by severity",
+      "Regression assessment",
+      "Leakage/boundary assessment",
+      "DRY/abstraction assessment",
+      "Test sufficiency assessment",
+      "Canon/authority compliance assessment",
+      "Closure recommendation",
+      "Follow-up tasks if needed"
+    ]
+  },
+  "followup_task_generation_rule": {
+    "when_to_generate": [
+      "Any BLOCKER or HIGH finding requiring code changes",
+      "Any repeated duplication pattern with structural risk",
+      "Any missing regression test on a confirmed defect path",
+      "Any authority/contract drift requiring canonical repair"
+    ],
+    "requirements": [
+      "Each follow-up must be bounded",
+      "Each follow-up must cite the exact finding(s) it resolves",
+      "Do not bundle unrelated cleanup into one vague task"
+    ]
+  },
+  "operator_notes": [
+    "This is a universal post-task review TUNG and is intended to be reused after any completed implementation task or bounded cluster of tasks.",
+    "Use this when you want a real reviewer pass, not ceremonial closure.",
+    "Prefer this task before declaring large feature lines closed or before merging risky architectural work."
+  ]
+}

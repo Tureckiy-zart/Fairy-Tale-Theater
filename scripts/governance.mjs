@@ -2,6 +2,7 @@
 // governance.mjs — project invariant gate. Exits non-zero on any finding.
 // Starter set; extend per project (brand rules, a11y, perf budgets, etc.).
 import { readdirSync, readFileSync, statSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { join, extname } from "node:path";
 
 const ROOT = process.cwd();
@@ -68,6 +69,18 @@ for (const d of SCAN_DIRS) {
   }
 }
 scanKeyFiles(ROOT);
+
+// PII guard: the durable lead store (.leads/) holds booking inquiries (name/phone/
+// email) and is git-ignored — it must NEVER be committed. Flag any TRACKED .leads file
+// (git-aware so legitimately ignored local leads are not false-positives).
+try {
+  const out = execFileSync("git", ["ls-files", "-z", ".leads"], { cwd: ROOT }).toString();
+  for (const f of out.split("\0").filter(Boolean)) {
+    findings.push(`${f}: lead-store PII file must never be committed (.leads/ is git-ignored)`);
+  }
+} catch {
+  /* not a git repo / git unavailable — skip */
+}
 
 if (findings.length) {
   console.error(`governance: ${findings.length} issue(s)`);

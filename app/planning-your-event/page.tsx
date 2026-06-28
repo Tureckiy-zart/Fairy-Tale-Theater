@@ -5,22 +5,22 @@
 // Only CONFIRMED facts (OWNER_ANSWERS_DECISION_RECORD §1) are shown; recommended is
 // kept distinct from required; unresolved policy (cancellation/deposit/refund) is
 // softened to "confirmed when you book" — never a hard public policy (§4). One
-// combined FAQPage schema is emitted from exactly the visible questions. noindex
-// pre-launch. Server component (renders the client Accordion islands).
+// combined FAQPage schema is emitted from exactly the visible questions.
+// Server component (renders the client Accordion islands).
 import type { Metadata } from "next";
 import { buildMetadata, faqSchema, type QA } from "@/lib/seo";
 import {
   Accordion,
-  Breadcrumb,
   Button,
-  Container,
   JsonLd,
+  PageHero,
   Section,
   SectionHeader,
 } from "@/components/ui";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
+import { FACTS } from "@/lib/site";
 
 export const metadata: Metadata = buildMetadata({
   title: "Planning Your Event",
@@ -93,7 +93,7 @@ const SCHEDULING: QA[] = [
   {
     question: "How do bookings, changes and dates work?",
     answer:
-      "Tell us your date, place and group size and we'll confirm availability. The finer details — timing, any changes, and your custom quote (from $350) — are confirmed with you when you book.",
+      `Tell us your date, place and group size and we'll confirm availability. The finer details — timing, any changes, and your custom quote (${FACTS.priceFrom}) — are confirmed with you when you book.`,
   },
 ];
 
@@ -116,25 +116,17 @@ export default function PlanningYourEventPage() {
       <JsonLd data={faqSchema(ALL_QA)} />
 
       {/* Friendly intro + one booking CTA above the accordions */}
-      <Container className="pb-8 pt-10 md:pt-14">
-        <Breadcrumb
-          items={[
-            { name: "Home", href: "/" },
-            { name: "Planning Your Event", href: "/planning-your-event" },
-          ]}
-          className="mb-6"
-        />
-        <SectionHeader
-          as="h1"
-          eyebrow="Planning your event"
-          marker={<SparkStar size={18} />}
-          title="Easy to host — we bring everything"
-          subtitle="A friendly guide to having Miss Lana's Fairy-Tale Theatre at your event. We're a touring troupe, so we come to you and handle the whole show — here's what helps it go smoothly."
-        />
+      <PageHero
+        current={{ name: "Planning Your Event", href: "/planning-your-event" }}
+        containerClassName="pb-8 pt-10 md:pt-14"
+        eyebrow="Planning your event"
+        title="Easy to host — we bring everything"
+        subtitle="A friendly guide to having Miss Lana's Fairy-Tale Theatre at your event. We're a touring troupe, so we come to you and handle the whole show — here's what helps it go smoothly."
+      >
         <div className="mt-7">
           <Button href="/booking">Book a show</Button>
         </div>
-      </Container>
+      </PageHero>
 
       {/* Grouped progressive disclosure — all panels closed on load */}
       {GROUPS.map((g) => (
@@ -151,7 +143,7 @@ export default function PlanningYourEventPage() {
 
       <BookingCTABand
         heading="Ready to plan your event?"
-        sub="Tell us your date, place and group size — we'll confirm availability and a quote from $350."
+        sub={`Tell us your date, place and group size — we'll confirm availability and a quote ${FACTS.priceFrom}.`}
       />
     </SiteShell>
   );

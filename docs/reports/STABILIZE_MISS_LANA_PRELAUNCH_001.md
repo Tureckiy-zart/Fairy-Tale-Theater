@@ -13,8 +13,10 @@
 
 **Status:** ✅ closed (2026-06-27). **Site set to indexable** by explicit owner
 decision: site-wide noindex removed (12 public pages), `robots.txt` → `Allow: /`
-(blocks `/api/` + `/design`), `/design` stays noindex. Competitor-sourced Home hero
-swapped for a cleared operator troupe image (IP/brand safety). No review block /
+(blocks `/api/` + `/design`), `/design` stays noindex. (Correction 2026-06-28: a hero
+swap done here was based on a mislabel — the image is the owner's own legacy-site
+photo, not a competitor's — and was **reverted** on owner instruction;
+`hero-girl-curtain.jpg` is the Home hero.) No review block /
 Review schema → nothing fabricated. 4 launch artifacts written. `ci:exact` +
 secret-scan + git-diff green; behavior verified via build output.
 

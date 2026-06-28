@@ -4,7 +4,7 @@
 // San Diego/Sacramento/San Jose) and "from $350" (lib/site); travel is free across
 // the greater LA area and quoted by distance beyond — never a dollar amount (owner rule). Phosphor (§6).
 import { NumberCircleOne, NumberCircleTwo, NumberCircleThree, MapPin } from "@phosphor-icons/react";
-import { Button, Section, SectionHeader } from "@/components/ui";
+import { Button, FeatureCard, Section, SectionHeader } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { AREAS, FACTS } from "@/lib/site";
@@ -27,13 +27,9 @@ export function HowItWorksAreas() {
       <div className="mt-10 grid gap-5 sm:grid-cols-3">
         {STEPS.map(({ icon: Icon, title, body }, i) => (
           <Reveal key={title} delayMs={i * 75}>
-            <div className="flex h-full flex-col gap-3 rounded-lg border border-border-soft bg-white p-6 shadow-sm">
-              <span data-icon="duotone-brand" className="text-forest-700">
-                <Icon size={36} weight="duotone" aria-hidden />
-              </span>
-              <h3 className="font-display text-xl text-forest-800">{title}</h3>
-              <p className="text-ink">{body}</p>
-            </div>
+            <FeatureCard icon={<Icon size={36} weight="duotone" aria-hidden />} title={title}>
+              {body}
+            </FeatureCard>
           </Reveal>
         ))}
       </div>

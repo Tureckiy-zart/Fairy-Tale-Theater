@@ -95,7 +95,7 @@ export function GlowOrb({
       style={{
         display: "block",
         background:
-          "radial-gradient(closest-side, rgba(234,174,53,0.45), rgba(234,174,53,0.12) 60%, transparent)",
+          "radial-gradient(closest-side, color-mix(in srgb, var(--color-glow-400) 45%, transparent), color-mix(in srgb, var(--color-glow-400) 12%, transparent) 60%, transparent)",
         ...style,
       }}
     />

@@ -11,6 +11,7 @@ import { ArrowRight } from "@phosphor-icons/react";
 import type { Icon } from "@phosphor-icons/react";
 import { Button, type ButtonVariant } from "./Button";
 import { Tag } from "./Tag";
+import { MediaPlaceholder } from "./MediaPlaceholder";
 import { cx } from "./cx";
 import { ACCENT_BORDER_TOP, type Accent } from "./accent";
 
@@ -77,7 +78,9 @@ export function Card({
         className,
       )}
     >
-      {/* Media slot — fixed 3:2 so height is reserved (no CLS, §10.4). */}
+      {/* Media slot — fixed 3:2 so height is reserved (no CLS, §10.4). When no photo
+          is set, a neutral on-brand fill (decorative spark, no copy) keeps the card
+          intact without any "missing asset" wording. */}
       <div className="relative aspect-[3/2] overflow-hidden bg-surface">
         {mediaSrc ? (
           <Image
@@ -89,12 +92,7 @@ export function Card({
             style={mediaPosition ? { objectPosition: mediaPosition } : undefined}
           />
         ) : (
-          <div
-            aria-hidden
-            className="flex h-full items-center justify-center font-body text-sm font-semibold uppercase tracking-[0.06em] text-ink-muted"
-          >
-            Photo — pending
-          </div>
+          <MediaPlaceholder />
         )}
       </div>
 

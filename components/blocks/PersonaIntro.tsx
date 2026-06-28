@@ -1,4 +1,3 @@
-"use client";
 // PersonaIntro — Home block #8 (SITE_STRUCTURE §4.1): a warm first-person intro from
 // Miss Lana → /about. Persona-lead brand (BRAND.md). The portrait is a real photo of
 // Miss Lana (the director) supplied by the operator — placeholder direction pending

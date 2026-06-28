@@ -13,7 +13,8 @@
 
 | Asset | Where | Source / status |
 |---|---|---|
-| `troupe-fairy-tale-theater.jpg` | **Home hero** (new), Services flagship card | operator-supplied troupe photo — **CLEARED**. Replaced the competitor-sourced hero at launch. |
+| `hero-girl-curtain.jpg` | **Home hero** | Owner's signature headline photo, from the theatre's **own previous site** (`magic-castle-puppet-theater.com` = our legacy domain, **NOT a competitor**). Owner-confirmed 2026-06-28 — **CLEARED**. |
+| `troupe-fairy-tale-theater.jpg` | Services flagship card (+ About troupe shot) | operator-supplied troupe photo — **CLEARED**. |
 | `miss-lana-portrait.jpg` | PersonaIntro | operator-supplied director portrait — **CLEARED** |
 | `miss-lana-friends.jpg` | Characters hero, Friends card | operator-supplied (bee performer) — **CLEARED** |
 | `birthday-party.jpg` | Birthdays hero + card | operator-supplied — **CLEARED** |
@@ -27,11 +28,17 @@
 
 ## Removed / quarantined (must never be public)
 
+> **Correction (2026-06-28):** an earlier note mislabeled `magic-castle-puppet-theater.com`
+> as a "competitor." It is **our own legacy domain** (former "Magic Castle" brand →
+> rebranded to Miss Lana's Fairy-Tale Theatre). Assets from it are the owner's own,
+> not a competitor's. `hero-girl-curtain.jpg` is therefore CLEARED and back in the Home
+> hero (see table above). The `quarantine/` items below stay out only because their
+> exact rights/provenance are unverified — not because they are "competitor" assets.
+
 | Asset | Reason |
 |---|---|
-| `hero-girl-curtain.jpg` | **REMOVED from code** — sourced from competitor site `magic-castle-puppet-theater.com` (IP/brand risk). File remains in `public/images/` unused; candidate for deletion. |
-| `quarantine/COMPETITOR-magic-castle-morozko-poster.jpg` | competitor poster — quarantined, never served |
-| `quarantine/scraped-tilda-assets/*` | scraped Tilda assets, provenance unverified |
+| `quarantine/COMPETITOR-magic-castle-morozko-poster.jpg` | A show **poster** with unverified rights — kept out of `public/` pending owner confirmation. (Filename's "COMPETITOR" prefix predates the correction above; rename/move back if the owner confirms it's ours and cleared.) |
+| `quarantine/scraped-tilda-assets/*` | scraped Tilda assets, provenance/rights unverified |
 
 ## Per-show photos
 
@@ -49,6 +56,7 @@ intentionally show the "photo pending" placeholder (no suitable cleared frame ye
 ## Follow-ups (before scaling traffic)
 
 1. Owner confirms photo↔show pairings; supply per-show photos for the 2 placeholders.
-2. Delete the unused competitor `hero-girl-curtain.jpg` from `public/images/`.
+2. (Optional) supply a higher-resolution original of `hero-girl-curtain.jpg` if one
+   exists — the current file is a crop from our old site (1008×756), fine for now.
 3. Re-confirm no published frame shows an identifiable child without consent.
 4. Collect ≥5 real reviews with permission → wire a trust block + Review schema.

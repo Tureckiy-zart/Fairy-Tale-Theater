@@ -2,15 +2,14 @@
 // "from $350" + what shapes a custom quote + travel by custom quote + packages by
 // segment + CTA. NO audience-size price tiers, tables, calculators, or fixed travel
 // surcharges (locked commercial constraint; OWNER_ANSWERS_DECISION_RECORD.md §1/§2).
-// Server component; metadata via lib/seo (noindex).
+// Server component; metadata via lib/seo.
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import {
   ACCENT_BORDER_TOP,
   ACCENT_TEXT,
-  Breadcrumb,
   Button,
-  Container,
+  PageHero,
   Section,
   SectionHeader,
 } from "@/components/ui";
@@ -19,13 +18,13 @@ import { cx } from "@/components/ui/cx";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
-import { QUOTE_FACTORS } from "@/lib/site";
+import { QUOTE_FACTORS, FACTS } from "@/lib/site";
 
 const INCLUDED = [
   "A ~30-minute costumed fairy-tale play",
   "Then ~30 minutes of games, dancing and bubbles the kids join in on",
   "A professional troupe, with costumes, props and our own sound",
-  "About an hour in total, for ages 2–10",
+  `About an hour in total, for ${FACTS.ages.toLowerCase()}`,
   "We travel to your venue — no hall of your own needed",
 ];
 
@@ -38,35 +37,27 @@ const PACKAGES: { title: string; accent: Accent; blurb: string }[] = [
 export const metadata: Metadata = buildMetadata({
   title: "Pricing",
   description:
-    "Simple, transparent pricing for Miss Lana's Fairy-Tale Theatre — from $350. Every event gets a custom quote; travel beyond the greater Los Angeles area is quoted by distance. Serving LA and beyond.",
+    `Simple, transparent pricing for Miss Lana's Fairy-Tale Theatre — ${FACTS.priceFrom}. Every event gets a custom quote; travel beyond the greater Los Angeles area is quoted by distance. Serving LA and beyond.`,
   path: "/pricing",
 });
 
 export default function PricingPage() {
   return (
     <SiteShell>
-      <Container className="pt-10 md:pt-14">
-        <Breadcrumb
-          items={[
-            { name: "Home", href: "/" },
-            { name: "Pricing", href: "/pricing" },
-          ]}
-          className="mb-6"
-        />
-        <SectionHeader
-          as="h1"
-          eyebrow="Pricing"
-          marker={<SparkStar size={16} />}
-          title="From $350"
-          subtitle="Every event is a little different, so we give you one clear price up front. Shows start from $350, and we confirm your custom quote when you book."
-        />
-      </Container>
+      <PageHero
+        current={{ name: "Pricing", href: "/pricing" }}
+        containerClassName="pt-10 md:pt-14"
+        eyebrow="Pricing"
+        marker={<SparkStar size={16} />}
+        title={FACTS.priceFromCap}
+        subtitle={`Every event is a little different, so we give you one clear price up front. Shows start ${FACTS.priceFrom}, and we confirm your custom quote when you book.`}
+      />
 
       {/* From $350 + what shapes a custom quote (no audience-size tiers — owner rule) */}
       <Section>
         <div className="flex flex-col gap-6 rounded-2xl border border-border-soft bg-white p-6 md:flex-row md:items-center md:gap-10 md:p-8">
           <div className="shrink-0">
-            <p className="font-display text-4xl text-forest-700 md:text-5xl">From $350</p>
+            <p className="font-display text-4xl text-forest-700 md:text-5xl">{FACTS.priceFromCap}</p>
             <p className="mt-1 text-sm text-ink-soft">Confirmed with your booking</p>
           </div>
           <div className="flex-1">
@@ -121,7 +112,7 @@ export default function PricingPage() {
           eyebrow="Packages"
           marker={<SparkStar size={16} />}
           title="By who it's for"
-          subtitle="Every package starts from $350."
+          subtitle={`Every package starts ${FACTS.priceFrom}.`}
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {PACKAGES.map((p) => (
@@ -133,7 +124,7 @@ export default function PricingPage() {
               )}
             >
               <h3 className="font-display text-xl text-forest-800">{p.title}</h3>
-              <p className={cx("font-display text-2xl", ACCENT_TEXT[p.accent])}>From $350</p>
+              <p className={cx("font-display text-2xl", ACCENT_TEXT[p.accent])}>{FACTS.priceFromCap}</p>
               <p className="flex-1 text-ink">{p.blurb}</p>
               <Button href="/booking" variant="secondary" size="sm">
                 Get a quote

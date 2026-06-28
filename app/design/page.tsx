@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Nav } from "@/components/ui";
+import { env } from "@/lib/env";
 import {
   ColorSection,
   TypographySection,
@@ -11,13 +13,18 @@ import { IconographySection, AccentsSection } from "./_components/icon-sections"
 import { MotionSection } from "./_components/motion-section";
 import { ComponentsSection } from "./_components/components-section";
 
-// ⚠️ INTERNAL design-system preview / visual QA — NOT a marketing page and NOT
-// part of the public site. It must stay noindex,nofollow. Env-guard or remove
-// this route before the production launch (see post_actions in the task).
+// ⚠️ INTERNAL design-system preview / visual QA — NOT a marketing page and NOT part
+// of the public site. ENV-GUARDED: served in dev only; returns 404 in production
+// (NODE_ENV==="production") so it never ships to the live site. Also noindex,nofollow.
 export const metadata: Metadata = {
   title: "Design preview — Miss Lana (internal)",
   robots: { index: false, follow: false },
 };
+
+// Hard 404 in production — the preview exists in dev (and `next dev`) only.
+function assertDevOnly() {
+  if (env.isProduction) notFound();
+}
 
 // The header is the live Nav primitive; these are its links (anchors to sections).
 const NAV_LINKS = [
@@ -29,6 +36,7 @@ const NAV_LINKS = [
 ];
 
 export default function DesignPreviewPage() {
+  assertDevOnly();
   return (
     <>
       {/* The real Nav primitive — sticky, scroll state, mobile drawer, skip link. */}

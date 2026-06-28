@@ -13,9 +13,9 @@
 // items still owner-gated are tracked in docs/content/SHOW_COPY_OWNER_REVIEW.md (no
 // invented plot, no puppet/cultural-origin claims). Titles and slugs are canonical
 // and must NOT change (esp. #2/#5/#6 remain provisional pending owner approval).
-// Photos are PENDING (Card/hero render the marked "Photo — pending" placeholder; assets
-// land in Phase 4) — the optional `image` field is wired so a real asset path drops in
-// without touching pages.
+// When a show has no `image`, Card/hero render a neutral on-brand fill (decorative
+// spark, no copy) — no "pending"/"coming soon" wording is shown anywhere public. The
+// optional `image` field is wired so a real asset path drops in without touching pages.
 
 export interface Show {
   /** Clean English slug — the indexable URL (/shows/{slug}). Canonical; do not change. */
@@ -157,7 +157,14 @@ export function getShow(slug: string): Show | undefined {
   return SHOWS.find((s) => s.slug === slug);
 }
 
-/** A few other shows to cross-link from a detail page ("related shows"). */
+/**
+ * A few other shows to cross-link from a detail page. Returns the shows that follow
+ * the current one in the repertoire, wrapping around — so each detail page surfaces a
+ * different, current-show-excluding set (deterministic, no randomness).
+ */
 export function relatedShows(slug: string, count = 3): Show[] {
-  return SHOWS.filter((s) => s.slug !== slug).slice(0, count);
+  const idx = SHOWS.findIndex((s) => s.slug === slug);
+  if (idx === -1) return SHOWS.slice(0, count);
+  const others = [...SHOWS.slice(idx + 1), ...SHOWS.slice(0, idx)];
+  return others.slice(0, count);
 }

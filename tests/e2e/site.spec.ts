@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 // Smoke coverage for the Phase-1 marketing shell + Home/Booking/Pricing
 // (BUILD_MISS_LANA_HOME_AND_SHELL_001). Verifies the three pages render, navigation
 // is 404-free (stubs exist), the LeadForm validates + confirms, the keyboard path /
-// drawer work, motion stills under reduce, and the whole site is noindex pre-launch.
+// drawer work, motion stills under reduce, and the whole site is publicly indexable.
 
 test.describe("pages render", () => {
   const PAGES: { path: string; h1: RegExp }[] = [

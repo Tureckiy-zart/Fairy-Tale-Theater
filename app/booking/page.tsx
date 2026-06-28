@@ -1,10 +1,10 @@
 // Booking / Contact (/booking) — SITE_STRUCTURE_AND_BLOCKS.md §4.7. The #1
 // conversion page: the LeadForm (client validation + on-screen confirmation; no
 // backend yet) + click-to-call + a service-area placeholder block. Server component;
-// metadata via lib/seo (noindex pre-launch).
+// metadata via lib/seo.
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
-import { Breadcrumb, Button, Container, Section, SectionHeader, Tag } from "@/components/ui";
+import { Button, PageHero, Section, SectionHeader, Tag } from "@/components/ui";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { LeadForm } from "@/components/shell/LeadForm";
@@ -20,21 +20,14 @@ export const metadata: Metadata = buildMetadata({
 export default function BookingPage() {
   return (
     <SiteShell>
-      <Container className="pt-10 md:pt-14">
-        <Breadcrumb
-          items={[
-            { name: "Home", href: "/" },
-            { name: "Book / Contact", href: "/booking" },
-          ]}
-          className="mb-6"
-        />
-        <SectionHeader
-          as="h1"
-          eyebrow="Book / Contact"
-          marker={<SparkStar size={16} />}
-          title="Book a show"
-          subtitle="Tell us about your event — we'll check the date and call you back. It's the fastest way to reach us."
-        />
+      <PageHero
+        current={{ name: "Book / Contact", href: "/booking" }}
+        containerClassName="pt-10 md:pt-14"
+        eyebrow="Book / Contact"
+        marker={<SparkStar size={16} />}
+        title="Book a show"
+        subtitle="Tell us about your event — we'll check the date and call you back. It's the fastest way to reach us."
+      >
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <span className="font-body text-sm font-semibold text-ink">Prefer to call?</span>
           {PHONES.map((p) => (
@@ -43,7 +36,7 @@ export default function BookingPage() {
             </Button>
           ))}
         </div>
-      </Container>
+      </PageHero>
 
       {/* The form (its own section, max-w-3xl). Confirmation state is on-screen. */}
       <LeadForm />

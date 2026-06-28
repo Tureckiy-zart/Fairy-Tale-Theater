@@ -5,19 +5,23 @@
 // SITE_STRUCTURE §2). Schema factories return plain objects for <JsonLd data={…} />.
 import type { Metadata } from "next";
 import { env } from "./env";
+import { AREAS, BRAND, PHONES } from "./site";
 import type { JsonLdData } from "@/components/ui/JsonLd";
 
-// --- Brand constants (docs/core/BRAND.md · SITE_STRUCTURE_AND_BLOCKS.md §2) ----
+// --- Brand constants for SEO/schema. Facts are SOURCED from lib/site.ts (the single
+// source of site-wide facts) — never re-declared here, so brand name / areas / phone
+// can't drift between the click-to-call UI and schema.org. Only the SEO-specific
+// search-intent `description` lives here. (docs/core/BRAND.md · 04_SEO.md)
 export const SITE = {
-  name: "Miss Lana's Fairy-Tale Theatre",
-  shortName: "Miss Lana",
+  name: BRAND.name,
+  shortName: BRAND.umbrella,
   // Generic search-intent phrase keeps American "theater" spelling on purpose.
   description: "Touring live costumed children's theater serving Los Angeles and beyond.",
   // Service-area business (no public storefront, 04_SEO.md).
-  areasServed: ["Los Angeles", "San Diego", "Sacramento", "San Jose"],
-  // Primary public click-to-call only (SITE_STRUCTURE_AND_BLOCKS.md §2). The legacy
-  // second number is reserve-only and is never exposed publicly or in schema.
-  phones: ["+1-323-903-2039"],
+  areasServed: [AREAS.base, ...AREAS.travel],
+  // Primary public click-to-call only — single source is lib/site PHONES (E.164). The
+  // legacy second number is reserve-only and is never exposed publicly or in schema.
+  phones: [PHONES[0].tel],
 } as const;
 
 /** Absolute URL for a site-relative path, from APP_BASE_URL (lib/env). */

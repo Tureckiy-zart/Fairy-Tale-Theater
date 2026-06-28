@@ -1,4 +1,3 @@
-"use client";
 // BookingCTABand — the repeating "Book a show" band near the bottom of pages
 // (conversion architecture: lead capture everywhere — SITE_STRUCTURE §3/§5). Forest
 // panel, white text (≥9:1), a static glow accent + the brand Lantern glyph (the "light"
@@ -21,7 +20,7 @@ export function BookingCTABand({
         <span
           aria-hidden
           className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-pill"
-          style={{ background: "radial-gradient(closest-side, rgba(234,174,53,0.30), transparent)" }}
+          style={{ background: "radial-gradient(closest-side, color-mix(in srgb, var(--color-glow-400) 30%, transparent), transparent)" }}
         />
         <Lantern size={44} className="inline-block text-glow-200" />
         <h2 id="cta-band-heading" className="mt-3 font-display text-3xl text-white sm:text-4xl">

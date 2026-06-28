@@ -27,7 +27,9 @@ export function Breadcrumb({ items, noSchema = false, className }: BreadcrumbPro
         {items.map((c, i) => {
           const last = i === items.length - 1;
           return (
-            <li key={c.href} className="flex items-center gap-1.5">
+            // Position-based key: a trail is a fixed ordered list, and hrefs may legitimately
+            // repeat (e.g. demo/anchor trails), so the index is the stable, collision-free key.
+            <li key={`${i}-${c.href}`} className="flex items-center gap-1.5">
               {last ? (
                 <span aria-current="page" className="font-semibold text-ink">
                   {c.name}

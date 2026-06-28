@@ -1,4 +1,3 @@
-"use client";
 // ServiceLineCards — Home block #4 (SITE_STRUCTURE §4.1): the 4 service lines under
 // the Miss Lana umbrella (BRAND.md), each with its per-section accent (DESIGN_SYSTEM
 // §12). Built from the Card primitive's service-line mode (accent top-border + tinted

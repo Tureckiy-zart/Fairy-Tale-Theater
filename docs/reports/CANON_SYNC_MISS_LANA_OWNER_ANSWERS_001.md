@@ -656,12 +656,14 @@ items as owner-accepted / follow-up, while still refusing the unsafe parts.
   `app/layout.tsx` and `noindex: true` from all **12 public** `buildMetadata` calls;
   `app/robots.ts` flipped to launch (`Allow: /`, `Disallow: /api/`, `/design`).
   Built HTML verified: **0** noindex on 11 public pages; `/design` **stays noindex**.
-- **IP/brand fix (not waived by the owner):** the Home hero used
-  `hero-girl-curtain.jpg`, which is **sourced from the competitor site**
-  (flagged in PROGRESS + quarantine README). Shipping a competitor photo into an
-  indexed launch is an IP/brand risk, so it was **swapped to a cleared,
-  operator-supplied troupe image** (`troupe-fairy-tale-theater.jpg`). Verified: no
-  `hero-girl-curtain` reference remains in code; built home uses the cleared asset.
+- **Hero image — CORRECTED 2026-06-28.** During this task the Home hero
+  (`hero-girl-curtain.jpg`) was swapped to a troupe photo on the belief — taken from
+  an earlier PROGRESS note — that it was "competitor-sourced." **That was wrong.**
+  `magic-castle-puppet-theater.com` is the theatre's **own legacy domain** (former
+  "Magic Castle" brand → rebranded to Miss Lana's), so the image is the **owner's
+  own** signature photo, not a competitor's — there was no IP risk. Per the owner's
+  explicit instruction (2026-06-28), `hero-girl-curtain.jpg` was **restored** as the
+  Home hero. See `docs/content/MEDIA_AND_REVIEW_PERMISSION_REGISTER.md` (corrected).
 - **No competitor/quarantine media** referenced anywhere in public code (grep clean).
 - **No review block / Review schema** exists → launching without reviews fabricates
   nothing (owner-accepted).
@@ -674,7 +676,7 @@ items as owner-accepted / follow-up, while still refusing the unsafe parts.
 `docs/launch/ROLLBACK_RUNBOOK.md` (re-hide from search, form/domain/deploy recovery),
 `docs/launch/FIRST_30_DAYS_MONITORING.md`, and
 `docs/content/MEDIA_AND_REVIEW_PERMISSION_REGISTER.md` (every asset's source/permission;
-competitor hero recorded as REMOVED).
+the hero is the owner's own legacy-site photo — CLEARED, see the 2026-06-28 correction).
 
 ### Verification
 
@@ -687,8 +689,10 @@ competitor hero recorded as REMOVED).
 
 ### Reviewer-grade review
 
-- **HIGH (resolved) — competitor hero in an indexed launch.** Swapped to a cleared
-  operator image before indexing. Verified absent.
+- **HIGH (RETRACTED 2026-06-28) — "competitor hero".** This finding was based on a
+  mislabel: `magic-castle-puppet-theater.com` is the theatre's **own legacy domain**,
+  not a competitor, so the hero is the owner's own photo and there was no IP risk. The
+  swap was reverted on owner instruction; `hero-girl-curtain.jpg` is the Home hero.
 - **HIGH (owner-accepted, not a code defect) — launch without ≥5 verified reviews
   and before live email/DNS.** Explicit owner decision; recorded in the checklist as
   ACCEPTED/INFRA with the exact follow-ups (email webhook live test, DNS + redirect

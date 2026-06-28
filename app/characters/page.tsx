@@ -4,7 +4,7 @@
 // troupe) → how it works → CTA + BookingCTABand. "& Friends" line accent = berry (§12).
 // "A real troupe, not a one-off animator" is real positioning (02_POSITIONING); copy is
 // final. Costumed-character media renders the marked placeholder treatment (Phase 4
-// [ASSET]/[TM]). Server component; metadata via lib/seo (noindex). Breadcrumb → schema.
+// [ASSET]/[TM]). Server component; metadata via lib/seo. Breadcrumb → schema.
 import type { Metadata } from "next";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
@@ -21,18 +21,19 @@ import { cx } from "@/components/ui/cx";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
+import { FACTS } from "@/lib/site";
 
 export const metadata: Metadata = buildMetadata({
   title: "Characters & Friends",
   description:
-    "Costumed characters who come to visit the children — performed by a professional theater troupe, not a one-off animator. Warm, in-character and full of wonder, for ages 2–10.",
+    `Costumed characters who come to visit the children — performed by a professional theater troupe, fully in character, warm and full of wonder, for ${FACTS.ages.toLowerCase()}.`,
   path: "/characters",
 });
 
 const DIFFERENCE: { title: string; body: string }[] = [
   {
     title: "A professional troupe",
-    body: "Led by 30+ years of stagecraft, our trained actors stay fully in character — voice, movement and warmth — not a costume hired for the hour.",
+    body: `Led by ${FACTS.experience} of stagecraft, our trained actors stay fully in character — voice, movement and warmth — not a costume hired for the hour.`,
   },
   {
     title: "Real theater quality",
@@ -88,7 +89,7 @@ export default function CharactersPage() {
               as="h1"
               accent="berry"
               title="Costumed characters who come to visit"
-              subtitle="Friendly characters arrive at your event in full costume and in character — performed by our professional troupe. Not a one-off animator: a real piece of theater that comes to the children."
+              subtitle="Friendly characters arrive at your event in full costume and fully in character, performed by our professional troupe — a real piece of theater, brought right to the children."
             />
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Button href="/booking">Book a character visit</Button>
@@ -119,7 +120,7 @@ export default function CharactersPage() {
           eyebrow="The difference"
           marker={<SparkStar size={16} />}
           title="The quality of a real troupe"
-          subtitle="Why a character visit from Miss Lana & Friends feels different from a one-off animator."
+          subtitle="What makes a character visit from Miss Lana & Friends feel like a real piece of theater."
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {DIFFERENCE.map((d) => (
@@ -168,7 +169,7 @@ export default function CharactersPage() {
           eyebrow="How it works"
           marker={<SparkStar size={16} />}
           title="Three steps to a visit"
-          subtitle="From first message to the moment they arrive. From $350; travel across greater LA is free, beyond quoted by distance."
+          subtitle={`From first message to the moment they arrive. ${FACTS.priceFromCap}; travel across greater LA is free, beyond quoted by distance.`}
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {STEPS.map((s) => (
@@ -188,7 +189,7 @@ export default function CharactersPage() {
 
       <BookingCTABand
         heading="Ready to welcome the characters?"
-        sub="A real troupe in costume, brought to your event for ages 2–10. Send a request or give us a call."
+        sub={`A real troupe in costume, brought to your event for ${FACTS.ages.toLowerCase()}. Send a request or give us a call.`}
       />
     </SiteShell>
   );

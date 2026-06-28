@@ -171,6 +171,41 @@
     outline-offset: 2px;
     box-shadow: 0 0 0 5px var(--color-forest-700);
   }
+
+  /* Form controls — iOS / WebKit normalization (§11). Safari wraps date / time /
+   * number inputs in native chrome that ignores our height + padding tokens, so
+   * e.g. the LeadForm's <input type="time"> ("Start time") renders taller than
+   * its sibling text fields and the grid looks uneven on iPhone. Stripping the
+   * native appearance makes these controls fall back to the same box model as a
+   * text Field; the native picker still opens on tap. */
+  input[type="date"],
+  input[type="time"],
+  input[type="number"] {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* iOS left-indents and vertically offsets the value text inside date-time
+   * controls — align it like the other fields and drop the default margin. */
+  input[type="date"]::-webkit-date-and-time-value,
+  input[type="time"]::-webkit-date-and-time-value {
+    text-align: left;
+    margin: 0;
+  }
+
+  ::-webkit-datetime-edit {
+    line-height: 1.6; /* match --text-base line-height so the box height matches */
+  }
+
+  /* Number inputs: remove the spinners (no touch affordance, visual noise). */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 /* =============================================================================
