@@ -1,33 +1,45 @@
 "use client";
 // LeadForm — the primary lead-capture form (the #1 conversion block — SITE_STRUCTURE
-// §4.7/§5). Built from the Field + Button primitives plus a token-matched native
-// <select> for the event type. PRODUCTION pipeline: the form POSTs to /api/lead,
-// which server-validates, persists a durable record, and notifies the owner. The
-// success panel renders ONLY after the server confirms acceptance (never a fake
-// success). Spec: DESIGN_SYSTEM §11 (form states) + §13 (a11y).
+// §4.7/§5). Built from the Field + Button primitives plus token-matched native
+// selects. PRODUCTION pipeline: the form POSTs to /api/lead, which server-validates,
+// persists a durable record, and notifies the owner. The success panel renders ONLY
+// after the server confirms acceptance (never a fake success). Spec: DESIGN_SYSTEM
+// §11 (form states) + §13 (a11y).
 import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { CheckCircle, WarningCircle } from "@phosphor-icons/react";
 import { Button, Field, SectionHeader } from "@/components/ui";
 import { cx } from "@/components/ui/cx";
 import { Lantern, SparkStar } from "@/components/brand/Glyphs";
-import { PHONES } from "@/lib/site";
+import { CONTACT_METHODS, PHONES } from "@/lib/site";
 import { track } from "@/lib/analytics";
 
 type Errors = Partial<Record<string, string>>;
 type Status = "idle" | "submitting" | "success" | "error";
 
-const EVENT_TYPES = ["Preschool / daycare", "School assembly", "Birthday party", "Private party / event"];
+const EVENT_TYPES = [
+  "Preschool / daycare",
+  "School assembly",
+  "Birthday party",
+  "Private party / event",
+] as const;
 
 // Client-side validation is a UX nicety; the server (lib/leads.validateLead) is the
-// authoritative gate and re-checks everything.
+// authoritative gate and re-checks every field in its existing production contract.
 function validate(data: FormData): Errors {
   const errors: Errors = {};
   const get = (k: string) => String(data.get(k) ?? "").trim();
   if (!get("name")) errors.name = "Please tell us your name.";
-  if (!get("phone")) errors.phone = "Add a phone number so we can call you back.";
+  if (!get("phone")) errors.phone = "Add a phone number so we can text, WhatsApp, or call you.";
   const email = get("email");
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = "Please check the email address.";
+  const contactMethod = get("contactMethod");
+  if (!contactMethod) errors.contactMethod = "Choose the best way for us to reply.";
+  else if (!CONTACT_METHODS.includes(contactMethod as (typeof CONTACT_METHODS)[number])) {
+    errors.contactMethod = "Choose the best way for us to reply.";
+  } else if (contactMethod === "Email" && !email) {
+    errors.email = "Add an email address if you would like us to reply by email.";
+  }
   if (!get("type")) errors.type = "Pick the kind of event.";
   const date = get("date");
   if (!date) errors.date = "Please add a date so we can check availability.";
@@ -49,7 +61,7 @@ function SelectField({
 }: {
   label: string;
   name: string;
-  options: string[];
+  options: readonly string[];
   required?: boolean;
   error?: string;
 }) {
@@ -192,6 +204,17 @@ export function LeadForm({
     // Build a JSON payload from the form + source attribution (no PII in attribution).
     const payload: Record<string, string> = {};
     for (const [k, v] of fd.entries()) if (typeof v === "string") payload[k] = v;
+
+    // Keep the proven server/store/notification contract stable: the operational reply
+    // preference is prepended to the existing Notes field, so it reaches MongoDB, email,
+    // Telegram and Sheets today without a risky schema migration at launch.
+    const preferredReply = payload.contactMethod?.trim();
+    const visitorNotes = payload.notes?.trim();
+    delete payload.contactMethod;
+    payload.notes = [preferredReply ? `Preferred reply: ${preferredReply}.` : "", visitorNotes]
+      .filter(Boolean)
+      .join(" ");
+
     // Stable idempotency key — same across retries of this submission (see ref above).
     payload.submissionId = currentSubmissionId();
     payload.sourcePath = pathname ?? "/booking";
@@ -266,8 +289,32 @@ export function LeadForm({
               </div>
 
               <Field label="Full name" name="name" required error={errors.name} autoComplete="name" placeholder="e.g. Alex Rivera" />
-              <Field label="Phone" name="phone" type="tel" required error={errors.phone} autoComplete="tel" placeholder="(213) 555-0142" />
-              <Field label="Email" name="email" type="email" error={errors.email} autoComplete="email" helper="Optional — we'll mostly call." placeholder="you@example.com" />
+              <Field
+                label="Phone number"
+                name="phone"
+                type="tel"
+                required
+                error={errors.phone}
+                autoComplete="tel"
+                helper="For text, WhatsApp, or a call."
+                placeholder="(213) 555-0142"
+              />
+              <Field
+                label="Email"
+                name="email"
+                type="email"
+                error={errors.email}
+                autoComplete="email"
+                helper="Optional unless you choose email as the best way to reply."
+                placeholder="you@example.com"
+              />
+              <SelectField
+                label="Best way to reply"
+                name="contactMethod"
+                required
+                error={errors.contactMethod}
+                options={CONTACT_METHODS}
+              />
               <SelectField label="Event type" name="type" required error={errors.type} options={EVENT_TYPES} />
               <Field
                 label="Event date"
@@ -290,7 +337,7 @@ export function LeadForm({
 
               <div className="flex flex-col gap-3 sm:col-span-2">
                 {hasErrors ? (
-                  <p className="flex items-start gap-1.5 text-sm text-error-text">
+                  <p role="alert" className="flex items-start gap-1.5 text-sm text-error-text">
                     <WarningCircle size={16} aria-hidden className="mt-0.5 shrink-0" />
                     <span>Please fix the highlighted fields below.</span>
                   </p>
@@ -313,7 +360,7 @@ export function LeadForm({
                   {submitting ? "Sending…" : status === "error" ? "Try again" : "Request a booking"}
                 </Button>
                 <p className="text-sm text-ink-soft">
-                  We&rsquo;ll reply by text, email, or WhatsApp within 1–2 business days. Required
+                  We&rsquo;ll reply by text, email, WhatsApp, or phone within 1–2 business days. Required
                   fields are marked &ldquo;(required)&rdquo;.
                 </p>
               </div>
