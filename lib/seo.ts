@@ -1,27 +1,23 @@
 // SEO helpers — page metadata + schema.org builders. Spec: docs/core/04_SEO.md
-// (PerformingGroup/LocalBusiness, TheaterEvent, BreadcrumbList, FAQPage; unique
-// title/description/OG per page; clean canonical URLs) and SITE_STRUCTURE_AND_BLOCKS.md
-// §6. Facts (brand, phones, areas served) come from docs/core (BRAND / PROJECT_BRIEF /
-// SITE_STRUCTURE §2). Schema factories return plain objects for <JsonLd data={…} />.
+// (PerformingGroup/LocalBusiness, CreativeWork repertoire pages, BreadcrumbList,
+// FAQPage; unique title/description/OG per page; clean canonical URLs) and
+// SITE_STRUCTURE_AND_BLOCKS.md §6. Facts come from the central site module.
 import type { Metadata } from "next";
 import { env } from "./env";
-import { AREAS, BRAND, PHONES } from "./site";
+import { AREAS, BRAND, EMAIL, PHONES } from "./site";
 import type { JsonLdData } from "@/components/ui/JsonLd";
 
-// --- Brand constants for SEO/schema. Facts are SOURCED from lib/site.ts (the single
-// source of site-wide facts) — never re-declared here, so brand name / areas / phone
-// can't drift between the click-to-call UI and schema.org. Only the SEO-specific
-// search-intent `description` lives here. (docs/core/BRAND.md · 04_SEO.md)
+// --- Brand constants for SEO/schema. Facts are sourced from lib/site.ts so brand,
+// contacts and geography cannot drift between UI and structured data.
 export const SITE = {
   name: BRAND.name,
   shortName: BRAND.umbrella,
   // Generic search-intent phrase keeps American "theater" spelling on purpose.
-  description: "Touring live costumed children's theater serving Los Angeles and beyond.",
+  description: "Touring live costumed children's theater serving Los Angeles, Southern California and beyond.",
   // Service-area business (no public storefront, 04_SEO.md).
-  areasServed: [AREAS.base, ...AREAS.travel],
-  // Primary public click-to-call only — single source is lib/site PHONES (E.164). The
-  // legacy second number is reserve-only and is never exposed publicly or in schema.
+  areasServed: [AREAS.base, AREAS.region, ...AREAS.travel, "California"],
   phones: [PHONES[0].tel],
+  email: EMAIL.address,
 } as const;
 
 /** Absolute URL for a site-relative path, from APP_BASE_URL (lib/env). */
@@ -71,13 +67,11 @@ export function buildMetadata({ title, description, path, image, noindex }: Meta
   };
 }
 
-// --- Schema.org factories (return plain objects for <JsonLd>) -----------------
+// --- Schema.org factories ---------------------------------------------------
 
 /**
- * WebSite schema — feeds Google's "site name" in the search snippet. Without it Google
- * falls back to the bare domain (misslanatheatre.com) above the title, which reads like
- * the brand is printed twice. `name` + `alternateName` tell it to show the real brand.
- * (Google "Site names" docs / 04_SEO.md.)
+ * WebSite schema — feeds Google's site-name signal. name + alternateName tell search
+ * engines to show the real brand instead of treating the bare domain as the brand.
  */
 export function websiteSchema(): JsonLdData {
   return {
@@ -89,7 +83,7 @@ export function websiteSchema(): JsonLdData {
   };
 }
 
-/** PerformingGroup + LocalBusiness for the org (areaServed = touring cities). */
+/** PerformingGroup + LocalBusiness for a touring service-area business. */
 export function organizationSchema(): JsonLdData {
   return {
     "@context": "https://schema.org",
@@ -98,8 +92,12 @@ export function organizationSchema(): JsonLdData {
     description: SITE.description,
     url: absoluteUrl("/"),
     telephone: SITE.phones[0],
-    areaServed: SITE.areasServed.map((name) => ({ "@type": "City", name })),
-    // service-area business — no public street address (04_SEO.md).
+    email: SITE.email,
+    areaServed: SITE.areasServed.map((name) => ({
+      "@type": name === AREAS.base || AREAS.travel.includes(name as (typeof AREAS.travel)[number]) ? "City" : "AdministrativeArea",
+      name,
+    })),
+    // Service-area business — no public street address.
     address: { "@type": "PostalAddress", addressRegion: "CA", addressCountry: "US" },
   };
 }
@@ -113,12 +111,9 @@ interface ShowInput {
 }
 
 /**
- * Schema for an individual show page. These are EVERGREEN repertoire/catalog pages
+ * Schema for an individual show page. These are evergreen repertoire/catalog pages
  * — a touring show you can book any time, NOT a scheduled performance with a date.
- * So we deliberately use CreativeWork (a theatrical work), NOT Event/TheaterEvent:
- * emitting Event without a startDate is misleading scheduled-event data (04_SEO.md /
- * task guardrail). The bookable nature is conveyed by a non-priced Offer reference to
- * the org; no price beyond "From $350" appears anywhere in schema.
+ * CreativeWork is therefore accurate; Event/TheaterEvent without startDate is not.
  */
 export function showSchema({ name, description, path, image }: ShowInput): JsonLdData {
   return {
