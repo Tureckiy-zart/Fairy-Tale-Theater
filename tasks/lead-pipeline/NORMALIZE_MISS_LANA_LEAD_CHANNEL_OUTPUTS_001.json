@@ -1,0 +1,91 @@
+{
+  "task": "NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001",
+  "version": "2.0",
+  "task_mode": "fix",
+  "priority": "P0",
+  "layer": "Miss Lana / lead delivery outputs / Telegram + Google Sheets",
+  "description": "Normalize and harden the working OUTPUT channels of the Miss Lana lead pipeline (Telegram owner group + Google Sheets) without changing the architecture, the acceptance rule, the form, or the durable schema. MongoDB Atlas stays the durable source of truth; Telegram and Google Sheets stay secondary and never participate in acceptance. The acceptance contract is unchanged: accepted = mongo.status === 'ok' || email.status === 'ok'.",
+  "branch": "claude/normalize-miss-lana-outputs-k1cye1",
+  "base_commit": "40744ac1e1688e0f924cf0170e53566b2f06411c",
+  "scope": [
+    "Deterministic, pure Telegram formatter (formatLeadTelegram): stable field order, omit empty optionals, event date keeps its calendar day, received time in America/Los_Angeles (PST/PDT), plain text (no parse_mode) safe for special chars, guaranteed under a safe length with only Notes truncated (marker added).",
+    "Fixed Google Sheets column contract (GOOGLE_SHEETS_COLUMNS) + hardened toSheetRow: stable cell count matching the header, null/undefined -> empty string, all strings, formula-injection neutralized, phone kept as text, full notes stored, submissionId + receivedAtUtc + receivedAtLosAngeles included.",
+    "Hardened appendToSheet: success only on 2xx AND JSON parsed AND body.ok === true; config-missing -> skipped; non-2xx / ok:false / malformed JSON / timeout / abort / network -> error; duplicate:true -> ok.",
+    "Hardened Google Apps Script (in the runbook): Script Properties for WEBHOOK_SECRET/SPREADSHEET_ID/SHEET_NAME, token auth, server-side submissionId dedupe under LockService, JSON {ok,duplicate,errorCode} responses, no PII/secret/stack in responses or logs.",
+    "Orchestration: a duplicate submissionId (Mongo idempotent insert) suppresses all secondary delivery (no second Telegram message / Sheet row / email) and returns a safe success.",
+    "notificationStatus carries the Google Sheets channel status (field `sheets`).",
+    "Tests: Telegram formatter, Sheets formatter, Sheets adapter hardening, idempotency/duplicate suppression, acceptance matrix incl. Sheets.",
+    "Docs: runbook, plan addendum, report, STATUS, PROJECT_PROGRESS, .env.example."
+  ],
+  "non_goals": [
+    "Replace MongoDB or move the source of truth to Google Sheets.",
+    "Make Telegram or Google Sheets an acceptance channel.",
+    "Remove the email adapter or change the acceptance formula.",
+    "Redesign the form, add form fields, change pricing/SEO/domains, or change non-privacy public copy.",
+    "Build a CRM, admin dashboard, payment flow, or booking calendar.",
+    "Change Atlas/Vercel secrets, open the Google Sheet publicly, hard-code the webhook secret, or pass the secret in a URL query string.",
+    "Deploy, or run a live synthetic production test (requires explicit operator permission)."
+  ],
+  "forbidden_execution_patterns": [
+    "git add .",
+    "git add -A",
+    "force push",
+    "reset --hard",
+    "git clean",
+    "merge/rebase without operator permission",
+    "logging request/lead body, PII, or secrets"
+  ],
+  "files_changed": [
+    "lib/leads.ts",
+    "lib/notify.ts",
+    "tests/unit/leads.test.ts",
+    "tests/unit/notify.test.ts",
+    "docs/operations/LEAD_PIPELINE_RUNBOOK.md",
+    "docs/operations/MISS_LANA_PRODUCTION_LEAD_PIPELINE_PLAN.md",
+    "docs/reports/NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001.md",
+    "docs/PROJECT_PROGRESS.md",
+    "STATUS.md",
+    ".env.example",
+    "tasks/lead-pipeline/NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001.json"
+  ],
+  "verification": {
+    "commands": [
+      "pnpm lint",
+      "pnpm typecheck",
+      "pnpm governance",
+      "pnpm secret-scan",
+      "pnpm test:unit",
+      "pnpm build",
+      "pnpm run ci:exact",
+      "pnpm test:e2e",
+      "git diff --check"
+    ],
+    "results": {
+      "ci:exact": "green",
+      "test:unit": "107 passed (3 files)",
+      "governance": "0 issues",
+      "secret-scan": "OK (no real secrets)",
+      "build": "compiled, 27/27 pages prerendered",
+      "test:e2e": "lead-api spec all green; site/design browser specs blocked by a Playwright browser-version mismatch in the sandbox (installed 1194, required 1223) — unrelated to this diff (server-side lib only)",
+      "git diff --check": "clean"
+    }
+  },
+  "deliverables": [
+    "tasks/lead-pipeline/NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001.json",
+    "docs/reports/NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001.md",
+    "Normalized Telegram formatter + tests",
+    "Fixed Sheets header/row contract + tests",
+    "Hardened appendToSheet + tests",
+    "Hardened Apps Script (runbook)",
+    "sheets (Google Sheets) status in notificationStatus",
+    "Idempotency / duplicate-suppression tests"
+  ],
+  "mandatory_closure": {
+    "verdict": "DO NOT CLOSE (code/tests/docs CLOSE-ready; live verification gated on operator permission)",
+    "blockers_remaining": [
+      "Step 9 controlled live verification (synthetic production + duplicate test) requires explicit operator permission and live secrets — not performed.",
+      "Privacy: Telegram chat membership + Google Sheet permissions are owner-controlled facts to confirm out-of-repo; retention period remains OPEN OWNER DECISION."
+    ],
+    "review_findings": "No BLOCKER or unresolved HIGH. See report for full reviewer-grade pass."
+  }
+}

@@ -21,6 +21,20 @@ QA, and real media. (Site-wide **noindex removal — done** 2026-06-27.)
 > Preview/Prod E2E + owner confirmation are not yet done — see the closure report and the plan's Phase
 > B/G/H/J. **Until those pass, do not treat lead delivery as launch-verified.**
 
+> **Lead output-channels normalized (2026-06-28, `claude/normalize-miss-lana-outputs-k1cye1`, TUNG
+> `NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001`).** Telegram + Google Sheets **output** hardened without
+> touching architecture/acceptance/form/schema. Telegram: deterministic plain-text formatter, stable
+> field order, empty optionals omitted, **event date keeps its calendar day** (no UTC shift), received
+> time in **America/Los_Angeles** (PST/PDT), guaranteed under the Bot-API limit (only Notes trimmed, with
+> a marker). Google Sheets: **fixed column contract**, formula-injection neutralized (phone stays text),
+> full notes stored; **hardened Apps Script** (Script Properties, token auth, server-side `submissionId`
+> dedupe under `LockService`, JSON `{ok,duplicate,errorCode}`); `appendToSheet` success = 2xx AND JSON AND
+> `ok===true`. A **duplicate `submissionId` suppresses** all secondary delivery (no second Telegram/row/
+> email). `notificationStatus` carries the `sheets` channel status. **107 unit tests green (+35), `ci:exact` green.**
+> Report: `docs/reports/NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001.md`. **Still owner/operator-gated:**
+> live synthetic prod + duplicate test, Telegram-chat membership & Sheet permissions confirmation, and
+> **lead-retention period (OPEN OWNER DECISION)**.
+
 > **Финальный копирайт применён (2026-06-23).** Удалены все плейсхолдер-литералы; 8 синопсисов финал;
 > прайс-флор `$350` везде (вкл. таблицу); правило расстояния = бесплатно ≤30 миль от LA, далее по расстоянию
 > (без $-сумм); `/about` явно называет украинские корни (тепло, нейтрально в бренде/SEO); alt «founder» убран.

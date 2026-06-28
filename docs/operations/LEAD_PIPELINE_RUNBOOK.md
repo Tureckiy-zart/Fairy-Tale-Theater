@@ -2,7 +2,34 @@
 
 > Booking inquiries from the site's LeadForm. **No secrets in this file.** Owner
 > notification target: `info@misslanatheatre.com`. Owner (Svitlana) replies within
-> 1–2 business days. Built by `IMPLEMENT_MISS_LANA_PRODUCTION_LEAD_PIPELINE_001`.
+> 1–2 business days. Built by `IMPLEMENT_MISS_LANA_PRODUCTION_LEAD_PIPELINE_001`;
+> output channels normalized by `NORMALIZE_MISS_LANA_LEAD_CHANNEL_OUTPUTS_001`.
+
+## Channel roles (current reality)
+
+| Channel | Role | Holds PII? | Accepts the lead? |
+|---|---|---|---|
+| **MongoDB Atlas** | Durable source of truth | Yes | **Yes** |
+| **Email** (`info@…`) | Full owner notification + emergency fallback record | Yes | **Yes** |
+| **Telegram** | Full owner notification (act-from-chat) | **Yes** (name, phone, email, notes) | No |
+| **Google Sheets** | Private operational mirror / browsable cloud log | **Yes** (same fields) | No |
+
+`accepted = mongo.status === "ok" || email.status === "ok"`. Telegram and Google Sheets
+are **never** acceptance signals — a success on either cannot create a false accept, and
+a failure on either cannot reject a durable lead.
+
+## Privacy decisions (owner-controlled)
+
+- **Telegram group is closed and owner-controlled.** It receives the **full inquiry incl.
+  PII** (the owner approved this so she can act from the chat). _Who may be in that chat
+  is an **owner decision** — record approved members outside the repo._
+- **Google Sheet is private/restricted** to the owner; never public. The append webhook
+  is authenticated with a shared secret (`WEBHOOK_SECRET` ↔ `GOOGLE_SHEETS_WEBHOOK_TOKEN`).
+- **PII never enters** technical logs, analytics, reports, screenshots or Git — only the
+  inquiry id + coarse channel status are loggable (see "Logs & privacy" below).
+- **Retention period: OPEN OWNER DECISION** (not yet approved — do not invent one).
+- Whether customer **email** may appear in Telegram: **approved** (full inquiry is sent
+  to the closed owner chat).
 
 ## What happens when a visitor submits
 
@@ -23,12 +50,24 @@
    2. **Email** the owner via the provider-agnostic webhook (primary notification AND
       the emergency fallback record when MongoDB is down).
    3. **Telegram** alert (optional secondary), if configured — the **full inquiry**
-      (every field the visitor filled) so the owner can act from the chat without DB
-      access. Sent only to the owner's private bot/chat (a closed channel).
+      (every field the visitor filled, **including PII**: name, phone, email, notes) so
+      the owner can act from the chat without DB access. Sent only to the owner's
+      **private, closed, owner-controlled** bot/chat. Normalized, deterministic, plain
+      text (no `parse_mode`): the event date keeps its calendar day, the received time
+      is shown in **America/Los_Angeles** (PST/PDT), empty optional fields are omitted,
+      and an over-long **Notes** is the only field trimmed (with a marker; full text
+      stays in MongoDB + Sheets). See `lib/leads.ts` → `formatLeadTelegram`.
    4. **Google Sheets** append (optional secondary), if configured — one row per lead
-      to a spreadsheet (a browsable cloud log for the owner). Never an acceptance signal.
-   5. **Patch** the stored lead's `notificationStatus` (best-effort; never flips
-      acceptance).
+      to a **private** spreadsheet (a browsable cloud log for the owner, **contains the
+      same PII**). Fixed column contract; formula-injection-neutralized; deduped
+      server-side by `submissionId`. Never an acceptance signal.
+   5. **Patch** the stored lead's `notificationStatus` (`email`/`telegram`/`sheets`
+      + `lastAttemptAt`; best-effort; never flips acceptance).
+
+   **Idempotent retry suppression:** if MongoDB reports the `submissionId` is a
+   duplicate (the same submission already stored), `deliverLead` returns a safe success
+   **without re-sending** Telegram, Sheets or email — so a retry produces no second
+   message, row or email. A genuinely new `submissionId` always delivers once.
 4. **Acceptance rule:** `accepted = mongo.ok || email.ok`. Telegram is **never** an
    acceptance signal. The route returns `{ ok: true, id }` only when accepted. A
    stored lead survives any notification failure; a confirmed email is the fallback
@@ -54,8 +93,8 @@ All access goes through `lib/env.ts`. Keys mirror `.env.example`:
 | `LEAD_STORE_DIR` | **Dev-only** local copy path. Default `.leads` (git-ignored). Not used in production. | No |
 | `LEAD_RATE_LIMIT_PER_MINUTE` | Max submissions/IP/60 s. Default 5. Raise **only** in e2e. | No |
 | `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` | Optional secondary alert (both required to enable). Sends the **full inquiry** to the owner's private chat. | No |
-| `GOOGLE_SHEETS_WEBHOOK_URL` | Optional. POST `{token?, lead}` → appends one row to a Google Sheet (cloud log). Use a deployed Apps Script Web App (snippet below). Never an acceptance signal. | No |
-| `GOOGLE_SHEETS_WEBHOOK_TOKEN` | Optional shared secret the Apps Script checks so only our app can append. | No |
+| `GOOGLE_SHEETS_WEBHOOK_URL` | Optional. POST `{token, lead}` → appends one row to a Google Sheet (cloud log). Use a deployed Apps Script Web App (snippet below). Never an acceptance signal. | No |
+| `GOOGLE_SHEETS_WEBHOOK_TOKEN` | Shared secret the Apps Script checks (must equal its `WEBHOOK_SECRET` Script Property) so only our app can append. Required if the URL is set. | No |
 
 > **Two pieces need live credentials in production:** `MONGODB_URI` (durable store)
 > and `LEAD_EMAIL_WEBHOOK_URL` (owner inbox + fallback record). With Mongo set, every
@@ -86,51 +125,143 @@ All access goes through `lib/env.ts`. Keys mirror `.env.example`:
 ## Google Sheets cloud log (optional)
 
 A zero-dependency way to give the owner a **browsable cloud copy** of every lead with no
-database access. The app POSTs `{ token?, lead }` to `GOOGLE_SHEETS_WEBHOOK_URL`; a
+database access. The app POSTs `{ token, lead }` to `GOOGLE_SHEETS_WEBHOOK_URL`; a
 deployed **Google Apps Script Web App** appends one row. It is a **secondary** channel —
 never an acceptance signal — so a Sheets failure never affects whether a lead is accepted.
 
-**Column order** (from `lib/leads.ts` → `toSheetRow`): `receivedAt, id, name, phone,
-email, eventType, date, time, city, childCount, show, notes, sourcePath, utmSource,
-utmMedium, utmCampaign`. Put these as the header row (row 1) of the sheet.
+**Fixed column contract** (from `lib/leads.ts` → `GOOGLE_SHEETS_COLUMNS` / `toSheetRow`).
+This order is **frozen** — append new columns at the end, never reorder:
+
+```text
+submissionId, id, receivedAtUtc, receivedAtLosAngeles, status, eventType, eventDate,
+eventTime, city, name, phone, email, childCount, show, notes, sourcePath, utmSource,
+utmMedium, utmCampaign
+```
+
+Put these exact names as the header row (row 1) of the sheet, left to right.
+
+**Row hardening (`toSheetRow`):**
+
+- every cell is a **string**, with a stable cell count that always matches the header;
+- `null`/`undefined` → empty cell (never the text "null");
+- **formula injection neutralized** — any value whose first non-space char is `= + - @`
+  is prefixed with a single quote so Sheets stores it as text, not a live formula
+  (`=IMPORTXML(...)`, `+44…`, `-12`, `@x`). Phone numbers therefore stay text;
+- the **full** `notes` is stored (never the Telegram-trimmed copy);
+- `receivedAtUtc` is the canonical ISO; `receivedAtLosAngeles` is the human-readable
+  America/Los_Angeles mirror; `status` is `new` at submission time.
+
+**Server-side dedupe + concurrency:** the Apps Script also dedupes by `submissionId`
+under a `LockService` lock (find → check → append are atomic), so even a timeout/retry
+that re-POSTs after the row was written never creates a second row. It returns a small
+**JSON** contract — `{ok:true,duplicate:false}`, `{ok:true,duplicate:true}` or
+`{ok:false,errorCode:"…"}` — and never echoes the lead, a secret, or a stack trace. The
+app's `appendToSheet` treats success as **2xx AND JSON parsed AND `ok===true`**.
 
 **Setup:**
 
 1. Create a Google Sheet; add the header row above. Note the tab name (e.g. `Leads`).
-2. **Extensions → Apps Script**, paste the script below, set `SECRET` to a random string.
-3. **Deploy → New deployment → Web app**: execute as *Me*, access *Anyone*. Copy the
+2. **Extensions → Apps Script**, paste the script below.
+3. **Project Settings → Script Properties** — add (NEVER hard-code these in the script):
+   - `WEBHOOK_SECRET` = a random string (must equal `GOOGLE_SHEETS_WEBHOOK_TOKEN`);
+   - `SPREADSHEET_ID` = the sheet's id (from its URL);
+   - `SHEET_NAME` = the tab name (e.g. `Leads`).
+4. **Deploy → New deployment → Web app**: execute as *Me*, access *Anyone*. Copy the
    `/exec` URL.
-4. Set production secrets: `GOOGLE_SHEETS_WEBHOOK_URL=<the /exec URL>` and
-   `GOOGLE_SHEETS_WEBHOOK_TOKEN=<the same SECRET>`.
-5. Submit a clearly-marked test inquiry → confirm a new row appears.
+5. Set production secrets: `GOOGLE_SHEETS_WEBHOOK_URL=<the /exec URL>` and
+   `GOOGLE_SHEETS_WEBHOOK_TOKEN=<the same WEBHOOK_SECRET>`.
+6. Submit a clearly-marked test inquiry → confirm exactly one new row appears; re-POST
+   the same `submissionId` → confirm **no** second row.
 
 ```javascript
-// Google Apps Script — appends one row per lead. Deploy as a Web App.
-const SECRET = "__SET_A_RANDOM_STRING__";   // must equal GOOGLE_SHEETS_WEBHOOK_TOKEN
-const SHEET  = "Leads";                       // tab name
-const COLS = ["receivedAt","id","name","phone","email","eventType","date","time",
-              "city","childCount","show","notes","sourcePath","utmSource",
-              "utmMedium","utmCampaign"];
+// Google Apps Script — Miss Lana lead → Google Sheets append. Deploy as a Web App.
+// Production-safe: WEBHOOK_SECRET / SPREADSHEET_ID / SHEET_NAME come from Script
+// Properties (Project Settings → Script Properties), NEVER hard-coded. Dedupes by
+// submissionId under a lock so a retried POST never adds a second row. Responds with a
+// small JSON contract only — never the lead, a secret, the row, or a stack trace.
+const COLS = [
+  "submissionId", "id", "receivedAtUtc", "receivedAtLosAngeles", "status",
+  "eventType", "eventDate", "eventTime", "city", "name", "phone", "email",
+  "childCount", "show", "notes", "sourcePath", "utmSource", "utmMedium", "utmCampaign"
+];
+
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
 
 function doPost(e) {
+  var props = PropertiesService.getScriptProperties();
+  var secret = props.getProperty("WEBHOOK_SECRET");
+  var spreadsheetId = props.getProperty("SPREADSHEET_ID");
+  var sheetName = props.getProperty("SHEET_NAME") || "Leads";
+
+  var body;
   try {
-    const body = JSON.parse(e.postData.contents || "{}");
-    if (SECRET && body.token !== SECRET) {
-      return ContentService.createTextOutput("forbidden").setMimeType(ContentService.MimeType.TEXT);
-    }
-    const lead = body.lead || {};
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET);
-    sheet.appendRow(COLS.map(function (k) { return lead[k] != null ? lead[k] : ""; }));
-    return ContentService.createTextOutput("ok").setMimeType(ContentService.MimeType.TEXT);
+    body = JSON.parse((e && e.postData && e.postData.contents) || "{}");
   } catch (err) {
-    return ContentService.createTextOutput("error").setMimeType(ContentService.MimeType.TEXT);
+    return json_({ ok: false, errorCode: "BAD_REQUEST" });   // never log the body
+  }
+
+  // Authorize. On a bad/absent secret: add nothing, log nothing (no token, no body).
+  if (!secret || body.token !== secret) {
+    return json_({ ok: false, errorCode: "INVALID_TOKEN" });
+  }
+
+  var lead = body.lead || {};
+  var submissionId = String(lead.submissionId || "");
+  if (!submissionId) return json_({ ok: false, errorCode: "MISSING_SUBMISSION_ID" });
+
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(15000);                                    // serialize check + append
+  } catch (err) {
+    return json_({ ok: false, errorCode: "LOCKED" });
+  }
+
+  try {
+    var ss = spreadsheetId ? SpreadsheetApp.openById(spreadsheetId)
+                           : SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(sheetName);
+    if (!sheet) return json_({ ok: false, errorCode: "SHEET_NOT_FOUND" });
+
+    // Server-side dedupe: submissionId is column 1. A retry after the row was written
+    // must NOT add a second row (Next.js dedupe alone can't cover a post-write retry).
+    var subCol = COLS.indexOf("submissionId") + 1;           // 1-based
+    var last = sheet.getLastRow();
+    if (last >= 2) {
+      var existing = sheet.getRange(2, subCol, last - 1, 1).getValues();
+      for (var i = 0; i < existing.length; i++) {
+        if (String(existing[i][0]) === submissionId) {
+          return json_({ ok: true, duplicate: true });
+        }
+      }
+    }
+
+    sheet.appendRow(COLS.map(function (k) { return lead[k] != null ? lead[k] : ""; }));
+    return json_({ ok: true, duplicate: false });
+  } catch (err) {
+    return json_({ ok: false, errorCode: "APPEND_FAILED" }); // coarse only, no stack/PII
+  } finally {
+    lock.releaseLock();
   }
 }
 ```
 
 > **Privacy:** the sheet holds the same PII as the email/DB (name, phone, email, notes).
-> Restrict sharing to the owner; never make the spreadsheet public or paste rows into
-> public channels. The `token` keeps anonymous POSTs from writing junk rows.
+> Keep the spreadsheet **private/restricted** to the owner; never make it public or paste
+> rows into public channels. The `token` (checked against `WEBHOOK_SECRET`) keeps
+> anonymous POSTs from writing junk rows.
+
+## Logs & privacy
+
+Loggable (no PII): the **inquiry id**, the **channel name**, the **status**, a **coarse
+error category**, and an HTTP status that contains no PII. **Never** logged: name, phone,
+email, city/address, notes, show, the full Telegram text, the Sheet row, the webhook
+request/response body, the Telegram token/chat id, the Sheets token, the Spreadsheet id,
+or the MongoDB URI. Full data lives **only** in MongoDB, the closed Telegram chat, the
+private Google Sheet, and the owner email. The Apps Script likewise returns coarse JSON
+(`ok`/`duplicate`/`errorCode`) and never echoes the lead, a secret, or a stack trace.
 
 ## Provider ownership & recovery
 
