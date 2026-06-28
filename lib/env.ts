@@ -38,6 +38,17 @@ export const env = {
   },
 
   // --- Lead pipeline (booking inquiries) -------------------------------------
+  /**
+   * MongoDB Atlas connection string — the DURABLE production store for booking
+   * inquiries (the system of record). SECRET, server-only: never log it, never import
+   * it from a "use client" module. Lazy by design — read only inside a request, so a
+   * build with no MONGODB_URI succeeds and a request with none fails cleanly (the
+   * route falls back to the email webhook as the acceptance signal; see lib/leadStore).
+   * Returns undefined when unset (the store reports a clean error, never throws here).
+   */
+  get mongodbUri(): string | undefined {
+    return process.env.MONGODB_URI || undefined;
+  },
   /** Owner notification destination (canonical — BRAND.md). Override per deploy. */
   get leadNotifyEmail(): string {
     return process.env.LEAD_NOTIFY_EMAIL || "info@misslanatheatre.com";
@@ -73,5 +84,14 @@ export const env = {
    */
   get leadTrustedIpHeader(): string | undefined {
     return process.env.LEAD_TRUSTED_IP_HEADER || undefined;
+  },
+  /**
+   * Max booking submissions per IP per 60 s window (in-memory limiter). Defaults to 5
+   * in production. Overridable only so the e2e harness (one shared localhost IP across
+   * a parallel suite) isn't throttled — never raise it in real deployments.
+   */
+  get leadRateLimitPerMinute(): number {
+    const n = Number(process.env.LEAD_RATE_LIMIT_PER_MINUTE);
+    return Number.isInteger(n) && n > 0 ? n : 5;
   },
 } as const;

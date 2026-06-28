@@ -73,6 +73,22 @@ export function buildMetadata({ title, description, path, image, noindex }: Meta
 
 // --- Schema.org factories (return plain objects for <JsonLd>) -----------------
 
+/**
+ * WebSite schema — feeds Google's "site name" in the search snippet. Without it Google
+ * falls back to the bare domain (misslanatheatre.com) above the title, which reads like
+ * the brand is printed twice. `name` + `alternateName` tell it to show the real brand.
+ * (Google "Site names" docs / 04_SEO.md.)
+ */
+export function websiteSchema(): JsonLdData {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.name,
+    alternateName: SITE.shortName,
+    url: absoluteUrl("/"),
+  };
+}
+
 /** PerformingGroup + LocalBusiness for the org (areaServed = touring cities). */
 export function organizationSchema(): JsonLdData {
   return {

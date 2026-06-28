@@ -146,6 +146,22 @@ export function LeadForm({
   const [dateValue, setDateValue] = useState("");
   const headingId = `${id}-heading`;
 
+  // Idempotency key for this submission attempt. Generated once, REUSED across retries
+  // of the same submission (a double-click or "Try again" sends the same id → the
+  // server stores one lead via its unique index), and reset to null after a successful
+  // submission so the next fresh booking gets a fresh id. crypto.randomUUID is available
+  // in all our target browsers; a guarded fallback keeps older/insecure contexts working.
+  const submissionIdRef = useRef<string | null>(null);
+  function currentSubmissionId(): string {
+    if (!submissionIdRef.current) {
+      submissionIdRef.current =
+        typeof crypto !== "undefined" && "randomUUID" in crypto
+          ? crypto.randomUUID()
+          : `ml-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+    }
+    return submissionIdRef.current;
+  }
+
   // US-format masked date (mm/dd/yyyy) — deterministic regardless of browser locale,
   // no date library. Digits only, slashes auto-inserted.
   function onDateChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -176,6 +192,8 @@ export function LeadForm({
     // Build a JSON payload from the form + source attribution (no PII in attribution).
     const payload: Record<string, string> = {};
     for (const [k, v] of fd.entries()) if (typeof v === "string") payload[k] = v;
+    // Stable idempotency key — same across retries of this submission (see ref above).
+    payload.submissionId = currentSubmissionId();
     payload.sourcePath = pathname ?? "/booking";
     // Read UTM from the URL at submit time (client-only) — avoids forcing the page
     // into a Suspense/CSR bailout that useSearchParams would require.
@@ -201,6 +219,8 @@ export function LeadForm({
       if (res.ok && data.ok) {
         setRefId(data.id ?? null);
         setStatus("success");
+        // Submission landed — retire this idempotency key so a later booking is fresh.
+        submissionIdRef.current = null;
         track("lead_success", { eventType: payload.type, path: payload.sourcePath });
         return;
       }

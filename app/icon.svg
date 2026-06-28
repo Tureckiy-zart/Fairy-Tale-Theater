@@ -1,0 +1,43 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Miss Lana's Fairy-Tale Theatre">
+  <!--
+    TEMPORARY brand icon (placeholder, NOT trademark-cleared per CLAUDE.md §8).
+    "Lantern Light" idea (DESIGN_SYSTEM.md): forest-green ground + golden-amber
+    lantern glow (Svitlana = "light"). Replace with the final marked logo when ready.
+    Colors are DS tokens: forest-900 #1E3416, forest-700 #335A23, glow-400 #EAAE35,
+    glow-200 #F7D886, glow-100 #FBEBBF, cream #FBF7EF.
+  -->
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="46%" r="55%">
+      <stop offset="0%" stop-color="#FBEBBF" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#EAAE35" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#EAAE35" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="flame" x1="32" y1="22" x2="32" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBEBBF"/>
+      <stop offset="100%" stop-color="#EAAE35"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded forest-green tile -->
+  <rect width="64" height="64" rx="14" fill="#1E3416"/>
+
+  <!-- Warm halo behind the lantern -->
+  <circle cx="32" cy="33" r="26" fill="url(#glow)"/>
+
+  <!-- Lantern: top ring + cap, glass body, base. Drawn in golden amber. -->
+  <g stroke="#EAAE35" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- hanging ring -->
+    <path d="M32 9 v4"/>
+    <circle cx="32" cy="7.5" r="2.4"/>
+    <!-- cap -->
+    <path d="M23 17 h18 l-2.5 4 h-13 z" fill="#EAAE35"/>
+    <!-- glass body -->
+    <path d="M25 21 q-1 11 1.5 23 h11 q2.5 -12 1.5 -23 z"/>
+    <!-- base -->
+    <path d="M24.5 44 h15 l-1.5 4 h-12 z" fill="#EAAE35"/>
+  </g>
+
+  <!-- Flame inside the lantern -->
+  <path d="M32 26 c4 3 4.5 7 1.8 9.6 C31 38 30 35 31 32 c-2 1.5-2.6 4-1 6 C26.5 36 27 29 32 26 z"
+        fill="url(#flame)"/>
+</svg>

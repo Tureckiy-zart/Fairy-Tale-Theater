@@ -8,8 +8,18 @@
 is protective alternate only → 301 to primary. Primary contact: `info@misslanatheatre.com`,
 **(323) 903-2039**; SMS/email/WhatsApp accepted; Svitlana replies in **1-2 business days**.
 **Post-launch tasks (open):** verified reviews/testimonials (`[OWNER/CONTENT]`, target ≥5 with
-permission/source), live form-delivery webhook (`LEAD_EMAIL_WEBHOOK_URL`), redirect/DNS verification,
-GBP/Search Console submission, QA, and real media. (Site-wide **noindex removal — done** 2026-06-27.)
+permission/source), **lead-pipeline production secrets — provision `MONGODB_URI` (dedicated Miss Lana
+Atlas cluster, db `misslana`) + live `LEAD_EMAIL_WEBHOOK_URL`, then run the Preview→Production E2E gate**
+(`MISS_LANA_PRODUCTION_LEAD_PIPELINE_PLAN`), redirect/DNS verification, GBP/Search Console submission,
+QA, and real media. (Site-wide **noindex removal — done** 2026-06-27.)
+
+> **Durable lead store implemented (2026-06-28, `feat/miss-lana-durable-lead-store`).** Booking inquiries
+> now persist to **MongoDB Atlas** (db `misslana`, coll `leads`) as the production system of record;
+> `accepted = mongo.ok || email.ok` (Telegram never an acceptance signal); `submissionId` unique index
+> makes retries idempotent; `notificationStatus` is persisted. Code/tests/docs are **CLOSE**-ready (128
+> tests green, `ci:exact` green). **Blocked on infra:** Atlas cluster + Vercel Preview/Prod secrets +
+> Preview/Prod E2E + owner confirmation are not yet done — see the closure report and the plan's Phase
+> B/G/H/J. **Until those pass, do not treat lead delivery as launch-verified.**
 
 > **Финальный копирайт применён (2026-06-23).** Удалены все плейсхолдер-литералы; 8 синопсисов финал;
 > прайс-флор `$350` везде (вкл. таблицу); правило расстояния = бесплатно ≤30 миль от LA, далее по расстоянию

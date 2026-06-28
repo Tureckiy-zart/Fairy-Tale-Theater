@@ -5,6 +5,8 @@ import {
   validateLead,
   buildLead,
   makeInquiryId,
+  sanitizeSubmissionId,
+  toStoredLead,
   formatLeadSummary,
   type RawLead,
   type Lead,
@@ -114,12 +116,14 @@ describe("validateLead", () => {
 
 describe("buildLead", () => {
   const ID = "ML-ABCDE";
+  const SID = "sub-0123456789abcdef";
   const AT = "2026-06-28T12:00:00.000Z";
 
   it("trims fields and collapses internal whitespace", () => {
     const lead = buildLead(
       validRaw({ name: "  Jane   Doe  ", city: "  Los   Angeles " }),
       ID,
+      SID,
       AT,
     );
     expect(lead.name).toBe("Jane Doe");
@@ -128,52 +132,52 @@ describe("buildLead", () => {
 
   it("length-caps overly long fields", () => {
     const longName = "x".repeat(500);
-    const lead = buildLead(validRaw({ name: longName }), ID, AT);
+    const lead = buildLead(validRaw({ name: longName }), ID, SID, AT);
     expect(lead.name.length).toBe(120); // MAX.name
   });
 
   it("normalizes mm/dd/yyyy to ISO yyyy-mm-dd", () => {
-    const lead = buildLead(validRaw({ date: "12/01/2026" }), ID, AT);
+    const lead = buildLead(validRaw({ date: "12/01/2026" }), ID, SID, AT);
     expect(lead.date).toBe("2026-12-01");
   });
 
   it("passes a non-US date through unchanged", () => {
-    const lead = buildLead(validRaw({ date: "next Friday" }), ID, AT);
+    const lead = buildLead(validRaw({ date: "next Friday" }), ID, SID, AT);
     expect(lead.date).toBe("next Friday");
   });
 
   it("parses childCount from a numeric string", () => {
-    const lead = buildLead(validRaw({ count: "12" }), ID, AT);
+    const lead = buildLead(validRaw({ count: "12" }), ID, SID, AT);
     expect(lead.childCount).toBe(12);
   });
 
   it("sets childCount null when count is empty", () => {
-    const lead = buildLead(validRaw({ count: "" }), ID, AT);
+    const lead = buildLead(validRaw({ count: "" }), ID, SID, AT);
     expect(lead.childCount).toBeNull();
   });
 
   it("sets email null when empty", () => {
-    const lead = buildLead(validRaw({ email: "" }), ID, AT);
+    const lead = buildLead(validRaw({ email: "" }), ID, SID, AT);
     expect(lead.email).toBeNull();
   });
 
   it("keeps a provided email", () => {
-    const lead = buildLead(validRaw({ email: "jane@example.com" }), ID, AT);
+    const lead = buildLead(validRaw({ email: "jane@example.com" }), ID, SID, AT);
     expect(lead.email).toBe("jane@example.com");
   });
 
   it("defaults source.path to /booking when absent", () => {
-    const lead = buildLead(validRaw(), ID, AT);
+    const lead = buildLead(validRaw(), ID, SID, AT);
     expect(lead.source.path).toBe("/booking");
   });
 
   it("uses a provided source path", () => {
-    const lead = buildLead(validRaw({ sourcePath: "/birthdays" }), ID, AT);
+    const lead = buildLead(validRaw({ sourcePath: "/birthdays" }), ID, SID, AT);
     expect(lead.source.path).toBe("/birthdays");
   });
 
   it("sets utm fields null when absent", () => {
-    const lead = buildLead(validRaw(), ID, AT);
+    const lead = buildLead(validRaw(), ID, SID, AT);
     expect(lead.source.utmSource).toBeNull();
     expect(lead.source.utmMedium).toBeNull();
     expect(lead.source.utmCampaign).toBeNull();
@@ -183,6 +187,7 @@ describe("buildLead", () => {
     const lead = buildLead(
       validRaw({ utmSource: "google", utmMedium: "cpc", utmCampaign: "spring" }),
       ID,
+      SID,
       AT,
     );
     expect(lead.source.utmSource).toBe("google");
@@ -190,9 +195,10 @@ describe("buildLead", () => {
     expect(lead.source.utmCampaign).toBe("spring");
   });
 
-  it("carries the injected id and receivedAt verbatim", () => {
-    const lead = buildLead(validRaw(), ID, AT);
+  it("carries the injected id, submissionId and receivedAt verbatim", () => {
+    const lead = buildLead(validRaw(), ID, SID, AT);
     expect(lead.id).toBe(ID);
+    expect(lead.submissionId).toBe(SID);
     expect(lead.receivedAt).toBe(AT);
   });
 });
@@ -231,6 +237,7 @@ describe("formatLeadSummary", () => {
     const base = buildLead(
       validRaw({ email: "jane@example.com", count: "12" }),
       "ML-ABCDE",
+      "sub-0123456789abcdef",
       "2026-06-28T12:00:00.000Z",
     );
     return { ...base, ...overrides };
@@ -264,5 +271,82 @@ describe("formatLeadSummary", () => {
     expect(summary).not.toMatch(/[<>]/);
     // No markdown emphasis/heading/link syntax.
     expect(summary).not.toMatch(/\*\*|^#|\[[^\]]*\]\(/m);
+  });
+});
+
+describe("sanitizeSubmissionId", () => {
+  it("accepts a crypto.randomUUID-shaped value", () => {
+    const uuid = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+    expect(sanitizeSubmissionId(uuid)).toBe(uuid);
+  });
+
+  it("rejects a non-string", () => {
+    expect(sanitizeSubmissionId(undefined)).toBeNull();
+    expect(sanitizeSubmissionId(123)).toBeNull();
+    expect(sanitizeSubmissionId(null)).toBeNull();
+  });
+
+  it("rejects a too-short value", () => {
+    expect(sanitizeSubmissionId("abc")).toBeNull(); // < 8 chars after cleaning
+  });
+
+  it("strips disallowed characters and caps length", () => {
+    const dirty = "  ab cd<script>".padEnd(200, "x");
+    const clean = sanitizeSubmissionId(dirty);
+    expect(clean).not.toBeNull();
+    expect(clean!.length).toBeLessThanOrEqual(100);
+    expect(clean).not.toMatch(/[<> ]/);
+  });
+
+  it("returns null when cleaning leaves too few characters", () => {
+    expect(sanitizeSubmissionId("<<< >>>")).toBeNull();
+  });
+});
+
+describe("toStoredLead", () => {
+  function lead(overrides: Partial<Lead> = {}): Lead {
+    const base = buildLead(
+      validRaw({ email: "jane@example.com", count: "12" }),
+      "ML-ABCDE",
+      "sub-0123456789abcdef",
+      "2026-06-28T12:00:00.000Z",
+    );
+    return { ...base, ...overrides };
+  }
+
+  it("starts status new, updatedAt = receivedAt, notifications pending", () => {
+    const doc = toStoredLead(lead());
+    expect(doc.status).toBe("new");
+    expect(doc.updatedAt).toBe(doc.receivedAt);
+    expect(doc.notificationStatus).toEqual({ email: "pending", telegram: "pending" });
+  });
+
+  it("carries id and submissionId", () => {
+    const doc = toStoredLead(lead());
+    expect(doc.id).toBe("ML-ABCDE");
+    expect(doc.submissionId).toBe("sub-0123456789abcdef");
+  });
+
+  it("omits null/empty optional fields rather than storing null", () => {
+    const doc = toStoredLead(lead({ email: null, time: null, show: null, notes: null, childCount: null }));
+    expect(doc.email).toBeUndefined();
+    expect(doc.time).toBeUndefined();
+    expect(doc.show).toBeUndefined();
+    expect(doc.notes).toBeUndefined();
+    expect(doc.childCount).toBeUndefined();
+    expect("email" in doc ? doc.email : undefined).toBeUndefined();
+  });
+
+  it("does not store IP, user-agent, or geo (no such keys exist)", () => {
+    const doc = toStoredLead(lead());
+    expect(doc).not.toHaveProperty("ip");
+    expect(doc).not.toHaveProperty("userAgent");
+    expect(doc).not.toHaveProperty("geo");
+  });
+
+  it("keeps provided optional fields", () => {
+    const doc = toStoredLead(lead({ email: "jane@example.com", childCount: 12 }));
+    expect(doc.email).toBe("jane@example.com");
+    expect(doc.childCount).toBe(12);
   });
 });

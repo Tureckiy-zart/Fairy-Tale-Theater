@@ -8,11 +8,12 @@
 // No secrets, PII, or free-text bodies are logged. Provider failures are logged with
 // the inquiry id only, so the operator can recover from the durable store.
 import { NextResponse } from "next/server";
-import { buildLead, makeInquiryId, validateLead, type RawLead } from "@/lib/leads";
+import { randomUUID } from "node:crypto";
+import { buildLead, makeInquiryId, sanitizeSubmissionId, validateLead, type RawLead } from "@/lib/leads";
 import { deliverLead } from "@/lib/notify";
 import { env } from "@/lib/env";
 
-// Node runtime (the durable store uses node:fs). Never statically cached.
+// Node runtime (the durable store uses the mongodb driver + node:crypto). Never cached.
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,6 @@ export const dynamic = "force-dynamic";
 // dependency; pairs with the honeypot. For multi-instance deploys, front with a
 // provider/edge rate limiter — documented in the runbook.
 const WINDOW_MS = 60_000;
-const MAX_PER_WINDOW = 5;
 const hits = new Map<string, number[]>();
 
 function rateLimited(ip: string): boolean {
@@ -30,7 +30,7 @@ function rateLimited(ip: string): boolean {
   hits.set(ip, recent);
   // Opportunistic cleanup so the map can't grow unbounded.
   if (hits.size > 5000) for (const [k, v] of hits) if (v.every((t) => now - t >= WINDOW_MS)) hits.delete(k);
-  return recent.length > MAX_PER_WINDOW;
+  return recent.length > env.leadRateLimitPerMinute;
 }
 
 // Best-effort client IP for the per-IP limiter. The FIRST X-Forwarded-For entry is
@@ -80,7 +80,12 @@ export async function POST(req: Request): Promise<NextResponse> {
     return json({ ok: false, error: "Please check the highlighted fields.", fields: result.errors }, 422);
   }
 
-  const lead = buildLead(body, makeInquiryId(Math.random), new Date().toISOString());
+  // Idempotency: trust the client-sent submissionId (a crypto.randomUUID() reused
+  // across retries of the SAME submission) so a double-click/retry maps to one stored
+  // lead via the unique index. If it's absent or malformed, mint a server-side fallback
+  // so a missing id never blocks a valid lead — idempotency just degrades to per-request.
+  const submissionId = sanitizeSubmissionId(body.submissionId) ?? randomUUID();
+  const lead = buildLead(body, makeInquiryId(Math.random), submissionId, new Date().toISOString());
 
   let delivery;
   try {

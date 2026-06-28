@@ -5,7 +5,7 @@
 // + LeadForm → SiteFooter (the last via SiteShell). Server component; metadata via
 // lib/seo.
 import type { Metadata } from "next";
-import { buildMetadata, organizationSchema } from "@/lib/seo";
+import { buildMetadata, organizationSchema, websiteSchema } from "@/lib/seo";
 import { JsonLd } from "@/components/ui";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
@@ -33,6 +33,8 @@ export default function HomePage() {
     <SiteShell>
       {/* Org identity (PerformingGroup + LocalBusiness, service-area, no address). */}
       <JsonLd data={organizationSchema()} />
+      {/* WebSite — tells Google the search-result "site name" (brand, not bare domain). */}
+      <JsonLd data={websiteSchema()} />
       <Hero />
       <TrustStrip />
       <FormatExplainer />

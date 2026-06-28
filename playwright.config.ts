@@ -18,7 +18,13 @@ export default defineConfig({
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
-    // Keep e2e lead submissions out of the real store (test-results/ is git-ignored).
-    env: { LEAD_STORE_DIR: "test-results/.leads-e2e" },
+    env: {
+      // Keep e2e lead submissions out of the real store (test-results/ is git-ignored).
+      LEAD_STORE_DIR: "test-results/.leads-e2e",
+      // The parallel suite shares one localhost IP; raise the per-IP limit so valid-path
+      // tests aren't collateral-throttled. The dedicated rate-limit test exceeds this on
+      // purpose. Production keeps the default 5 (this override is e2e-only).
+      LEAD_RATE_LIMIT_PER_MINUTE: "50",
+    },
   },
 });
