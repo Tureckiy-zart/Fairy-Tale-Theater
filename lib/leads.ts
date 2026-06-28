@@ -181,6 +181,65 @@ export function sanitizeSubmissionId(raw: unknown): string | null {
   return v.length >= 8 ? v : null;
 }
 
+/**
+ * Telegram alert body — the FULL inquiry, owner-facing. Unlike the old short alert,
+ * this carries every field the visitor filled so the owner (Svitlana) can act straight
+ * from the chat without opening the database or email: she has no DB access and needs
+ * none. Sent only to the owner's private bot/chat (a closed channel), so the full
+ * contact details stay inside the owner's own notification surface. Empty optional
+ * fields are omitted (no noisy em-dashes). Plain text — no markup, no secrets.
+ */
+export function formatLeadTelegram(lead: Lead): string {
+  const rows: Array<[string, string | null]> = [
+    ["🆔 ID", lead.id],
+    ["📋 Type", lead.eventType],
+    ["📅 Date", `${lead.date}${lead.time ? ` at ${lead.time}` : ""}`],
+    ["📍 City", lead.city],
+    ["👤 Name", lead.name],
+    ["📞 Phone", lead.phone],
+    ["✉️ Email", lead.email],
+    ["🧒 Children", lead.childCount != null ? String(lead.childCount) : null],
+    ["🎭 Show", lead.show],
+    ["📝 Notes", lead.notes],
+  ];
+  const lines = ["🎭 New booking inquiry", ""];
+  for (const [label, value] of rows) if (value) lines.push(`${label}: ${value}`);
+
+  const utm = [lead.source.utmSource, lead.source.utmMedium, lead.source.utmCampaign]
+    .filter(Boolean)
+    .join(" / ");
+  lines.push("", `🔗 Source: ${lead.source.path}${utm ? ` (${utm})` : ""}`);
+  lines.push(`🕒 Received: ${lead.receivedAt}`);
+  return lines.join("\n");
+}
+
+/**
+ * Flat, stable-column projection of a lead for the Google Sheets webhook (one row per
+ * inquiry). Order here defines the spreadsheet column order; absent optional values are
+ * empty strings (not null) so cells stay blank rather than reading "null". Keep this in
+ * sync with the header row in the Apps Script (docs/operations/LEAD_PIPELINE_RUNBOOK.md).
+ */
+export function toSheetRow(lead: Lead): Record<string, string | number> {
+  return {
+    receivedAt: lead.receivedAt,
+    id: lead.id,
+    name: lead.name,
+    phone: lead.phone,
+    email: lead.email ?? "",
+    eventType: lead.eventType,
+    date: lead.date,
+    time: lead.time ?? "",
+    city: lead.city,
+    childCount: lead.childCount ?? "",
+    show: lead.show ?? "",
+    notes: lead.notes ?? "",
+    sourcePath: lead.source.path,
+    utmSource: lead.source.utmSource ?? "",
+    utmMedium: lead.source.utmMedium ?? "",
+    utmCampaign: lead.source.utmCampaign ?? "",
+  };
+}
+
 /** Human-readable owner notification body (plain text — no secrets, no markup). */
 export function formatLeadSummary(lead: Lead): string {
   const lines = [
@@ -222,6 +281,8 @@ export type ChannelStatus = "pending" | "ok" | "error" | "skipped";
 export interface NotificationStatus {
   email: ChannelStatus;
   telegram: ChannelStatus;
+  /** Google Sheets append outcome (optional secondary channel). */
+  sheets?: ChannelStatus;
   /** ISO timestamp of the last notification attempt, once attempted. */
   lastAttemptAt?: string;
 }
@@ -289,6 +350,6 @@ export function toStoredLead(lead: Lead): StoredLead {
       utmMedium: pick(lead.source.utmMedium),
       utmCampaign: pick(lead.source.utmCampaign),
     },
-    notificationStatus: { email: "pending", telegram: "pending" },
+    notificationStatus: { email: "pending", telegram: "pending", sheets: "pending" },
   };
 }

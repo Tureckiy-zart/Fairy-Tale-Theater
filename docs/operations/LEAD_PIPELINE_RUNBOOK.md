@@ -22,9 +22,12 @@
       makes a double-click/retry idempotent (one record).
    2. **Email** the owner via the provider-agnostic webhook (primary notification AND
       the emergency fallback record when MongoDB is down).
-   3. **Telegram** short alert (optional secondary), if configured — id/type/date/city
-      only, never name/phone/email/notes.
-   4. **Patch** the stored lead's `notificationStatus` (best-effort; never flips
+   3. **Telegram** alert (optional secondary), if configured — the **full inquiry**
+      (every field the visitor filled) so the owner can act from the chat without DB
+      access. Sent only to the owner's private bot/chat (a closed channel).
+   4. **Google Sheets** append (optional secondary), if configured — one row per lead
+      to a spreadsheet (a browsable cloud log for the owner). Never an acceptance signal.
+   5. **Patch** the stored lead's `notificationStatus` (best-effort; never flips
       acceptance).
 4. **Acceptance rule:** `accepted = mongo.ok || email.ok`. Telegram is **never** an
    acceptance signal. The route returns `{ ok: true, id }` only when accepted. A
@@ -50,7 +53,9 @@ All access goes through `lib/env.ts`. Keys mirror `.env.example`:
 | `LEAD_EMAIL_WEBHOOK_TOKEN` | Optional `Authorization: Bearer …` for the webhook. | No |
 | `LEAD_STORE_DIR` | **Dev-only** local copy path. Default `.leads` (git-ignored). Not used in production. | No |
 | `LEAD_RATE_LIMIT_PER_MINUTE` | Max submissions/IP/60 s. Default 5. Raise **only** in e2e. | No |
-| `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` | Optional secondary alert (both required to enable). | No |
+| `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` | Optional secondary alert (both required to enable). Sends the **full inquiry** to the owner's private chat. | No |
+| `GOOGLE_SHEETS_WEBHOOK_URL` | Optional. POST `{token?, lead}` → appends one row to a Google Sheet (cloud log). Use a deployed Apps Script Web App (snippet below). Never an acceptance signal. | No |
+| `GOOGLE_SHEETS_WEBHOOK_TOKEN` | Optional shared secret the Apps Script checks so only our app can append. | No |
 
 > **Two pieces need live credentials in production:** `MONGODB_URI` (durable store)
 > and `LEAD_EMAIL_WEBHOOK_URL` (owner inbox + fallback record). With Mongo set, every
@@ -78,6 +83,55 @@ All access goes through `lib/env.ts`. Keys mirror `.env.example`:
   JSON copy is written under `LEAD_STORE_DIR` (`<yyyy-mm-dd>_<id>.json`, `flag:"wx"`).
   Production always sets `MONGODB_URI`, so this file is never the production authority.
 
+## Google Sheets cloud log (optional)
+
+A zero-dependency way to give the owner a **browsable cloud copy** of every lead with no
+database access. The app POSTs `{ token?, lead }` to `GOOGLE_SHEETS_WEBHOOK_URL`; a
+deployed **Google Apps Script Web App** appends one row. It is a **secondary** channel —
+never an acceptance signal — so a Sheets failure never affects whether a lead is accepted.
+
+**Column order** (from `lib/leads.ts` → `toSheetRow`): `receivedAt, id, name, phone,
+email, eventType, date, time, city, childCount, show, notes, sourcePath, utmSource,
+utmMedium, utmCampaign`. Put these as the header row (row 1) of the sheet.
+
+**Setup:**
+
+1. Create a Google Sheet; add the header row above. Note the tab name (e.g. `Leads`).
+2. **Extensions → Apps Script**, paste the script below, set `SECRET` to a random string.
+3. **Deploy → New deployment → Web app**: execute as *Me*, access *Anyone*. Copy the
+   `/exec` URL.
+4. Set production secrets: `GOOGLE_SHEETS_WEBHOOK_URL=<the /exec URL>` and
+   `GOOGLE_SHEETS_WEBHOOK_TOKEN=<the same SECRET>`.
+5. Submit a clearly-marked test inquiry → confirm a new row appears.
+
+```javascript
+// Google Apps Script — appends one row per lead. Deploy as a Web App.
+const SECRET = "__SET_A_RANDOM_STRING__";   // must equal GOOGLE_SHEETS_WEBHOOK_TOKEN
+const SHEET  = "Leads";                       // tab name
+const COLS = ["receivedAt","id","name","phone","email","eventType","date","time",
+              "city","childCount","show","notes","sourcePath","utmSource",
+              "utmMedium","utmCampaign"];
+
+function doPost(e) {
+  try {
+    const body = JSON.parse(e.postData.contents || "{}");
+    if (SECRET && body.token !== SECRET) {
+      return ContentService.createTextOutput("forbidden").setMimeType(ContentService.MimeType.TEXT);
+    }
+    const lead = body.lead || {};
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET);
+    sheet.appendRow(COLS.map(function (k) { return lead[k] != null ? lead[k] : ""; }));
+    return ContentService.createTextOutput("ok").setMimeType(ContentService.MimeType.TEXT);
+  } catch (err) {
+    return ContentService.createTextOutput("error").setMimeType(ContentService.MimeType.TEXT);
+  }
+}
+```
+
+> **Privacy:** the sheet holds the same PII as the email/DB (name, phone, email, notes).
+> Restrict sharing to the owner; never make the spreadsheet public or paste rows into
+> public channels. The `token` keeps anonymous POSTs from writing junk rows.
+
 ## Provider ownership & recovery
 
 - **Atlas project/cluster:** _record owner/login location + recovery details here (no
@@ -88,6 +142,9 @@ All access goes through `lib/env.ts`. Keys mirror `.env.example`:
   still in MongoDB and `notificationStatus.email` shows the failure — replay safely.
 - **If Telegram is missing:** check the lead exists in MongoDB + `notificationStatus.
   telegram`; Telegram failure never means a lost lead.
+- **If a Google Sheets row is missing:** check `notificationStatus.sheets`; verify the
+  Apps Script deployment is live and the token matches. The lead is still in MongoDB +
+  email — Sheets failure never means a lost lead.
 - **If MongoDB is unavailable:** confirm whether email accepted the lead (the fallback
   record). The self-heal clears a rejected cached client automatically; verify Atlas
   network access, credentials, and service status. Never weaken security as a quick fix.
@@ -101,7 +158,8 @@ All access goes through `lib/env.ts`. Keys mirror `.env.example`:
 - [ ] Confirm `LEAD_NOTIFY_EMAIL=info@misslanatheatre.com`.
 - [ ] Submit one **clearly-marked test** inquiry from **mobile** and **desktop**;
       confirm: success panel + id, one matching MongoDB record (`status:"new"`), email
-      in `info@misslanatheatre.com`, Telegram alert (short fields only).
+      in `info@misslanatheatre.com`, Telegram alert (full fields), and — if configured —
+      a new Google Sheets row.
 - [ ] Force MongoDB failure (bad credential) with email working → visitor sees success
       via the email fallback.
 - [ ] Force MongoDB **and** email failure → visitor sees an honest error + call CTA,
