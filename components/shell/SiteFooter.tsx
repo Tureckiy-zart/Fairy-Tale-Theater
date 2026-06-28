@@ -42,7 +42,7 @@ export function SiteFooter() {
                 {EMAIL.address}
               </a>
               <p className="mt-1 max-w-xs text-sm text-ink-soft">
-                Text, email or WhatsApp anytime. Miss Lana replies within 1–2 business days.
+                Text, email or WhatsApp anytime. Miss Lana usually replies in 1–2 business days.
               </p>
             </div>
           </div>
