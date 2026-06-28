@@ -8,6 +8,8 @@ import {
   sanitizeSubmissionId,
   toStoredLead,
   formatLeadSummary,
+  formatLeadTelegram,
+  toSheetRow,
   type RawLead,
   type Lead,
 } from "@/lib/leads";
@@ -274,6 +276,71 @@ describe("formatLeadSummary", () => {
   });
 });
 
+describe("formatLeadTelegram", () => {
+  function buildTgLead(overrides: Partial<Lead> = {}): Lead {
+    const base = buildLead(
+      validRaw({ email: "jane@example.com", count: "12", show: "The Little Mermaid", notes: "Call after 5pm" }),
+      "ML-ABCDE",
+      "sub-0123456789abcdef",
+      "2026-06-28T12:00:00.000Z",
+    );
+    return { ...base, ...overrides };
+  }
+
+  it("includes every field the visitor filled", () => {
+    const msg = formatLeadTelegram(buildTgLead());
+    expect(msg).toContain("ML-ABCDE");
+    expect(msg).toContain("Jane Doe");
+    expect(msg).toContain("(310) 555-0142");
+    expect(msg).toContain("jane@example.com");
+    expect(msg).toContain("Birthday party");
+    expect(msg).toContain("Los Angeles");
+    expect(msg).toContain("The Little Mermaid");
+    expect(msg).toContain("Call after 5pm");
+    expect(msg).toContain("12");
+  });
+
+  it("omits absent optional fields entirely (no empty rows)", () => {
+    const msg = formatLeadTelegram(buildTgLead({ email: null, show: null, notes: null, childCount: null }));
+    expect(msg).not.toContain("Email");
+    expect(msg).not.toContain("Show");
+    expect(msg).not.toContain("Notes");
+    expect(msg).not.toContain("Children");
+    // Required fields still present.
+    expect(msg).toContain("Jane Doe");
+  });
+});
+
+describe("toSheetRow", () => {
+  function buildRowLead(overrides: Partial<Lead> = {}): Lead {
+    const base = buildLead(
+      validRaw({ email: "jane@example.com", count: "12" }),
+      "ML-ABCDE",
+      "sub-0123456789abcdef",
+      "2026-06-28T12:00:00.000Z",
+    );
+    return { ...base, ...overrides };
+  }
+
+  it("flattens the lead into stable columns", () => {
+    const row = toSheetRow(buildRowLead());
+    expect(row.id).toBe("ML-ABCDE");
+    expect(row.name).toBe("Jane Doe");
+    expect(row.email).toBe("jane@example.com");
+    expect(row.childCount).toBe(12);
+    expect(row.eventType).toBe("Birthday party");
+  });
+
+  it("uses empty strings (not null) for absent optional fields", () => {
+    const row = toSheetRow(buildRowLead({ email: null, time: null, show: null, notes: null, childCount: null }));
+    expect(row.email).toBe("");
+    expect(row.time).toBe("");
+    expect(row.show).toBe("");
+    expect(row.notes).toBe("");
+    expect(row.childCount).toBe("");
+  });
+});
+
 describe("sanitizeSubmissionId", () => {
   it("accepts a crypto.randomUUID-shaped value", () => {
     const uuid = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
@@ -318,7 +385,7 @@ describe("toStoredLead", () => {
     const doc = toStoredLead(lead());
     expect(doc.status).toBe("new");
     expect(doc.updatedAt).toBe(doc.receivedAt);
-    expect(doc.notificationStatus).toEqual({ email: "pending", telegram: "pending" });
+    expect(doc.notificationStatus).toEqual({ email: "pending", telegram: "pending", sheets: "pending" });
   });
 
   it("carries id and submissionId", () => {

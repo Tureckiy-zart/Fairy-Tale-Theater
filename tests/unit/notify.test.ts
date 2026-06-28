@@ -54,6 +54,8 @@ beforeEach(() => {
   delete process.env.LEAD_EMAIL_WEBHOOK_TOKEN;
   delete process.env.TELEGRAM_BOT_TOKEN;
   delete process.env.TELEGRAM_CHAT_ID;
+  delete process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  delete process.env.GOOGLE_SHEETS_WEBHOOK_TOKEN;
 });
 
 afterEach(() => {
@@ -64,13 +66,23 @@ afterEach(() => {
   delete process.env.LEAD_EMAIL_WEBHOOK_TOKEN;
   delete process.env.TELEGRAM_BOT_TOKEN;
   delete process.env.TELEGRAM_CHAT_ID;
+  delete process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  delete process.env.GOOGLE_SHEETS_WEBHOOK_TOKEN;
 });
 
-/** Configure email + telegram env and a fetch mock that routes by URL. */
-function stubFetch(opts: { emailStatus?: number | "timeout"; telegramStatus?: number | "timeout" }) {
-  const fetchMock = vi.fn(async (url: string | URL) => {
+/** Configure email/telegram/sheets env and a fetch mock that routes by URL. */
+function stubFetch(opts: {
+  emailStatus?: number | "timeout";
+  telegramStatus?: number | "timeout";
+  sheetsStatus?: number | "timeout";
+}) {
+  const fetchMock = vi.fn(async (url: string | URL, _init?: RequestInit) => {
     const u = String(url);
-    const which = u.includes("api.telegram.org") ? opts.telegramStatus : opts.emailStatus;
+    const which = u.includes("api.telegram.org")
+      ? opts.telegramStatus
+      : u.includes("sheets.test")
+        ? opts.sheetsStatus
+        : opts.emailStatus;
     if (which === "timeout") throw Object.assign(new Error("timed out"), { name: "TimeoutError" });
     return new Response(null, { status: which ?? 200 });
   });
@@ -86,6 +98,7 @@ describe("deliverLead acceptance matrix", () => {
     expect(r.channels.store.status).toBe("ok");
     expect(r.channels.email.status).toBe("skipped");
     expect(r.channels.telegram.status).toBe("skipped");
+    expect(r.channels.sheets.status).toBe("skipped");
   });
 
   it("mongo ok, email error, telegram error → accepted (store carries it)", async () => {
@@ -168,6 +181,40 @@ describe("deliverLead provider classification", () => {
   });
 });
 
+describe("deliverLead Google Sheets channel", () => {
+  it("is skipped when GOOGLE_SHEETS_WEBHOOK_URL is unset", async () => {
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead());
+    expect(r.channels.sheets.status).toBe("skipped");
+  });
+
+  it("appends the lead row and reports ok when the webhook succeeds", async () => {
+    process.env.GOOGLE_SHEETS_WEBHOOK_URL = "https://sheets.test/append";
+    process.env.GOOGLE_SHEETS_WEBHOOK_TOKEN = "shh";
+    const fetchMock = stubFetch({ sheetsStatus: 200 });
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead());
+    expect(r.channels.sheets.status).toBe("ok");
+    // The POST body carries the flat row + the shared-secret token.
+    const call = fetchMock.mock.calls.find(([u]) => String(u).includes("sheets.test"));
+    expect(call).toBeTruthy();
+    const body = JSON.parse((call![1] as RequestInit).body as string);
+    expect(body.token).toBe("shh");
+    expect(body.lead.id).toBe("ML-ABCDE");
+    expect(body.lead.name).toBe("Jane Doe");
+    expect(body.lead.childCount).toBe(12);
+  });
+
+  it("records an error but never rejects the lead when the webhook fails", async () => {
+    process.env.GOOGLE_SHEETS_WEBHOOK_URL = "https://sheets.test/append";
+    stubFetch({ sheetsStatus: 500 });
+    const { deliverLead } = await importNotify();
+    const r = await deliverLead(fixtureLead());
+    expect(r.accepted).toBe(true); // store still ok
+    expect(r.channels.sheets.status).toBe("error");
+  });
+});
+
 describe("deliverLead notification-status persistence", () => {
   it("patches notificationStatus when the lead was stored", async () => {
     process.env.LEAD_EMAIL_WEBHOOK_URL = "https://example.test/email";
@@ -175,10 +222,11 @@ describe("deliverLead notification-status persistence", () => {
     const { deliverLead } = await importNotify();
     await deliverLead(fixtureLead());
     expect(updateCalls.length).toBe(1);
-    const [id, status] = updateCalls[0] as [string, { email: string; telegram: string }];
+    const [id, status] = updateCalls[0] as [string, { email: string; telegram: string; sheets: string }];
     expect(id).toBe("ML-ABCDE");
     expect(status.email).toBe("ok");
     expect(status.telegram).toBe("skipped");
+    expect(status.sheets).toBe("skipped");
   });
 
   it("does NOT patch notificationStatus when the store failed (nothing to patch)", async () => {

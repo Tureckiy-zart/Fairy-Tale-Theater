@@ -68,6 +68,20 @@ export const env = {
     return process.env.LEAD_EMAIL_WEBHOOK_TOKEN || undefined;
   },
   /**
+   * Google Sheets append webhook (optional secondary record in the cloud). A POST of
+   * the flat lead row to this URL appends one row to a spreadsheet — typically a
+   * deployed Google Apps Script Web App (see LEAD_PIPELINE_RUNBOOK.md). Gives the owner
+   * a browsable cloud log with no DB access. Optional: unset → "not configured" and the
+   * channel is skipped. NEVER an acceptance signal (like Telegram). Server-only.
+   */
+  get leadSheetsWebhookUrl(): string | undefined {
+    return process.env.GOOGLE_SHEETS_WEBHOOK_URL || undefined;
+  },
+  /** Optional shared secret echoed to the Sheets webhook so only our app can append. */
+  get leadSheetsWebhookToken(): string | undefined {
+    return process.env.GOOGLE_SHEETS_WEBHOOK_TOKEN || undefined;
+  },
+  /**
    * Directory for the durable lead record (recovery if a provider fails). Defaults
    * to a git-ignored `.leads` dir at the project root. Server-only; never served.
    * On a read-only/serverless filesystem the pipeline falls back to a temp dir and

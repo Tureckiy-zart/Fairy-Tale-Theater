@@ -115,6 +115,9 @@ export async function POST(req: Request): Promise<NextResponse> {
   if (delivery.channels.telegram.status === "error") {
     console.warn(`[lead] ${lead.id} telegram=${stringifyOutcome(delivery.channels.telegram)}`);
   }
+  if (delivery.channels.sheets.status === "error") {
+    console.warn(`[lead] ${lead.id} sheets=${stringifyOutcome(delivery.channels.sheets)}`);
+  }
 
   return json({ ok: true, id: lead.id }, 200);
 }

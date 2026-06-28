@@ -6,18 +6,21 @@
 //      survives any notification failure.
 //   2. Email the owner via a provider-agnostic webhook (primary notification AND the
 //      emergency fallback record when MongoDB is down).
-//   3. Optionally send a short Telegram alert (secondary), if configured.
-//   4. Patch the stored lead's notificationStatus (best-effort; never flips acceptance).
+//   3. Optionally send a FULL Telegram alert (secondary), if configured — every field
+//      the visitor filled, so the owner can act from the chat without DB access.
+//   4. Optionally append the lead as a row to a Google Sheet (secondary cloud record),
+//      if configured — a browsable cloud log for the owner.
+//   5. Patch the stored lead's notificationStatus (best-effort; never flips acceptance).
 //
 // Acceptance rule (the route's honest client signal):
 //   accepted = mongo.status === "ok" || email.status === "ok"
-// Telegram is NEVER an acceptance signal. A best-effort local file (dev only) is NEVER
-// an acceptance signal in production either — see writeDevCopy.
+// Telegram and Google Sheets are NEVER acceptance signals. A best-effort local file (dev
+// only) is NEVER an acceptance signal in production either — see writeDevCopy.
 import { mkdir, writeFile } from "node:fs/promises";
 import { join, isAbsolute } from "node:path";
 import { tmpdir } from "node:os";
 import { env } from "./env";
-import { formatLeadSummary, toStoredLead, type Lead } from "./leads";
+import { formatLeadSummary, formatLeadTelegram, toSheetRow, toStoredLead, type Lead } from "./leads";
 import { storeLead, updateNotificationStatus } from "./leadStore";
 
 export interface DeliveryResult {
@@ -28,6 +31,7 @@ export interface DeliveryResult {
     store: ChannelOutcome;
     email: ChannelOutcome;
     telegram: ChannelOutcome;
+    sheets: ChannelOutcome;
   };
 }
 
@@ -113,8 +117,14 @@ async function emailOwner(lead: Lead): Promise<ChannelOutcome> {
   }
 }
 
-/** Optional short Telegram alert (secondary). Skipped unless both env vars set. No PII:
- *  only the inquiry id, event type, date, and city — never name/phone/email/notes. */
+/**
+ * Optional FULL Telegram alert (secondary). Skipped unless both env vars set. Sends every
+ * field the visitor filled (id, type, date, time, city, name, phone, email, children,
+ * show, notes, source) so the owner can act straight from the chat — she has no DB access
+ * and needs none. This goes ONLY to the owner's private bot/chat (a closed channel), so
+ * the contact details never leave the owner's own notification surface. PII still never
+ * enters logs or the DeliveryResult — only the HTTP status is recorded.
+ */
 async function telegramAlert(lead: Lead): Promise<ChannelOutcome> {
   const token = env.telegramBotToken;
   const chatId = env.telegramChatId;
@@ -125,21 +135,39 @@ async function telegramAlert(lead: Lead): Promise<ChannelOutcome> {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         chat_id: chatId,
-        text: [
-          "🎭 New booking inquiry",
-          "",
-          `ID: ${lead.id}`,
-          `Type: ${lead.eventType}`,
-          `Date: ${lead.date}`,
-          `City: ${lead.city}`,
-          "",
-          `Full details are in email (${env.leadNotifyEmail}).`,
-        ].join("\n"),
+        text: formatLeadTelegram(lead),
         disable_web_page_preview: true,
       }),
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return { status: "error", reason: `telegram HTTP ${res.status}` };
+    return { status: "ok" };
+  } catch (err) {
+    return { status: "error", reason: errText(err) };
+  }
+}
+
+/**
+ * Optional Google Sheets append (secondary cloud record). Skipped unless the webhook URL
+ * is set. POSTs the flat lead row to a deployed Apps Script Web App (or any endpoint that
+ * accepts {token?, lead}) which appends one spreadsheet row — a browsable cloud log for
+ * the owner. NEVER an acceptance signal. Apps Script web apps answer with a 302 to
+ * script.googleusercontent.com, so follow redirects. No PII in logs/result — status only.
+ */
+async function appendToSheet(lead: Lead): Promise<ChannelOutcome> {
+  const url = env.leadSheetsWebhookUrl;
+  if (!url) return { status: "skipped", reason: "Google Sheets not configured" };
+  try {
+    const body: Record<string, unknown> = { lead: toSheetRow(lead) };
+    if (env.leadSheetsWebhookToken) body.token = env.leadSheetsWebhookToken;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+      redirect: "follow",
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) return { status: "error", reason: `sheets HTTP ${res.status}` };
     return { status: "ok" };
   } catch (err) {
     return { status: "error", reason: errText(err) };
@@ -157,7 +185,11 @@ async function telegramAlert(lead: Lead): Promise<ChannelOutcome> {
  */
 export async function deliverLead(lead: Lead): Promise<DeliveryResult> {
   const store = await persist(lead);
-  const [email, telegram] = await Promise.all([emailOwner(lead), telegramAlert(lead)]);
+  const [email, telegram, sheets] = await Promise.all([
+    emailOwner(lead),
+    telegramAlert(lead),
+    appendToSheet(lead),
+  ]);
   const accepted = store.status === "ok" || email.status === "ok";
 
   // Patch notification statuses on the stored lead — only when it actually landed in
@@ -169,6 +201,7 @@ export async function deliverLead(lead: Lead): Promise<DeliveryResult> {
       {
         email: channelStatus(email),
         telegram: channelStatus(telegram),
+        sheets: channelStatus(sheets),
         lastAttemptAt: new Date().toISOString(),
       },
       new Date().toISOString(),
@@ -177,7 +210,7 @@ export async function deliverLead(lead: Lead): Promise<DeliveryResult> {
     });
   }
 
-  return { accepted, channels: { store, email, telegram } };
+  return { accepted, channels: { store, email, telegram, sheets } };
 }
 
 function errText(err: unknown): string {
