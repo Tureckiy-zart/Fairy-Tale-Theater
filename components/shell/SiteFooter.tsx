@@ -1,9 +1,10 @@
 "use client";
-// SiteFooter — global footer. Spec: SITE_STRUCTURE_AND_BLOCKS.md §2/§3 (click-to-call
-// phones, travel areas, mini-sitemap, text wordmark, legal). Phosphor icons (single
-// library, §6).
-import { Phone, MapPin, Sparkle } from "@phosphor-icons/react";
-import { AREAS, BRAND, FACTS, FOOTER_LINKS, PHONES } from "@/lib/site";
+// SiteFooter — global footer. Spec: SITE_STRUCTURE_AND_BLOCKS.md §2/§3 (click-to-call,
+// primary email, travel areas, mini-sitemap, text wordmark, legal). Phosphor icons
+// remain the single icon library (DESIGN_SYSTEM §6).
+import { EnvelopeSimple, MapPin, Phone } from "@phosphor-icons/react";
+import { BrandWordmark } from "@/components/brand/Wordmark";
+import { AREAS, BRAND, EMAIL, FACTS, FOOTER_LINKS, PHONES } from "@/lib/site";
 import { track } from "@/lib/analytics";
 
 export function SiteFooter() {
@@ -14,22 +15,7 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
           {/* Brand + contact */}
           <div>
-            <div className="flex items-center gap-2">
-              <span data-icon="duotone-brand" className="text-forest-700">
-                <Sparkle size={26} weight="duotone" aria-hidden />
-              </span>
-              <span className="flex flex-col leading-none">
-                <span
-                  className="font-display text-xl text-forest-800"
-                  style={{ fontVariationSettings: '"SOFT" 60' }}
-                >
-                  {BRAND.umbrella}
-                </span>
-                <span className="font-body text-[11px] font-semibold uppercase tracking-[0.06em] text-forest-600">
-                  {BRAND.descriptor}
-                </span>
-              </span>
-            </div>
+            <BrandWordmark />
             <p className="mt-4 max-w-xs text-sm text-ink-soft">
               Professional live children&rsquo;s theater that comes to you — {FACTS.experience} of
               kind, timeless fairy tales.
@@ -47,6 +33,17 @@ export function SiteFooter() {
                   {p.display}
                 </a>
               ))}
+              <a
+                href={EMAIL.href}
+                onClick={() => track("email_click", { path: "footer" })}
+                className="inline-flex items-center gap-2 font-body font-semibold text-forest-700 underline-offset-4 hover:underline"
+              >
+                <EnvelopeSimple size={18} weight="duotone" aria-hidden className="text-forest-600" />
+                {EMAIL.address}
+              </a>
+              <p className="mt-1 max-w-xs text-sm text-ink-soft">
+                Text, email or WhatsApp anytime. Miss Lana replies within 1–2 business days.
+              </p>
             </div>
           </div>
 
@@ -69,7 +66,7 @@ export function SiteFooter() {
             </ul>
           </nav>
 
-          {/* Areas + social */}
+          {/* Areas */}
           <div>
             <h2 className="font-body text-sm font-bold uppercase tracking-[0.06em] text-ink">
               Where we go
@@ -77,11 +74,10 @@ export function SiteFooter() {
             <p className="mt-4 flex items-start gap-2 text-sm text-ink-soft">
               <MapPin size={18} weight="duotone" aria-hidden className="mt-0.5 shrink-0 text-forest-600" />
               <span>
-                Based in {AREAS.base}; we travel to {AREAS.travel.join(", ")}. We come to you — no
-                public venue.
+                Based in {AREAS.base}; serving {AREAS.region} and traveling to {AREAS.travel.join(", ")}
+                {" "}and {AREAS.byRequest.toLowerCase()} by request. We come to you — no public venue.
               </span>
             </p>
-
           </div>
         </div>
 
