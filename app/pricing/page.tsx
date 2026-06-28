@@ -1,7 +1,7 @@
 // Pricing (/pricing) — SITE_STRUCTURE_AND_BLOCKS.md §4.4. Public pricing is limited to
 // "from $350" + what shapes a custom quote + travel by custom quote + packages by
-// segment + CTA. NO audience-size price tiers, tables, calculators, or fixed travel
-// surcharges (locked commercial constraint; OWNER_ANSWERS_DECISION_RECORD.md §1/§2).
+// segment + CTA. NO audience-size price tiers, tables, calculators, fixed travel
+// surcharges, or blanket free-travel promises (locked commercial constraint).
 // Server component; metadata via lib/seo.
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
@@ -18,7 +18,7 @@ import { cx } from "@/components/ui/cx";
 import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
-import { QUOTE_FACTORS, FACTS } from "@/lib/site";
+import { AREAS, QUOTE_FACTORS, FACTS } from "@/lib/site";
 
 const INCLUDED = [
   "A ~30-minute costumed fairy-tale play",
@@ -37,7 +37,7 @@ const PACKAGES: { title: string; accent: Accent; blurb: string }[] = [
 export const metadata: Metadata = buildMetadata({
   title: "Pricing",
   description:
-    `Simple, transparent pricing for Miss Lana's Fairy-Tale Theatre — ${FACTS.priceFrom}. Every event gets a custom quote; travel beyond the greater Los Angeles area is quoted by distance. Serving LA and beyond.`,
+    `Simple, transparent pricing for Miss Lana's Fairy-Tale Theatre — ${FACTS.priceFrom}. Every event gets a custom quote, including any travel outside the regular Los Angeles service area. Serving Southern California and farther California locations by request.`,
   path: "/pricing",
 });
 
@@ -76,7 +76,7 @@ export default function PricingPage() {
         </div>
       </Section>
 
-      {/* What's included + travel (greater LA free; farther quoted by distance — no $) */}
+      {/* What's included + travel (custom quote; no unapproved free radius or $ surcharge) */}
       <Section tone="surface">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
@@ -95,12 +95,12 @@ export default function PricingPage() {
           <div className="flex flex-col gap-4 rounded-2xl border border-border-soft bg-cream p-6 md:p-8">
             <SectionHeader as="h2" title="Travel" />
             <p className="text-ink">
-              We travel <strong>free across the greater Los Angeles and Orange County area</strong>.
-              Farther locations are <strong>quoted individually by distance</strong>.
+              We&rsquo;re based in <strong>{AREAS.base}</strong> and serve <strong>{AREAS.region}</strong>.
+              Your custom quote confirms any travel cost before you book.
             </p>
             <p className="text-ink-soft">
-              We also travel to San Diego, Sacramento and San Jose — we&rsquo;ll confirm travel
-              with your quote.
+              We also travel to {AREAS.travel.join(", ")} and other California locations by request.
+              Tell us the city or area and we&rsquo;ll include the travel details in the quote.
             </p>
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function PricingPage() {
 
       <BookingCTABand
         heading="Ready for a quote?"
-        sub="Send your group size and date — we'll confirm pricing and availability."
+        sub="Send your group size, date and city — we'll confirm pricing, travel and availability."
       />
     </SiteShell>
   );
