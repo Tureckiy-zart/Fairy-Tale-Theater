@@ -9,7 +9,7 @@ import "./globals.css";
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin", "latin-ext"],
-  axes: ["opsz", "SOFT"], // §4.1 — opsz (optical size) + SOFT (warmth) axes; wght is variable
+  axes: ["opsz", "SOFT"],
   display: "swap",
 });
 
@@ -19,24 +19,15 @@ const nunito = Nunito({
   display: "swap",
 });
 
-// LAUNCHED (STABILIZE_MISS_LANA_PRELAUNCH_001, 2026-06-27): site-wide noindex
-// removed by explicit owner decision — the site is now publicly indexable. Pages set
-// their own title/description/canonical via lib/seo `buildMetadata`. /design keeps its
-// OWN noindex (internal preview, never public). To roll back to pre-launch, restore
-// `robots: { index:false, follow:false }` here + per-page noindex + robots.ts Disallow.
-// Lazy (per-request) so the optional Search Console verification token is read via
-// lib/env, not baked at import time. Emits <meta name="google-site-verification"> only
-// when GOOGLE_SITE_VERIFICATION is set (04_SEO.md).
+// Public launch state: real marketing pages are indexable. /design retains its own
+// noindex and robots.txt keeps /design and /api outside the public crawl surface.
 export function generateMetadata(): Metadata {
   const googleSiteVerification = env.googleSiteVerification;
   return {
-    // Absolute base for OG/canonical/icon URLs — resolves the file-based app/icon.svg,
-    // app/favicon.ico and app/apple-icon.png to absolute URLs and avoids the build warning.
     metadataBase: new URL(env.baseUrl),
     title: "Miss Lana's Fairy-Tale Theatre",
     description:
-      "Touring children's live-costumed fairy-tale theater serving Los Angeles and beyond.",
-    // Brand name signal (helps Google show the brand, not the bare domain, as site name).
+      "Touring live children's fairy-tale theater serving Los Angeles, Southern California and farther California locations by request.",
     applicationName: "Miss Lana's Fairy-Tale Theatre",
     ...(googleSiteVerification ? { verification: { google: googleSiteVerification } } : {}),
   };

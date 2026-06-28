@@ -1,0 +1,225 @@
+{
+  "task": "FULL_LAUNCH_CONTACT_SEO_POLISH_001",
+  "version": "2.0",
+  "task_mode": "fix",
+  "task_type": "public-launch-contact-and-seo-polish",
+  "layer": "Launch",
+  "description": "Finish the public launch of Miss Lana's Fairy-Tale Theatre by correcting the remaining public brand, contact-workflow, service-area, privacy, and launch-indexing inconsistencies without changing the locked product positioning or inventing commercial terms.",
+  "non_goals": [
+    "Do not create or claim Google Business Profile, Search Console, Yelp, GigSalad, or advertising-account setup inside this repository.",
+    "Do not invent fixed travel fees, free-travel radii, package prices, testimonials, social links, business hours, or legal guarantees.",
+    "Do not redesign the visual system, final logo, wordmark artwork, or trademark-gated assets.",
+    "Do not change show titles, show content, the lead-delivery architecture, database schema, or notification providers.",
+    "Do not merge directly to main; deliver the work through a reviewable pull request."
+  ],
+  "authority_scope": {
+    "must_read": [
+      "PROJECT_BRIEF.md",
+      "STATUS.md",
+      "CLAUDE.md",
+      "docs/core/BRAND.md",
+      "docs/core/01_CONTENT_INVENTORY.md",
+      "docs/core/02_POSITIONING_AND_TONE.md",
+      "docs/core/03_SITEMAP_AND_SCOPE.md",
+      "docs/core/04_SEO.md",
+      "docs/core/DESIGN_SYSTEM.md",
+      "docs/core/SITE_STRUCTURE_AND_BLOCKS.md",
+      "docs/_internal/governance/tung_system_specification.md",
+      "docs/_internal/governance/TUNG-EXECUTION-RULE-(CANON).txt"
+    ],
+    "must_not_violate": [
+      "The locked public brand is Miss Lana's Fairy-Tale Theatre on misslanatheatre.com.",
+      "The primary public contact is info@misslanatheatre.com and (323) 903-2039; SMS, email, and WhatsApp are accepted and written contact is preferred.",
+      "Los Angeles is the business base, while San Diego, Sacramento, San Jose, and other California locations may be served by request.",
+      "Public pricing remains from $350; travel outside the normal local service area receives a custom quote with no invented amount or blanket free-travel promise.",
+      "Only real public routes may be indexed; /design and /api remain excluded.",
+      "No Russian or Slavic brand coding and no puppet-theater-first positioning."
+    ],
+    "requires_unlock": false,
+    "allowed_change_classes": [
+      "public copy corrections",
+      "contact presentation and lead-form UX",
+      "service-area wording and structured data",
+      "privacy notice and footer navigation",
+      "robots, sitemap, metadata, and public-route verification",
+      "targeted tests and launch documentation"
+    ]
+  },
+  "forbidden_execution_patterns": [
+    "No direct commit or push to main.",
+    "No replacement of the working lead pipeline with a mock or client-only success state.",
+    "No public internal labels such as placeholder, GBP-first, embed later, phase, or TODO.",
+    "No promise that Orange County, greater LA, or any named radius is free unless the owner has explicitly approved that commercial rule.",
+    "No claim that external indexing, Search Console submission, Google Business verification, or advertising profiles are complete without direct evidence.",
+    "No broad refactor while touching launch copy."
+  ],
+  "execution_guardrails": [
+    "Preserve the existing production lead endpoint, durable persistence, Telegram/email/Sheets notifications, and honest success behavior.",
+    "Use the existing design-system components and tokens; do not add ad-hoc styling.",
+    "Keep contact language channel-neutral: text, email, WhatsApp, or phone, with a 1-2 business day response expectation.",
+    "Describe geography as a Los Angeles base with wider California travel by request and a custom travel quote.",
+    "Keep all public pages indexable except explicitly internal routes, and keep the sitemap synchronized with the real route tree.",
+    "Add regression tests for every corrected launch inconsistency.",
+    "Stage and review only task-owned files."
+  ],
+  "prerequisites": {
+    "must_have_completed": [
+      "STABILIZE_MISS_LANA_PRELAUNCH_001"
+    ],
+    "must_be_ready": true,
+    "readiness_report": "STATUS.md"
+  },
+  "steps": [
+    {
+      "title": "Audit the current launch state",
+      "actions": [
+        "Verify current robots, sitemap, metadata, public route set, contact copy, service-area copy, and visible brand spelling.",
+        "Separate already-completed launch work from remaining defects."
+      ],
+      "expectation": "The implementation changes only defects that still exist in the current main branch.",
+      "affected_files": [
+        "app/layout.tsx",
+        "app/robots.ts",
+        "app/sitemap.ts",
+        "components/ui/Nav.tsx",
+        "components/shell/LeadForm.tsx",
+        "components/shell/SiteFooter.tsx",
+        "app/booking/page.tsx",
+        "lib/site.ts",
+        "lib/seo.ts"
+      ]
+    },
+    {
+      "title": "Correct the public brand and contact workflow",
+      "actions": [
+        "Render the locked possessive brand spelling in public wordmark surfaces.",
+        "Expose the primary email alongside the primary phone.",
+        "Replace call-first copy with channel-neutral response copy.",
+        "Add a clear preferred-reply choice to the booking form without weakening server-side lead validation or persistence."
+      ],
+      "expectation": "Visitors can choose a practical reply channel and the public UI no longer contradicts the documented workflow.",
+      "affected_files": [
+        "components/ui/Nav.tsx",
+        "components/shell/SiteFooter.tsx",
+        "components/shell/LeadForm.tsx",
+        "app/booking/page.tsx",
+        "lib/site.ts"
+      ]
+    },
+    {
+      "title": "Normalize service-area and travel language",
+      "actions": [
+        "Remove unverified blanket free-travel claims.",
+        "Present Los Angeles as the base and wider California travel as available by request.",
+        "Keep San Diego, Sacramento, and San Jose visible without implying they are local or free.",
+        "Align structured data with the public service-area copy."
+      ],
+      "expectation": "Every public surface describes geography consistently and does not invent a travel-pricing rule.",
+      "affected_files": [
+        "lib/site.ts",
+        "lib/seo.ts",
+        "components/blocks/HowItWorksAreas.tsx",
+        "app/booking/page.tsx",
+        "app/pricing/page.tsx",
+        "app/school-shows/page.tsx",
+        "app/birthdays/page.tsx"
+      ]
+    },
+    {
+      "title": "Remove launch placeholders and add privacy transparency",
+      "actions": [
+        "Replace the public service-area map placeholder with finished customer-facing content.",
+        "Add an indexable privacy page describing inquiry data use in plain language.",
+        "Link the privacy page from the footer and include it in the sitemap."
+      ],
+      "expectation": "No internal launch placeholder remains public and visitors can understand how inquiry data is handled.",
+      "affected_files": [
+        "app/booking/page.tsx",
+        "app/privacy/page.tsx",
+        "components/shell/SiteFooter.tsx",
+        "lib/site.ts",
+        "app/sitemap.ts"
+      ]
+    },
+    {
+      "title": "Verify the full public launch",
+      "actions": [
+        "Add targeted launch regression coverage.",
+        "Run the exact CI gate and Playwright e2e suite.",
+        "Review the complete diff using BLOCKER, HIGH, MEDIUM, LOW, and NOTE severity.",
+        "Record substantive changes in the project progress log and produce a launch report."
+      ],
+      "expectation": "All checks are green, no open BLOCKER or HIGH finding remains, and the work is submitted as a pull request.",
+      "affected_files": [
+        "tests/e2e/launch-polish.spec.ts",
+        "docs/reports/2026-06-28-full-launch-contact-seo-polish.md",
+        "docs/PROJECT_PROGRESS.md"
+      ]
+    }
+  ],
+  "success_criteria": [
+    "The public wordmark uses Miss Lana's Fairy-Tale Theatre consistently.",
+    "The footer and booking page expose info@misslanatheatre.com and (323) 903-2039.",
+    "The booking flow no longer says email is optional because the theatre will mostly call, and the visitor can state a preferred reply channel.",
+    "No public page contains GBP-first, embed later, placeholder, or other internal launch wording.",
+    "Los Angeles is identified as the base; San Diego, Sacramento, San Jose, and other California locations are available by request; no unverified blanket free-travel claim remains.",
+    "All real marketing routes, including /privacy, are indexable and listed in sitemap.xml; /design and /api remain excluded.",
+    "The lead API and durable notification pipeline continue to work without a fake success path.",
+    "Targeted tests and the exact CI gate pass.",
+    "A reviewable pull request exists and main was not directly modified."
+  ],
+  "verification": {
+    "required_commands": [
+      "pnpm run ci:exact",
+      "pnpm test:e2e"
+    ],
+    "manual_checks": [
+      "Check the header and footer wordmark on desktop and mobile.",
+      "Check the footer and booking page phone/email links.",
+      "Submit the booking form through the mocked e2e endpoint with each preferred reply option.",
+      "Inspect /booking, /pricing, /school-shows, /birthdays, and Home for consistent travel wording.",
+      "Inspect /robots.txt and /sitemap.xml and confirm /privacy is included while /design and /api are excluded.",
+      "Search the product code for GBP-first, embed later, we'll mostly call, and unapproved free-travel claims.",
+      "Review the diff for unintended pricing, brand, show, or pipeline changes."
+    ],
+    "regression_targets": [
+      "booking lead submission",
+      "server-side lead validation and persistence",
+      "header/mobile navigation",
+      "footer navigation and contacts",
+      "public route indexability",
+      "schema.org organization data",
+      "service-area and pricing copy"
+    ]
+  },
+  "deliverables": {
+    "reports": [
+      "docs/reports/2026-06-28-full-launch-contact-seo-polish.md"
+    ],
+    "progress_updates": [
+      "Append a substantive launch entry to docs/PROJECT_PROGRESS.md."
+    ],
+    "artifacts": [
+      "A reviewable GitHub pull request from fix/full-launch-contact-and-seo to main.",
+      "Updated public pages, components, metadata/schema, sitemap, privacy route, and regression tests."
+    ]
+  },
+  "mandatory_closure": {
+    "required": true,
+    "blocks_completion_until_passed": true,
+    "closure_sequence": [
+      "Step 1: Scope verification — confirm every changed file is required for the launch defects and no non_goal was implemented.",
+      "Step 2: Verification evidence — run pnpm run ci:exact and pnpm test:e2e and record exact outcomes.",
+      "Step 3: Reviewer-grade diff review — classify findings as BLOCKER, HIGH, MEDIUM, LOW, or NOTE; do not close with an open BLOCKER or HIGH.",
+      "Step 4: Public-surface review — confirm brand, contacts, preferred reply, geography, travel, privacy, indexability, sitemap, and internal-placeholder removal on the actual rendered pages.",
+      "Step 5: Execution-safety review — confirm no non_goals were fixed, no forbidden_execution_patterns were violated, and all execution_guardrails were respected.",
+      "Step 6: Documentation — create the launch report and append the project progress entry.",
+      "Step 7: Delivery — open a pull request; do not merge or modify main without the operator's explicit approval."
+    ]
+  },
+  "post_actions": [
+    "Do not claim Search Console submission, Google Business verification, or advertising-platform setup until those external actions are separately completed and verified.",
+    "After merge and deployment, verify the live robots.txt, sitemap.xml, canonical tags, lead delivery, and production contact links.",
+    "Create separate tasks for Google Business Profile, Search Console submission, marketplace profiles, reviews, and paid advertising."
+  ]
+}

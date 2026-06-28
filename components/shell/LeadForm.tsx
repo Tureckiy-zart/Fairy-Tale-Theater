@@ -1,33 +1,45 @@
 "use client";
 // LeadForm — the primary lead-capture form (the #1 conversion block — SITE_STRUCTURE
-// §4.7/§5). Built from the Field + Button primitives plus a token-matched native
-// <select> for the event type. PRODUCTION pipeline: the form POSTs to /api/lead,
-// which server-validates, persists a durable record, and notifies the owner. The
-// success panel renders ONLY after the server confirms acceptance (never a fake
-// success). Spec: DESIGN_SYSTEM §11 (form states) + §13 (a11y).
+// §4.7/§5). Built from the Field + Button primitives plus token-matched native
+// selects. PRODUCTION pipeline: the form POSTs to /api/lead, which server-validates,
+// persists a durable record, and notifies the owner. The success panel renders ONLY
+// after the server confirms acceptance (never a fake success). Spec: DESIGN_SYSTEM
+// §11 (form states) + §13 (a11y).
 import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { CheckCircle, WarningCircle } from "@phosphor-icons/react";
 import { Button, Field, SectionHeader } from "@/components/ui";
 import { cx } from "@/components/ui/cx";
 import { Lantern, SparkStar } from "@/components/brand/Glyphs";
-import { PHONES } from "@/lib/site";
+import { CONTACT_METHODS, PHONES } from "@/lib/site";
 import { track } from "@/lib/analytics";
 
 type Errors = Partial<Record<string, string>>;
 type Status = "idle" | "submitting" | "success" | "error";
 
-const EVENT_TYPES = ["Preschool / daycare", "School assembly", "Birthday party", "Private party / event"];
+const EVENT_TYPES = [
+  "Preschool / daycare",
+  "School assembly",
+  "Birthday party",
+  "Private party / event",
+] as const;
 
 // Client-side validation is a UX nicety; the server (lib/leads.validateLead) is the
-// authoritative gate and re-checks everything.
+// authoritative gate and re-checks every field in its existing production contract.
 function validate(data: FormData): Errors {
   const errors: Errors = {};
   const get = (k: string) => String(data.get(k) ?? "").trim();
   if (!get("name")) errors.name = "Please tell us your name.";
-  if (!get("phone")) errors.phone = "Add a phone number so we can call you back.";
+  if (!get("phone")) errors.phone = "Add a phone number so we can text, WhatsApp, or call you.";
   const email = get("email");
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = "Please check the email address.";
+  const contactMethod = get("contactMethod");
+  if (!contactMethod) errors.contactMethod = "Choose the best way for us to reply.";
+  else if (!CONTACT_METHODS.includes(contactMethod as (typeof CONTACT_METHODS)[number])) {
+    errors.contactMethod = "Choose the best way for us to reply.";
+  } else if (contactMethod === "Email" && !email) {
+    errors.email = "Add an email address if you would like us to reply by email.";
+  }
   if (!get("type")) errors.type = "Pick the kind of event.";
   const date = get("date");
   if (!date) errors.date = "Please add a date so we can check availability.";
@@ -49,7 +61,7 @@ function SelectField({
 }: {
   label: string;
   name: string;
-  options: string[];
+  options: readonly string[];
   required?: boolean;
   error?: string;
 }) {
@@ -64,7 +76,7 @@ function SelectField({
       <select
         id={id}
         name={name}
-        defaultValue=""
+        defaultValue={name === "contactMethod" ? CONTACT_METHODS[0] : ""}
         required={required}
         aria-required={required || undefined}
         aria-invalid={error ? true : undefined}
@@ -75,9 +87,11 @@ function SelectField({
           error && "border-error",
         )}
       >
-        <option value="" disabled>
-          Choose one…
-        </option>
+        {name !== "contactMethod" ? (
+          <option value="" disabled>
+            Choose one…
+          </option>
+        ) : null}
         {options.map((o) => (
           <option key={o} value={o}>
             {o}
@@ -146,11 +160,6 @@ export function LeadForm({
   const [dateValue, setDateValue] = useState("");
   const headingId = `${id}-heading`;
 
-  // Idempotency key for this submission attempt. Generated once, REUSED across retries
-  // of the same submission (a double-click or "Try again" sends the same id → the
-  // server stores one lead via its unique index), and reset to null after a successful
-  // submission so the next fresh booking gets a fresh id. crypto.randomUUID is available
-  // in all our target browsers; a guarded fallback keeps older/insecure contexts working.
   const submissionIdRef = useRef<string | null>(null);
   function currentSubmissionId(): string {
     if (!submissionIdRef.current) {
@@ -162,8 +171,6 @@ export function LeadForm({
     return submissionIdRef.current;
   }
 
-  // US-format masked date (mm/dd/yyyy) — deterministic regardless of browser locale,
-  // no date library. Digits only, slashes auto-inserted.
   function onDateChange(e: React.ChangeEvent<HTMLInputElement>) {
     const d = e.target.value.replace(/\D/g, "").slice(0, 8);
     setDateValue(
@@ -189,14 +196,21 @@ export function LeadForm({
       return;
     }
 
-    // Build a JSON payload from the form + source attribution (no PII in attribution).
     const payload: Record<string, string> = {};
     for (const [k, v] of fd.entries()) if (typeof v === "string") payload[k] = v;
-    // Stable idempotency key — same across retries of this submission (see ref above).
+
+    // Keep the proven server/store/notification contract stable: the operational reply
+    // preference is prepended to Notes, so it reaches every current channel without a
+    // launch-time database or spreadsheet migration.
+    const preferredReply = payload.contactMethod?.trim();
+    const visitorNotes = payload.notes?.trim();
+    delete payload.contactMethod;
+    payload.notes = [preferredReply ? `Preferred reply: ${preferredReply}.` : "", visitorNotes]
+      .filter(Boolean)
+      .join(" ");
+
     payload.submissionId = currentSubmissionId();
     payload.sourcePath = pathname ?? "/booking";
-    // Read UTM from the URL at submit time (client-only) — avoids forcing the page
-    // into a Suspense/CSR bailout that useSearchParams would require.
     const qs = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
     payload.utmSource = qs?.get("utm_source") ?? "";
     payload.utmMedium = qs?.get("utm_medium") ?? "";
@@ -219,19 +233,16 @@ export function LeadForm({
       if (res.ok && data.ok) {
         setRefId(data.id ?? null);
         setStatus("success");
-        // Submission landed — retire this idempotency key so a later booking is fresh.
         submissionIdRef.current = null;
         track("lead_success", { eventType: payload.type, path: payload.sourcePath });
         return;
       }
 
-      // Server rejected — show the real reason; map any field errors back.
       if (data.fields) setErrors(data.fields);
       setServerError(data.error ?? "Something went wrong — please try again or call us.");
       setStatus("error");
       track("lead_error", { path: payload.sourcePath });
     } catch {
-      // Network failure — recoverable, never a false success.
       setServerError("We couldn't reach the server. Please check your connection and try again.");
       setStatus("error");
       track("lead_error", { path: payload.sourcePath });
@@ -259,15 +270,38 @@ export function LeadForm({
             ) : null}
 
             <form ref={formRef} noValidate onSubmit={onSubmit} className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              {/* Honeypot — visually hidden, off the tab order. Bots fill it; humans don't. */}
               <div aria-hidden className="absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden">
                 <label htmlFor="lead-company">Company (leave blank)</label>
                 <input id="lead-company" type="text" name="company" tabIndex={-1} autoComplete="off" />
               </div>
 
               <Field label="Full name" name="name" required error={errors.name} autoComplete="name" placeholder="e.g. Alex Rivera" />
-              <Field label="Phone" name="phone" type="tel" required error={errors.phone} autoComplete="tel" placeholder="(213) 555-0142" />
-              <Field label="Email" name="email" type="email" error={errors.email} autoComplete="email" helper="Optional — we'll mostly call." placeholder="you@example.com" />
+              <Field
+                label="Phone number"
+                name="phone"
+                type="tel"
+                required
+                error={errors.phone}
+                autoComplete="tel"
+                helper="For text, WhatsApp, or a call."
+                placeholder="(213) 555-0142"
+              />
+              <Field
+                label="Email"
+                name="email"
+                type="email"
+                error={errors.email}
+                autoComplete="email"
+                helper="Optional unless you choose email as the best way to reply."
+                placeholder="you@example.com"
+              />
+              <SelectField
+                label="Best way to reply"
+                name="contactMethod"
+                required
+                error={errors.contactMethod}
+                options={CONTACT_METHODS}
+              />
               <SelectField label="Event type" name="type" required error={errors.type} options={EVENT_TYPES} />
               <Field
                 label="Event date"
@@ -290,7 +324,7 @@ export function LeadForm({
 
               <div className="flex flex-col gap-3 sm:col-span-2">
                 {hasErrors ? (
-                  <p className="flex items-start gap-1.5 text-sm text-error-text">
+                  <p role="alert" className="flex items-start gap-1.5 text-sm text-error-text">
                     <WarningCircle size={16} aria-hidden className="mt-0.5 shrink-0" />
                     <span>Please fix the highlighted fields below.</span>
                   </p>
@@ -313,7 +347,7 @@ export function LeadForm({
                   {submitting ? "Sending…" : status === "error" ? "Try again" : "Request a booking"}
                 </Button>
                 <p className="text-sm text-ink-soft">
-                  We&rsquo;ll reply by text, email, or WhatsApp within 1–2 business days. Required
+                  We&rsquo;ll reply by text, email, WhatsApp, or phone within 1–2 business days. Required
                   fields are marked &ldquo;(required)&rdquo;.
                 </p>
               </div>
