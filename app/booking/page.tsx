@@ -25,7 +25,7 @@ export default function BookingPage() {
         eyebrow="Book / Contact"
         marker={<SparkStar size={16} />}
         title="Book a show"
-        subtitle="Tell us about your event and the best way to reach you. Miss Lana will check availability and reply within 1–2 business days."
+        subtitle="Tell us about your event and the best way to reach you. Miss Lana will check availability and reply in 1–2 business days."
       >
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <Button href={EMAIL.href} variant="secondary" size="sm">
