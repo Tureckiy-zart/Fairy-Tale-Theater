@@ -135,7 +135,7 @@ export default function AboutPage() {
         {/* Warm heritage — owner-approved to name the Ukrainian roots EXPLICITLY here,
             once, on /about only (BUILD_MISS_LANA_COPY_FIXES_001). Brand/SEO/visual layers
             stay country-neutral; never a slogan, never Slavic/Russian visual coding, never Russia. */}
-        <div className="mt-10 max-w-prose rounded-2xl border border-border-soft bg-cream p-6 md:p-8">
+        <div className="mt-10 mx-auto max-w-lg rounded-2xl border border-border-soft bg-cream p-6 text-center md:p-8">
           <p className="text-lg text-ink">
             For more than 30 years, our troupe has made theater for children — a craft we built
             on the Ukrainian stage before bringing it home to families across Los Angeles. Those
