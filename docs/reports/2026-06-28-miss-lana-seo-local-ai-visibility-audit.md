@@ -242,7 +242,7 @@ Content is **substantiable from real theatre expertise** (no generic AI articles
 
 ## 18. Competitor and SERP snapshot
 
-Full snapshot (with explicit date/device/location/method caveats): **`seo/2026-06-28-competitor-serp-snapshot.md`**. Snapshot context: **2026-06-28, desktop, US (not LA-geolocated), WebSearch listings — not the live local-pack.** Ranks are approximate.
+Full snapshot (with explicit date/device/location/method caveats): **`competitors/2026-06-28-competitor-serp-snapshot.md`**. Snapshot context: **2026-06-28, desktop, US (not LA-geolocated), WebSearch listings — not the live local-pack.** Ranks are approximate.
 
 - **Closest by product:** **A Faery Hunt** (live costumed actors, ages 2-9, schools+parties; leans outdoor-park).
 - **Closest by model:** **Puppet Theater on Wheels** (mobile, from $395) and **PollyBilly** (mobile, ages 3-8, kindness framing) — both **puppets**.
@@ -407,7 +407,7 @@ curl -s https://misslanatheatre.com/sitemap.xml         # 19 apex-HTTPS URLs
 - **Repository evidence:** `lib/seo.ts`, `lib/site.ts`, `lib/env.ts`, `lib/analytics.ts`, `lib/shows.ts`, `lib/gallery.ts`, `app/layout.tsx`, `app/robots.ts`, `app/sitemap.ts`, `app/**/page.tsx`, `app/design/page.tsx`, `next.config.ts`, `components/ui/{JsonLd,Breadcrumb,PageHero}.tsx`, `components/blocks/FaqSection.tsx`, `.env.example`, `package.json`, `docs/core/*`, `docs/seo/*`, `STATUS.md`.
 - **Localhost evidence:** `next build` (27 routes, 8 SSG show pages) + `next start` (`APP_BASE_URL=https://misslanatheatre.com`, port 3100) + curl: home 200 + headers + JSON-LD; show page meta+JSON-LD+og:image; robots.txt; sitemap.xml (19 URLs); `/design` → 404 (prod guard); 404 for unknown; **Host-header 301 tests** (www/alt/legacy, all one-hop to HTTPS apex).
 - **Production evidence:** **NONE** — `misslanatheatre.com:443` egress-blocked (403 CONNECT, confirmed via `$HTTPS_PROXY/__agentproxy/status`).
-- **External sources:** `seo/2026-06-28-official-source-log.md` (47 official sources), `seo/2026-06-28-forum-practitioner-evidence.md` (26 anecdotal items / 5 communities), `seo/2026-06-28-competitor-serp-snapshot.md`, `seo/2026-06-28-keyword-intent-map.csv`. All access date 2026-06-28; dates "not shown" where snippets omitted them.
+- **External sources:** `seo/2026-06-28-official-source-log.md` (47 official sources), `seo/2026-06-28-forum-practitioner-evidence.md` (26 anecdotal items / 5 communities), `competitors/2026-06-28-competitor-serp-snapshot.md`, `seo/2026-06-28-keyword-intent-map.csv`. All access date 2026-06-28; dates "not shown" where snippets omitted them.
 
 ---
 

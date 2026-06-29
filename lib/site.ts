@@ -167,11 +167,41 @@ export const SERVICE_LINES: {
  * the /about heritage paragraph only; brand/SEO/visual layers stay country-neutral,
  * never Slavic/Russian/Ukrainian visual coding, never a slogan, never Russia.
  */
-export const TROUPE: { name: string; role: string }[] = [
-  { name: "Svitlana Grygoryshyna", role: "Director" },
-  { name: "Armen Tadevosyan", role: "Actor, showman, host & writer" },
-  { name: "Victoria Stolyarenko", role: "Actress, writer & creative director" },
-  { name: "Roman Listopad", role: "Actor, director & teacher" },
+export const TROUPE: {
+  name: string;
+  role: string;
+  photo?: string;
+  /** Tailwind object-position utility for the circular crop (default: center). */
+  photoPosition?: string;
+  bio?: string;
+}[] = [
+  {
+    name: "Svitlana Grygoryshyna",
+    role: "Director",
+    photo: "/images/actors/svitlana-grygoryshyna.jpg",
+    photoPosition: "object-top", // head sits high in frame — keep it from cropping
+  },
+  {
+    name: "Armen Tadevosyan",
+    role: "Actor, showman, host & writer",
+    photo: "/images/actors/armen-tadevosyan.jpg",
+    photoPosition: "object-[50%_30%]", // nudge crop up a touch
+    bio: "He has starred in the comedy films Mer Baky 1 and Mer Baky 2, the Comments TV show, the Yere1 sitcom, the Harevanner TV series, and the 220V and Kargin Haghordum comedy series. Today he is a TV host at AMGA TV USA and also acts in films and commercials and hosts events. His career as a comedian began in 1993.",
+  },
+  {
+    name: "Victoria Stolyarenko",
+    role: "Actress, writer & creative director",
+    photo: "/images/actors/victoria-stolyarenko.jpg",
+    photoPosition: "object-[50%_30%]", // nudge crop up a touch
+    bio: "A graduate of the Sumy Higher School of Culture and of the Rivne State Humanities University in Ukraine, where she qualified as a drama-theatre director and teacher. She has worked in television and cinema.",
+  },
+  // Anton: photo provided by owner; surname, role detail & bio pending (replaced Roman Listopad 2026-06-29)
+  {
+    name: "Anton",
+    role: "Actor",
+    photo: "/images/actors/anton.jpg",
+    photoPosition: "object-top", // head sits high in frame — keep it from cropping
+  },
 ];
 
 /**
