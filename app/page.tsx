@@ -24,7 +24,7 @@ import { HowItWorksAreas } from "@/components/blocks/HowItWorksAreas";
 export const metadata: Metadata = buildMetadata({
   title: "Live theater that comes to you",
   description:
-    "Professional live-costumed children's fairy-tale theater for LA preschools, schools and parties — 30+ years, ages 2–10. Book a show.",
+    "Professional live-costumed and puppet children's fairy-tale theater for LA preschools, schools and parties — 30+ years, ages 2–10. Book a show.",
   path: "/",
 });
 

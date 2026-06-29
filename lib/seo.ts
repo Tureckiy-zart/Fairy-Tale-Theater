@@ -13,7 +13,7 @@ export const SITE = {
   name: BRAND.name,
   shortName: BRAND.umbrella,
   // Generic search-intent phrase keeps American "theater" spelling on purpose.
-  description: "Touring live costumed children's theater serving Los Angeles, Southern California and beyond.",
+  description: "Touring live and puppet children's theater serving Los Angeles, Southern California and beyond.",
   // Service-area business (no public storefront, 04_SEO.md).
   areasServed: [AREAS.base, AREAS.region, ...AREAS.travel, "California"],
   phones: [PHONES[0].tel],
