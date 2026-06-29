@@ -244,9 +244,9 @@ test.describe("Phase 3 — services + characters + gallery + about", () => {
     await page.goto("/about");
     await expect(page.getByText("30+ years").first()).toBeVisible();
     for (const name of [
-      "Svitlana Grygoryshyna",
       "Armen Tadevosyan",
       "Victoria Stolyarenko",
+      "Marzhan Kanlybayeva",
       "Anton",
     ]) {
       await expect(page.getByRole("heading", { name })).toBeVisible();

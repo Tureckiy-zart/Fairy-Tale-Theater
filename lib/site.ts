@@ -160,9 +160,11 @@ export const SERVICE_LINES: {
 
 /**
  * The professional troupe (01_CONTENT_INVENTORY.md §"Команда"). Names + roles are
- * CANONICAL facts (do not invent/alter). NOTE: Svitlana is listed as Director; the
- * "Svitlana = owner" link is NOT yet confirmed (🔴 owner-gated) — so we present her
- * role only, never assert ownership. The Ukrainian roots are the owner-approved
+ * CANONICAL facts (do not invent/alter). This array is the /about troupe GRID — the
+ * performing artists. Svitlana Grygoryshyna (Director / "Miss Lana") is presented on
+ * /about via the first-person PersonaIntro block, NOT as a grid card (owner request
+ * 2026-06-29 — avoids duplicating the Miss Lana persona); her canonical
+ * director/owner facts are unchanged. The Ukrainian roots are the owner-approved
  * backstory (BUILD_MISS_LANA_COPY_FIXES_001) — named explicitly and warmly ONCE, in
  * the /about heritage paragraph only; brand/SEO/visual layers stay country-neutral,
  * never Slavic/Russian/Ukrainian visual coding, never a slogan, never Russia.
@@ -176,12 +178,6 @@ export const TROUPE: {
   bio?: string;
 }[] = [
   {
-    name: "Svitlana Grygoryshyna",
-    role: "Director",
-    photo: "/images/actors/svitlana-grygoryshyna.jpg",
-    photoPosition: "object-top", // head sits high in frame — keep it from cropping
-  },
-  {
     name: "Armen Tadevosyan",
     role: "Actor, showman, host & writer",
     photo: "/images/actors/armen-tadevosyan.jpg",
@@ -194,6 +190,13 @@ export const TROUPE: {
     photo: "/images/actors/victoria-stolyarenko.jpg",
     photoPosition: "object-[50%_30%]", // nudge crop up a touch
     bio: "A graduate of the Sumy Higher School of Culture and of the Rivne State Humanities University in Ukraine, where she qualified as a drama-theatre director and teacher. She has worked in television and cinema.",
+  },
+  // Marzhan: photo provided by owner; role detail & bio pending (🔴 owner-gated, added 2026-06-29)
+  {
+    name: "Marzhan Kanlybayeva",
+    role: "Actress",
+    photo: "/images/actors/marzhan-kanlybayeva.jpg",
+    photoPosition: "object-top", // head sits high in frame — keep it from cropping
   },
   // Anton: photo provided by owner; surname, role detail & bio pending (replaced Roman Listopad 2026-06-29)
   {
