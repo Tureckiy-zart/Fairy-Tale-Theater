@@ -14,9 +14,13 @@ the first-person PersonaIntro block, not a grid card** (owner request 2026-06-29
 | --- | --- | --- | --- | --- |
 | 1 | `armen-tadevosyan.jpg` | Armen Tadevosyan | Actor, showman, host & writer | ✓ |
 | 2 | `victoria-stolyarenko.jpg` | Victoria Stolyarenko | Actress, writer & creative director | ✓ |
-| 3 | `marzhan-kanlybayeva.jpg` | Marzhan Kanlybayeva | Actress *(provisional)* | — (pending owner) |
+| 3 | `marzhan-kanlybayeva.jpg` | Marzhan Kanlybayeva | Actress *(provisional)* | ✓ |
 | 4 | `anton.jpg` | Anton *(surname pending)* | Actor | — (pending owner) |
-| — | `svitlana-grygoryshyna.jpg` | Svitlana Grygoryshyna | Director (persona block, not grid) | — (none on the old site) |
+| — | `svitlana-grygoryshyna.jpg` | Svitlana Grygoryshyna | Owner & director (named in the troupe section, not a grid card) | — (none on the old site) |
+
+**Crops:** `armen-tadevosyan.jpg` (blurred-background widen) and `marzhan-kanlybayeva.jpg`
+(tighter square) were re-cropped 2026-06-29 so all four head sizes read roughly equal in
+the circular cards. Anton & Victoria left as-is.
 
 ---
 
@@ -41,8 +45,10 @@ teacher. She has worked in television and cinema.
 
 ## Marzhan Kanlybayeva *(provisional)* — Actress
 
-Added to the troupe on 2026-06-29 (owner request). Photo supplied by the owner.
-🔴 **Pending owner:** final role and bio — to be added later. ⚠️ The supplied
+Added to the troupe on 2026-06-29 (owner request). Photo + bio supplied by the
+owner. Bio (adapted to house voice): *"She has performed in children's theatre and
+appeared in film and television projects, including Hollywood films and TV series."*
+🔴 **Pending owner:** confirm role (currently provisional "Actress"). ⚠️ The supplied
 portrait is a studio/corporate-style headshot (business suit, office skyline) that
 differs in style from the other troupe photos — owner to confirm it is the intended
 image before launch.

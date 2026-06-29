@@ -161,10 +161,11 @@ export const SERVICE_LINES: {
 /**
  * The professional troupe (01_CONTENT_INVENTORY.md §"Команда"). Names + roles are
  * CANONICAL facts (do not invent/alter). This array is the /about troupe GRID — the
- * performing artists. Svitlana Grygoryshyna (Director / "Miss Lana") is presented on
- * /about via the first-person PersonaIntro block, NOT as a grid card (owner request
- * 2026-06-29 — avoids duplicating the Miss Lana persona); her canonical
- * director/owner facts are unchanged. The Ukrainian roots are the owner-approved
+ * performing artists. Svitlana Grygoryshyna (owner & director, canon-confirmed
+ * 2026-06-26) is NOT a grid card here (owner request 2026-06-29 — avoids duplicating
+ * the Miss Lana persona); instead /about names her as the company's owner & director
+ * in the troupe section, and the Miss Lana persona runs in PersonaIntro. The
+ * Ukrainian roots are the owner-approved
  * backstory (BUILD_MISS_LANA_COPY_FIXES_001) — named explicitly and warmly ONCE, in
  * the /about heritage paragraph only; brand/SEO/visual layers stay country-neutral,
  * never Slavic/Russian/Ukrainian visual coding, never a slogan, never Russia.
@@ -178,10 +179,10 @@ export const TROUPE: {
   bio?: string;
 }[] = [
   {
+    // Photo pre-cropped to a square (face-centred) so head sizes match across cards — no object-position needed.
     name: "Armen Tadevosyan",
     role: "Actor, showman, host & writer",
     photo: "/images/actors/armen-tadevosyan.jpg",
-    photoPosition: "object-[50%_30%]", // nudge crop up a touch
     bio: "He has starred in the comedy films Mer Baky 1 and Mer Baky 2, the Comments TV show, the Yere1 sitcom, the Harevanner TV series, and the 220V and Kargin Haghordum comedy series. Today he is a TV host at AMGA TV USA and also acts in films and commercials and hosts events. His career as a comedian began in 1993.",
   },
   {
@@ -191,12 +192,13 @@ export const TROUPE: {
     photoPosition: "object-[50%_30%]", // nudge crop up a touch
     bio: "A graduate of the Sumy Higher School of Culture and of the Rivne State Humanities University in Ukraine, where she qualified as a drama-theatre director and teacher. She has worked in television and cinema.",
   },
-  // Marzhan: photo provided by owner; role detail & bio pending (🔴 owner-gated, added 2026-06-29)
+  // Marzhan: photo + bio provided by owner (2026-06-29); role "Actress" provisional (🔴 owner-gated).
+  // Photo pre-cropped to a square (face-centred) so head sizes match across cards.
   {
     name: "Marzhan Kanlybayeva",
     role: "Actress",
     photo: "/images/actors/marzhan-kanlybayeva.jpg",
-    photoPosition: "object-top", // head sits high in frame — keep it from cropping
+    bio: "She has performed in children's theatre and appeared in film and television projects, including Hollywood films and TV series.",
   },
   // Anton: photo provided by owner; surname, role detail & bio pending (replaced Roman Listopad 2026-06-29)
   {
