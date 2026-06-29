@@ -1,13 +1,14 @@
 // About (/about) — SITE_STRUCTURE_AND_BLOCKS.md §4.6. Block order: mission (theater as
-// magic) → 30+ years → the troupe (4 artists + roles, canonical from 01_CONTENT) →
-// quiet warm backstory → PersonaIntro (Miss Lana, first person) → values → CTA.
+// magic) → 30+ years → the troupe grid (performing artists + roles, from lib/site.ts
+// TROUPE) → quiet warm backstory → PersonaIntro (Miss Lana, first person) → values → CTA.
 //
 // GATES:
 //   • Heritage: owner-APPROVED to name the Ukrainian roots explicitly, once, in the
 //     backstory paragraph below (warm, not a slogan). Brand/SEO/visual layers stay
 //     country-neutral — no Slavic/Russian visual coding, never Russia.
-//   • Svitlana is listed as Director only — the "Svitlana = owner" link is unconfirmed
-//     (owner-gated); we never assert ownership.
+//   • Svitlana Grygoryshyna (Director / "Miss Lana") appears via the PersonaIntro block,
+//     not the troupe grid (owner request 2026-06-29). The "Svitlana = owner" link is
+//     unconfirmed (owner-gated); we never assert ownership.
 //   • 🔴 The Miss Lana mini-story (PersonaIntro first-person line) is a TEMPORARY
 //     placeholder — owner to supply; do not invent a bio. Portrait/art stay placeholders [TM].
 // Copy is final (except the 🔴 mini-story). Server component; metadata via lib/seo.

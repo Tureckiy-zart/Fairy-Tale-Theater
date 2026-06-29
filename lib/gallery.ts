@@ -4,11 +4,15 @@
 // optimized shots under public/images/gallery/<category>/, sorted by content.
 //
 // CURATION (brand): the full sorted set lives on disk; this DISPLAY list is the
-// on-brand subset — live costumed performers, the troupe, and the children. Overt
-// hand-puppet / puppet-booth frames, near-duplicates and blurry shots are filed under
-// public/images/gallery/ but intentionally NOT listed here, because the brand is locked
-// as live costumed theater, NOT a puppet theater (BRAND.md / 01_CONTENT — "уйти от
-// puppet"). 🔴 Owner to reconcile positioning vs. the real (partly puppet) repertoire.
+// curated subset — live costumed performers, the troupe, and the children. Near-
+// duplicates and blurry shots are filed under public/images/gallery/ but not listed.
+// 2026-06-29: the owner confirmed the real repertoire is MIXED — live costumed shows
+// AND puppet-stage shows (the puppet side is a large part of the act), and reconciled
+// positioning toward showing it. The four "Magic Castle" frames below (show-9..12)
+// therefore include the puppet-booth scenes that earlier curation excluded under the
+// older "live costumed theater, NOT puppet" read of BRAND.md / 01_CONTENT ("уйти от
+// puppet"). 🔴 Brand canon (BRAND.md / 02_POSITIONING / 01_CONTENT) is under review to
+// match the real mixed repertoire — see docs/PROJECT_PROGRESS.md.
 // The 4 video clips (public/images/gallery/clips/) are filed but not displayed —
 // content unverified (can't grade here); wire them in once reviewed.
 // Captions are generic alt text (scene + emotion, §9) — no real person is named.
@@ -54,6 +58,12 @@ export const GALLERY_ITEMS: GalleryItem[] = [
   { id: "show-6", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/bunny-and-fox-chase-scene.jpg`, caption: "A bunny and a fox character act out a playful chase scene on stage." },
   { id: "show-7", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/fox-and-rabbit-stage-scene.jpg`, caption: "Two costumed performers act out a tender scene on a decorated stage." },
   { id: "show-8", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/rabbit-sweeping-stage-scene.jpg`, caption: "A rabbit-costumed actor sweeps the stage while a fox character looks on." },
+
+  // --- "Magic Castle" set (live costumed + puppet-stage, mixed repertoire) ---
+  { id: "show-9", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/wolf-performer-storybook-stage.jpg`, caption: "A performer in a full grey wolf costume acts out a scene on the grass before a decorated outdoor storybook stage." },
+  { id: "show-10", category: "Shows", kind: "photo", aspect: "4/3", src: `${DIR}/shows/storybook-cabin-puppet-stage.jpg`, caption: "A whimsical outdoor stage with teal velvet drapes and sunflowers as the fox and wolf characters meet at a painted storybook cottage." },
+  { id: "show-11", category: "Shows", kind: "photo", aspect: "4/3", src: `${DIR}/shows/fox-and-wolf-puppets-at-cabin-window.jpg`, caption: "Fox and wolf characters pop up at the window of a hand-painted log-cabin set strung with sunflowers." },
+  { id: "show-12", category: "Shows", kind: "photo", aspect: "3/4", src: `${DIR}/shows/frog-puppet-at-cabin-window.jpg`, caption: "A cheerful green frog character leans from the flower-framed window of a painted storybook cottage." },
 
   // --- Troupe: the performers ---
   { id: "troupe-1", category: "Troupe", kind: "photo", aspect: "3/4", src: `${DIR}/troupe/bee-character-posing.jpg`, caption: "A performer in a black-and-yellow bee costume poses playfully before a flower-decked backdrop." },
