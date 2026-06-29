@@ -92,18 +92,32 @@ export default function AboutPage() {
           </div>
         </figure>
 
-        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-10 grid gap-5 sm:grid-cols-2">
           {TROUPE.map((member) => (
             <li
               key={member.name}
               className="flex h-full flex-col items-center gap-3 rounded-lg border border-border-soft bg-white p-6 text-center shadow-sm"
             >
-              {/* Placeholder portrait — real photos land in Phase 4 [ASSET]. */}
-              <span className="flex h-20 w-20 items-center justify-center rounded-pill border border-border-soft bg-surface">
-                <SparkStar size={28} />
-              </span>
+              <div className="relative h-28 w-28 overflow-hidden rounded-pill border border-border-soft bg-surface">
+                {member.photo ? (
+                  <Image
+                    src={member.photo}
+                    alt={`Portrait of ${member.name}.`}
+                    fill
+                    sizes="112px"
+                    className={`object-cover ${member.photoPosition ?? ""}`}
+                  />
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center">
+                    <SparkStar size={28} />
+                  </span>
+                )}
+              </div>
               <h3 className="font-display text-xl text-forest-800">{member.name}</h3>
-              <p className="text-sm text-ink-soft">{member.role}</p>
+              <p className="text-sm font-medium text-ink-soft">{member.role}</p>
+              {member.bio ? (
+                <p className="text-sm text-ink-soft">{member.bio}</p>
+              ) : null}
             </li>
           ))}
         </ul>
