@@ -6,9 +6,9 @@
 //   • Heritage: owner-APPROVED to name the Ukrainian roots explicitly, once, in the
 //     backstory paragraph below (warm, not a slogan). Brand/SEO/visual layers stay
 //     country-neutral — no Slavic/Russian visual coding, never Russia.
-//   • Svitlana Grygoryshyna (Director / "Miss Lana") appears via the PersonaIntro block,
-//     not the troupe grid (owner request 2026-06-29). The "Svitlana = owner" link is
-//     unconfirmed (owner-gated); we never assert ownership.
+//   • Svitlana Grygoryshyna = owner & director (canon-confirmed 2026-06-26). Named in
+//     the troupe section as the leader of the company — NOT as a duplicate grid card
+//     (owner request 2026-06-29). The Miss Lana persona is the PersonaIntro block.
 //   • 🔴 The Miss Lana mini-story (PersonaIntro first-person line) is a TEMPORARY
 //     placeholder — owner to supply; do not invent a bio. Portrait/art stay placeholders [TM].
 // Copy is final (except the 🔴 mini-story). Server component; metadata via lib/seo.
@@ -93,6 +93,15 @@ export default function AboutPage() {
           </div>
         </figure>
 
+        {/* Confirmed leadership (canon: SITE_STRUCTURE §4.6 / PROJECT_BRIEF — Svitlana
+            Grygoryshyna = owner & director, confirmed 2026-06-26). Named here, in the
+            troupe section, rather than as a duplicate grid card (owner request 2026-06-29). */}
+        <p className="mx-auto mt-8 max-w-prose text-center text-ink">
+          The company is led by{" "}
+          <strong className="font-semibold text-forest-800">Svitlana Grygoryshyna</strong>, our
+          owner and director.
+        </p>
+
         <ul className="mt-10 grid gap-5 sm:grid-cols-2">
           {TROUPE.map((member) => (
             <li
@@ -126,7 +135,7 @@ export default function AboutPage() {
         {/* Warm heritage — owner-approved to name the Ukrainian roots EXPLICITLY here,
             once, on /about only (BUILD_MISS_LANA_COPY_FIXES_001). Brand/SEO/visual layers
             stay country-neutral; never a slogan, never Slavic/Russian visual coding, never Russia. */}
-        <div className="mt-10 max-w-prose rounded-2xl border border-border-soft bg-cream p-6 md:p-8">
+        <div className="mt-10 mx-auto max-w-lg rounded-2xl border border-border-soft bg-cream p-6 text-center md:p-8">
           <p className="text-lg text-ink">
             For more than 30 years, our troupe has made theater for children — a craft we built
             on the Ukrainian stage before bringing it home to families across Los Angeles. Those
