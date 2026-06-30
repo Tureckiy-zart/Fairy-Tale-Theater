@@ -200,12 +200,14 @@ export const TROUPE: {
     photo: "/images/actors/marzhan-kanlybayeva.jpg",
     bio: "She has performed in children's theatre and appeared in film and television projects, including Hollywood films and TV series.",
   },
-  // Anton: photo provided by owner; surname, role detail & bio pending (replaced Roman Listopad 2026-06-29)
+  // Anton Gakh: surname + bio supplied by owner 2026-06-29 (replaced Roman Listopad).
+  // Author-written bio; opening reworked to the house third-person voice, facts kept.
   {
-    name: "Anton",
+    name: "Anton Gakh",
     role: "Actor",
     photo: "/images/actors/anton.jpg",
     photoPosition: "object-top", // head sits high in frame — keep it from cropping
+    bio: "An actor with 14 years in theatre, film and television, he began in amateur theatre in Ukraine before building an international career in China, where he worked alongside Jackie Chan, Wu Jing and other renowned actors. He has appeared in numerous films, TV series and commercials, including The Battle at Lake Changjin, the highest-grossing film in Chinese cinema history. He also represented Ukraine at the International Festival of Arts in Algeria in 2016. Now based in Los Angeles, he continues to perform on stage while pursuing his film and television career.",
   },
 ];
 

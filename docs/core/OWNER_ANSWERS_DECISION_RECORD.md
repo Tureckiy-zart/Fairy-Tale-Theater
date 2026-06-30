@@ -53,8 +53,8 @@ This is a current-canon decision record. On brand conflict, BRAND.md +
 - **Post-show stay (birthdays):** the troupe usually stays 10–15 minutes after.
 - **Typical birthday size:** up to ~20 children is typical (more by arrangement).
 - **Named troupe roster (internal/About):** Svitlana Grygoryshyna (owner &
-  director), Armen Tadevosyan, Victoria Stolyarenko, Anton (surname TBD —
-  replaced Roman Listopad 2026-06-29, owner request; surname/role/bio to follow).
+  director), Armen Tadevosyan, Victoria Stolyarenko, Anton Gakh (replaced Roman
+  Listopad 2026-06-29, owner request; surname + bio confirmed by owner 2026-06-29).
 
 ## 3. Repertoire-format decision (confirmed by owner; OUT OF SCOPE here)
 
