@@ -155,7 +155,7 @@ export default function AboutPage() {
           eyebrow="What we stand for"
           marker={<SparkStar size={16} />}
           title="Kind stories, every time"
-          subtitle="The same thread runs through all eight of our shows."
+          subtitle="The same thread runs through all seven of our shows."
         />
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {VALUES.map((v) => (

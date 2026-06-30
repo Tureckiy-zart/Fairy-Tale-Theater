@@ -113,7 +113,7 @@ export const SERVICE_LINES: {
     key: "theater",
     title: "Fairy-Tale Theatre",
     tag: "Flagship",
-    blurb: "Our eight kind fairy-tale shows, performed live with an interactive finale.",
+    blurb: "Our seven kind fairy-tale shows, performed live with an interactive finale.",
     href: "/shows",
     accent: "forest",
     media: "/images/troupe-fairy-tale-theater.jpg",

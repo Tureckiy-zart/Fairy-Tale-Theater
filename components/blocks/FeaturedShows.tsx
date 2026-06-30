@@ -16,7 +16,7 @@ export function FeaturedShows() {
           eyebrow="From the repertoire"
           marker={<SparkStar size={16} />}
           title="Featured shows"
-          subtitle="Eight kind fairy tales in the repertoire — a few favourites below."
+          subtitle="Seven kind fairy tales in the repertoire — a few favourites below."
         />
       </div>
       <div className="mt-10">

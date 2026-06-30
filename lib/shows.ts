@@ -1,5 +1,5 @@
-// The 8-show repertoire — the single data source for the /shows hub, every
-// /shows/{slug} detail page, and the Home "Featured shows" grid. Facts (the eight
+// The 7-show repertoire — the single data source for the /shows hub, every
+// /shows/{slug} detail page, and the Home "Featured shows" grid. Facts (the seven
 // titles, universal framing, per-show themes/ages, ~60 min total, ages 2–10) come from
 // docs/core/01_CONTENT_INVENTORY.md; the two renamed titles + their slugs are the
 // owner-approved decisions in this task (Morozko → The Winter's Gift / Father Frost,
@@ -45,18 +45,6 @@ export interface Show {
 const LENGTH = "~60 min";
 
 export const SHOWS: Show[] = [
-  {
-    slug: "donkeys-birthday",
-    title: "Donkey's Birthday",
-    teaser:
-      "A warm birthday story about friendship, thoughtful surprises, and making someone feel truly loved.",
-    synopsis:
-      "A birthday is coming, but the happiest surprise is not the cake or the presents — it is discovering how carefully good friends listen, remember, and come together for someone they love. Donkey's friends each arrive with a different idea of what will make the day special, and their plans tumble into playful misunderstandings and small discoveries. By the end, the celebration becomes a gentle reminder that friendship grows through attention, respect, and the simple wish to make another person happy.",
-    theme: "Friendship, mutual respect and thoughtful giving",
-    ages: "Ages 2–10",
-    length: LENGTH,
-    image: "/images/gallery/shows/performer-on-stage-large-audience.jpg",
-  },
   {
     slug: "little-red-riding-hood",
     title: "Little Red Riding Hood",

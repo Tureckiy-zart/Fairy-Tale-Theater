@@ -124,11 +124,11 @@ test("the home page is indexable post-launch (no noindex)", async ({ page }) => 
   }
 });
 
-// Phase 2 — Shows hub + 8 show pages + School Shows / Birthdays landings
+// Phase 2 — Shows hub + 7 show pages + School Shows / Birthdays landings
 // (BUILD_MISS_LANA_SHOWS_AND_LANDINGS_001).
 test.describe("Phase 2 — shows + landings", () => {
   const PAGES: { path: string; h1: RegExp }[] = [
-    { path: "/shows", h1: /eight kind fairy tales to choose from/i },
+    { path: "/shows", h1: /seven kind fairy tales to choose from/i },
     { path: "/shows/the-gingerbread-man", h1: /the gingerbread man/i },
     { path: "/shows/the-winters-gift", h1: /the winter's gift/i },
     { path: "/shows/little-red-riding-hood", h1: /little red riding hood/i },

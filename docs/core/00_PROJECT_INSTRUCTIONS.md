@@ -57,7 +57,7 @@ Primary public contact: `info@misslanatheatre.com` и **(323) 903-2039**. Кли
 
 - `PROJECT_BRIEF.md` — факты о бизнесе (главный источник).
 - `docs/core/BRAND.md` — бренд/нейминг (LOCK): имя, домен, архитектура суб-брендов.
-- `docs/core/01_CONTENT_INVENTORY.md` — формат, 8 шоу (универсальная подача), команда, контакты.
+- `docs/core/01_CONTENT_INVENTORY.md` — формат, 7 шоу (универсальная подача), команда, контакты.
 - `docs/core/02_POSITIONING_AND_TONE.md` — позиционирование, тон, визуал, анти-примеры.
 - `docs/core/03_SITEMAP_AND_SCOPE.md` — структура и функции сайта.
 - `docs/core/04_SEO.md` — SEO (англ. интент), домен/имя, GBP, конкуренты.
