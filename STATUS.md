@@ -5,11 +5,13 @@
 явное решение владельца) — публичный сайт **индексируется**. Остаются пост-лонч задачи (ниже).
 **Last real work:** 2026-06-27 · **Brand:** Miss Lana's Fairy-Tale Theatre (см. `docs/core/BRAND.md`).
 **Domain/contact:** `misslanatheatre.com` is the live primary production domain; `misslanatheater.com`
-is protective alternate only → 301 to primary. Primary contact: `info@misslanatheatre.com`,
-**(323) 903-2039**; SMS/email/WhatsApp accepted; Svitlana replies in **1-2 business days**.
+is protective alternate only → 301 to primary. Primary contact: `info@misslanatheatre.com`
+(**inbox live & monitored — owner-confirmed 2026-06-29**), **(323) 903-2039**; SMS/email/WhatsApp
+accepted; Svitlana replies in **1-2 business days**.
 **Post-launch tasks (open):** verified reviews/testimonials (`[OWNER/CONTENT]`, target ≥5 with
-permission/source), **lead-pipeline production secrets — provision `MONGODB_URI` (dedicated Miss Lana
-Atlas cluster, db `misslana`) + live `LEAD_EMAIL_WEBHOOK_URL`, then run the Preview→Production E2E gate**
+permission/source), **lead pipeline — `MONGODB_URI` + Telegram provisioned & verified on prod
+(2026-06-29); email inbox `info@misslanatheatre.com` live. Remaining: optional automated lead-email
+delivery (`LEAD_EMAIL_WEBHOOK_URL` sending provider) + the Preview→Production E2E gate**
 (`MISS_LANA_PRODUCTION_LEAD_PIPELINE_PLAN`), redirect/DNS verification, GBP/Search Console submission,
 QA, and real media. (Site-wide **noindex removal — done** 2026-06-27.)
 
