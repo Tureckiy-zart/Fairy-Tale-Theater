@@ -207,7 +207,7 @@ export const TROUPE: {
     role: "Actor",
     photo: "/images/actors/anton.jpg",
     photoPosition: "object-top", // head sits high in frame — keep it from cropping
-    bio: "An actor with 14 years in theatre, film and television, he began in amateur theatre in Ukraine before building an international career in China, where he worked alongside Jackie Chan, Wu Jing and other renowned actors. He has appeared in numerous films, TV series and commercials, including The Battle at Lake Changjin, the highest-grossing film in Chinese cinema history. He also represented Ukraine at the International Festival of Arts in Algeria in 2016. Now based in Los Angeles, he continues to perform on stage while pursuing his film and television career.",
+    bio: "An actor with 14 years in theatre, film and television, he began in amateur theatre in Ukraine before building an international career in China, where he worked alongside Jackie Chan, Wu Jing and other renowned actors. He has appeared in numerous films, TV series and commercials, including The Battle at Lake Changjin, one of the highest-grossing films in Chinese cinema history. He also represented Ukraine at the International Festival of Arts in Algeria in 2016. Now based in Los Angeles, he continues to perform on stage while pursuing his film and television career.",
   },
 ];
 
