@@ -38,9 +38,12 @@ v2 (2026-06-22). Переписан под актуальную рамку: ан
 ### 1. Онлайн-заявка / бронь
 - Форма: имя, телефон/email, тип (сад/школа/день рождения/праздник), дата/время,
   город/адрес выезда, число детей, выбранное шоу (опц.), комментарий.
-- UI заявки уже реализован с клиентской валидацией и on-screen success state. **Production delivery**
-  to `info@misslanatheatre.com` / primary phone **(323) 903-2039** is unverified/not connected unless
-  separately proven; это launch dependency, а не закрытый факт.
+- UI заявки уже реализован с клиентской валидацией и on-screen success state. **Заявки durably
+  сохраняются (MongoDB) + Telegram-алерт** (provisioned & verified). **Email-ящик
+  `info@misslanatheatre.com` — живой и мониторится** (прямой контакт, owner-confirmed 2026-06-29;
+  Svitlana отвечает в 1-2 business days). Остаётся инфра-гейт: **автоматическая отправка письма о
+  заявке на ящик** требует провайдера отправки (`LEAD_EMAIL_WEBHOOK_URL`) — пока `skipped`. Доставка
+  на **primary phone (323) 903-2039** отдельно не подтверждена.
 - Клиент может выбрать/использовать SMS, email или WhatsApp; written contact preferred. Svitlana
   сейчас отвечает сама; окно ответа — **1-2 business days**.
 - Подтверждение на экране обязательно; полная email-копия заявки клиенту не требуется.

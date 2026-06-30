@@ -247,7 +247,7 @@ test.describe("Phase 3 — services + characters + gallery + about", () => {
       "Armen Tadevosyan",
       "Victoria Stolyarenko",
       "Marzhan Kanlybayeva",
-      "Anton",
+      "Anton Gakh",
     ]) {
       await expect(page.getByRole("heading", { name })).toBeVisible();
     }

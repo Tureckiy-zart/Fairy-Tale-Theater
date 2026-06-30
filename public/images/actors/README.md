@@ -15,7 +15,7 @@ the first-person PersonaIntro block, not a grid card** (owner request 2026-06-29
 | 1 | `armen-tadevosyan.jpg` | Armen Tadevosyan | Actor, showman, host & writer | ✓ |
 | 2 | `victoria-stolyarenko.jpg` | Victoria Stolyarenko | Actress, writer & creative director | ✓ |
 | 3 | `marzhan-kanlybayeva.jpg` | Marzhan Kanlybayeva | Actress *(provisional)* | ✓ |
-| 4 | `anton.jpg` | Anton *(surname pending)* | Actor | — (pending owner) |
+| 4 | `anton.jpg` | Anton Gakh | Actor | ✓ |
 | — | `svitlana-grygoryshyna.jpg` | Svitlana Grygoryshyna | Owner & director (named in the troupe section, not a grid card) | — (none on the old site) |
 
 **Crops:** `armen-tadevosyan.jpg` (blurred-background widen) and `marzhan-kanlybayeva.jpg`
@@ -53,11 +53,14 @@ portrait is a studio/corporate-style headshot (business suit, office skyline) th
 differs in style from the other troupe photos — owner to confirm it is the intended
 image before launch.
 
-## Anton *(provisional)* — Actor
+## Anton Gakh — Actor
 
-Replaced Roman Listopad in the troupe on 2026-06-29 (owner request). Photo
-supplied by the owner. 🔴 **Pending owner:** full name (surname), final role and
-bio — to be added later.
+Replaced Roman Listopad in the troupe on 2026-06-29 (owner request). Surname
+(Gakh), photo and bio supplied by the owner. The bio is the owner's own text with
+the opening reworked to the house third-person voice (facts kept): 14 years in
+theatre/film/TV, an international career in China (worked alongside Jackie Chan,
+Wu Jing), *The Battle at Lake Changjin*, represented Ukraine at the 2016 Algeria
+arts festival, now based in Los Angeles.
 
 ---
 
@@ -66,7 +69,7 @@ bio — to be added later.
 - **Svitlana / Armen / Victoria photos + bios:** `https://magic-castle-puppet-theater.com/`
   ("Our team"), our own legacy domain. Captured 2026-06-29. Actor↔photo mapping
   verified by the legacy page layout and visually.
-- **Anton photo:** supplied by the owner.
+- **Anton Gakh photo + bio:** supplied by the owner (bio opening adapted to house voice).
 - **Marzhan photo:** supplied by the owner (2026-06-29); re-encoded to strip metadata,
   renamed to kebab-case. Identity/role/bio still owner-gated.
 - **Folder:** consolidated here in `public/images/actors/` on 2026-06-29.
