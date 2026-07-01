@@ -84,6 +84,19 @@ const nextConfig: NextConfig = {
     // migrations expect a classic 301 Moved Permanently.
     const redirects: Awaited<ReturnType<NonNullable<NextConfig["redirects"]>>> = [];
 
+    // 0) Internal show-slug moves (repertoire reconcile
+    // MISS_LANA_REPERTOIRE_OWNER_CANON_RECONCILE_001). Old indexable /shows URLs must not
+    // 404 — 301 to the current slug. Relative destinations keep the redirect on whatever
+    // host the request arrived on (testable in dev, no jump to prod). Placed first so the
+    // canonical host serves a single clean hop.
+    const SHOW_SLUG_MOVES: { from: string; to: string }[] = [
+      { from: "/shows/the-winters-gift", to: "/shows/two-sisters" },
+      { from: "/shows/the-bunnys-little-house", to: "/shows/the-rabbit-house" },
+    ];
+    for (const { from, to } of SHOW_SLUG_MOVES) {
+      redirects.push({ source: from, destination: to, statusCode: 301 });
+    }
+
     // 1) Alternate/protective/www hosts → canonical apex, preserving the path. 301.
     for (const host of ALTERNATE_HOSTS) {
       redirects.push({

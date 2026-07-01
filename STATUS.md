@@ -3,7 +3,7 @@
 **Deployment: LIVE** · **Launch state: LAUNCHED (publicly indexable)** · **Phase:** MVP-набор страниц и
 финальный копирайт собраны; site-wide **noindex снят 2026-06-27** (`STABILIZE_MISS_LANA_PRELAUNCH_001`,
 явное решение владельца) — публичный сайт **индексируется**. Остаются пост-лонч задачи (ниже).
-**Last real work:** 2026-06-27 · **Brand:** Miss Lana's Fairy-Tale Theatre (см. `docs/core/BRAND.md`).
+**Last real work:** 2026-07-01 · **Brand:** Miss Lana's Fairy-Tale Theatre (см. `docs/core/BRAND.md`).
 **Domain/contact:** `misslanatheatre.com` is the live primary production domain; `misslanatheater.com`
 is protective alternate only → 301 to primary. Primary contact: `info@misslanatheatre.com`
 (**inbox live & monitored — owner-confirmed 2026-06-29**), **(323) 903-2039**; SMS/email/WhatsApp
@@ -14,6 +14,19 @@ permission/source), **lead pipeline — `MONGODB_URI` + Telegram provisioned & v
 delivery (`LEAD_EMAIL_WEBHOOK_URL` sending provider) + the Preview→Production E2E gate**
 (`MISS_LANA_PRODUCTION_LEAD_PIPELINE_PLAN`), redirect/DNS verification, GBP/Search Console submission,
 QA, and real media. (Site-wide **noindex removal — done** 2026-06-27.)
+
+> **Репертуар восстановлен до 8 шоу (2026-07-01, `MISS_LANA_REPERTOIRE_OWNER_CANON_RECONCILE_001`,
+> ветка `fix/repertoire-owner-canon`).** Прошлый заход (`ab7bdd8`) ошибочно сократил публичный
+> репертуар до 7; по прямым ответам владельца восстановлены **8 действующих шоу**: добавлен
+> **Three Little Pigs**; **Two Sisters** заменило ошибочную «The Winter's Gift / Father Frost»;
+> **The Rabbit House** = owner-confirmed имя (было «The Bunny's Little House»). Старые URL
+> `/shows/the-winters-gift` и `/shows/the-bunnys-little-house` — **301** на новые slug. Per-show
+> возрасты по владельцу; featured = Three Little Pigs · The Rabbit House · Little Red Riding Hood ·
+> Two Sisters. **Donkey's Birthday** остаётся вне репертуара; дубля Suzy Bee/Maya the Bee нет.
+> `ci:exact` **exit 0** (8 SSG-страниц шоу); ручная проверка 8 маршрутов + redirects + sitemap —
+> зелёная; e2e Phase-2 shows 16/16. Отчёт — `docs/reports/MISS_LANA_REPERTOIRE_OWNER_CANON_RECONCILE_001.md`,
+> ревью — `docs/reviews/MISS_LANA_REPERTOIRE_OWNER_CANON_RECONCILE_001_code_review.md`. Открыто
+> только публичное имя пчелиного шоу (Suzy Bee vs Maya the Bee). **PR открыт, не смёржен.**
 
 > **Durable lead store implemented (2026-06-28, `feat/miss-lana-durable-lead-store`).** Booking inquiries
 > now persist to **MongoDB Atlas** (db `misslana`, coll `leads`) as the production system of record;
@@ -83,7 +96,7 @@ QA, and real media. (Site-wide **noindex removal — done** 2026-06-27.)
 
 trademark-clearance (до лого/печати) · ссылки на соцсети · verified reviews/testimonials
 (target ≥5, permission/source) · 301/оплата protective/legacy domains · стратегия по гос. школам ·
-подача 2 названий шоу (Morozko, «Well Red Bow wait») · редизайн лого 2026 · фото/видео-активы ·
+публичное имя пчелиного шоу (Suzy Bee vs Maya the Bee) · редизайн лого 2026 · фото/видео-активы ·
 формат-сплит 8 шоу + переписать «no puppet» guardrails (формат «куклы внутри» подтверждён) ·
 финализация политик (отмена/депозит/перенос — owner дал ориентиры, как публичная политика не
 закреплены). Доплата за расстояние — ✅ правило подтверждено (greater LA/Orange County free, дальние

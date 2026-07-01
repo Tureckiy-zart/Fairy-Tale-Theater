@@ -124,13 +124,15 @@ test("the home page is indexable post-launch (no noindex)", async ({ page }) => 
   }
 });
 
-// Phase 2 — Shows hub + 7 show pages + School Shows / Birthdays landings
-// (BUILD_MISS_LANA_SHOWS_AND_LANDINGS_001).
+// Phase 2 — Shows hub + 8 show pages + School Shows / Birthdays landings
+// (BUILD_MISS_LANA_SHOWS_AND_LANDINGS_001; repertoire reconciled to 8 owner-confirmed
+// shows in MISS_LANA_REPERTOIRE_OWNER_CANON_RECONCILE_001).
 test.describe("Phase 2 — shows + landings", () => {
   const PAGES: { path: string; h1: RegExp }[] = [
-    { path: "/shows", h1: /seven kind fairy tales to choose from/i },
+    { path: "/shows", h1: /eight kind fairy tales to choose from/i },
+    { path: "/shows/three-little-pigs", h1: /three little pigs/i },
+    { path: "/shows/two-sisters", h1: /two sisters/i },
     { path: "/shows/the-gingerbread-man", h1: /the gingerbread man/i },
-    { path: "/shows/the-winters-gift", h1: /the winter's gift/i },
     { path: "/shows/little-red-riding-hood", h1: /little red riding hood/i },
     { path: "/school-shows", h1: /theater your school can say yes to/i },
     { path: "/birthdays", h1: /a magical party/i },
@@ -163,6 +165,40 @@ test.describe("Phase 2 — shows + landings", () => {
     await page.getByRole("link", { name: /see this show/i }).first().click();
     await expect(page).toHaveURL(/\/shows\/[a-z-]+$/);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  });
+
+  test("the /shows hub lists exactly eight unique show cards", async ({ page }) => {
+    await page.goto("/shows");
+    // Each ShowCardGrid card exposes one "See this show" CTA — 8 shows → 8 cards.
+    await expect(page.getByRole("link", { name: /see this show/i })).toHaveCount(8);
+    // …and every card links to a distinct /shows/{slug} URL (no dupes, e.g. no second bee).
+    const hrefs = await page
+      .locator('main a[href^="/shows/"]')
+      .evaluateAll((els) => Array.from(new Set(els.map((e) => e.getAttribute("href")))));
+    expect(hrefs).toHaveLength(8);
+  });
+
+  test("an old show URL 301-redirects to its current slug (no dead indexable URL)", async ({ page }) => {
+    // The erroneous "Winter's Gift / Father Frost" entity → Two Sisters.
+    await page.goto("/shows/the-winters-gift");
+    await expect(page).toHaveURL(/\/shows\/two-sisters$/);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(/two sisters/i);
+    // Provisional "The Bunny's Little House" → owner-confirmed "The Rabbit House".
+    await page.goto("/shows/the-bunnys-little-house");
+    await expect(page).toHaveURL(/\/shows\/the-rabbit-house$/);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(/the rabbit house/i);
+  });
+
+  test("retired shows are not in the live repertoire (Donkey's Birthday 404s)", async ({ page }) => {
+    const res = await page.goto("/shows/donkeys-birthday");
+    expect(res?.status()).toBe(404);
+  });
+
+  test("the bee show is Suzy Bee only — no duplicate Maya the Bee route", async ({ page }) => {
+    const suzy = await page.goto("/shows/suzy-bee");
+    expect(suzy?.status()).toBe(200);
+    const maya = await page.goto("/shows/maya-the-bee");
+    expect(maya?.status()).toBe(404);
   });
 
   test("the landings emit FAQPage schema and the FAQ opens by keyboard", async ({ page }) => {

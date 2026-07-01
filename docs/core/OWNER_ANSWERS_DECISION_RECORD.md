@@ -20,7 +20,8 @@ This is a current-canon decision record. On brand conflict, BRAND.md +
 | Topic | Canonical public truth | Phrasing rule |
 |---|---|---|
 | **Duration** | About one hour total — a ~30-minute fairy-tale play, then ~30 minutes of games, dancing and bubbles. | "About an hour", "~60 min". Approximate; never promise exact minute timing. |
-| **Ages** | Tuned for ages **2–10**. | — |
+| **Ages** | Tuned for ages **2–10** (brand band). | Per-show ranges vary (spanning **1–6 … 2–13**) — see the Repertoire row and `lib/shows.ts`. |
+| **Repertoire** | **8 active shows** (owner-confirmed 2026-07-01): Three Little Pigs · The Rabbit House · Little Red Riding Hood · Two Sisters · Cinderella / The Magic Slipper · The Magic Castle · The Gingerbread Man · Suzy Bee. **Donkey's Birthday is NOT in the repertoire.** | Featured (owner priority): Three Little Pigs · The Rabbit House · Little Red Riding Hood · Two Sisters. Titles/slugs canonical in `lib/shows.ts`; bee-show public name still open (see §4). |
 | **Troupe size** | A troupe of **3–4 artists** (depending on the show). | Do not fix a single number; "3–4" or "professional troupe". |
 | **What's included** | Costumes, sets, props, our own sound; live costumed actors (and puppets, depending on the show); games, dancing and bubbles. We come to you. | — |
 | **Add-ons (optional extras)** | Face painting · a standalone bubble show · costumed character visits (Miss Lana & Friends). | Present as optional extras. |
@@ -91,8 +92,14 @@ media rights: **MEDIA-PERMISSION** · policy: **POLICY**.
 - **[OWNER] Artist names/roles/years + final theatre-history text + Miss Lana
   mini-story** — owner to write.
 - **[OWNER] Social links; decision on the 30-min YouTube film for /about.**
-- **[OWNER] Two show titles** — "Morozko" (→ Father Frost / The Winter's Gift)
-  and "Well Red Bow wait" (→ Little Red Riding Hood): final calls.
+- **✅ [RESOLVED 2026-07-01] Repertoire titles** (`MISS_LANA_REPERTOIRE_OWNER_CANON_RECONCILE_001`):
+  owner confirmed the 8-show repertoire. The "Morozko" slot is published as **Two Sisters**
+  (the erroneous "The Winter's Gift / Father Frost" entity is retired; old URL 301-redirects);
+  "Well Red Bow wait" is **Little Red Riding Hood**; the provisional "The Bunny's Little House"
+  is **The Rabbit House** (old URL 301-redirects); **Three Little Pigs** is a confirmed active
+  show; **Donkey's Birthday** is not in the repertoire. **Still open:** the public name of the
+  bee show — **Suzy Bee** (current public) vs **Maya the Bee** (owner source) — stays Suzy Bee
+  until a separate owner confirmation; no second card/route is created.
 - **[DOCUMENT] Private residential address:** never publish; contact stays
   email/phone only.
 - **[OWNER/CONTENT] Verified reviews/testimonials:** target ≥5 real reviews with

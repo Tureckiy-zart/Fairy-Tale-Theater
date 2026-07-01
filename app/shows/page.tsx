@@ -1,5 +1,5 @@
 // Shows hub (/shows) — SITE_STRUCTURE_AND_BLOCKS.md §4.2. The SEO hub for the
-// repertoire: SectionHeader + intro → ShowCardGrid (all 7 shows, each linking to its
+// repertoire: SectionHeader + intro → ShowCardGrid (all 8 shows, each linking to its
 // own indexable /shows/{slug} page) → BookingCTABand. Titles/slugs/themes are canonical
 // (lib/shows); synopses are final copy; photos render the marked placeholder
 // treatment (assets gated — Phase 4 [ASSET]). NO format filter (owner-gated — non-goal).
@@ -17,7 +17,7 @@ import { FACTS } from "@/lib/site";
 export const metadata: Metadata = buildMetadata({
   title: "Shows",
   description:
-    `The repertoire of Miss Lana's Fairy-Tale Theatre — seven kind, timeless fairy tales for ${FACTS.ages.toLowerCase()}. A real costumed show plus interactive play, brought to your venue across LA and beyond.`,
+    `The repertoire of Miss Lana's Fairy-Tale Theatre — eight kind, timeless fairy tales for ${FACTS.ages.toLowerCase()}. A real costumed show plus interactive play, brought to your venue across LA and beyond.`,
   path: "/shows",
 });
 
@@ -29,7 +29,7 @@ export default function ShowsPage() {
         containerClassName="pt-10 md:pt-14"
         eyebrow="The repertoire"
         marker={<SparkStar size={16} />}
-        title="Seven kind fairy tales to choose from"
+        title="Eight kind fairy tales to choose from"
         subtitle={`Every Miss Lana production begins with a familiar fairy-tale feeling and grows into a live, shared adventure. Some stories are playful, some are tender, and a few hold a little suspense — but each returns to what children understand most deeply: friendship, courage, kindness, and helping one another. About an hour, for ${FACTS.ages.toLowerCase()}.`}
       />
 
