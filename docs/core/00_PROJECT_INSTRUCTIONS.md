@@ -57,7 +57,7 @@ Primary public contact: `info@misslanatheatre.com` и **(323) 903-2039**. Кли
 
 - `PROJECT_BRIEF.md` — факты о бизнесе (главный источник).
 - `docs/core/BRAND.md` — бренд/нейминг (LOCK): имя, домен, архитектура суб-брендов.
-- `docs/core/01_CONTENT_INVENTORY.md` — формат, 7 шоу (универсальная подача), команда, контакты.
+- `docs/core/01_CONTENT_INVENTORY.md` — формат, 8 шоу (универсальная подача), команда, контакты.
 - `docs/core/02_POSITIONING_AND_TONE.md` — позиционирование, тон, визуал, анти-примеры.
 - `docs/core/03_SITEMAP_AND_SCOPE.md` — структура и функции сайта.
 - `docs/core/04_SEO.md` — SEO (англ. интент), домен/имя, GBP, конкуренты.
@@ -106,6 +106,7 @@ Primary public contact: `info@misslanatheatre.com` и **(323) 903-2039**. Кли
 ## Открытые вопросы (держи в фокусе)
 
 Доплата за расстояние · ссылки на соцсети · 301/оплата protective/legacy domains · trademark-clearance
-(до лого/печати) · стратегия по гос. школам · подача 2 названий шоу (Morozko → Father Frost;
-«Well Red Bow wait» → Little Red Riding Hood) · редизайн лого под 2026 · фото/видео от владельца.
+(до лого/печати) · стратегия по гос. школам · публичное имя пчелиного шоу (Suzy Bee vs Maya the
+Bee) · редизайн лого под 2026 · фото/видео от владельца. *(Названия репертуара owner-confirmed
+2026-07-01 — Two Sisters, The Rabbit House и др.; см. `01_CONTENT_INVENTORY.md`.)*
 </content>

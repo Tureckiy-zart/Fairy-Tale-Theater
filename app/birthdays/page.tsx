@@ -194,7 +194,7 @@ export default function BirthdaysPage() {
           eyebrow="Crowd-pleasers"
           marker={<SparkStar size={16} />}
           title="Popular party shows"
-          subtitle="A few favourites for birthdays — browse all seven to find the perfect tale."
+          subtitle="A few favourites for birthdays — browse all eight to find the perfect tale."
         />
         <div className="mt-10">
           <ShowCardGrid shows={FEATURED_SHOWS} />

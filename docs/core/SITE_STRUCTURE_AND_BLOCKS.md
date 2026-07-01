@@ -3,7 +3,7 @@
 **Версия:** v1.0 · 2026-06-22
 **Статус:** ИСТОЧНИК ИСТИНЫ по структуре сайта и поблочному составу страниц. На него опираются build-задачи реальных страниц.
 **Место в проекте:** `docs/core/SITE_STRUCTURE_AND_BLOCKS.md`. Углубляет `03_SITEMAP_AND_SCOPE.md` (тот остаётся обзором scope/целей) до уровня блоков.
-**Читать вместе с:** `DESIGN_SYSTEM.md` (компоненты/токены), `02_POSITIONING_AND_TONE.md` (сегменты/тон), `01_CONTENT_INVENTORY.md` (7 шоу/команда), `PROJECT_BRIEF.md` (факты), `BRAND.md` (зонтик/4 линии), `04_SEO.md` (URL/schema).
+**Читать вместе с:** `DESIGN_SYSTEM.md` (компоненты/токены), `02_POSITIONING_AND_TONE.md` (сегменты/тон), `01_CONTENT_INVENTORY.md` (8 шоу/команда), `PROJECT_BRIEF.md` (факты), `BRAND.md` (зонтик/4 линии), `04_SEO.md` (URL/schema).
 **Язык:** контент сайта — английский; имена блоков/компонентов/слаги — английские; описания — русские.
 
 **Условные обозначения статуса блока:**
@@ -30,7 +30,7 @@
 
 ```
 / (Home)
-├── /shows                 Репертуар — хаб 7 шоу
+├── /shows                 Репертуар — хаб 8 шоу
 │   └── /shows/{slug}       Страница шоу (индексируемая, schema Event/TheaterEvent)
 ├── /services              Обзор форматов (зонтик) → ведёт на 4 линии
 ├── /school-shows          Линия B2B: сады / Монтессори / школьные ассамблеи
@@ -98,8 +98,8 @@ primary contact.
 
 ### 4.2 Shows hub (`/shows`) + Show detail (`/shows/{slug}`)
 
-**Hub:** SectionHeader → (опц.) фильтр по формату/возрасту `[OWNER: формат-сплит]` → `ShowCardGrid` (7 шоу) → BookingCTABand. Роль: SEO-хаб, линкует на каждое шоу.
-**Detail (шаблон, ×8, каждый — свой URL):** Hero шоу `[ASSET]` → тайтл (Fraunces) + тег формата `[OWNER]` → синопсис + тема/ценность → мета (возраст 2–10 · ~60 мин) → фото/видео `[ASSET]` → «Book this show» (primary) → related shows → зоны/«от $350». Schema `Event`/`TheaterEvent`. Названия — универсальная подача (`01`), 2 кодированных — переподать `[OWNER]`.
+**Hub:** SectionHeader → (опц.) фильтр по формату/возрасту `[OWNER: формат-сплит]` → `ShowCardGrid` (8 шоу) → BookingCTABand. Роль: SEO-хаб, линкует на каждое шоу.
+**Detail (шаблон, ×8, каждый — свой URL):** Hero шоу `[ASSET]` → тайтл (Fraunces) + тег формата `[OWNER]` → синопсис + тема/ценность → мета (возраст per-show · ~60 мин) → фото/видео `[ASSET]` → «Book this show» (primary) → related shows → зоны/«от $350». Schema `Event`/`TheaterEvent`. Названия — универсальная подача (`01`), **owner-confirmed 2026-07-01**.
 
 ### 4.3 Services overview (`/services`) + 4 линии
 
@@ -200,10 +200,10 @@ refined on the live `misslanatheatre.com` site.
 
 ## 8. Открытые решения, влияющие на структуру (гейты)
 
-- `[OWNER]` **Формат-сплит 7 шоу** (живые/кукольные/гибрид) → фильтр на `/shows` + тег формата на детали. (Guardrails «no puppet» переписаны 2026-06-27 — этот пасс; per-show значения live/puppet/combined — за владельцем, после ответа вешаем теги/фильтр.)
+- `[OWNER]` **Формат-сплит 8 шоу** (живые/кукольные/гибрид) → фильтр на `/shows` + тег формата на детали. (Guardrails «no puppet» переписаны 2026-06-27 — этот пасс; per-show значения live/puppet/combined — за владельцем, после ответа вешаем теги/фильтр.)
 - ✅ **Правило расстояния** подтверждено (greater LA/Orange County free, дальние — по расстоянию; без публичных $-сумм) → блок на `/pricing`.
 - **Planning Your Event** (Task 04) — единая страница для setup/venue/weather/access/photos/scheduling; общие технические детали туда, на маркетинговых страницах не дублировать.
-- `[OWNER]` **Переподача 2 названий** (Morozko → Father Frost; «Well Red Bow wait» → Little Red Riding Hood) → страницы шоу.
+- ✅ **Названия шоу подтверждены** (2026-07-01, owner): «Morozko»-слот → **Two Sisters** (замена «The Winter's Gift / Father Frost»), **The Rabbit House**, **Little Red Riding Hood** и др. 🔴 Осталось только публичное имя пчелиного шоу (**Suzy Bee** vs **Maya the Bee**).
 - `[OWNER]` **Гос. школы** — отдельный лендинг или секция на `/school-shows`?
 - `[OWNER]` **Украинский слой** — нужен ли (влияет на nav-переключатель + hreflang).
 - `[OWNER/CONTENT]` **Verified reviews/testimonials** — launch-required trust layer; target
