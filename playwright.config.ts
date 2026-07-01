@@ -25,6 +25,20 @@ export default defineConfig({
       // tests aren't collateral-throttled. The dedicated rate-limit test exceeds this on
       // purpose. Production keeps the default 5 (this override is e2e-only).
       LEAD_RATE_LIMIT_PER_MINUTE: "50",
+      // Fully isolate e2e from real outbound side effects. `pnpm dev` loads the real,
+      // git-ignored `.env`; without these blanks the ~70 lead POSTs the suite fires (incl.
+      // the 60-request rate-limit burst in lead-api.spec.ts) would hit the LIVE Telegram
+      // bot AND write the production MongoDB store. Empty string ⇒ each `env` getter
+      // (`process.env.X || undefined`, lib/env.ts) returns undefined ⇒ the channel is
+      // skipped and `leadStore` falls back to the local file store above. Next's `.env`
+      // loader never overrides an already-set process.env var (Playwright sets these on the
+      // dev child), so the blanks win. Do NOT remove — this is the guard against spamming
+      // the owner's real Telegram/DB from a test run.
+      MONGODB_URI: "",
+      TELEGRAM_BOT_TOKEN: "",
+      TELEGRAM_CHAT_ID: "",
+      LEAD_EMAIL_WEBHOOK_URL: "",
+      GOOGLE_SHEETS_WEBHOOK_URL: "",
     },
   },
 });
