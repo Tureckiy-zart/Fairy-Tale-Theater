@@ -20,6 +20,7 @@ import { B2CTeaser } from "@/components/blocks/B2CTeaser";
 import { PersonaIntro } from "@/components/blocks/PersonaIntro";
 import { GalleryTeaser } from "@/components/blocks/GalleryTeaser";
 import { HowItWorksAreas } from "@/components/blocks/HowItWorksAreas";
+import { env } from "@/lib/env";
 
 export const metadata: Metadata = buildMetadata({
   title: "Live theater that comes to you",
@@ -51,6 +52,7 @@ export default function HomePage() {
         eyebrow="Get started"
         heading="Book a show"
         sub="Tell us about your event and we'll reply within 1–2 business days."
+        turnstileSiteKey={env.turnstileSiteKey}
       />
     </SiteShell>
   );

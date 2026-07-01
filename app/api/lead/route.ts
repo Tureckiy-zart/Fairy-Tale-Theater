@@ -9,9 +9,22 @@
 // the inquiry id only, so the operator can recover from the durable store.
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { buildLead, makeInquiryId, sanitizeSubmissionId, validateLead, type RawLead } from "@/lib/leads";
+import {
+  buildLead,
+  emailKey,
+  makeInquiryId,
+  phoneKey,
+  sanitizeSubmissionId,
+  validateLead,
+  type RawLead,
+} from "@/lib/leads";
 import { deliverLead } from "@/lib/notify";
+import { countRecentByContact } from "@/lib/leadStore";
+import { verifyTurnstile } from "@/lib/turnstile";
 import { env } from "@/lib/env";
+
+/** Rolling-window length for the per-contact daily cap. */
+const CONTACT_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 // Node runtime (the durable store uses the mongodb driver + node:crypto). Never cached.
 export const runtime = "nodejs";
@@ -71,7 +84,8 @@ export async function POST(req: Request): Promise<NextResponse> {
     return json({ ok: true, id: "ML-IGNORED" }, 200);
   }
 
-  if (rateLimited(clientIp(req))) {
+  const ip = clientIp(req);
+  if (rateLimited(ip)) {
     return json({ ok: false, error: "Too many requests — please try again in a minute." }, 429);
   }
 
@@ -80,12 +94,43 @@ export async function POST(req: Request): Promise<NextResponse> {
     return json({ ok: false, error: "Please check the highlighted fields.", fields: result.errors }, 422);
   }
 
+  // Bot check (Cloudflare Turnstile). Skipped when TURNSTILE_SECRET_KEY is unset
+  // (dev/e2e); enforced once keys are set. A managed widget always sends a token, so a
+  // missing/failed token is rejected; a Cloudflare outage fails open (other guards hold).
+  const captcha = await verifyTurnstile(
+    typeof body.cfTurnstileToken === "string" ? body.cfTurnstileToken : undefined,
+    ip,
+  );
+  if (!captcha.ok) {
+    return json({ ok: false, error: "Please complete the verification below and try again." }, 403);
+  }
+
   // Idempotency: trust the client-sent submissionId (a crypto.randomUUID() reused
   // across retries of the SAME submission) so a double-click/retry maps to one stored
   // lead via the unique index. If it's absent or malformed, mint a server-side fallback
   // so a missing id never blocks a valid lead — idempotency just degrades to per-request.
   const submissionId = sanitizeSubmissionId(body.submissionId) ?? randomUUID();
   const lead = buildLead(body, makeInquiryId(Math.random), submissionId, new Date().toISOString());
+
+  // Durable per-contact daily cap (same phone OR email in the last 24 h) — catches one
+  // actor flooding from rotating IPs. Only when a real store is configured; fail-open so
+  // a DB hiccup never drops a real inquiry. Runs before delivery, so a capped submission
+  // is neither stored nor notified.
+  if (env.mongodbUri) {
+    const since = new Date(Date.now() - CONTACT_WINDOW_MS).toISOString();
+    const recent = await countRecentByContact(phoneKey(lead.phone), emailKey(lead.email), since);
+    if (recent.ok && recent.count >= env.leadDailyLimitPerContact) {
+      console.warn(`[lead] ${lead.id} blocked — per-contact daily cap reached`);
+      return json(
+        {
+          ok: false,
+          error:
+            "We've already received a few requests from you today — we'll be in touch soon. Need us sooner? Please call or text us.",
+        },
+        429,
+      );
+    }
+  }
 
   let delivery;
   try {

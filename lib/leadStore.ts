@@ -107,6 +107,9 @@ async function ensureIndexes(client: MongoClient): Promise<void> {
     { key: { submissionId: 1 }, name: "submissionId_unique", unique: true },
     { key: { receivedAt: -1 }, name: "receivedAt_desc" },
     { key: { status: 1 }, name: "status_asc" },
+    // Per-contact daily-cap lookups (countRecentByContact): normalized phone/email + time.
+    { key: { phoneKey: 1, receivedAt: -1 }, name: "phoneKey_receivedAt" },
+    { key: { emailKey: 1, receivedAt: -1 }, name: "emailKey_receivedAt", sparse: true },
   ]);
   indexesEnsured = true;
 }
@@ -215,6 +218,34 @@ export async function updateNotificationStatus(
     return { status: "ok", duplicate: false, id };
   } catch (err) {
     return { status: "error", reason: storeReason(err) };
+  }
+}
+
+/**
+ * Count leads from the same CONTACT (normalized phone OR email) received at/after
+ * `sinceIso` — the durable half of the per-contact daily cap. Best-effort + FAIL-OPEN:
+ * any error (no MONGODB_URI, Atlas unreachable) returns `{ ok: false }` so the caller
+ * never blocks a real inquiry on a store hiccup. Never throws. Does NOT count the current
+ * (not-yet-stored) lead, so the cap compares against PRIOR submissions only.
+ */
+export async function countRecentByContact(
+  contactPhoneKey: string,
+  contactEmailKey: string | null,
+  sinceIso: string,
+): Promise<{ ok: true; count: number } | { ok: false }> {
+  const or: Record<string, unknown>[] = [];
+  if (contactPhoneKey) or.push({ phoneKey: contactPhoneKey });
+  if (contactEmailKey) or.push({ emailKey: contactEmailKey });
+  if (or.length === 0) return { ok: true, count: 0 };
+  try {
+    const client = await getClient();
+    const count = await collection(client).countDocuments({
+      receivedAt: { $gte: sinceIso },
+      $or: or,
+    });
+    return { ok: true, count };
+  } catch {
+    return { ok: false };
   }
 }
 

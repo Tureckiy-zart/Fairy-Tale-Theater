@@ -16,6 +16,12 @@ const isDev = process.env.NODE_ENV !== "production";
 // reflected as HTML — JSON-LD is escaped, no dangerouslySetInnerHTML), so the tradeoff
 // isn't worth it here. `form-action`/`frame-src 'none'`/`object-src 'none'` plus
 // `frame-ancestors`/HSTS/nosniff harden the realistic vectors. (security/SECURITY.md)
+// Cloudflare Turnstile (booking-form bot check): the widget loads api.js, renders inside
+// a challenges.cloudflare.com iframe, and posts back there. Allow that origin on
+// script-src/frame-src/connect-src ONLY (no wildcard). Harmless when Turnstile is
+// unconfigured — nothing from this origin loads until the widget renders.
+const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
+
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
@@ -23,12 +29,13 @@ const securityHeaders = [
       "default-src 'self'",
       "img-src 'self' data: blob:",
       "style-src 'self' 'unsafe-inline'",
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+      `script-src 'self' 'unsafe-inline' ${TURNSTILE_ORIGIN}${isDev ? " 'unsafe-eval'" : ""}`,
+      `connect-src 'self' ${TURNSTILE_ORIGIN}`,
       "font-src 'self' data:",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
-      "frame-src 'none'",
+      `frame-src ${TURNSTILE_ORIGIN}`,
       "frame-ancestors 'none'",
     ].join("; "),
   },

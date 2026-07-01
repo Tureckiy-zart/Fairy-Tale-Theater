@@ -7,6 +7,8 @@ import {
   makeInquiryId,
   sanitizeSubmissionId,
   toStoredLead,
+  phoneKey,
+  emailKey,
   formatLeadSummary,
   formatLeadTelegram,
   formatEventDate,
@@ -590,5 +592,36 @@ describe("toStoredLead", () => {
     const doc = toStoredLead(lead({ email: "jane@example.com", childCount: 12 }));
     expect(doc.email).toBe("jane@example.com");
     expect(doc.childCount).toBe(12);
+  });
+
+  it("carries normalized contact keys (phoneKey always, emailKey only when present)", () => {
+    const withEmail = toStoredLead(lead({ phone: "(310) 555-0142", email: "Jane@Example.com" }));
+    expect(withEmail.phoneKey).toBe("3105550142");
+    expect(withEmail.emailKey).toBe("jane@example.com");
+
+    const noEmail = toStoredLead(lead({ email: null }));
+    expect(noEmail.phoneKey).toBe(phoneKey(noEmail.phone));
+    expect(noEmail.emailKey).toBeUndefined();
+  });
+});
+
+describe("phoneKey / emailKey (per-contact daily-cap normalization)", () => {
+  it("maps every US phone format to the same 10-digit key", () => {
+    expect(phoneKey("(310) 555-0142")).toBe("3105550142");
+    expect(phoneKey("310-555-0142")).toBe("3105550142");
+    expect(phoneKey("+1 310 555 0142")).toBe("3105550142");
+    expect(phoneKey("3105550142")).toBe("3105550142");
+  });
+
+  it("keeps the last 10 digits so a country prefix never splits the key", () => {
+    expect(phoneKey("+380 99 437 7974")).toHaveLength(10);
+    expect(phoneKey("+380994377974")).toBe(phoneKey("00380 99 437 7974"));
+  });
+
+  it("lowercases + trims the email key, or null when empty/absent", () => {
+    expect(emailKey("  Jane@Example.COM ")).toBe("jane@example.com");
+    expect(emailKey("")).toBeNull();
+    expect(emailKey(null)).toBeNull();
+    expect(emailKey(undefined)).toBeNull();
   });
 });

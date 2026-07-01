@@ -11,6 +11,7 @@ import { CheckCircle, WarningCircle } from "@phosphor-icons/react";
 import { Button, Field, SectionHeader } from "@/components/ui";
 import { cx } from "@/components/ui/cx";
 import { Lantern, SparkStar } from "@/components/brand/Glyphs";
+import { Turnstile } from "@/components/shell/Turnstile";
 import { CONTACT_METHODS, PHONES } from "@/lib/site";
 import { track } from "@/lib/analytics";
 
@@ -145,11 +146,15 @@ export function LeadForm({
   eyebrow,
   heading,
   sub,
+  turnstileSiteKey,
 }: {
   id?: string;
   eyebrow?: string;
   heading?: string;
   sub?: string;
+  /** Cloudflare Turnstile site key (server-supplied). When set, the bot widget renders
+   *  and its token is sent with the submission; when undefined, no widget shows. */
+  turnstileSiteKey?: string;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
   const pathname = usePathname();
@@ -158,6 +163,7 @@ export function LeadForm({
   const [serverError, setServerError] = useState<string | null>(null);
   const [refId, setRefId] = useState<string | null>(null);
   const [dateValue, setDateValue] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const headingId = `${id}-heading`;
 
   const submissionIdRef = useRef<string | null>(null);
@@ -215,6 +221,7 @@ export function LeadForm({
     payload.utmSource = qs?.get("utm_source") ?? "";
     payload.utmMedium = qs?.get("utm_medium") ?? "";
     payload.utmCampaign = qs?.get("utm_campaign") ?? "";
+    if (captchaToken) payload.cfTurnstileToken = captchaToken;
 
     setStatus("submitting");
     try {
@@ -321,6 +328,12 @@ export function LeadForm({
               <Field label="Number of children" name="count" type="number" min={1} inputMode="numeric" error={errors.count} helper="Optional — it helps us plan the show." />
               <Field label="Preferred show" name="show" helper="Optional — if you have one in mind." className="sm:col-span-2" />
               <Field label="Anything else?" name="notes" multiline rows={4} helper="Tell us about your event — venue, ages, timing…" className="sm:col-span-2" />
+
+              {turnstileSiteKey ? (
+                <div className="sm:col-span-2">
+                  <Turnstile siteKey={turnstileSiteKey} onToken={setCaptchaToken} />
+                </div>
+              ) : null}
 
               <div className="flex flex-col gap-3 sm:col-span-2">
                 {hasErrors ? (

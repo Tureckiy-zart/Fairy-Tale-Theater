@@ -18,6 +18,7 @@ import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { LeadForm } from "@/components/shell/LeadForm";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
+import { env } from "@/lib/env";
 import { ShowCardGrid } from "@/components/blocks/ShowCardGrid";
 import { FaqSection } from "@/components/blocks/FaqSection";
 import { FEATURED_SHOWS } from "@/lib/shows";
@@ -237,6 +238,7 @@ export default function BirthdaysPage() {
         eyebrow="Book a party"
         heading="Plan a magical birthday"
         sub="Tell us the date, ages, number of children and city — we'll confirm availability and a quote within 1–2 business days."
+        turnstileSiteKey={env.turnstileSiteKey}
       />
       <BookingCTABand
         heading="Ready to book the party?"

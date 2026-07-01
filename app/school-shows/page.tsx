@@ -21,6 +21,7 @@ import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { LeadForm } from "@/components/shell/LeadForm";
 import { BookingCTABand } from "@/components/shell/BookingCTABand";
+import { env } from "@/lib/env";
 import { TrustStrip } from "@/components/blocks/TrustStrip";
 import { FaqSection } from "@/components/blocks/FaqSection";
 import { AREAS, FACTS } from "@/lib/site";
@@ -193,6 +194,7 @@ export default function SchoolShowsPage() {
         eyebrow="Request a show"
         heading="Bring Miss Lana to your school"
         sub="Tell us your school, group size, date and city — we'll check availability and send a quote within 1–2 business days."
+        turnstileSiteKey={env.turnstileSiteKey}
       />
       <BookingCTABand
         heading="Ready to book a school show?"

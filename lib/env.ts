@@ -108,4 +108,30 @@ export const env = {
     const n = Number(process.env.LEAD_RATE_LIMIT_PER_MINUTE);
     return Number.isInteger(n) && n > 0 ? n : 5;
   },
+  /**
+   * Max booking submissions per CONTACT (normalized phone or email) per rolling 24 h,
+   * enforced durably against the MongoDB store. Complements the per-IP limiter by
+   * catching one actor flooding from rotating IPs with the same phone/email. Defaults
+   * to 5. Only enforced when MONGODB_URI is set; fail-open on a store error.
+   */
+  get leadDailyLimitPerContact(): number {
+    const n = Number(process.env.LEAD_DAILY_LIMIT_PER_CONTACT);
+    return Number.isInteger(n) && n > 0 ? n : 5;
+  },
+  /**
+   * Cloudflare Turnstile SITE key — PUBLIC (rendered into the booking form widget).
+   * Read server-side and passed to the client form as a prop (governance forbids
+   * process.env in client code). When unset, no widget renders and the bot check is off.
+   */
+  get turnstileSiteKey(): string | undefined {
+    return process.env.TURNSTILE_SITE_KEY || undefined;
+  },
+  /**
+   * Cloudflare Turnstile SECRET key — server-only. When set, /api/lead verifies the
+   * widget token via siteverify; when unset, the bot check is skipped (dev / e2e / a
+   * deploy without keys). SECRET: never log it, never send it to the client.
+   */
+  get turnstileSecretKey(): string | undefined {
+    return process.env.TURNSTILE_SECRET_KEY || undefined;
+  },
 } as const;
