@@ -8,6 +8,7 @@ import { SparkStar } from "@/components/brand/Glyphs";
 import { SiteShell } from "@/components/shell/SiteShell";
 import { LeadForm } from "@/components/shell/LeadForm";
 import { AREAS, EMAIL, PHONES } from "@/lib/site";
+import { env } from "@/lib/env";
 
 export const metadata: Metadata = buildMetadata({
   title: "Book a show / Contact",
@@ -43,7 +44,7 @@ export default function BookingPage() {
       </PageHero>
 
       {/* The form (its own section, max-w-3xl). Confirmation state is on-screen. */}
-      <LeadForm />
+      <LeadForm turnstileSiteKey={env.turnstileSiteKey} />
 
       {/* Finished service-area content; no storefront address or internal map placeholder. */}
       <Section tone="surface">

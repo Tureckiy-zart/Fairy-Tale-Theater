@@ -84,6 +84,8 @@ function fixtureStored(overrides: Partial<StoredLead> = {}): StoredLead {
     name: "Jane Doe",
     phone: "(310) 555-0142",
     email: "jane@example.com",
+    phoneKey: "3105550142",
+    emailKey: "jane@example.com",
     eventType: "Birthday party",
     date: "2026-12-01",
     city: "Los Angeles",

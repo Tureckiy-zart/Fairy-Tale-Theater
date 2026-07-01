@@ -181,6 +181,24 @@ export function sanitizeSubmissionId(raw: unknown): string | null {
   return v.length >= 8 ? v : null;
 }
 
+// --- Contact keys (durable per-contact daily cap) ---------------------------
+/**
+ * Normalized phone key for the per-contact daily cap. Digits only; for a US number we
+ * keep the LAST 10 so "(310) 555-0142", "310-555-0142" and "+1 310 555 0142" all map to
+ * the same key. Returns "" only when the phone had no digits (validateLead already
+ * requires ≥7, so that never happens in the live pipeline). Pure + deterministic.
+ */
+export function phoneKey(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  return digits.length > 10 ? digits.slice(-10) : digits;
+}
+
+/** Normalized email key (trimmed + lowercased) for the per-contact daily cap, or null. */
+export function emailKey(email: string | null | undefined): string | null {
+  const e = (email ?? "").trim().toLowerCase();
+  return e || null;
+}
+
 // --- Owner-facing date/time normalization (pure, deterministic) -------------
 // The owner reads these in Telegram/Sheets, never a raw ISO blob. Two rules:
 //   1. The customer's EVENT date is a calendar day — it must NEVER shift across a
@@ -454,6 +472,10 @@ export interface StoredLead {
   name: string;
   phone: string;
   email?: string;
+  /** Normalized phone key (digits, last 10) — indexed for the per-contact daily cap. */
+  phoneKey: string;
+  /** Normalized email key (lowercased) — indexed for the per-contact daily cap. */
+  emailKey?: string;
   eventType: string;
   date: string;
   time?: string;
@@ -492,6 +514,8 @@ export function toStoredLead(lead: Lead): StoredLead {
     name: lead.name,
     phone: lead.phone,
     email: pick(lead.email),
+    phoneKey: phoneKey(lead.phone),
+    emailKey: pick(emailKey(lead.email)),
     eventType: lead.eventType,
     date: lead.date,
     time: pick(lead.time),
